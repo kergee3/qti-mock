@@ -31,16 +31,25 @@ const ITEM_SEQUENCE = [
 export async function POST(req: Request) {
   // Origin検証
   const origin = req.headers.get('origin')
+  const playerUrl = process.env.PLAYER_URL || 'http://localhost:5173'
   const allowedOrigins = [
-    process.env.PLAYER_URL || 'http://localhost:5173',
-    'http://localhost:5174' // fallback port
+    playerUrl,
+    'http://localhost:5173',
+    'http://localhost:5174'
   ]
+
+  // CORSヘッダーを設定
+  const corsHeaders = {
+    'Access-Control-Allow-Origin': origin && allowedOrigins.includes(origin) ? origin : playerUrl,
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization'
+  }
 
   if (origin && !allowedOrigins.includes(origin)) {
     console.warn(`Rejected request from origin: ${origin}`)
     return NextResponse.json(
       { error: 'Forbidden' },
-      { status: 403 }
+      { status: 403, headers: corsHeaders }
     )
   }
 
@@ -97,22 +106,30 @@ export async function POST(req: Request) {
           itemCount: results.length
         }
       })
-    })
+    }, { headers: corsHeaders })
   } catch (error) {
     console.error('Error processing result:', error)
     return NextResponse.json(
       { error: 'Internal Server Error' },
-      { status: 500 }
+      { status: 500, headers: corsHeaders }
     )
   }
 }
 
 // OPTIONSリクエストに対応（CORS preflight）
-export async function OPTIONS() {
+export async function OPTIONS(req: Request) {
+  const origin = req.headers.get('origin')
+  const playerUrl = process.env.PLAYER_URL || 'http://localhost:5173'
+  const allowedOrigins = [
+    playerUrl,
+    'http://localhost:5173',
+    'http://localhost:5174'
+  ]
+
   return new NextResponse(null, {
     status: 204,
     headers: {
-      'Access-Control-Allow-Origin': process.env.PLAYER_URL || 'http://localhost:5173',
+      'Access-Control-Allow-Origin': origin && allowedOrigins.includes(origin) ? origin : playerUrl,
       'Access-Control-Allow-Methods': 'POST, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type, Authorization'
     }
