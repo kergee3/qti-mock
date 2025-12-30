@@ -89,7 +89,7 @@ const qti3player = ref(null)
 let qti3Player = null
 
 const { itemXml, isLoading, error, loadItem } = useItemLoader()
-const { isSubmitting, submitError, nextItemUrl, isComplete, summary, submitResult } = useResultSubmit()
+const { isSubmitting, submitError, nextItemUrl, isComplete, summary, submitResult, resetResults } = useResultSubmit()
 
 const isPlayerReady = ref(false)
 const isItemLoaded = ref(false)
@@ -173,6 +173,8 @@ const goToNextItem = () => {
 }
 
 const restartTest = () => {
+  // 累積結果をリセット
+  resetResults()
   // 最初の問題に戻る（新しいセッションID）
   const url = new URL(window.location.href)
   const appUrl = url.searchParams.get('callback')?.replace('/api/results', '') || 'http://localhost:3000'

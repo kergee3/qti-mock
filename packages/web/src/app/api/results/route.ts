@@ -1,5 +1,12 @@
 import { NextResponse } from 'next/server'
 
+interface AccumulatedResult {
+  itemId: string
+  score: number
+  maxScore: number
+  timestamp: string
+}
+
 interface ResultPayload {
   sessionId: string
   itemId: string
@@ -10,6 +17,8 @@ interface ResultPayload {
     responses: unknown
     outcomeVariables: unknown
   }
+  // クライアント側で管理された累積結果（サーバーレス対応）
+  accumulatedResults?: AccumulatedResult[]
 }
 
 // 問題の順序定義（本番ではDBから取得）
@@ -18,14 +27,6 @@ const ITEM_SEQUENCE = [
   'order-item-001',
   'text-entry-item-001'
 ]
-
-// セッションごとの結果を保持（本番ではDB/Redisを使用）
-const sessionResults = new Map<string, Array<{
-  itemId: string
-  score: number
-  maxScore: number
-  timestamp: string
-}>>()
 
 export async function POST(req: Request) {
   // Origin検証
@@ -45,7 +46,7 @@ export async function POST(req: Request) {
 
   try {
     const body: ResultPayload = await req.json()
-    const { sessionId, itemId, timestamp, result } = body
+    const { sessionId, itemId, timestamp, result, accumulatedResults } = body
 
     // 結果をログ出力
     console.log('=== Result Received ===')
@@ -53,23 +54,11 @@ export async function POST(req: Request) {
     console.log('Item:', itemId)
     console.log('Timestamp:', timestamp)
     console.log('Score:', result.score, '/', result.maxScore)
+    console.log('Accumulated Results:', accumulatedResults?.length || 0)
     console.log('=======================')
 
-    // セッション結果を保存
-    if (!sessionResults.has(sessionId)) {
-      sessionResults.set(sessionId, [])
-    }
-    const results = sessionResults.get(sessionId)!
-
-    // 同じ問題の重複回答を避ける
-    if (!results.find(r => r.itemId === itemId)) {
-      results.push({
-        itemId,
-        score: result.score,
-        maxScore: result.maxScore,
-        timestamp
-      })
-    }
+    // クライアントから送られた累積結果を使用
+    const results = accumulatedResults || []
 
     // 次の問題を決定
     const currentIndex = ITEM_SEQUENCE.indexOf(itemId)

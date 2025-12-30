@@ -12,7 +12,9 @@
       "Bash(taskkill:*)",
       "Bash(netstat:*)",
       "Bash(powershell -Command:*)",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "Bash(npx vercel:*)",
+      "Bash(printf:*)"
     ]
   }
 }
