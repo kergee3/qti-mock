@@ -202,6 +202,47 @@ NEXT_PUBLIC_PLAYER_URL=http://localhost:5173
 PLAYER_URL=http://localhost:5173
 ```
 
+#### 1.4.5 Vercel Web Analytics 設定
+
+Vercel Web Analyticsを導入してユーザー行動を分析できるようにします。
+
+参考: https://vercel.com/docs/analytics
+
+**パッケージインストール:**
+
+```bash
+cd packages/web
+npm install @vercel/analytics
+```
+
+**Analyticsコンポーネントの追加:**
+
+`packages/web/src/app/layout.tsx` を編集し、Analyticsコンポーネントを追加します：
+
+```tsx
+import { Analytics } from '@vercel/analytics/react'
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return (
+    <html lang="ja">
+      <body>
+        {children}
+        <Analytics />
+      </body>
+    </html>
+  )
+}
+```
+
+**注意事項:**
+- ローカル開発環境ではデータは収集されません
+- Vercelにデプロイ後、Vercelダッシュボードでアナリティクスが有効になります
+- 無料プランでも基本的な分析機能が利用可能です
+
 ---
 
 ### Step 1.5: 開発環境整備

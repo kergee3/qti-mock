@@ -22,3 +22,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Turborepo
+.turbo
+
+# Next.js
+.next
