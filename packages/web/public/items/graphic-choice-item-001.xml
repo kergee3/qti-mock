@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<qti-assessment-item
+  xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0"
+  identifier="graphic-choice-item-001"
+  title="ホットスポット問題サンプル"
+  adaptive="false"
+  time-dependent="false">
+
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>hotspot_tokyo</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+
+  <qti-item-body>
+    <p>日本地図上で東京の位置をクリックしてください。</p>
+    <qti-hotspot-interaction response-identifier="RESPONSE" max-choices="1">
+      <qti-prompt>下の地図から東京を選んでください。</qti-prompt>
+      <object type="image/svg+xml" data="/items/images/japan-map.svg" width="400" height="300">日本地図</object>
+      <qti-hotspot-choice identifier="hotspot_tokyo" shape="circle" coords="320,140,25" hotspot-label="東京"/>
+      <qti-hotspot-choice identifier="hotspot_osaka" shape="circle" coords="260,180,25" hotspot-label="大阪"/>
+      <qti-hotspot-choice identifier="hotspot_kyoto" shape="circle" coords="245,170,25" hotspot-label="京都"/>
+      <qti-hotspot-choice identifier="hotspot_nagoya" shape="circle" coords="280,160,25" hotspot-label="名古屋"/>
+    </qti-hotspot-interaction>
+  </qti-item-body>
+
+  <qti-response-processing
+    template="https://purl.imsglobal.org/spec/qti/v3p0/rptemplates/match_correct"/>
+</qti-assessment-item>

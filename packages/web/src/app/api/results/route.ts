@@ -25,7 +25,10 @@ interface ResultPayload {
 const ITEM_SEQUENCE = [
   'choice-item-001',
   'order-item-001',
-  'text-entry-item-001'
+  'text-entry-item-001',
+  'match-item-001',
+  'inline-choice-item-001',
+  'graphic-choice-item-001'
 ]
 
 export async function POST(req: Request) {
