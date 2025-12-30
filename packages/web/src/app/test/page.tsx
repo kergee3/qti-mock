@@ -2,21 +2,48 @@
 
 import { useState, useEffect } from 'react'
 import { QtiPlayerFrame } from '@/components/QtiPlayerFrame'
-import { ITEM_SEQUENCE } from '@/config/itemSequence'
+
+interface ItemInfo {
+  id: string
+  fileName: string
+  identifier: string
+  title: string
+  type: string
+}
 
 export default function TestPage() {
   const [sessionId, setSessionId] = useState<string | null>(null)
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
-  const itemUrl = `${appUrl}/items/${ITEM_SEQUENCE[0].id}.xml`
-  const itemCount = ITEM_SEQUENCE.length
+  const [items, setItems] = useState<ItemInfo[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
-  // クライアント側でのみセッションIDを生成（ハイドレーションエラー回避）
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
+
+  // アイテム一覧を取得
   useEffect(() => {
+    const fetchItems = async () => {
+      try {
+        const response = await fetch('/api/items')
+        const data = await response.json()
+        if (data.success) {
+          setItems(data.items)
+        } else {
+          setError('アイテムの取得に失敗しました')
+        }
+      } catch (e) {
+        setError('アイテムの取得中にエラーが発生しました')
+        console.error(e)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    fetchItems()
     setSessionId(`session-${Date.now()}`)
   }, [])
 
-  // セッションID生成前はローディング表示
-  if (!sessionId) {
+  // ローディング中
+  if (isLoading || !sessionId) {
     return (
       <div style={{ maxWidth: '900px', margin: '0 auto', padding: '20px' }}>
         <h1 style={{ marginBottom: '20px' }}>QTI3 Player テスト</h1>
@@ -25,6 +52,19 @@ export default function TestPage() {
     )
   }
 
+  // エラー時
+  if (error || items.length === 0) {
+    return (
+      <div style={{ maxWidth: '900px', margin: '0 auto', padding: '20px' }}>
+        <h1 style={{ marginBottom: '20px' }}>QTI3 Player テスト</h1>
+        <p style={{ color: '#c62828' }}>{error || 'テスト問題が見つかりませんでした'}</p>
+      </div>
+    )
+  }
+
+  const itemUrl = `${appUrl}/items/${items[0].fileName}`
+  const itemCount = items.length
+
   return (
     <div style={{ maxWidth: '900px', margin: '0 auto', padding: '20px' }}>
       <h1 style={{ marginBottom: '20px' }}>QTI3 Player テスト（{itemCount}問）</h1>
@@ -32,9 +72,9 @@ export default function TestPage() {
       <div style={{ marginBottom: '20px', padding: '15px', backgroundColor: '#e3f2fd', borderRadius: '4px' }}>
         <p style={{ margin: '0 0 10px 0', fontWeight: 'bold' }}>テスト内容：</p>
         <ol style={{ margin: 0, paddingLeft: '20px' }}>
-          {ITEM_SEQUENCE.map((item) => (
+          {items.map((item) => (
             <li key={item.id}>
-              {item.description}（{item.type}）
+              {item.title}（{item.type}）
             </li>
           ))}
         </ol>

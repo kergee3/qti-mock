@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
-import { ITEM_IDS } from '@/config/itemSequence'
+import fs from 'fs'
+import path from 'path'
 
 interface AccumulatedResult {
   itemId: string
@@ -20,6 +21,21 @@ interface ResultPayload {
   }
   // クライアント側で管理された累積結果（サーバーレス対応）
   accumulatedResults?: AccumulatedResult[]
+}
+
+// 動的にアイテム一覧を取得（ファイル名でソート）
+function getItemIds(): string[] {
+  try {
+    const itemsDir = path.join(process.cwd(), 'public', 'items')
+    const files = fs.readdirSync(itemsDir)
+    return files
+      .filter((file) => file.endsWith('.xml'))
+      .sort((a, b) => a.localeCompare(b))
+      .map((file) => file.replace('.xml', ''))
+  } catch (error) {
+    console.error('Error reading items directory:', error)
+    return []
+  }
 }
 
 export async function POST(req: Request) {
@@ -63,17 +79,20 @@ export async function POST(req: Request) {
     // クライアントから送られた累積結果を使用
     const results = accumulatedResults || []
 
+    // 動的にアイテム一覧を取得
+    const itemIds = getItemIds()
+
     // 次の問題を決定
-    const currentIndex = ITEM_IDS.indexOf(itemId)
+    const currentIndex = itemIds.indexOf(itemId)
     const nextIndex = currentIndex + 1
     const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
 
     let nextItem = null
     let isComplete = false
 
-    if (nextIndex < ITEM_IDS.length) {
+    if (nextIndex < itemIds.length) {
       // 次の問題がある
-      nextItem = `${appUrl}/items/${ITEM_IDS[nextIndex]}.xml`
+      nextItem = `${appUrl}/items/${itemIds[nextIndex]}.xml`
     } else {
       // 全問完了
       isComplete = true

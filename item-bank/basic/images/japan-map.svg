@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+  <rect width="400" height="300" fill="#e3f2fd"/>
+
+  <!-- 簡易的な日本列島の形 -->
+  <path d="M280,40 Q300,50 310,80 Q320,100 325,130 Q330,150 320,180 Q310,200 290,220 Q270,240 250,250 Q230,260 200,250 Q180,240 170,220 Q165,200 170,180 Q175,160 190,150 Q200,140 220,140 Q240,145 260,130 Q275,115 280,90 Q282,70 280,40 Z"
+        fill="#8bc34a" stroke="#558b2f" stroke-width="2"/>
+
+  <!-- 北海道 -->
+  <path d="M300,30 Q320,35 330,50 Q335,65 325,75 Q310,80 295,70 Q285,55 290,40 Q295,32 300,30 Z"
+        fill="#8bc34a" stroke="#558b2f" stroke-width="2"/>
+
+  <!-- 九州 -->
+  <path d="M180,220 Q195,225 200,245 Q195,265 180,270 Q165,265 160,250 Q165,230 180,220 Z"
+        fill="#8bc34a" stroke="#558b2f" stroke-width="2"/>
+
+  <!-- 四国 -->
+  <path d="M210,190 Q230,185 240,195 Q245,210 235,220 Q220,225 210,215 Q205,200 210,190 Z"
+        fill="#8bc34a" stroke="#558b2f" stroke-width="2"/>
+
+  <!-- 都市マーカー（ホットスポット対応位置） -->
+  <!-- 東京 -->
+  <circle cx="320" cy="140" r="8" fill="#f44336" stroke="#b71c1c" stroke-width="2"/>
+  <text x="335" y="145" font-size="12" fill="#333">東京</text>
+
+  <!-- 大阪 -->
+  <circle cx="260" cy="180" r="8" fill="#2196f3" stroke="#0d47a1" stroke-width="2"/>
+  <text x="230" y="195" font-size="12" fill="#333">大阪</text>
+
+  <!-- 京都 -->
+  <circle cx="245" cy="170" r="8" fill="#2196f3" stroke="#0d47a1" stroke-width="2"/>
+  <text x="215" y="165" font-size="12" fill="#333">京都</text>
+
+  <!-- 名古屋 -->
+  <circle cx="280" cy="160" r="8" fill="#2196f3" stroke="#0d47a1" stroke-width="2"/>
+  <text x="285" y="175" font-size="12" fill="#333">名古屋</text>
+</svg>

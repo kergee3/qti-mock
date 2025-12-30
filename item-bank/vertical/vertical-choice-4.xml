@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+    <qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" identifier="季語"
+        title="季語を必要とするのは和歌か俳句か" time-dependent="false" xml:lang="ja">
+        <qti-response-declaration base-type="identifier" identifier="RESPONSE" cardinality="single">
+            <qti-correct-response>
+                <qti-value>俳句</qti-value>
+            </qti-correct-response>
+        </qti-response-declaration>
+        <qti-outcome-declaration base-type="float" cardinality="single" identifier="SCORE"/>
+        <qti-item-body>
+            <div class="qti-height-96 qti3-player-writing-mode-vertical-rl qti3-player-float-right">
+                <qti-choice-interaction class="qti-labels-none" response-identifier="RESPONSE" shuffle="false" max-choices="1">
+                  <qti-prompt><ruby><rb data-catalog-idref="kigo">季語</rb><rt>き&#x3054;</rt></ruby>を必要とするのは、つ&#x304E;の五つの&#x3069;れか。選&#x3079;。</qti-prompt>
+                  <qti-simple-choice identifier="俳句">俳句</qti-simple-choice>
+                  <qti-simple-choice identifier="和歌">和歌</qti-simple-choice>
+                  <qti-simple-choice identifier="狂歌">狂歌</qti-simple-choice>
+                  <qti-simple-choice identifier="川柳">川柳</qti-simple-choice>
+                  <qti-simple-choice identifier="都都逸">都都逸</qti-simple-choice>
+                </qti-choice-interaction>
+            </div>
+        </qti-item-body>
+        <qti-catalog-info>
+        <qti-catalog id="kigo">
+          <qti-card support="glossary-on-screen">
+            <qti-html-content>
+              <div class="qti-height-32 qti3-player-writing-mode-vertical-rl qti3-player-float-right">
+                特定の季節を表す言葉
+              </div>
+            </qti-html-content>
+          </qti-card>
+          <qti-card support="keyword-translation">
+            <qti-card-entry xml:lang="en">
+              <qti-html-content>
+                <p><strong><em>Kigo</em></strong> (季語, <strong><em>"season word"</em></strong>) is a word or phrase associated with a particular season, used in traditional forms of Japanese poetry.</p>
+              </qti-html-content>
+            </qti-card-entry>
+          </qti-card>
+        </qti-catalog>
+      </qti-catalog-info>
+    </qti-assessment-item>

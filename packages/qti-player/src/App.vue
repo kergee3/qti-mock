@@ -138,10 +138,19 @@ const handleItemReady = () => {
 
 const handleEndAttempt = async (data) => {
   const attemptState = data.state || data
+
+  // デバッグ用ログ
+  console.log('=== handleEndAttempt ===')
+  console.log('attemptState:', attemptState)
+  console.log('responseVariables:', attemptState.responseVariables)
+  console.log('outcomeVariables:', attemptState.outcomeVariables)
+
   if (attemptState.outcomeVariables) {
     const scoreOutcome = attemptState.outcomeVariables.find(
       v => v.identifier === 'SCORE'
     )
+    console.log('scoreOutcome:', scoreOutcome)
+
     if (scoreOutcome) {
       score.value = scoreOutcome.value
       isScored.value = true
@@ -172,13 +181,28 @@ const goToNextItem = () => {
   }
 }
 
-const restartTest = () => {
+const restartTest = async () => {
   // 累積結果をリセット
   resetResults()
   // 最初の問題に戻る（新しいセッションID）
   const url = new URL(window.location.href)
   const appUrl = url.searchParams.get('callback')?.replace('/api/results', '') || 'http://localhost:3000'
-  url.searchParams.set('item', `${appUrl}/items/choice-item-001.xml`)
+
+  // 動的にアイテム一覧を取得して最初のアイテムを取得
+  try {
+    const response = await fetch(`${appUrl}/api/items`)
+    const data = await response.json()
+    if (data.success && data.items.length > 0) {
+      url.searchParams.set('item', `${appUrl}/items/${data.items[0].fileName}`)
+    } else {
+      // フォールバック
+      url.searchParams.set('item', `${appUrl}/items/choice-item-001.xml`)
+    }
+  } catch {
+    // エラー時はフォールバック
+    url.searchParams.set('item', `${appUrl}/items/choice-item-001.xml`)
+  }
+
   url.searchParams.set('session', `session-${Date.now()}`)
   window.location.href = url.toString()
 }
