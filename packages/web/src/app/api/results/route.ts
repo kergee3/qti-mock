@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { ITEM_IDS } from '@/config/itemSequence'
 
 interface AccumulatedResult {
   itemId: string
@@ -20,16 +21,6 @@ interface ResultPayload {
   // クライアント側で管理された累積結果（サーバーレス対応）
   accumulatedResults?: AccumulatedResult[]
 }
-
-// 問題の順序定義（本番ではDBから取得）
-const ITEM_SEQUENCE = [
-  'choice-item-001',
-  'order-item-001',
-  'text-entry-item-001',
-  'match-item-001',
-  'inline-choice-item-001',
-  'graphic-choice-item-001'
-]
 
 export async function POST(req: Request) {
   // Origin検証
@@ -73,16 +64,16 @@ export async function POST(req: Request) {
     const results = accumulatedResults || []
 
     // 次の問題を決定
-    const currentIndex = ITEM_SEQUENCE.indexOf(itemId)
+    const currentIndex = ITEM_IDS.indexOf(itemId)
     const nextIndex = currentIndex + 1
     const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
 
     let nextItem = null
     let isComplete = false
 
-    if (nextIndex < ITEM_SEQUENCE.length) {
+    if (nextIndex < ITEM_IDS.length) {
       // 次の問題がある
-      nextItem = `${appUrl}/items/${ITEM_SEQUENCE[nextIndex]}.xml`
+      nextItem = `${appUrl}/items/${ITEM_IDS[nextIndex]}.xml`
     } else {
       // 全問完了
       isComplete = true
