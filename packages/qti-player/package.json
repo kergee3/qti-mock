@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@vercel/analytics": "^1.6.1",
     "qti3-item-player-vue3": "^0.2.21",
     "vue": "^3.5.24"
   },
