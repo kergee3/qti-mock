@@ -9,11 +9,11 @@ import Qti3Player from 'qti3-item-player-vue3'
 import 'qti3-item-player-vue3/dist/qti3Player.css'
 
 // Vercel Web Analytics
-import { injectAnalytics } from '@vercel/analytics'
+import { inject } from '@vercel/analytics'
 
 const app = createApp(App)
 app.use(Qti3Player)
 app.mount('#app')
 
 // Vercel Analytics を有効化
-injectAnalytics()
+inject()
