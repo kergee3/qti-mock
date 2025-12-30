@@ -131,16 +131,26 @@ npm run dev:web     # http://localhost:3000
 - [x] 複数問題のシーケンス管理
 - [x] 成績サマリー表示
 
-### 今後の予定 (Phase 3-5)
+### 完了 (Phase 4)
+
+- [x] Vercelデプロイ
+- [x] 本番環境の構築
+- [x] CORS設定の本番対応
+- [x] カスタムドメイン設定
+
+### デプロイ先
+
+| サービス | URL |
+|---------|-----|
+| Web (Next.js) | https://qti3-web.shumi.dev/ |
+| Player (Vue) | https://qti3-player.shumi.dev/ |
+| テストページ | https://qti3-web.shumi.dev/test |
+
+### 今後の予定 (Phase 3, 5)
 
 - [ ] **Phase 3: ETL構築**
   - QTI XMLの変換・インポート機能
   - データベース連携（問題・結果の永続化）
-
-- [ ] **Phase 4: Vercelデプロイ**
-  - 本番環境の構築
-  - CORS設定の本番対応
-  - カスタムドメイン設定
 
 - [ ] **Phase 5: 本番運用準備**
   - エラー監視（Sentry等）
