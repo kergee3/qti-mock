@@ -17,7 +17,8 @@
       "Bash(printf:*)",
       "Bash(git checkout:*)",
       "Bash(dir /b \"C:\\\\webapp\\\\www-shumi\\\\app\")",
-      "Bash(npm run build:*)"
+      "Bash(npm run build:*)",
+      "Bash(git branch:*)"
     ]
   }
 }
