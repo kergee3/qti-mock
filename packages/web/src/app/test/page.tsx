@@ -11,11 +11,14 @@ interface ItemInfo {
   type: string
 }
 
+type FontOption = 'system' | 'noto-sans-jp' | 'noto-serif-jp' | 'biz-udpgothic' | 'biz-udpmincho' | 'source-han-sans' | 'kosugi-maru'
+
 export default function TestPage() {
   const [sessionId, setSessionId] = useState<string | null>(null)
   const [items, setItems] = useState<ItemInfo[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [selectedFont, setSelectedFont] = useState<FontOption>('system')
 
   const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
 
@@ -45,7 +48,7 @@ export default function TestPage() {
   // ローディング中
   if (isLoading || !sessionId) {
     return (
-      <div style={{ maxWidth: '900px', margin: '0 auto', padding: '20px' }}>
+      <div style={{ width: '100%', padding: '10px' }}>
         <h1 style={{ marginBottom: '20px' }}>QTI3 Player テスト</h1>
         <p>読み込み中...</p>
       </div>
@@ -55,7 +58,7 @@ export default function TestPage() {
   // エラー時
   if (error || items.length === 0) {
     return (
-      <div style={{ maxWidth: '900px', margin: '0 auto', padding: '20px' }}>
+      <div style={{ width: '100%', padding: '10px' }}>
         <h1 style={{ marginBottom: '20px' }}>QTI3 Player テスト</h1>
         <p style={{ color: '#c62828' }}>{error || 'テスト問題が見つかりませんでした'}</p>
       </div>
@@ -66,31 +69,61 @@ export default function TestPage() {
   const itemCount = items.length
 
   return (
-    <div style={{ maxWidth: '900px', margin: '0 auto', padding: '20px' }}>
-      <h1 style={{ marginBottom: '20px' }}>QTI3 Player テスト（{itemCount}問）</h1>
-
-      <div style={{ marginBottom: '20px', padding: '15px', backgroundColor: '#e3f2fd', borderRadius: '4px' }}>
-        <p style={{ margin: '0 0 10px 0', fontWeight: 'bold' }}>テスト内容：</p>
-        <ol style={{ margin: 0, paddingLeft: '20px' }}>
-          {items.map((item) => (
-            <li key={item.id}>
-              {item.title}（{item.type}）
-            </li>
-          ))}
-        </ol>
-      </div>
-
-      <div style={{ marginBottom: '20px', padding: '10px', backgroundColor: '#f5f5f5', borderRadius: '4px' }}>
-        <p><strong>Session ID:</strong> {sessionId}</p>
+    <div style={{ width: '100%', padding: '10px', paddingBottom: '50px' }}>
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: '10px',
+        padding: '10px 15px',
+        backgroundColor: '#e3f2fd',
+        borderRadius: '4px'
+      }}>
+        <span style={{ fontWeight: 'bold' }}>
+          QTI3 Player テスト（{itemCount}問）
+        </span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <label style={{ fontWeight: 'bold', fontSize: '14px' }}>フォント：</label>
+          <select
+            value={selectedFont}
+            onChange={(e) => setSelectedFont(e.target.value as FontOption)}
+            style={{
+              padding: '5px 10px',
+              fontSize: '14px',
+              borderRadius: '4px',
+              border: '1px solid #ccc'
+            }}
+          >
+            <option value="system">システム既定</option>
+            <option value="noto-sans-jp">Noto Sans JP</option>
+            <option value="noto-serif-jp">Noto Serif JP</option>
+            <option value="biz-udpgothic">BIZ UDPGothic</option>
+            <option value="biz-udpmincho">BIZ UDPMincho</option>
+            <option value="source-han-sans">源ノ角ゴシック</option>
+            <option value="kosugi-maru">Kosugi Maru</option>
+          </select>
+        </div>
       </div>
 
       <QtiPlayerFrame
         itemUrl={itemUrl}
         sessionId={sessionId}
+        fontFamily={selectedFont}
       />
 
-      <div style={{ marginTop: '20px', fontSize: '14px', color: '#666' }}>
-        <p>※ {itemCount}問完了後に全体の成績が表示されます</p>
+      <div style={{
+        position: 'fixed',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        padding: '10px',
+        backgroundColor: '#f5f5f5',
+        borderTop: '1px solid #ccc',
+        zIndex: 100
+      }}>
+        <p style={{ margin: 0, fontSize: '14px', color: '#666', textAlign: 'center' }}>
+          <strong>Session ID:</strong> {sessionId} ／ {itemCount}問完了後に全体の成績が表示されます
+        </p>
       </div>
     </div>
   )

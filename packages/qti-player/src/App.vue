@@ -1,5 +1,5 @@
 <template>
-  <div class="qti-player-app">
+  <div class="qti-player-app" :class="fontClass" :style="{ fontFamily: fontStyle }">
     <!-- エラー -->
     <div v-if="error" class="error">
       <p>{{ error }}</p>
@@ -53,23 +53,21 @@
         />
       </div>
 
-      <!-- 採点ボタン -->
+      <!-- 回答ボタン -->
       <div v-if="isItemLoaded && !isScored" class="controls">
         <button @click="submitResponse" :disabled="isSubmitting">
-          {{ isSubmitting ? '送信中...' : '採点' }}
+          {{ isSubmitting ? '送信中...' : '回答' }}
         </button>
       </div>
 
       <!-- 結果表示 -->
       <div v-if="isScored" class="result">
-        <p>スコア: {{ score }}</p>
-        <p v-if="score >= 1" class="correct">正解です！</p>
-        <p v-else class="incorrect">不正解です</p>
-
-        <!-- 次の問題へ -->
         <button v-if="nextItemUrl" @click="goToNextItem" class="next-button">
           次へ
         </button>
+        <span v-if="score >= 1" class="correct">正解です！</span>
+        <span v-else class="incorrect">不正解です</span>
+        <span class="score-text">スコア: {{ score }}</span>
       </div>
 
       <!-- 送信エラー -->
@@ -81,7 +79,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted, watch, computed } from 'vue'
 import { useItemLoader } from './composables/useItemLoader'
 import { useResultSubmit } from './composables/useResultSubmit'
 
@@ -97,9 +95,66 @@ const isScored = ref(false)
 const score = ref(null)
 const currentItemId = ref(null)
 
+// フォント設定
+const fontFamily = ref('system')
+
+const fontStyle = computed(() => {
+  switch (fontFamily.value) {
+    case 'noto-sans-jp':
+      return '"Noto Sans JP", sans-serif'
+    case 'noto-serif-jp':
+      return '"Noto Serif JP", serif'
+    case 'biz-udpgothic':
+      return '"BIZ UDPGothic", sans-serif'
+    case 'biz-udpmincho':
+      return '"BIZ UDPMincho", serif'
+    case 'source-han-sans':
+      return '"Source Han Sans JP", sans-serif'
+    case 'kosugi-maru':
+      return '"Kosugi Maru", sans-serif'
+    default:
+      return 'inherit'
+  }
+})
+
+const fontClass = computed(() => {
+  return `font-${fontFamily.value}`
+})
+
 onMounted(() => {
+  // URLパラメータからフォント設定を取得
+  const params = new URLSearchParams(window.location.search)
+  const fontParam = params.get('font')
+  const validFonts = ['noto-sans-jp', 'noto-serif-jp', 'biz-udpgothic', 'biz-udpmincho', 'source-han-sans', 'kosugi-maru']
+  if (fontParam && validFonts.includes(fontParam)) {
+    fontFamily.value = fontParam
+    // Google Fontsを動的に読み込み
+    loadGoogleFont(fontParam)
+  }
+
   loadItem()
 })
+
+// Google Fontsを動的に読み込む
+const loadGoogleFont = (fontKey) => {
+  const fontUrls = {
+    'noto-sans-jp': 'https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap',
+    'noto-serif-jp': 'https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;700&display=swap',
+    'biz-udpgothic': 'https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&display=swap',
+    'biz-udpmincho': 'https://fonts.googleapis.com/css2?family=BIZ+UDPMincho&display=swap',
+    'source-han-sans': 'https://fonts.googleapis.com/css2?family=Source+Han+Sans+JP:wght@400;500;700&display=swap',
+    'kosugi-maru': 'https://fonts.googleapis.com/css2?family=Kosugi+Maru&display=swap'
+  }
+
+  const linkId = `google-font-${fontKey}`
+  if (!document.getElementById(linkId) && fontUrls[fontKey]) {
+    const link = document.createElement('link')
+    link.id = linkId
+    link.rel = 'stylesheet'
+    link.href = fontUrls[fontKey]
+    document.head.appendChild(link)
+  }
+}
 
 // XMLが読み込まれてプレイヤーも準備できたら読み込む
 watch([itemXml, isPlayerReady], ([newXml, playerReady]) => {
@@ -117,10 +172,14 @@ const handlePlayerReady = (player) => {
 const loadItemToPlayer = () => {
   if (!qti3Player || !itemXml.value) return
 
-  // XMLからidentifierを抽出
-  const parser = new DOMParser()
-  const doc = parser.parseFromString(itemXml.value, 'text/xml')
-  currentItemId.value = doc.documentElement.getAttribute('identifier')
+  // URLからファイル名（拡張子なし）を抽出してitemIdとして使用
+  const params = new URLSearchParams(window.location.search)
+  const itemUrl = params.get('item')
+  if (itemUrl) {
+    // URLからファイル名を抽出（例: http://localhost:3000/items/choice-item-001.xml -> choice-item-001）
+    const fileName = itemUrl.split('/').pop()?.replace('.xml', '') || ''
+    currentItemId.value = fileName
+  }
 
   qti3Player.loadItemFromXml(itemXml.value, {
     guid: `item-${Date.now()}`,
@@ -174,9 +233,10 @@ const submitResponse = () => {
 
 const goToNextItem = () => {
   if (nextItemUrl.value) {
-    // URLパラメータを更新して再読み込み
+    // URLパラメータを更新して再読み込み（フォント設定も引き継ぐ）
     const url = new URL(window.location.href)
     url.searchParams.set('item', nextItemUrl.value)
+    url.searchParams.set('font', fontFamily.value)
     window.location.href = url.toString()
   }
 }
@@ -184,7 +244,7 @@ const goToNextItem = () => {
 const restartTest = async () => {
   // 累積結果をリセット
   resetResults()
-  // 最初の問題に戻る（新しいセッションID）
+  // 最初の問題に戻る（新しいセッションID、フォント設定は引き継ぐ）
   const url = new URL(window.location.href)
   const appUrl = url.searchParams.get('callback')?.replace('/api/results', '') || 'http://localhost:3000'
 
@@ -204,15 +264,15 @@ const restartTest = async () => {
   }
 
   url.searchParams.set('session', `session-${Date.now()}`)
+  url.searchParams.set('font', fontFamily.value)
   window.location.href = url.toString()
 }
 </script>
 
 <style scoped>
 .qti-player-app {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
+  width: 100%;
+  padding: 10px;
 }
 
 .loading {
@@ -266,6 +326,9 @@ const restartTest = async () => {
   padding: 15px;
   background: #f5f5f5;
   border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
 }
 
 .result .correct {
@@ -279,7 +342,6 @@ const restartTest = async () => {
 }
 
 .next-button {
-  margin-top: 15px;
   padding: 10px 30px;
   font-size: 16px;
   background: #1976d2;
@@ -287,6 +349,10 @@ const restartTest = async () => {
   border: none;
   border-radius: 4px;
   cursor: pointer;
+}
+
+.score-text {
+  margin-left: auto;
 }
 
 .next-button:hover {
@@ -310,17 +376,17 @@ const restartTest = async () => {
 /* サマリー表示 */
 .summary {
   text-align: center;
-  padding: 40px 20px;
+  padding: 5px 20px;
 }
 
 .summary h2 {
-  margin-bottom: 30px;
+  margin-bottom: 5px;
   color: #333;
 }
 
 .summary-score {
   font-size: 48px;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 }
 
 .summary-score .score-value {
@@ -346,20 +412,20 @@ const restartTest = async () => {
 .summary-percentage {
   font-size: 24px;
   color: #666;
-  margin-bottom: 30px;
+  margin-bottom: 15px;
 }
 
 .summary-details {
   text-align: left;
   max-width: 400px;
-  margin: 0 auto 30px;
-  padding: 20px;
+  margin: 0 auto 15px;
+  padding: 15px;
   background: #f5f5f5;
   border-radius: 8px;
 }
 
 .summary-details h3 {
-  margin-bottom: 15px;
+  margin-bottom: 10px;
   font-size: 16px;
   color: #333;
 }
@@ -371,7 +437,7 @@ const restartTest = async () => {
 }
 
 .summary-details li {
-  padding: 10px;
+  padding: 8px;
   border-bottom: 1px solid #ddd;
   display: flex;
   justify-content: space-between;
@@ -415,4 +481,36 @@ const restartTest = async () => {
 .player-container ul.qti-choice-list.qti-orientation-vertical > li {
   width: auto !important;
 }
+
+/* フォント設定（グローバル - QTI Player内部にも適用） */
+.font-noto-sans-jp,
+.font-noto-sans-jp * {
+  font-family: "Noto Sans JP", sans-serif !important;
+}
+
+.font-noto-serif-jp,
+.font-noto-serif-jp * {
+  font-family: "Noto Serif JP", serif !important;
+}
+
+.font-biz-udpgothic,
+.font-biz-udpgothic * {
+  font-family: "BIZ UDPGothic", sans-serif !important;
+}
+
+.font-biz-udpmincho,
+.font-biz-udpmincho * {
+  font-family: "BIZ UDPMincho", serif !important;
+}
+
+.font-source-han-sans,
+.font-source-han-sans * {
+  font-family: "Source Han Sans JP", sans-serif !important;
+}
+
+.font-kosugi-maru,
+.font-kosugi-maru * {
+  font-family: "Kosugi Maru", sans-serif !important;
+}
+
 </style>

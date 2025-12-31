@@ -5,10 +5,11 @@ import { useRef, useState } from 'react'
 interface QtiPlayerFrameProps {
   itemUrl: string
   sessionId: string
+  fontFamily?: 'system' | 'noto-sans-jp' | 'noto-serif-jp' | 'biz-udpgothic' | 'biz-udpmincho' | 'source-han-sans' | 'kosugi-maru'
   onComplete?: () => void
 }
 
-export function QtiPlayerFrame({ itemUrl, sessionId, onComplete }: QtiPlayerFrameProps) {
+export function QtiPlayerFrame({ itemUrl, sessionId, fontFamily = 'system', onComplete }: QtiPlayerFrameProps) {
   const iframeRef = useRef<HTMLIFrameElement>(null)
   const [isLoading, setIsLoading] = useState(true)
 
@@ -20,6 +21,7 @@ export function QtiPlayerFrame({ itemUrl, sessionId, onComplete }: QtiPlayerFram
   playerUrl.searchParams.set('item', itemUrl)
   playerUrl.searchParams.set('callback', `${appUrl}/api/results`)
   playerUrl.searchParams.set('session', sessionId)
+  playerUrl.searchParams.set('font', fontFamily)
 
   return (
     <div className="player-frame" style={{ position: 'relative' }}>
@@ -45,7 +47,8 @@ export function QtiPlayerFrame({ itemUrl, sessionId, onComplete }: QtiPlayerFram
         onLoad={() => setIsLoading(false)}
         style={{
           width: '100%',
-          height: '600px',
+          height: 'calc(100vh - 140px)',
+          minHeight: '400px',
           border: '1px solid #ccc',
           borderRadius: '4px'
         }}

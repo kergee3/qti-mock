@@ -76,11 +76,11 @@ export async function POST(req: Request) {
     console.log('Accumulated Results:', accumulatedResults?.length || 0)
     console.log('=======================')
 
-    // クライアントから送られた累積結果を使用
-    const results = accumulatedResults || []
-
     // 動的にアイテム一覧を取得
     const itemIds = getItemIds()
+
+    // クライアントから送られた累積結果を使用（現在存在するアイテムのみフィルタリング）
+    const results = (accumulatedResults || []).filter(r => itemIds.includes(r.itemId))
 
     // 次の問題を決定
     const currentIndex = itemIds.indexOf(itemId)
