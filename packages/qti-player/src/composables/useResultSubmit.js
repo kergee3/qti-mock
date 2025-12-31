@@ -97,7 +97,8 @@ export function useResultSubmit() {
         itemId,
         score: result.score,
         maxScore: result.maxScore,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
+        isExternalScored: result.isExternalScored || false
       }
 
       if (existingIndex >= 0) {

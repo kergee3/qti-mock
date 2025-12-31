@@ -1,21 +1,29 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
+import { ThemeProvider } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
 import { Analytics } from "@vercel/analytics/react";
+import theme from '@/theme';
 import "./globals.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import ClientLayout from '@/components/ClientLayout';
 
 export const metadata: Metadata = {
-  title: "NexCBT - QTI Assessment Platform",
-  description: "QTI 3.0 Assessment Platform",
+  title: "QTI Demo - Assessment Platform",
+  description: "QTI 3.0 Assessment Platform Demo",
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+    ],
+  },
+};
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  themeColor: '#1976d2',
+  viewportFit: 'cover',
 };
 
 export default function RootLayout({
@@ -25,10 +33,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+      <body>
+        <AppRouterCacheProvider>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <ClientLayout>{children}</ClientLayout>
+          </ThemeProvider>
+        </AppRouterCacheProvider>
         <Analytics />
       </body>
     </html>

@@ -14,7 +14,10 @@
       "Bash(powershell -Command:*)",
       "Bash(curl:*)",
       "Bash(npx vercel:*)",
-      "Bash(printf:*)"
+      "Bash(printf:*)",
+      "Bash(git checkout:*)",
+      "Bash(dir /b \"C:\\\\webapp\\\\www-shumi\\\\app\")",
+      "Bash(npm run build:*)"
     ]
   }
 }

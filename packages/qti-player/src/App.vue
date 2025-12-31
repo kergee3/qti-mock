@@ -8,26 +8,34 @@
       </p>
     </div>
 
-    <!-- 全問完了時のサマリー表示 -->
-    <div v-else-if="isComplete && summary" class="summary">
+    <!-- 全問完了時のサマリー表示（showSummaryがtrueの場合のみ） -->
+    <div v-else-if="showSummary && summary" class="summary">
       <h2>テスト結果</h2>
       <div class="summary-score">
-        <span class="score-value">{{ summary.totalScore }}</span>
+        <span class="score-value">{{ summary.scoredTotalScore }}</span>
         <span class="score-separator">/</span>
-        <span class="score-max">{{ summary.totalMaxScore }}</span>
+        <span class="score-max">{{ summary.scoredTotalMaxScore }}</span>
         <span class="score-label">点</span>
       </div>
       <div class="summary-percentage">
-        正答率: {{ Math.round((summary.totalScore / summary.totalMaxScore) * 100) }}%
+        正答率: {{ calculatePercentage(summary.scoredTotalScore, summary.scoredTotalMaxScore) }}%
+      </div>
+      <div v-if="summary.externalScoredCount > 0" class="summary-external">
+        ※ 未採点: {{ summary.externalScoredCount }}問
       </div>
       <div class="summary-details">
         <h3>問題別結果</h3>
         <ul>
           <li v-for="(result, index) in summary.results" :key="result.itemId"
-              :class="{ correct: result.score > 0, incorrect: result.score === 0 }">
-            問{{ index + 1 }}: {{ result.score }} / {{ result.maxScore }}
-            <span v-if="result.score > 0">○</span>
-            <span v-else>×</span>
+              :class="{ correct: result.answered && !result.isExternalScored && result.score > 0, incorrect: result.answered && !result.isExternalScored && result.score === 0, external: result.answered && result.isExternalScored, unanswered: !result.answered }">
+            <span>問{{ index + 1 }}:</span>
+            <span v-if="result.answered && result.isExternalScored" class="external-label">未採点</span>
+            <span v-else-if="result.answered">
+              {{ result.score }} / {{ result.maxScore }}
+              <span v-if="result.score > 0">○</span>
+              <span v-else>×</span>
+            </span>
+            <span v-else class="no-answer">回答なし</span>
           </li>
         </ul>
       </div>
@@ -62,11 +70,14 @@
 
       <!-- 結果表示 -->
       <div v-if="isScored" class="result">
-        <button v-if="nextItemUrl" @click="goToNextItem" class="next-button">
+        <button v-if="nextItemUrl || isComplete" @click="goToNextItem" class="next-button">
           次へ
         </button>
         <span v-if="score >= 1" class="correct">正解です！</span>
-        <span v-else class="incorrect">不正解です</span>
+        <span v-else-if="isExternalScored" class="external-scored">採点は別途行います</span>
+        <span v-else class="incorrect">
+          不正解です<template v-if="correctAnswer">。正解は「{{ correctAnswer }}」です。</template>
+        </span>
         <span class="score-text">スコア: {{ score }}</span>
       </div>
 
@@ -94,6 +105,9 @@ const isItemLoaded = ref(false)
 const isScored = ref(false)
 const score = ref(null)
 const currentItemId = ref(null)
+const correctAnswer = ref(null)  // 正解情報
+const isExternalScored = ref(false)  // 外部採点フラグ
+const showSummary = ref(false)  // サマリー表示フラグ（「次へ」ボタンで明示的に切り替え）
 
 // フォント設定
 const fontFamily = ref('system')
@@ -121,7 +135,140 @@ const fontClass = computed(() => {
   return `font-${fontFamily.value}`
 })
 
+// 正答率を計算（0除算対策）
+const calculatePercentage = (score, maxScore) => {
+  if (maxScore === 0) return 0
+  return Math.round((score / maxScore) * 100)
+}
+
+// XMLから正解情報を抽出
+const extractCorrectAnswer = (xml) => {
+  if (!xml) return { answer: null, isExternal: false }
+
+  try {
+    const parser = new DOMParser()
+    const doc = parser.parseFromString(xml, 'text/xml')
+
+    // 外部採点かどうかを確認
+    const outcomeDecl = doc.querySelector('qti-outcome-declaration[identifier="SCORE"]')
+    if (outcomeDecl && outcomeDecl.getAttribute('external-scored') === 'human') {
+      return { answer: null, isExternal: true }
+    }
+
+    // テキスト入力問題（qti-text-entry-interaction）かどうかを確認
+    const textEntryInteraction = doc.querySelector('qti-text-entry-interaction')
+    const extendedTextInteraction = doc.querySelector('qti-extended-text-interaction')
+
+    // 正解情報を取得
+    const correctResponse = doc.querySelector('qti-correct-response qti-value')
+
+    // テキスト入力問題で正解情報がない場合は外部採点扱い
+    if ((textEntryInteraction || extendedTextInteraction) && !correctResponse) {
+      return { answer: null, isExternal: true }
+    }
+
+    if (!correctResponse) {
+      return { answer: null, isExternal: false }
+    }
+
+    const correctIdentifier = correctResponse.textContent?.trim()
+    if (!correctIdentifier) {
+      return { answer: null, isExternal: false }
+    }
+
+    // 選択肢から正解のテキストを取得
+    const simpleChoice = doc.querySelector(`qti-simple-choice[identifier="${correctIdentifier}"]`)
+    if (simpleChoice) {
+      return { answer: simpleChoice.textContent?.trim(), isExternal: false }
+    }
+
+    // テキスト入力問題の場合は正解テキストをそのまま返す
+    if (textEntryInteraction || extendedTextInteraction) {
+      return { answer: correctIdentifier, isExternal: false }
+    }
+
+    // 選択肢が見つからない場合は識別子を返す
+    return { answer: correctIdentifier, isExternal: false }
+  } catch (e) {
+    console.error('Error extracting correct answer:', e)
+    return { answer: null, isExternal: false }
+  }
+}
+
+// 親ウィンドウへメッセージを送信
+const postMessageToParent = (message) => {
+  if (window.parent !== window) {
+    window.parent.postMessage(message, '*')
+  }
+}
+
+// 親ウィンドウからのメッセージを受信
+const handleParentMessage = (event) => {
+  if (event.data.type === 'CHANGE_ITEM') {
+    // 問題を変更
+    const url = new URL(window.location.href)
+    url.searchParams.set('item', event.data.itemUrl)
+    url.searchParams.set('font', fontFamily.value)
+    window.location.href = url.toString()
+  }
+  if (event.data.type === 'FINISH_TEST') {
+    // テストを終了して結果を表示
+    const results = event.data.results || []
+    showTestSummary(results)
+  }
+}
+
+// テスト結果サマリーを表示
+const showTestSummary = (results) => {
+  // 回答済み問題のみを抽出
+  const answeredResults = results.filter(r => Boolean(r.answered))
+
+  // 採点済み問題（外部採点でない）のスコアを計算
+  const scoredResults = answeredResults.filter(r => !r.isExternalScored)
+  const scoredTotalScore = scoredResults.reduce((sum, r) => sum + (r.score || 0), 0)
+  const scoredTotalMaxScore = scoredResults.reduce((sum, r) => sum + (r.maxScore || 1), 0)
+
+  // 外部採点問題数
+  const externalScoredCount = answeredResults.filter(r => r.isExternalScored).length
+
+  // 全体のスコア（参考用）
+  const totalScore = answeredResults.reduce((sum, r) => sum + (r.score || 0), 0)
+  const totalMaxScore = answeredResults.reduce((sum, r) => sum + (r.maxScore || 1), 0)
+
+  // サマリーデータを設定（全問題を含む）
+  summary.value = {
+    sessionId: new URLSearchParams(window.location.search).get('session') || '',
+    results: results.map((r, index) => ({
+      itemId: r.itemId || `item-${index + 1}`,
+      score: r.score || 0,
+      maxScore: r.maxScore || 1,
+      answered: Boolean(r.answered),
+      isExternalScored: Boolean(r.isExternalScored)
+    })),
+    totalScore,
+    totalMaxScore,
+    scoredTotalScore,
+    scoredTotalMaxScore,
+    externalScoredCount,
+    itemCount: results.length
+  }
+
+  // 現在の問題画面を非表示にしてサマリーを表示
+  isItemLoaded.value = false
+  isScored.value = false
+  isComplete.value = true
+  showSummary.value = true  // 「終了」ボタンからの呼び出しではすぐにサマリーを表示
+
+  // 親ウィンドウにテスト完了を通知（サイドバーの現在選択を解除するため）
+  postMessageToParent({
+    type: 'TEST_COMPLETED'
+  })
+}
+
 onMounted(() => {
+  // 親ウィンドウからのメッセージを受信
+  window.addEventListener('message', handleParentMessage)
+
   // URLパラメータからフォント設定を取得
   const params = new URLSearchParams(window.location.search)
   const fontParam = params.get('font')
@@ -193,33 +340,47 @@ const handleItemReady = () => {
   isItemLoaded.value = true
   isScored.value = false
   score.value = null
+
+  // XMLから正解情報を抽出
+  const { answer, isExternal } = extractCorrectAnswer(itemXml.value)
+  correctAnswer.value = answer
+  isExternalScored.value = isExternal
+
+  // 親ウィンドウに問題読み込み完了を通知
+  postMessageToParent({
+    type: 'ITEM_LOADED',
+    itemId: currentItemId.value
+  })
 }
 
 const handleEndAttempt = async (data) => {
   const attemptState = data.state || data
 
-  // デバッグ用ログ
-  console.log('=== handleEndAttempt ===')
-  console.log('attemptState:', attemptState)
-  console.log('responseVariables:', attemptState.responseVariables)
-  console.log('outcomeVariables:', attemptState.outcomeVariables)
-
   if (attemptState.outcomeVariables) {
     const scoreOutcome = attemptState.outcomeVariables.find(
       v => v.identifier === 'SCORE'
     )
-    console.log('scoreOutcome:', scoreOutcome)
 
     if (scoreOutcome) {
       score.value = scoreOutcome.value
       isScored.value = true
+
+      // 親ウィンドウに回答完了を通知
+      postMessageToParent({
+        type: 'ITEM_ANSWERED',
+        itemId: currentItemId.value,
+        score: scoreOutcome.value,
+        maxScore: 1,
+        isExternalScored: isExternalScored.value
+      })
 
       // 結果をサーバーに送信
       await submitResult(currentItemId.value, {
         score: scoreOutcome.value,
         maxScore: 1,
         responses: attemptState.responseVariables,
-        outcomeVariables: attemptState.outcomeVariables
+        outcomeVariables: attemptState.outcomeVariables,
+        isExternalScored: isExternalScored.value
       })
     }
   }
@@ -238,34 +399,31 @@ const goToNextItem = () => {
     url.searchParams.set('item', nextItemUrl.value)
     url.searchParams.set('font', fontFamily.value)
     window.location.href = url.toString()
+  } else if (isComplete.value && summary.value) {
+    // 次の問題がなく、テストが完了している場合はサマリーを表示
+    // isScored を false にして結果表示画面を閉じ、サマリー画面を表示
+    isScored.value = false
+    isItemLoaded.value = false
+    showSummary.value = true
+
+    // 親ウィンドウにテスト完了を通知（サイドバーの現在選択を解除するため）
+    postMessageToParent({
+      type: 'TEST_COMPLETED'
+    })
   }
 }
 
-const restartTest = async () => {
+const restartTest = () => {
   // 累積結果をリセット
   resetResults()
-  // 最初の問題に戻る（新しいセッションID、フォント設定は引き継ぐ）
-  const url = new URL(window.location.href)
-  const appUrl = url.searchParams.get('callback')?.replace('/api/results', '') || 'http://localhost:3000'
+  showSummary.value = false
+  isComplete.value = false
+  summary.value = null
 
-  // 動的にアイテム一覧を取得して最初のアイテムを取得
-  try {
-    const response = await fetch(`${appUrl}/api/items`)
-    const data = await response.json()
-    if (data.success && data.items.length > 0) {
-      url.searchParams.set('item', `${appUrl}/items/${data.items[0].fileName}`)
-    } else {
-      // フォールバック
-      url.searchParams.set('item', `${appUrl}/items/choice-item-001.xml`)
-    }
-  } catch {
-    // エラー時はフォールバック
-    url.searchParams.set('item', `${appUrl}/items/choice-item-001.xml`)
-  }
-
-  url.searchParams.set('session', `session-${Date.now()}`)
-  url.searchParams.set('font', fontFamily.value)
-  window.location.href = url.toString()
+  // 親ウィンドウにテスト再開を通知
+  postMessageToParent({
+    type: 'RESTART_TEST'
+  })
 }
 </script>
 
@@ -338,6 +496,11 @@ const restartTest = async () => {
 
 .result .incorrect {
   color: #c62828;
+  font-weight: bold;
+}
+
+.result .external-scored {
+  color: #1976d2;
   font-weight: bold;
 }
 
@@ -453,6 +616,29 @@ const restartTest = async () => {
 
 .summary-details li.incorrect {
   color: #c62828;
+}
+
+.summary-details li.unanswered {
+  color: #757575;
+}
+
+.summary-details li.external {
+  color: #ff9800;
+}
+
+.summary-details li .no-answer {
+  font-style: italic;
+}
+
+.summary-details li .external-label {
+  color: #ff9800;
+  font-weight: bold;
+}
+
+.summary-external {
+  font-size: 16px;
+  color: #ff9800;
+  margin-bottom: 15px;
 }
 
 .restart-button {

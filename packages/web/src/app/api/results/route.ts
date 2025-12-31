@@ -7,6 +7,7 @@ interface AccumulatedResult {
   score: number
   maxScore: number
   timestamp: string
+  isExternalScored?: boolean
 }
 
 interface ResultPayload {
@@ -105,20 +106,40 @@ export async function POST(req: Request) {
       console.log('========================')
     }
 
+    // サマリー計算
+    let summaryData = null
+    if (isComplete) {
+      // 採点済み問題（外部採点でない）のスコアを計算
+      const scoredResults = results.filter(r => !r.isExternalScored)
+      const scoredTotalScore = scoredResults.reduce((sum, r) => sum + r.score, 0)
+      const scoredTotalMaxScore = scoredResults.reduce((sum, r) => sum + r.maxScore, 0)
+
+      // 外部採点問題数
+      const externalScoredCount = results.filter(r => r.isExternalScored).length
+
+      // 全体のスコア（参考用）
+      const totalScore = results.reduce((sum, r) => sum + r.score, 0)
+      const totalMaxScore = results.reduce((sum, r) => sum + r.maxScore, 0)
+
+      summaryData = {
+        sessionId,
+        // 各結果にanswered: trueを追加（APIから返される結果は全て回答済み）
+        results: results.map(r => ({ ...r, answered: true })),
+        totalScore,
+        totalMaxScore,
+        scoredTotalScore,
+        scoredTotalMaxScore,
+        externalScoredCount,
+        itemCount: results.length
+      }
+    }
+
     return NextResponse.json({
       success: true,
       nextItem,
       isComplete,
       // 完了時は全結果を返す
-      ...(isComplete && {
-        summary: {
-          sessionId,
-          results: results,
-          totalScore: results.reduce((sum, r) => sum + r.score, 0),
-          totalMaxScore: results.reduce((sum, r) => sum + r.maxScore, 0),
-          itemCount: results.length
-        }
-      })
+      ...(isComplete && { summary: summaryData })
     }, { headers: corsHeaders })
   } catch (error) {
     console.error('Error processing result:', error)
