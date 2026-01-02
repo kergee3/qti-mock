@@ -20,22 +20,22 @@ QTI 3.0 規格に基づいたオンラインテストプラットフォームの
 ┌─────────────────────────────────────────────────────────────┐
 │  Next.js (packages/web)        https://qti3-web.shumi.dev  │
 │  ┌─────────────────────────────────────────────────────┐   │
-│  │  QtiPlayerFrame (iframe)                            │   │
+│  │  TestInProgress (iframe + サイドバー)               │   │
 │  │  ┌───────────────────────────────────────────────┐  │   │
 │  │  │  Vue Player (packages/qti-player)             │  │   │
 │  │  │  https://qti3-player.shumi.dev               │  │   │
 │  │  │  - QTI XML の読み込み・表示                   │  │   │
 │  │  │  - 採点処理                                   │  │   │
-│  │  │  - セッション結果の累積管理                   │  │   │
+│  │  │  - 回答内容・所要時間の抽出                   │  │   │
 │  │  └───────────────────────────────────────────────┘  │   │
 │  └─────────────────────────────────────────────────────┘   │
 │                           │                                 │
-│                           ▼ POST /api/results               │
+│                           ▼ postMessage                     │
 │  ┌─────────────────────────────────────────────────────┐   │
-│  │  API Routes                                         │   │
-│  │  - 結果受信・検証                                   │   │
-│  │  - 次の問題URL返却                                  │   │
-│  │  - 全問完了時のサマリー生成                         │   │
+│  │  TestResults                                        │   │
+│  │  - 問題別結果テーブル（回答・時間・スコア）        │   │
+│  │  - 正答率・総合成績表示                            │   │
+│  │  - 未採点問題（外部採点）の識別                    │   │
 │  └─────────────────────────────────────────────────────┘   │
 └─────────────────────────────────────────────────────────────┘
 ```
@@ -47,11 +47,11 @@ qti3-demo/
 ├── packages/
 │   ├── qti-player/          # Vue 3 QTI Player
 │   │   ├── src/
-│   │   │   ├── App.vue      # メインコンポーネント（結果表示含む）
+│   │   │   ├── App.vue      # メインコンポーネント（採点・回答抽出）
 │   │   │   ├── main.js      # エントリーポイント（Analytics含む）
 │   │   │   └── composables/
 │   │   │       ├── useItemLoader.js    # XML読み込み
-│   │   │       └── useResultSubmit.js  # 結果送信・累積管理
+│   │   │       └── useResultSubmit.js  # 結果送信
 │   │   └── package.json
 │   │
 │   └── web/                  # Next.js Web Application
@@ -60,8 +60,15 @@ qti3-demo/
 │       │   │   ├── page.tsx           # ホームページ
 │       │   │   ├── test/page.tsx      # テストページ
 │       │   │   └── api/results/route.ts  # 結果受信API
-│       │   └── components/
-│       │       └── QtiPlayerFrame/    # iframe wrapper
+│       │   ├── components/
+│       │   │   ├── QtiPlayerFrame/    # iframe wrapper
+│       │   │   ├── navigation/        # ナビゲーション（サイドバー等）
+│       │   │   └── test/              # テスト関連コンポーネント
+│       │   │       ├── TestInProgress.tsx   # テスト実行画面
+│       │   │       ├── TestResults.tsx      # 結果表示画面
+│       │   │       └── TestInitialScreen.tsx # 開始画面
+│       │   └── types/
+│       │       └── test.ts            # 型定義（ItemResult等）
 │       ├── public/
 │       │   └── items/        # QTI XMLファイル
 │       └── package.json
@@ -77,7 +84,7 @@ qti3-demo/
 | パッケージ | 技術 | 説明 |
 |-----------|------|------|
 | qti-player | Vue 3 + Vite 7 | QTI 3.0 アイテムのレンダリング・採点 |
-| web | Next.js 16 + TypeScript | アプリケーション本体 |
+| web | Next.js 15 + TypeScript | アプリケーション本体 |
 | - | Turborepo | モノレポ管理 |
 | - | Vercel | ホスティング（東京リージョン） |
 
@@ -85,7 +92,7 @@ qti3-demo/
 
 - [qti3-item-player-vue3](https://github.com/amp-up-io/qti3-item-player-vue3) - QTI 3.0 プレイヤーコンポーネント
 - [Vercel Analytics](https://vercel.com/analytics) - ユーザー行動分析（両パッケージで有効）
-- [Material UI](https://mui.com/) - UIコンポーネント
+- [Material UI](https://mui.com/) - UIコンポーネント（Tooltip, Table等）
 
 ## セットアップ
 
@@ -119,28 +126,47 @@ npm run dev:web     # http://localhost:3000
 ### 動作確認
 
 1. ブラウザで http://localhost:3000/test を開く
-2. 3問のテストを実行（選択・並べ替え・テキスト入力）
-3. 全問完了後、成績サマリーが表示される
+2. 9問のテストを実行（各種インタラクション）
+3. 問題番号にホバーすると、タイトルとインタラクションタイプを表示
+4. 全問完了後、結果画面で回答内容・所要時間・スコアを確認
 
 ## サポートしているインタラクション
 
 | インタラクション | 説明 | サンプル |
 |-----------------|------|---------|
 | choiceInteraction | 単一/複数選択 | choice-item-001.xml |
+| inlineChoiceInteraction | インライン選択 | inline-choice-item-001.xml |
+| matchInteraction | マッチング | match-item-001.xml |
 | orderInteraction | 並べ替え | order-item-001.xml |
 | textEntryInteraction | テキスト入力 | text-entry-item-001.xml |
+| extendedTextInteraction | 長文テキスト入力（外部採点） | vertical-ext-text-27.xml |
+| graphicChoiceInteraction | 画像選択（ホットスポット） | graphic-choice-item-001.xml |
 
 ## 主要機能
 
+### テスト実行画面 (TestInProgress)
+- 左サイドバーに問題番号ボタンを表示
+- 問題番号にホバーでタイトル・インタラクションタイプをTooltip表示
+- 回答状況に応じた色分け（青: 現在、緑: 正解、赤: 不正解、オレンジ: 未採点、グレー: 未回答）
+- 問題番号下に区切り線を引いて終了ボタンを配置
+
+### 結果表示画面 (TestResults)
+- 問題別結果テーブル（問題番号、タイトル、回答、所要時間、結果）
+- 回答列は長文の場合省略表示（...）、Tooltipで全文表示
+- 所要時間（秒）を独立した列で表示
+- 正答率・総合スコアの表示
+- 外部採点問題の識別と未採点数の表示
+
+### 採点・回答処理 (Vue Player)
+- responseVariables から回答内容を抽出（numAttempts除外）
+- duration（所要時間）を別フィールドとして抽出
+- HTMLタグの除去（`<p>テキスト</p>` → `テキスト`）
+- postMessage で親ウィンドウに結果を送信
+
 ### セッション管理
-- クライアントサイドで結果を累積管理（sessionStorage使用）
+- クライアントサイドで結果を累積管理
 - サーバーレス環境（Vercel Functions）に対応
 - セッションIDによる結果の追跡
-
-### 採点・結果表示
-- 各問題の即時採点
-- 全問完了後の総合成績表示
-- 正答率・問題別結果の可視化
 
 ### CORS対応
 - 環境変数による動的オリジン設定
@@ -158,7 +184,6 @@ npm run dev:web     # http://localhost:3000
 - [x] CORS 設定
 - [x] 複数問題のシーケンス管理
 - [x] 成績サマリー表示
-- [x] sessionStorageによる結果永続化（サーバーレス対応）
 
 ### 完了 (Phase 4)
 
@@ -168,6 +193,14 @@ npm run dev:web     # http://localhost:3000
 - [x] カスタムドメイン設定（shumi.dev）
 - [x] 東京リージョン（hnd1）設定
 - [x] Vercel Web Analytics 導入
+
+### 完了 (UI改善)
+
+- [x] テスト実行画面のサイドバー改善（問題番号Tooltip、終了ボタン配置）
+- [x] 結果画面の回答・所要時間の分離表示
+- [x] 長文回答の省略表示とTooltip
+- [x] 回答からHTMLタグ除去
+- [x] 各種インタラクションタイプのサポート拡充
 
 ### 今後の予定 (Phase 3, 5)
 

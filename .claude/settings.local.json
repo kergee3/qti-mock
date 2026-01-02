@@ -23,7 +23,8 @@
       "Bash(tree:*)",
       "Bash(cat:*)",
       "Bash(git merge:*)",
-      "Bash(git stash:*)"
+      "Bash(git stash:*)",
+      "Bash(dir /b \"c:\\\\nexcbt\\\\qti3-demo\\\\packages\\\\web\\\\public\\\\items\")"
     ]
   }
 }
