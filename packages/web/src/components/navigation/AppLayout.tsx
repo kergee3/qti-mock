@@ -16,7 +16,7 @@ interface AppLayoutProps {
 
 export default function AppLayout({ children, navigationItems }: AppLayoutProps) {
   const deviceInfo = useDeviceDetection();
-  const { navigationPosition } = useSettings();
+  const { navigationPosition, hideNavigation } = useSettings();
 
   // 設定に応じてナビゲーションの表示を決定
   let showBottomNav = false;
@@ -38,6 +38,13 @@ export default function AppLayout({ children, navigationItems }: AppLayoutProps)
     showSidebar = true;
   } else if (navigationPosition === 'bottom') {
     showBottomNav = true;
+  }
+
+  // ナビゲーション非表示フラグが true の場合、すべて非表示
+  if (hideNavigation) {
+    showBottomNav = false;
+    showSidebar = false;
+    showTopTabs = false;
   }
 
   const isMobileLandscape = deviceInfo.deviceType === 'mobile-landscape';

@@ -2,6 +2,7 @@
 
 import { useRef, useEffect, useCallback } from 'react'
 import { Box, Button, Tooltip } from '@mui/material'
+import { useSettings } from '@/contexts/SettingsContext'
 import type { ItemInfo, ItemResult, FontOption, QuestionStatus } from '@/types/test'
 
 interface TestInProgressProps {
@@ -33,6 +34,13 @@ export function TestInProgress({
   onFinish,
 }: TestInProgressProps) {
   const iframeRef = useRef<HTMLIFrameElement>(null)
+  const { setHideNavigation } = useSettings()
+
+  // テスト中はナビゲーションを非表示にする
+  useEffect(() => {
+    setHideNavigation(true)
+    return () => setHideNavigation(false)
+  }, [setHideNavigation])
 
   const playerUrl = process.env.NEXT_PUBLIC_PLAYER_URL || 'http://localhost:5173'
   const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
@@ -63,12 +71,14 @@ export function TestInProgress({
 
   // ステータスに応じた色を取得
   const getStatusColor = (status: QuestionStatus, isCurrent: boolean): string => {
-    if (isCurrent) return '#1976d2' // 青: 現在の問題
+    // 回答済みの場合は正解/不正解/外部採点の色を優先
     switch (status) {
       case 'answered-correct': return '#4caf50' // 緑: 正解
       case 'answered-incorrect': return '#f44336' // 赤: 不正解
       case 'answered-external': return '#ff9800' // オレンジ: 未採点
-      default: return '#9e9e9e' // グレー: 未回答
+      default:
+        // 未回答の場合のみ現在の問題かどうかで色を変える
+        return isCurrent ? '#1976d2' : '#9e9e9e' // 青: 現在の問題 / グレー: 未回答
     }
   }
 
@@ -131,7 +141,7 @@ export function TestInProgress({
         }}
       >
         {/* 問題番号ボタン */}
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
           {items.map((item, index) => {
             const status = getQuestionStatus(index)
             const isCurrent = index === currentIndex
@@ -147,13 +157,15 @@ export function TestInProgress({
                 <Button
                   onClick={() => handleQuestionClick(index)}
                   sx={{
-                    minWidth: 44,
-                    height: 44,
-                    borderRadius: '50%',
+                    minWidth: 36,
+                    height: 28,
+                    px: 1,
+                    py: 0.5,
+                    borderRadius: '6px',
                     backgroundColor: bgColor,
                     color: '#fff',
                     fontWeight: 'bold',
-                    fontSize: '1rem',
+                    fontSize: '0.875rem',
                     '&:hover': {
                       backgroundColor: bgColor,
                       opacity: 0.85,

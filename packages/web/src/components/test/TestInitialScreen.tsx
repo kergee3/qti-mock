@@ -64,7 +64,7 @@ export function TestInitialScreen({
           onClick={onStart}
           disabled={items.length === 0}
           sx={{
-            px: 4,
+            px: 1,
             py: 1,
             fontSize: '1rem',
             borderColor: '#333',
@@ -128,7 +128,9 @@ export function TestInitialScreen({
               >
                 <TableCell sx={{ textAlign: 'center' }}>{index + 1}</TableCell>
                 <TableCell>{item.title}</TableCell>
-                <TableCell sx={{ color: '#666' }}>{item.type}</TableCell>
+                <TableCell sx={{ color: '#666', whiteSpace: 'pre-line' }}>
+                  {item.type.split('\n').map(t => t.replace(/Interaction$/, '')).join('\n')}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

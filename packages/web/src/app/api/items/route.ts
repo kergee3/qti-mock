@@ -21,38 +21,48 @@ export async function GET() {
       const identifierMatch = content.match(/identifier="([^"]+)"/)
       const titleMatch = content.match(/title="([^"]+)"/)
 
-      // QTI 3.0 全インタラクションタイプを検出
+      // QTI 3.0 全インタラクションタイプを検出（出現回数をカウント）
       // https://www.imsglobal.org/spec/qti/v3p0/impl#h.7jm6la7pne1i
       const interactionTypes: string[] = []
 
+      const countOccurrences = (tagName: string, typeName: string) => {
+        const regex = new RegExp(`<${tagName}[\\s>]`, 'g')
+        const matches = content.match(regex)
+        if (matches) {
+          for (let i = 0; i < matches.length; i++) {
+            interactionTypes.push(typeName)
+          }
+        }
+      }
+
       // Simple/Common Interactions
-      if (content.includes('qti-choice-interaction')) interactionTypes.push('choiceInteraction')
-      if (content.includes('qti-order-interaction')) interactionTypes.push('orderInteraction')
-      if (content.includes('qti-associate-interaction')) interactionTypes.push('associateInteraction')
-      if (content.includes('qti-match-interaction')) interactionTypes.push('matchInteraction')
-      if (content.includes('qti-gap-match-interaction')) interactionTypes.push('gapMatchInteraction')
+      countOccurrences('qti-choice-interaction', 'choiceInteraction')
+      countOccurrences('qti-order-interaction', 'orderInteraction')
+      countOccurrences('qti-associate-interaction', 'associateInteraction')
+      countOccurrences('qti-match-interaction', 'matchInteraction')
+      countOccurrences('qti-gap-match-interaction', 'gapMatchInteraction')
 
       // Text-Based/Inline Interactions
-      if (content.includes('qti-inline-choice-interaction')) interactionTypes.push('inlineChoiceInteraction')
-      if (content.includes('qti-text-entry-interaction')) interactionTypes.push('textEntryInteraction')
-      if (content.includes('qti-extended-text-interaction')) interactionTypes.push('extendedTextInteraction')
-      if (content.includes('qti-hottext-interaction')) interactionTypes.push('hottextInteraction')
+      countOccurrences('qti-inline-choice-interaction', 'inlineChoiceInteraction')
+      countOccurrences('qti-text-entry-interaction', 'textEntryInteraction')
+      countOccurrences('qti-extended-text-interaction', 'extendedTextInteraction')
+      countOccurrences('qti-hottext-interaction', 'hottextInteraction')
 
       // Graphical Interactions
-      if (content.includes('qti-hotspot-interaction')) interactionTypes.push('hotspotInteraction')
-      if (content.includes('qti-graphic-order-interaction')) interactionTypes.push('graphicOrderInteraction')
-      if (content.includes('qti-graphic-associate-interaction')) interactionTypes.push('graphicAssociateInteraction')
-      if (content.includes('qti-graphic-gap-match-interaction')) interactionTypes.push('graphicGapMatchInteraction')
-      if (content.includes('qti-select-point-interaction')) interactionTypes.push('selectPointInteraction')
-      if (content.includes('qti-position-object-interaction')) interactionTypes.push('positionObjectInteraction')
+      countOccurrences('qti-hotspot-interaction', 'hotspotInteraction')
+      countOccurrences('qti-graphic-order-interaction', 'graphicOrderInteraction')
+      countOccurrences('qti-graphic-associate-interaction', 'graphicAssociateInteraction')
+      countOccurrences('qti-graphic-gap-match-interaction', 'graphicGapMatchInteraction')
+      countOccurrences('qti-select-point-interaction', 'selectPointInteraction')
+      countOccurrences('qti-position-object-interaction', 'positionObjectInteraction')
 
       // Miscellaneous Interactions
-      if (content.includes('qti-slider-interaction')) interactionTypes.push('sliderInteraction')
-      if (content.includes('qti-media-interaction')) interactionTypes.push('mediaInteraction')
-      if (content.includes('qti-drawing-interaction')) interactionTypes.push('drawingInteraction')
-      if (content.includes('qti-upload-interaction')) interactionTypes.push('uploadInteraction')
-      if (content.includes('qti-custom-interaction')) interactionTypes.push('customInteraction')
-      if (content.includes('qti-portable-custom-interaction')) interactionTypes.push('portableCustomInteraction')
+      countOccurrences('qti-slider-interaction', 'sliderInteraction')
+      countOccurrences('qti-media-interaction', 'mediaInteraction')
+      countOccurrences('qti-drawing-interaction', 'drawingInteraction')
+      countOccurrences('qti-upload-interaction', 'uploadInteraction')
+      countOccurrences('qti-custom-interaction', 'customInteraction')
+      countOccurrences('qti-portable-custom-interaction', 'portableCustomInteraction')
 
       const id = file.replace('.xml', '')
 
@@ -61,7 +71,7 @@ export async function GET() {
         fileName: file,
         identifier: identifierMatch ? identifierMatch[1] : id,
         title: titleMatch ? titleMatch[1] : id,
-        type: interactionTypes.length > 0 ? interactionTypes.join(', ') : 'unknown',
+        type: interactionTypes.length > 0 ? interactionTypes.join('\n') : 'unknown',
       }
     })
 
