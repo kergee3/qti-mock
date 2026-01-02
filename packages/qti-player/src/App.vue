@@ -8,43 +8,7 @@
       </p>
     </div>
 
-    <!-- 全問完了時のサマリー表示（showSummaryがtrueの場合のみ） -->
-    <div v-else-if="showSummary && summary" class="summary">
-      <h2>テスト結果</h2>
-      <div class="summary-score">
-        <span class="score-value">{{ summary.scoredTotalScore }}</span>
-        <span class="score-separator">/</span>
-        <span class="score-max">{{ summary.scoredTotalMaxScore }}</span>
-        <span class="score-label">点</span>
-      </div>
-      <div class="summary-percentage">
-        正答率: {{ calculatePercentage(summary.scoredTotalScore, summary.scoredTotalMaxScore) }}%
-      </div>
-      <div v-if="summary.externalScoredCount > 0" class="summary-external">
-        ※ 未採点: {{ summary.externalScoredCount }}問
-      </div>
-      <div class="summary-details">
-        <h3>問題別結果</h3>
-        <ul>
-          <li v-for="(result, index) in summary.results" :key="result.itemId"
-              :class="{ correct: result.answered && !result.isExternalScored && result.score > 0, incorrect: result.answered && !result.isExternalScored && result.score === 0, external: result.answered && result.isExternalScored, unanswered: !result.answered }">
-            <span>問{{ index + 1 }}:</span>
-            <span v-if="result.answered && result.isExternalScored" class="external-label">未採点</span>
-            <span v-else-if="result.answered">
-              {{ result.score }} / {{ result.maxScore }}
-              <span v-if="result.score > 0">○</span>
-              <span v-else>×</span>
-            </span>
-            <span v-else class="no-answer">回答なし</span>
-          </li>
-        </ul>
-      </div>
-      <button @click="restartTest" class="restart-button">
-        もう一度
-      </button>
-    </div>
-
-    <!-- プレイヤー（常にレンダリング、ローディング中は非表示） -->
+    <!-- プレイヤー -->
     <template v-else>
       <!-- ローディング -->
       <div v-if="isLoading || !isPlayerReady" class="loading">
@@ -70,13 +34,11 @@
 
       <!-- 結果表示 -->
       <div v-if="isScored" class="result">
-        <button v-if="nextItemUrl || isComplete" @click="goToNextItem" class="next-button">
-          次へ
-        </button>
-        <span v-if="score >= 1" class="correct">正解です！</span>
-        <span v-else-if="isExternalScored" class="external-scored">採点は別途行います</span>
+        <span class="result-label">回答済：</span>
+        <span v-if="score >= 1" class="correct">正解</span>
+        <span v-else-if="isExternalScored" class="external-scored">未採点</span>
         <span v-else class="incorrect">
-          不正解です<template v-if="correctAnswer">。正解は「{{ correctAnswer }}」です。</template>
+          不正解<template v-if="correctAnswer">。正解は「{{ correctAnswer }}」です。</template>
         </span>
         <span class="score-text">スコア: {{ score }}</span>
       </div>
@@ -98,16 +60,15 @@ const qti3player = ref(null)
 let qti3Player = null
 
 const { itemXml, isLoading, error, loadItem } = useItemLoader()
-const { isSubmitting, submitError, nextItemUrl, isComplete, summary, submitResult, resetResults } = useResultSubmit()
+const { isSubmitting, submitError, submitResult } = useResultSubmit()
 
 const isPlayerReady = ref(false)
 const isItemLoaded = ref(false)
 const isScored = ref(false)
 const score = ref(null)
 const currentItemId = ref(null)
-const correctAnswer = ref(null)  // 正解情報
-const isExternalScored = ref(false)  // 外部採点フラグ
-const showSummary = ref(false)  // サマリー表示フラグ（「次へ」ボタンで明示的に切り替え）
+const correctAnswer = ref(null)
+const isExternalScored = ref(false)
 
 // フォント設定
 const fontFamily = ref('system')
@@ -135,10 +96,37 @@ const fontClass = computed(() => {
   return `font-${fontFamily.value}`
 })
 
-// 正答率を計算（0除算対策）
-const calculatePercentage = (score, maxScore) => {
-  if (maxScore === 0) return 0
-  return Math.round((score / maxScore) * 100)
+// responseVariablesから回答テキストを抽出
+const extractResponseText = (responseVariables) => {
+  if (!responseVariables || responseVariables.length === 0) return ''
+
+  const responses = []
+
+  for (const rv of responseVariables) {
+    if (rv.value === null || rv.value === undefined) continue
+
+    // 配列の場合（複数選択、並べ替えなど）
+    if (Array.isArray(rv.value)) {
+      if (rv.value.length > 0) {
+        responses.push(rv.value.join(', '))
+      }
+    }
+    // オブジェクトの場合（マッチングなど）
+    else if (typeof rv.value === 'object') {
+      const pairs = Object.entries(rv.value)
+        .filter(([, v]) => v !== null && v !== undefined)
+        .map(([k, v]) => `${k}-${v}`)
+      if (pairs.length > 0) {
+        responses.push(pairs.join(', '))
+      }
+    }
+    // 文字列や数値の場合
+    else if (rv.value !== '') {
+      responses.push(String(rv.value))
+    }
+  }
+
+  return responses.join(' / ')
 }
 
 // XMLから正解情報を抽出
@@ -155,7 +143,7 @@ const extractCorrectAnswer = (xml) => {
       return { answer: null, isExternal: true }
     }
 
-    // テキスト入力問題（qti-text-entry-interaction）かどうかを確認
+    // テキスト入力問題かどうかを確認
     const textEntryInteraction = doc.querySelector('qti-text-entry-interaction')
     const extendedTextInteraction = doc.querySelector('qti-extended-text-interaction')
 
@@ -211,58 +199,6 @@ const handleParentMessage = (event) => {
     url.searchParams.set('font', fontFamily.value)
     window.location.href = url.toString()
   }
-  if (event.data.type === 'FINISH_TEST') {
-    // テストを終了して結果を表示
-    const results = event.data.results || []
-    showTestSummary(results)
-  }
-}
-
-// テスト結果サマリーを表示
-const showTestSummary = (results) => {
-  // 回答済み問題のみを抽出
-  const answeredResults = results.filter(r => Boolean(r.answered))
-
-  // 採点済み問題（外部採点でない）のスコアを計算
-  const scoredResults = answeredResults.filter(r => !r.isExternalScored)
-  const scoredTotalScore = scoredResults.reduce((sum, r) => sum + (r.score || 0), 0)
-  const scoredTotalMaxScore = scoredResults.reduce((sum, r) => sum + (r.maxScore || 1), 0)
-
-  // 外部採点問題数
-  const externalScoredCount = answeredResults.filter(r => r.isExternalScored).length
-
-  // 全体のスコア（参考用）
-  const totalScore = answeredResults.reduce((sum, r) => sum + (r.score || 0), 0)
-  const totalMaxScore = answeredResults.reduce((sum, r) => sum + (r.maxScore || 1), 0)
-
-  // サマリーデータを設定（全問題を含む）
-  summary.value = {
-    sessionId: new URLSearchParams(window.location.search).get('session') || '',
-    results: results.map((r, index) => ({
-      itemId: r.itemId || `item-${index + 1}`,
-      score: r.score || 0,
-      maxScore: r.maxScore || 1,
-      answered: Boolean(r.answered),
-      isExternalScored: Boolean(r.isExternalScored)
-    })),
-    totalScore,
-    totalMaxScore,
-    scoredTotalScore,
-    scoredTotalMaxScore,
-    externalScoredCount,
-    itemCount: results.length
-  }
-
-  // 現在の問題画面を非表示にしてサマリーを表示
-  isItemLoaded.value = false
-  isScored.value = false
-  isComplete.value = true
-  showSummary.value = true  // 「終了」ボタンからの呼び出しではすぐにサマリーを表示
-
-  // 親ウィンドウにテスト完了を通知（サイドバーの現在選択を解除するため）
-  postMessageToParent({
-    type: 'TEST_COMPLETED'
-  })
 }
 
 onMounted(() => {
@@ -313,7 +249,6 @@ watch([itemXml, isPlayerReady], ([newXml, playerReady]) => {
 const handlePlayerReady = (player) => {
   qti3Player = player
   isPlayerReady.value = true
-  // watchが処理するので、ここでは明示的に呼ばない
 }
 
 const loadItemToPlayer = () => {
@@ -323,7 +258,6 @@ const loadItemToPlayer = () => {
   const params = new URLSearchParams(window.location.search)
   const itemUrl = params.get('item')
   if (itemUrl) {
-    // URLからファイル名を抽出（例: http://localhost:3000/items/choice-item-001.xml -> choice-item-001）
     const fileName = itemUrl.split('/').pop()?.replace('.xml', '') || ''
     currentItemId.value = fileName
   }
@@ -365,13 +299,17 @@ const handleEndAttempt = async (data) => {
       score.value = scoreOutcome.value
       isScored.value = true
 
+      // 回答内容を抽出（表示用）
+      const responseText = extractResponseText(attemptState.responseVariables)
+
       // 親ウィンドウに回答完了を通知
       postMessageToParent({
         type: 'ITEM_ANSWERED',
         itemId: currentItemId.value,
         score: scoreOutcome.value,
         maxScore: 1,
-        isExternalScored: isExternalScored.value
+        isExternalScored: isExternalScored.value,
+        response: responseText
       })
 
       // 結果をサーバーに送信
@@ -390,40 +328,6 @@ const submitResponse = () => {
   if (qti3Player) {
     qti3Player.endAttempt()
   }
-}
-
-const goToNextItem = () => {
-  if (nextItemUrl.value) {
-    // URLパラメータを更新して再読み込み（フォント設定も引き継ぐ）
-    const url = new URL(window.location.href)
-    url.searchParams.set('item', nextItemUrl.value)
-    url.searchParams.set('font', fontFamily.value)
-    window.location.href = url.toString()
-  } else if (isComplete.value && summary.value) {
-    // 次の問題がなく、テストが完了している場合はサマリーを表示
-    // isScored を false にして結果表示画面を閉じ、サマリー画面を表示
-    isScored.value = false
-    isItemLoaded.value = false
-    showSummary.value = true
-
-    // 親ウィンドウにテスト完了を通知（サイドバーの現在選択を解除するため）
-    postMessageToParent({
-      type: 'TEST_COMPLETED'
-    })
-  }
-}
-
-const restartTest = () => {
-  // 累積結果をリセット
-  resetResults()
-  showSummary.value = false
-  isComplete.value = false
-  summary.value = null
-
-  // 親ウィンドウにテスト再開を通知
-  postMessageToParent({
-    type: 'RESTART_TEST'
-  })
 }
 </script>
 
@@ -489,6 +393,10 @@ const restartTest = () => {
   gap: 15px;
 }
 
+.result .result-label {
+  font-weight: bold;
+}
+
 .result .correct {
   color: #2e7d32;
   font-weight: bold;
@@ -500,32 +408,12 @@ const restartTest = () => {
 }
 
 .result .external-scored {
-  color: #1976d2;
+  color: #ff9800;
   font-weight: bold;
-}
-
-.next-button {
-  padding: 10px 30px;
-  font-size: 16px;
-  background: #1976d2;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
 }
 
 .score-text {
   margin-left: auto;
-}
-
-.next-button:hover {
-  background: #1565c0;
-}
-
-.complete-message {
-  margin-top: 15px;
-  font-weight: bold;
-  color: #2e7d32;
 }
 
 .submit-error {
@@ -534,125 +422,6 @@ const restartTest = () => {
   background: #ffebee;
   color: #c62828;
   border-radius: 4px;
-}
-
-/* サマリー表示 */
-.summary {
-  text-align: center;
-  padding: 5px 20px;
-}
-
-.summary h2 {
-  margin-bottom: 5px;
-  color: #333;
-}
-
-.summary-score {
-  font-size: 48px;
-  margin-bottom: 5px;
-}
-
-.summary-score .score-value {
-  font-weight: bold;
-  color: #1976d2;
-}
-
-.summary-score .score-separator {
-  color: #666;
-  margin: 0 5px;
-}
-
-.summary-score .score-max {
-  color: #666;
-}
-
-.summary-score .score-label {
-  font-size: 24px;
-  color: #666;
-  margin-left: 5px;
-}
-
-.summary-percentage {
-  font-size: 24px;
-  color: #666;
-  margin-bottom: 15px;
-}
-
-.summary-details {
-  text-align: left;
-  max-width: 400px;
-  margin: 0 auto 15px;
-  padding: 15px;
-  background: #f5f5f5;
-  border-radius: 8px;
-}
-
-.summary-details h3 {
-  margin-bottom: 10px;
-  font-size: 16px;
-  color: #333;
-}
-
-.summary-details ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.summary-details li {
-  padding: 8px;
-  border-bottom: 1px solid #ddd;
-  display: flex;
-  justify-content: space-between;
-}
-
-.summary-details li:last-child {
-  border-bottom: none;
-}
-
-.summary-details li.correct {
-  color: #2e7d32;
-}
-
-.summary-details li.incorrect {
-  color: #c62828;
-}
-
-.summary-details li.unanswered {
-  color: #757575;
-}
-
-.summary-details li.external {
-  color: #ff9800;
-}
-
-.summary-details li .no-answer {
-  font-style: italic;
-}
-
-.summary-details li .external-label {
-  color: #ff9800;
-  font-weight: bold;
-}
-
-.summary-external {
-  font-size: 16px;
-  color: #ff9800;
-  margin-bottom: 15px;
-}
-
-.restart-button {
-  padding: 12px 40px;
-  font-size: 18px;
-  background: #1976d2;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.restart-button:hover {
-  background: #1565c0;
 }
 </style>
 
@@ -698,5 +467,4 @@ const restartTest = () => {
 .font-kosugi-maru * {
   font-family: "Kosugi Maru", sans-serif !important;
 }
-
 </style>

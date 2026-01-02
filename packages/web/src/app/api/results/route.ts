@@ -1,14 +1,4 @@
 import { NextResponse } from 'next/server'
-import fs from 'fs'
-import path from 'path'
-
-interface AccumulatedResult {
-  itemId: string
-  score: number
-  maxScore: number
-  timestamp: string
-  isExternalScored?: boolean
-}
 
 interface ResultPayload {
   sessionId: string
@@ -19,23 +9,7 @@ interface ResultPayload {
     maxScore: number
     responses: unknown
     outcomeVariables: unknown
-  }
-  // クライアント側で管理された累積結果（サーバーレス対応）
-  accumulatedResults?: AccumulatedResult[]
-}
-
-// 動的にアイテム一覧を取得（ファイル名でソート）
-function getItemIds(): string[] {
-  try {
-    const itemsDir = path.join(process.cwd(), 'public', 'items')
-    const files = fs.readdirSync(itemsDir)
-    return files
-      .filter((file) => file.endsWith('.xml'))
-      .sort((a, b) => a.localeCompare(b))
-      .map((file) => file.replace('.xml', ''))
-  } catch (error) {
-    console.error('Error reading items directory:', error)
-    return []
+    isExternalScored?: boolean
   }
 }
 
@@ -66,80 +40,20 @@ export async function POST(req: Request) {
 
   try {
     const body: ResultPayload = await req.json()
-    const { sessionId, itemId, timestamp, result, accumulatedResults } = body
+    const { sessionId, itemId, timestamp, result } = body
 
-    // 結果をログ出力
+    // 結果をログ出力（シンプル版：ログ記録のみ）
     console.log('=== Result Received ===')
     console.log('Session:', sessionId)
     console.log('Item:', itemId)
     console.log('Timestamp:', timestamp)
     console.log('Score:', result.score, '/', result.maxScore)
-    console.log('Accumulated Results:', accumulatedResults?.length || 0)
+    console.log('External Scored:', result.isExternalScored ?? false)
     console.log('=======================')
 
-    // 動的にアイテム一覧を取得
-    const itemIds = getItemIds()
-
-    // クライアントから送られた累積結果を使用（現在存在するアイテムのみフィルタリング）
-    const results = (accumulatedResults || []).filter(r => itemIds.includes(r.itemId))
-
-    // 次の問題を決定
-    const currentIndex = itemIds.indexOf(itemId)
-    const nextIndex = currentIndex + 1
-    const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
-
-    let nextItem = null
-    let isComplete = false
-
-    if (nextIndex < itemIds.length) {
-      // 次の問題がある
-      nextItem = `${appUrl}/items/${itemIds[nextIndex]}.xml`
-    } else {
-      // 全問完了
-      isComplete = true
-      console.log('=== Session Complete ===')
-      console.log('Session:', sessionId)
-      console.log('Total Items:', results.length)
-      const totalScore = results.reduce((sum, r) => sum + r.score, 0)
-      const totalMaxScore = results.reduce((sum, r) => sum + r.maxScore, 0)
-      console.log('Total Score:', totalScore, '/', totalMaxScore)
-      console.log('========================')
-    }
-
-    // サマリー計算
-    let summaryData = null
-    if (isComplete) {
-      // 採点済み問題（外部採点でない）のスコアを計算
-      const scoredResults = results.filter(r => !r.isExternalScored)
-      const scoredTotalScore = scoredResults.reduce((sum, r) => sum + r.score, 0)
-      const scoredTotalMaxScore = scoredResults.reduce((sum, r) => sum + r.maxScore, 0)
-
-      // 外部採点問題数
-      const externalScoredCount = results.filter(r => r.isExternalScored).length
-
-      // 全体のスコア（参考用）
-      const totalScore = results.reduce((sum, r) => sum + r.score, 0)
-      const totalMaxScore = results.reduce((sum, r) => sum + r.maxScore, 0)
-
-      summaryData = {
-        sessionId,
-        // 各結果にanswered: trueを追加（APIから返される結果は全て回答済み）
-        results: results.map(r => ({ ...r, answered: true })),
-        totalScore,
-        totalMaxScore,
-        scoredTotalScore,
-        scoredTotalMaxScore,
-        externalScoredCount,
-        itemCount: results.length
-      }
-    }
-
+    // 成功レスポンスのみ返す（web側で状態管理するため、nextItem等は不要）
     return NextResponse.json({
-      success: true,
-      nextItem,
-      isComplete,
-      // 完了時は全結果を返す
-      ...(isComplete && { summary: summaryData })
+      success: true
     }, { headers: corsHeaders })
   } catch (error) {
     console.error('Error processing result:', error)
