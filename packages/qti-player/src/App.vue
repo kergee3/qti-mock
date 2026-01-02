@@ -96,37 +96,62 @@ const fontClass = computed(() => {
   return `font-${fontFamily.value}`
 })
 
-// responseVariablesから回答テキストを抽出
-const extractResponseText = (responseVariables) => {
-  if (!responseVariables || responseVariables.length === 0) return ''
+// responseVariablesから回答テキストとdurationを抽出
+// 除外する変数（メタ情報）
+const EXCLUDED_VARIABLES = ['numAttempts', 'duration']
+
+// HTMLタグを除去してテキストのみ抽出
+const stripHtmlTags = (str) => {
+  if (typeof str !== 'string') return String(str)
+  return str.replace(/<[^>]*>/g, '').trim()
+}
+
+const extractResponseData = (responseVariables) => {
+  if (!responseVariables || responseVariables.length === 0) {
+    return { response: '', duration: null }
+  }
 
   const responses = []
+  let duration = null
 
   for (const rv of responseVariables) {
     if (rv.value === null || rv.value === undefined) continue
 
+    // durationは別途取得
+    if (rv.identifier === 'duration') {
+      duration = rv.value
+      continue
+    }
+
+    // メタ変数は除外
+    if (EXCLUDED_VARIABLES.includes(rv.identifier)) continue
+
     // 配列の場合（複数選択、並べ替えなど）
     if (Array.isArray(rv.value)) {
       if (rv.value.length > 0) {
-        responses.push(rv.value.join(', '))
+        const cleanedValues = rv.value.map(v => stripHtmlTags(v))
+        responses.push(cleanedValues.join(', '))
       }
     }
     // オブジェクトの場合（マッチングなど）
     else if (typeof rv.value === 'object') {
       const pairs = Object.entries(rv.value)
         .filter(([, v]) => v !== null && v !== undefined)
-        .map(([k, v]) => `${k}-${v}`)
+        .map(([k, v]) => `${stripHtmlTags(k)}-${stripHtmlTags(v)}`)
       if (pairs.length > 0) {
         responses.push(pairs.join(', '))
       }
     }
     // 文字列や数値の場合
     else if (rv.value !== '') {
-      responses.push(String(rv.value))
+      responses.push(stripHtmlTags(rv.value))
     }
   }
 
-  return responses.join(' / ')
+  return {
+    response: responses.join(' / '),
+    duration: duration
+  }
 }
 
 // XMLから正解情報を抽出
@@ -299,8 +324,8 @@ const handleEndAttempt = async (data) => {
       score.value = scoreOutcome.value
       isScored.value = true
 
-      // 回答内容を抽出（表示用）
-      const responseText = extractResponseText(attemptState.responseVariables)
+      // 回答内容とdurationを抽出（表示用）
+      const { response, duration } = extractResponseData(attemptState.responseVariables)
 
       // 親ウィンドウに回答完了を通知
       postMessageToParent({
@@ -309,7 +334,8 @@ const handleEndAttempt = async (data) => {
         score: scoreOutcome.value,
         maxScore: 1,
         isExternalScored: isExternalScored.value,
-        response: responseText
+        response: response,
+        duration: duration
       })
 
       // 結果をサーバーに送信

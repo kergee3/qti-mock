@@ -1,7 +1,7 @@
 'use client'
 
 import { useRef, useEffect, useCallback } from 'react'
-import { Box, Button } from '@mui/material'
+import { Box, Button, Tooltip } from '@mui/material'
 import type { ItemInfo, ItemResult, FontOption, QuestionStatus } from '@/types/test'
 
 interface TestInProgressProps {
@@ -82,7 +82,7 @@ export function TestInProgress({
       }
 
       if (event.data.type === 'ITEM_ANSWERED') {
-        const { itemId, score, maxScore, isExternalScored, response } = event.data
+        const { itemId, score, maxScore, isExternalScored, response, duration } = event.data
         onItemScored({
           itemId,
           score: score ?? 0,
@@ -90,6 +90,7 @@ export function TestInProgress({
           isExternalScored: isExternalScored ?? false,
           answered: true,
           response: response ?? '',
+          duration: duration ?? undefined,
         })
       }
     }
@@ -130,35 +131,50 @@ export function TestInProgress({
         }}
       >
         {/* 問題番号ボタン */}
-        <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 1 }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
           {items.map((item, index) => {
             const status = getQuestionStatus(index)
             const isCurrent = index === currentIndex
             const bgColor = getStatusColor(status, isCurrent)
 
             return (
-              <Button
+              <Tooltip
                 key={item.id}
-                onClick={() => handleQuestionClick(index)}
-                sx={{
-                  minWidth: 44,
-                  height: 44,
-                  borderRadius: '50%',
-                  backgroundColor: bgColor,
-                  color: '#fff',
-                  fontWeight: 'bold',
-                  fontSize: '1rem',
-                  '&:hover': {
-                    backgroundColor: bgColor,
-                    opacity: 0.85,
-                  },
-                }}
+                title={`${item.title} (${item.type})`}
+                placement="right"
+                arrow
               >
-                {index + 1}
-              </Button>
+                <Button
+                  onClick={() => handleQuestionClick(index)}
+                  sx={{
+                    minWidth: 44,
+                    height: 44,
+                    borderRadius: '50%',
+                    backgroundColor: bgColor,
+                    color: '#fff',
+                    fontWeight: 'bold',
+                    fontSize: '1rem',
+                    '&:hover': {
+                      backgroundColor: bgColor,
+                      opacity: 0.85,
+                    },
+                  }}
+                >
+                  {index + 1}
+                </Button>
+              </Tooltip>
             )
           })}
         </Box>
+
+        {/* 区切り線 */}
+        <Box
+          sx={{
+            width: '80%',
+            borderTop: '1px solid #ccc',
+            my: 1.5,
+          }}
+        />
 
         {/* 終了ボタン */}
         <Button
@@ -166,7 +182,6 @@ export function TestInProgress({
           color="error"
           onClick={onFinish}
           sx={{
-            mt: 2,
             minWidth: 50,
             fontWeight: 'bold',
           }}

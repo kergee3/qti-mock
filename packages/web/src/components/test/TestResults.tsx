@@ -1,6 +1,6 @@
 'use client'
 
-import { Box, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material'
+import { Box, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Tooltip } from '@mui/material'
 import type { ItemInfo, ItemResult } from '@/types/test'
 
 interface TestResultsProps {
@@ -92,8 +92,9 @@ export function TestResults({
             <TableRow sx={{ backgroundColor: '#000' }}>
               <TableCell sx={{ color: '#fff', fontWeight: 'bold', width: 60 }}>問</TableCell>
               <TableCell sx={{ color: '#fff', fontWeight: 'bold' }}>タイトル</TableCell>
-              <TableCell sx={{ color: '#fff', fontWeight: 'bold', width: 150 }}>回答</TableCell>
-              <TableCell sx={{ color: '#fff', fontWeight: 'bold', width: 120 }}>結果</TableCell>
+              <TableCell sx={{ color: '#fff', fontWeight: 'bold', width: 225 }}>回答</TableCell>
+              <TableCell sx={{ color: '#fff', fontWeight: 'bold', width: 80, textAlign: 'center' }}>時間(秒)</TableCell>
+              <TableCell sx={{ color: '#fff', fontWeight: 'bold', width: 100 }}>結果</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -110,8 +111,26 @@ export function TestResults({
                 >
                   <TableCell sx={{ textAlign: 'center' }}>{index + 1}</TableCell>
                   <TableCell>{item.title}</TableCell>
-                  <TableCell sx={{ color: '#666' }}>
-                    {result?.response || (result?.answered ? '-' : '')}
+                  <TableCell sx={{ color: '#666', maxWidth: 225 }}>
+                    {result?.response ? (
+                      <Tooltip title={result.response} arrow placement="top">
+                        <Box
+                          sx={{
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap',
+                            cursor: 'default',
+                          }}
+                        >
+                          {result.response}
+                        </Box>
+                      </Tooltip>
+                    ) : (
+                      result?.answered ? '-' : ''
+                    )}
+                  </TableCell>
+                  <TableCell sx={{ textAlign: 'center', color: '#666' }}>
+                    {result?.duration != null ? result.duration : '-'}
                   </TableCell>
                   <TableCell
                     sx={{

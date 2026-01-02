@@ -22,6 +22,7 @@ export interface ItemResult {
   isExternalScored: boolean
   answered: boolean
   response?: string
+  duration?: number
 }
 
 /** フォントオプション */
@@ -50,4 +51,6 @@ export interface PlayerMessage {
   score?: number
   maxScore?: number
   isExternalScored?: boolean
+  response?: string
+  duration?: number
 }

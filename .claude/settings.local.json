@@ -21,7 +21,9 @@
       "Bash(git branch:*)",
       "Bash(find:*)",
       "Bash(tree:*)",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Bash(git merge:*)",
+      "Bash(git stash:*)"
     ]
   }
 }
