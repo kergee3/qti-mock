@@ -8,7 +8,7 @@ import "./globals.css";
 import ClientLayout from '@/components/ClientLayout';
 
 export const metadata: Metadata = {
-  title: "QTI Demo - Assessment Platform",
+  title: "QTI Mock - Assessment Platform",
   description: "QTI 3.0 Assessment Platform Demo",
   icons: {
     icon: [
