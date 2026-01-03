@@ -175,19 +175,15 @@ export function TestInProgress({
 
   // 問題番号ボタンをレンダリング
   const renderQuestionButtons = () => {
-    // RTLの場合は問題番号を逆順に表示
-    const displayItems = isRtl ? [...items].reverse() : items
-
     return (
     <Box sx={{
       display: 'flex',
       flexDirection: isHorizontal ? 'row' : 'column',
       gap: 0.5,
       flexWrap: isHorizontal ? 'wrap' : 'nowrap',
+      direction: isRtl ? 'rtl' : 'ltr',
     }}>
-      {displayItems.map((item) => {
-        // 元のインデックスを取得
-        const index = items.indexOf(item)
+      {items.map((item, index) => {
         const status = getQuestionStatus(index)
         const isCurrent = index === currentIndex
         const bgColor = getStatusColor(status, isCurrent)
