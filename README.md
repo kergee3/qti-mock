@@ -6,8 +6,8 @@ QTI 3.0 規格に基づいたオンラインテストプラットフォームの
 
 | サービス | URL |
 |---------|-----|
-| テストページ | https://qti3-web.shumi.dev/test |
-| Web (Next.js) | https://qti3-web.shumi.dev/ |
+| テストページ | https://qti-mock.shumi.dev/test |
+| Web (Next.js) | https://qti-mock.shumi.dev/ |
 | Player (Vue) | https://qti3-player.shumi.dev/ |
 
 ## 概要
@@ -18,7 +18,7 @@ QTI 3.0 規格に基づいたオンラインテストプラットフォームの
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│  Next.js (packages/web)        https://qti3-web.shumi.dev  │
+│  Next.js (packages/web)        https://qti-mock.shumi.dev  │
 │  ┌─────────────────────────────────────────────────────┐   │
 │  │  TestInProgress (iframe + サイドバー)               │   │
 │  │  ┌───────────────────────────────────────────────┐  │   │
@@ -219,7 +219,7 @@ npm run dev:web     # http://localhost:3000
 
 | 変数名 | 説明 | 例 |
 |--------|------|-----|
-| `NEXT_PUBLIC_APP_URL` | Webアプリの公開URL | `https://qti3-web.shumi.dev` |
+| `NEXT_PUBLIC_APP_URL` | Webアプリの公開URL | `https://qti-mock.shumi.dev` |
 | `NEXT_PUBLIC_PLAYER_URL` | Playerの公開URL | `https://qti3-player.shumi.dev` |
 | `PLAYER_URL` | CORS許可オリジン | `https://qti3-player.shumi.dev` |
 
