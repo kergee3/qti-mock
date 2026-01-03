@@ -5,7 +5,7 @@ import { Box, CircularProgress } from '@mui/material'
 import { TestInitialScreen } from '@/components/test/TestInitialScreen'
 import { TestInProgress } from '@/components/test/TestInProgress'
 import { TestResults } from '@/components/test/TestResults'
-import type { TestPhase, ItemInfo, ItemResult, FontOption } from '@/types/test'
+import type { TestPhase, ItemInfo, ItemResult, FontOption, QuestionBarPosition } from '@/types/test'
 
 /**
  * テストページ
@@ -30,6 +30,7 @@ export default function TestPage() {
 
   // 設定
   const [selectedFont, setSelectedFont] = useState<FontOption>('system')
+  const [questionBarPosition, setQuestionBarPosition] = useState<QuestionBarPosition>('auto')
 
   // アイテム一覧を取得
   useEffect(() => {
@@ -130,6 +131,8 @@ export default function TestPage() {
           items={items}
           selectedFont={selectedFont}
           onFontChange={setSelectedFont}
+          questionBarPosition={questionBarPosition}
+          onQuestionBarPositionChange={setQuestionBarPosition}
           onStart={handleStart}
         />
       )
@@ -142,6 +145,7 @@ export default function TestPage() {
           currentIndex={currentItemIndex}
           sessionId={sessionId}
           font={selectedFont}
+          questionBarPosition={questionBarPosition}
           onNavigate={handleNavigate}
           onItemLoaded={handleItemLoaded}
           onItemScored={handleItemScored}

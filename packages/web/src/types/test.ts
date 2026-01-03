@@ -25,6 +25,9 @@ export interface ItemResult {
   duration?: number
 }
 
+/** 問題選択バーの位置 */
+export type QuestionBarPosition = 'auto' | 'left' | 'top' | 'bottom'
+
 /** フォントオプション */
 export type FontOption =
   | 'system'

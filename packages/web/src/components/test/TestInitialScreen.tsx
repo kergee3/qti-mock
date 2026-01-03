@@ -1,12 +1,14 @@
 'use client'
 
 import { Box, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material'
-import type { ItemInfo, FontOption } from '@/types/test'
+import type { ItemInfo, FontOption, QuestionBarPosition } from '@/types/test'
 
 interface TestInitialScreenProps {
   items: ItemInfo[]
   selectedFont: FontOption
   onFontChange: (font: FontOption) => void
+  questionBarPosition: QuestionBarPosition
+  onQuestionBarPositionChange: (position: QuestionBarPosition) => void
   onStart: () => void
 }
 
@@ -21,6 +23,14 @@ const fontLabels: Record<FontOption, string> = {
   'kosugi-maru': 'Kosugi Maru',
 }
 
+/** 問題バー位置のラベル */
+const questionBarLabels: Record<QuestionBarPosition, string> = {
+  'auto': '自動',
+  'left': '左端',
+  'top': '上（横並び）',
+  'bottom': '下（横並び）',
+}
+
 /**
  * テスト初期画面コンポーネント
  * - 問題一覧テーブル
@@ -31,6 +41,8 @@ export function TestInitialScreen({
   items,
   selectedFont,
   onFontChange,
+  questionBarPosition,
+  onQuestionBarPositionChange,
   onStart,
 }: TestInitialScreenProps) {
   return (
@@ -78,31 +90,62 @@ export function TestInitialScreen({
           はじめる
         </Button>
 
-        {/* フォント選択 */}
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          <Box component="label" sx={{ fontWeight: 'bold', fontSize: '0.9rem' }}>
-            フォント：
+        {/* 設定エリア */}
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 3, flexWrap: 'wrap' }}>
+          {/* 問題バー位置選択 */}
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Box component="label" sx={{ fontWeight: 'bold', fontSize: '0.9rem' }}>
+              問題バー：
+            </Box>
+            <Box
+              component="select"
+              value={questionBarPosition}
+              onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+                onQuestionBarPositionChange(e.target.value as QuestionBarPosition)
+              }
+              sx={{
+                padding: '8px 12px',
+                fontSize: '0.9rem',
+                borderRadius: '4px',
+                border: '1px solid #ccc',
+                backgroundColor: '#fff',
+                cursor: 'pointer',
+              }}
+            >
+              {Object.entries(questionBarLabels).map(([value, label]) => (
+                <option key={value} value={value}>
+                  {label}
+                </option>
+              ))}
+            </Box>
           </Box>
-          <Box
-            component="select"
-            value={selectedFont}
-            onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-              onFontChange(e.target.value as FontOption)
-            }
-            sx={{
-              padding: '8px 12px',
-              fontSize: '0.9rem',
-              borderRadius: '4px',
-              border: '1px solid #ccc',
-              backgroundColor: '#fff',
-              cursor: 'pointer',
-            }}
-          >
-            {Object.entries(fontLabels).map(([value, label]) => (
-              <option key={value} value={value}>
-                {label}
-              </option>
-            ))}
+
+          {/* フォント選択 */}
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Box component="label" sx={{ fontWeight: 'bold', fontSize: '0.9rem' }}>
+              フォント：
+            </Box>
+            <Box
+              component="select"
+              value={selectedFont}
+              onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+                onFontChange(e.target.value as FontOption)
+              }
+              sx={{
+                padding: '8px 12px',
+                fontSize: '0.9rem',
+                borderRadius: '4px',
+                border: '1px solid #ccc',
+                backgroundColor: '#fff',
+                cursor: 'pointer',
+              }}
+            >
+              {Object.entries(fontLabels).map(([value, label]) => (
+                <option key={value} value={value}>
+                  {label}
+                </option>
+              ))}
+            </Box>
           </Box>
         </Box>
       </Box>

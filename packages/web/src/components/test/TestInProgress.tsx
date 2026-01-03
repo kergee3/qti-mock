@@ -1,9 +1,9 @@
 'use client'
 
-import { useRef, useEffect, useCallback } from 'react'
+import { useRef, useEffect, useCallback, useState } from 'react'
 import { Box, Button, Tooltip } from '@mui/material'
 import { useSettings } from '@/contexts/SettingsContext'
-import type { ItemInfo, ItemResult, FontOption, QuestionStatus } from '@/types/test'
+import type { ItemInfo, ItemResult, FontOption, QuestionStatus, QuestionBarPosition } from '@/types/test'
 
 interface TestInProgressProps {
   items: ItemInfo[]
@@ -11,6 +11,7 @@ interface TestInProgressProps {
   currentIndex: number
   sessionId: string
   font: FontOption
+  questionBarPosition: QuestionBarPosition
   onNavigate: (index: number) => void
   onItemLoaded: (itemId: string) => void
   onItemScored: (result: ItemResult) => void
@@ -28,6 +29,7 @@ export function TestInProgress({
   currentIndex,
   sessionId,
   font,
+  questionBarPosition,
   onNavigate,
   onItemLoaded,
   onItemScored,
@@ -126,101 +128,230 @@ export function TestInProgress({
     onNavigate(index)
   }
 
+  // 次へボタンの処理
+  const handleNextClick = () => {
+    if (currentIndex < items.length - 1) {
+      handleQuestionClick(currentIndex + 1)
+    }
+  }
+
+  // 最後の問題かどうか
+  const isLastQuestion = currentIndex >= items.length - 1
+
+  // 画面サイズに基づく自動位置判定
+  const [windowSize, setWindowSize] = useState({ width: 0, height: 0 })
+
+  useEffect(() => {
+    const updateSize = () => {
+      setWindowSize({ width: window.innerWidth, height: window.innerHeight })
+    }
+    updateSize()
+    window.addEventListener('resize', updateSize)
+    return () => window.removeEventListener('resize', updateSize)
+  }, [])
+
+  // 実際の位置を決定（auto の場合は画面サイズで判定）
+  const effectivePosition: 'left' | 'top' | 'bottom' = (() => {
+    if (questionBarPosition === 'auto') {
+      // 横が大きい場合は左端、縦が大きい場合は上
+      return windowSize.width >= windowSize.height ? 'left' : 'top'
+    }
+    return questionBarPosition
+  })()
+
+  // 横並び（top/bottom）用かどうか
+  const isHorizontal = effectivePosition === 'top' || effectivePosition === 'bottom'
+
+  // 問題番号ボタンをレンダリング
+  const renderQuestionButtons = () => (
+    <Box sx={{
+      display: 'flex',
+      flexDirection: isHorizontal ? 'row' : 'column',
+      gap: 0.5,
+      flexWrap: isHorizontal ? 'wrap' : 'nowrap',
+    }}>
+      {items.map((item, index) => {
+        const status = getQuestionStatus(index)
+        const isCurrent = index === currentIndex
+        const bgColor = getStatusColor(status, isCurrent)
+
+        return (
+          <Tooltip
+            key={item.id}
+            title={`${item.title} (${item.type})`}
+            placement={isHorizontal ? 'bottom' : 'right'}
+            arrow
+          >
+            <Button
+              onClick={() => handleQuestionClick(index)}
+              sx={{
+                minWidth: 36,
+                height: 28,
+                px: 1,
+                py: 0.5,
+                borderRadius: '6px',
+                backgroundColor: bgColor,
+                color: '#fff',
+                fontWeight: 'bold',
+                fontSize: '0.875rem',
+                border: isCurrent ? '3px solid #000' : 'none',
+                boxSizing: 'border-box',
+                '&:hover': {
+                  backgroundColor: bgColor,
+                  opacity: 0.85,
+                },
+              }}
+            >
+              {index + 1}
+            </Button>
+          </Tooltip>
+        )
+      })}
+    </Box>
+  )
+
+  // 次へボタンをレンダリング
+  const renderNextButton = () => (
+    <Button
+      variant="contained"
+      color="primary"
+      onClick={handleNextClick}
+      disabled={isLastQuestion}
+      sx={{
+        minWidth: 50,
+        fontWeight: 'bold',
+      }}
+    >
+      次へ
+    </Button>
+  )
+
+  // 終了ボタンをレンダリング
+  const renderFinishButton = () => (
+    <Button
+      variant="contained"
+      color="error"
+      onClick={onFinish}
+      sx={{
+        minWidth: 50,
+        fontWeight: 'bold',
+      }}
+    >
+      終了
+    </Button>
+  )
+
+  // iframeをレンダリング
+  const renderIframe = () => (
+    <Box sx={{ flex: 1, overflow: 'hidden' }}>
+      {iframeSrc ? (
+        <iframe
+          ref={iframeRef}
+          src={iframeSrc}
+          style={{
+            width: '100%',
+            height: '100%',
+            border: 'none',
+          }}
+          title="QTI Player"
+        />
+      ) : (
+        <Box sx={{ p: 4, textAlign: 'center', color: '#666' }}>
+          問題を読み込んでいます...
+        </Box>
+      )}
+    </Box>
+  )
+
+  // 区切り線（横並び用）
+  const renderHorizontalDivider = () => (
+    <Box
+      sx={{
+        height: 28,
+        borderLeft: '1px solid #ccc',
+        mx: 0.5,
+      }}
+    />
+  )
+
+  // 問題バーをレンダリング（横並び: top/bottom）
+  const renderHorizontalBar = () => (
+    <Box
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: 1.5,
+        px: 2,
+        py: 1,
+        backgroundColor: '#fafafa',
+        borderBottom: effectivePosition === 'top' ? '2px solid #e0e0e0' : 'none',
+        borderTop: effectivePosition === 'bottom' ? '2px solid #e0e0e0' : 'none',
+      }}
+    >
+      {renderNextButton()}
+      {renderHorizontalDivider()}
+      {renderQuestionButtons()}
+      {renderHorizontalDivider()}
+      {renderFinishButton()}
+    </Box>
+  )
+
+  // 区切り線（縦並び用）
+  const renderVerticalDivider = () => (
+    <Box
+      sx={{
+        width: '80%',
+        borderTop: '1px solid #ccc',
+        my: 1.5,
+      }}
+    />
+  )
+
+  // 問題バーをレンダリング（縦並び: left）
+  const renderVerticalBar = () => (
+    <Box
+      sx={{
+        width: 70,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        py: 2,
+        borderRight: '2px solid #e0e0e0',
+        backgroundColor: '#fafafa',
+      }}
+    >
+      {renderNextButton()}
+      {renderVerticalDivider()}
+      {renderQuestionButtons()}
+      {renderVerticalDivider()}
+      {renderFinishButton()}
+    </Box>
+  )
+
+  // レイアウトに応じたレンダリング
+  if (effectivePosition === 'top') {
+    return (
+      <Box sx={{ display: 'flex', flexDirection: 'column', height: 'calc(100vh - 120px)' }}>
+        {renderHorizontalBar()}
+        {renderIframe()}
+      </Box>
+    )
+  }
+
+  if (effectivePosition === 'bottom') {
+    return (
+      <Box sx={{ display: 'flex', flexDirection: 'column', height: 'calc(100vh - 120px)' }}>
+        {renderIframe()}
+        {renderHorizontalBar()}
+      </Box>
+    )
+  }
+
+  // デフォルト: left
   return (
     <Box sx={{ display: 'flex', height: 'calc(100vh - 120px)' }}>
-      {/* 左サイドバー */}
-      <Box
-        sx={{
-          width: 70,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          py: 2,
-          borderRight: '2px solid #e0e0e0',
-          backgroundColor: '#fafafa',
-        }}
-      >
-        {/* 問題番号ボタン */}
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
-          {items.map((item, index) => {
-            const status = getQuestionStatus(index)
-            const isCurrent = index === currentIndex
-            const bgColor = getStatusColor(status, isCurrent)
-
-            return (
-              <Tooltip
-                key={item.id}
-                title={`${item.title} (${item.type})`}
-                placement="right"
-                arrow
-              >
-                <Button
-                  onClick={() => handleQuestionClick(index)}
-                  sx={{
-                    minWidth: 36,
-                    height: 28,
-                    px: 1,
-                    py: 0.5,
-                    borderRadius: '6px',
-                    backgroundColor: bgColor,
-                    color: '#fff',
-                    fontWeight: 'bold',
-                    fontSize: '0.875rem',
-                    '&:hover': {
-                      backgroundColor: bgColor,
-                      opacity: 0.85,
-                    },
-                  }}
-                >
-                  {index + 1}
-                </Button>
-              </Tooltip>
-            )
-          })}
-        </Box>
-
-        {/* 区切り線 */}
-        <Box
-          sx={{
-            width: '80%',
-            borderTop: '1px solid #ccc',
-            my: 1.5,
-          }}
-        />
-
-        {/* 終了ボタン */}
-        <Button
-          variant="contained"
-          color="error"
-          onClick={onFinish}
-          sx={{
-            minWidth: 50,
-            fontWeight: 'bold',
-          }}
-        >
-          終了
-        </Button>
-      </Box>
-
-      {/* メインエリア: iframe */}
-      <Box sx={{ flex: 1, overflow: 'hidden' }}>
-        {iframeSrc ? (
-          <iframe
-            ref={iframeRef}
-            src={iframeSrc}
-            style={{
-              width: '100%',
-              height: '100%',
-              border: 'none',
-            }}
-            title="QTI Player"
-          />
-        ) : (
-          <Box sx={{ p: 4, textAlign: 'center', color: '#666' }}>
-            問題を読み込んでいます...
-          </Box>
-        )}
-      </Box>
+      {renderVerticalBar()}
+      {renderIframe()}
     </Box>
   )
 }
