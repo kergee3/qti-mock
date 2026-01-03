@@ -26,7 +26,7 @@
       </div>
 
       <!-- 回答ボタン -->
-      <div v-if="isItemLoaded && !isScored" class="controls">
+      <div v-if="isItemLoaded && !isScored" class="controls" :class="{ 'controls-rtl': isVerticalWriting }">
         <button @click="submitResponse" :disabled="isSubmitting">
           {{ isSubmitting ? '送信中...' : '回答' }}
         </button>
@@ -72,6 +72,15 @@ const isExternalScored = ref(false)
 
 // フォント設定
 const fontFamily = ref('system')
+
+// 縦書きかどうか（XMLの内容から判定）
+const isVerticalWriting = ref(false)
+
+// XMLから縦書きかどうかを判定（文字列検索 - 高速）
+const detectWritingDirection = (xml) => {
+  if (!xml) return false
+  return xml.includes('qti3-player-writing-mode-vertical-rl')
+}
 
 const fontStyle = computed(() => {
   switch (fontFamily.value) {
@@ -230,8 +239,10 @@ onMounted(() => {
   // 親ウィンドウからのメッセージを受信
   window.addEventListener('message', handleParentMessage)
 
-  // URLパラメータからフォント設定を取得
+  // URLパラメータから設定を取得
   const params = new URLSearchParams(window.location.search)
+
+  // フォント設定
   const fontParam = params.get('font')
   const validFonts = ['noto-sans-jp', 'noto-serif-jp', 'biz-udpgothic', 'biz-udpmincho', 'source-han-sans', 'kosugi-maru']
   if (fontParam && validFonts.includes(fontParam)) {
@@ -263,6 +274,13 @@ const loadGoogleFont = (fontKey) => {
     document.head.appendChild(link)
   }
 }
+
+// XMLが読み込まれたら縦書き判定を実行
+watch(itemXml, (newXml) => {
+  if (newXml) {
+    isVerticalWriting.value = detectWritingDirection(newXml)
+  }
+})
 
 // XMLが読み込まれてプレイヤーも準備できたら読み込む
 watch([itemXml, isPlayerReady], ([newXml, playerReady]) => {
@@ -396,6 +414,10 @@ const submitResponse = () => {
 
 .controls {
   margin-top: 20px;
+}
+
+.controls.controls-rtl {
+  text-align: right;
 }
 
 .controls button {
