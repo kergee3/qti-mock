@@ -3,7 +3,7 @@
 import { useRef, useEffect, useCallback, useState } from 'react'
 import { Box, Button, Tooltip } from '@mui/material'
 import { useSettings } from '@/contexts/SettingsContext'
-import type { ItemInfo, ItemResult, FontOption, QuestionStatus, QuestionBarPosition } from '@/types/test'
+import type { ItemInfo, ItemResult, FontOption, QuestionStatus, QuestionBarPosition, WritingDirection } from '@/types/test'
 
 interface TestInProgressProps {
   items: ItemInfo[]
@@ -12,6 +12,7 @@ interface TestInProgressProps {
   sessionId: string
   font: FontOption
   questionBarPosition: QuestionBarPosition
+  writingDirection: WritingDirection
   onNavigate: (index: number) => void
   onItemLoaded: (itemId: string) => void
   onItemScored: (result: ItemResult) => void
@@ -30,6 +31,7 @@ export function TestInProgress({
   sessionId,
   font,
   questionBarPosition,
+  writingDirection,
   onNavigate,
   onItemLoaded,
   onItemScored,
@@ -47,9 +49,10 @@ export function TestInProgress({
   const playerUrl = process.env.NEXT_PUBLIC_PLAYER_URL || 'http://localhost:5173'
   const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
 
-  // 現在のアイテムURL
+  // 現在のアイテムURL（書字方向に応じてディレクトリを変更）
   const currentItem = items[currentIndex]
-  const itemUrl = currentItem ? `${appUrl}/items/${currentItem.fileName}` : ''
+  const itemsSubDir = writingDirection === 'vertical' ? 'items-v' : 'items'
+  const itemUrl = currentItem ? `${appUrl}/${itemsSubDir}/${currentItem.fileName}` : ''
   const callbackUrl = `${appUrl}/api/results`
 
   // iframe の src URL
@@ -118,7 +121,7 @@ export function TestInProgress({
     // iframe に CHANGE_ITEM メッセージを送信
     const newItem = items[index]
     if (newItem && iframeRef.current?.contentWindow) {
-      const newItemUrl = `${appUrl}/items/${newItem.fileName}`
+      const newItemUrl = `${appUrl}/${itemsSubDir}/${newItem.fileName}`
       iframeRef.current.contentWindow.postMessage({
         type: 'CHANGE_ITEM',
         itemUrl: newItemUrl,

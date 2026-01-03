@@ -5,7 +5,7 @@ import { Box, CircularProgress } from '@mui/material'
 import { TestInitialScreen } from '@/components/test/TestInitialScreen'
 import { TestInProgress } from '@/components/test/TestInProgress'
 import { TestResults } from '@/components/test/TestResults'
-import type { TestPhase, ItemInfo, ItemResult, FontOption, QuestionBarPosition } from '@/types/test'
+import type { TestPhase, ItemInfo, ItemResult, FontOption, QuestionBarPosition, WritingDirection } from '@/types/test'
 
 /**
  * テストページ
@@ -31,12 +31,14 @@ export default function TestPage() {
   // 設定
   const [selectedFont, setSelectedFont] = useState<FontOption>('system')
   const [questionBarPosition, setQuestionBarPosition] = useState<QuestionBarPosition>('auto')
+  const [writingDirection, setWritingDirection] = useState<WritingDirection>('horizontal')
 
-  // アイテム一覧を取得
+  // アイテム一覧を取得（書字方向が変更されたら再取得）
   useEffect(() => {
     const fetchItems = async () => {
+      setIsLoading(true)
       try {
-        const response = await fetch('/api/items')
+        const response = await fetch(`/api/items?dir=${writingDirection}`)
         const data = await response.json()
         if (data.success) {
           setItems(data.items)
@@ -52,7 +54,7 @@ export default function TestPage() {
     }
 
     fetchItems()
-  }, [])
+  }, [writingDirection])
 
   // テスト開始
   const handleStart = useCallback(() => {
@@ -129,6 +131,8 @@ export default function TestPage() {
       return (
         <TestInitialScreen
           items={items}
+          writingDirection={writingDirection}
+          onWritingDirectionChange={setWritingDirection}
           selectedFont={selectedFont}
           onFontChange={setSelectedFont}
           questionBarPosition={questionBarPosition}
@@ -146,6 +150,7 @@ export default function TestPage() {
           sessionId={sessionId}
           font={selectedFont}
           questionBarPosition={questionBarPosition}
+          writingDirection={writingDirection}
           onNavigate={handleNavigate}
           onItemLoaded={handleItemLoaded}
           onItemScored={handleItemScored}

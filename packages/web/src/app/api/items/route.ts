@@ -2,9 +2,12 @@ import { NextResponse } from 'next/server'
 import fs from 'fs'
 import path from 'path'
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
-    const itemsDir = path.join(process.cwd(), 'public', 'items')
+    const { searchParams } = new URL(request.url)
+    const dir = searchParams.get('dir') || 'horizontal'
+    const subDir = dir === 'vertical' ? 'items-v' : 'items'
+    const itemsDir = path.join(process.cwd(), 'public', subDir)
     const files = fs.readdirSync(itemsDir)
 
     // XMLファイルのみをフィルタリングし、ファイル名でソート

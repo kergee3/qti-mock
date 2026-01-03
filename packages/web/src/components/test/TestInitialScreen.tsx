@@ -1,10 +1,12 @@
 'use client'
 
-import { Box, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material'
-import type { ItemInfo, FontOption, QuestionBarPosition } from '@/types/test'
+import { Box, Button, ButtonGroup, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material'
+import type { ItemInfo, FontOption, QuestionBarPosition, WritingDirection } from '@/types/test'
 
 interface TestInitialScreenProps {
   items: ItemInfo[]
+  writingDirection: WritingDirection
+  onWritingDirectionChange: (dir: WritingDirection) => void
   selectedFont: FontOption
   onFontChange: (font: FontOption) => void
   questionBarPosition: QuestionBarPosition
@@ -42,6 +44,8 @@ const questionBarLabels: Record<QuestionBarPosition, string> = {
  */
 export function TestInitialScreen({
   items,
+  writingDirection,
+  onWritingDirectionChange,
   selectedFont,
   onFontChange,
   questionBarPosition,
@@ -50,17 +54,66 @@ export function TestInitialScreen({
 }: TestInitialScreenProps) {
   return (
     <Box sx={{ maxWidth: 900, mx: 'auto', p: 3 }}>
-      {/* ヘッダー */}
+      {/* ヘッダー: タイトル + 書字方向選択 */}
       <Box
-        component="h1"
         sx={{
-          fontSize: '1.8rem',
-          fontWeight: 'bold',
+          display: 'flex',
+          alignItems: 'center',
+          gap: 1,
           mb: 3,
-          color: '#333',
         }}
       >
-        TEST ページ: 初期画面
+        <Box
+          component="h1"
+          sx={{
+            fontSize: '1.8rem',
+            fontWeight: 'bold',
+            color: '#333',
+            m: 0,
+          }}
+        >
+          問題選択:
+        </Box>
+        <ButtonGroup variant="outlined" size="large">
+          <Button
+            variant={writingDirection === 'horizontal' ? 'contained' : 'outlined'}
+            onClick={() => onWritingDirectionChange('horizontal')}
+            sx={{
+              fontSize: '1.2rem',
+              fontWeight: 'bold',
+              px: 2,
+              py: 0.5,
+              color: writingDirection === 'horizontal' ? '#fff' : '#333',
+              backgroundColor: writingDirection === 'horizontal' ? '#333' : 'transparent',
+              borderColor: '#333',
+              '&:hover': {
+                backgroundColor: writingDirection === 'horizontal' ? '#555' : 'rgba(0,0,0,0.04)',
+                borderColor: '#333',
+              },
+            }}
+          >
+            横書き
+          </Button>
+          <Button
+            variant={writingDirection === 'vertical' ? 'contained' : 'outlined'}
+            onClick={() => onWritingDirectionChange('vertical')}
+            sx={{
+              fontSize: '1.2rem',
+              fontWeight: 'bold',
+              px: 2,
+              py: 0.5,
+              color: writingDirection === 'vertical' ? '#fff' : '#333',
+              backgroundColor: writingDirection === 'vertical' ? '#333' : 'transparent',
+              borderColor: '#333',
+              '&:hover': {
+                backgroundColor: writingDirection === 'vertical' ? '#555' : 'rgba(0,0,0,0.04)',
+                borderColor: '#333',
+              },
+            }}
+          >
+            縦書き
+          </Button>
+        </ButtonGroup>
       </Box>
 
       {/* コントロールエリア */}
