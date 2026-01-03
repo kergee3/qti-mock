@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" identifier="vertical-choice-1"
-    title="季語を必要とするのは和歌か俳句か" time-dependent="false" xml:lang="ja">
+    title="季語を必要とするのは？" time-dependent="false" xml:lang="ja">
     <qti-response-declaration base-type="identifier" identifier="RESPONSE" cardinality="single">
         <qti-correct-response>
             <qti-value>A</qti-value>

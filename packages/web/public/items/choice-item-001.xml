@@ -2,7 +2,7 @@
 <qti-assessment-item
   xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0"
   identifier="choice-item-001"
-  title="選択問題サンプル"
+  title="日本の首都はどこですか？"
   adaptive="false"
   time-dependent="false">
 

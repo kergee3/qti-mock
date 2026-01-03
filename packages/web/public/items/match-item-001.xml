@@ -2,7 +2,7 @@
 <qti-assessment-item
   xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0"
   identifier="match-item-001"
-  title="マッチング問題サンプル"
+  title="国と首都を合わせよう"
   adaptive="false"
   time-dependent="false">
 
