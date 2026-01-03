@@ -20,17 +20,23 @@
   </qti-outcome-declaration>
 
   <qti-item-body>
-    <div class="qti-height-96 qti3-player-writing-mode-vertical-rl qti3-player-float-right">
-      <p>日本地図上で東京の位置をクリックしてください。</p>
+    <!-- 縦書き判定用マーカー（非表示） -->
+    <span class="qti3-player-writing-mode-vertical-rl" style="display: none;"></span>
+    <div style="display: flex; flex-direction: row; align-items: flex-start; justify-content: flex-end; gap: 1.5rem;">
+      <!-- 左側：地図画像 -->
+      <qti-hotspot-interaction response-identifier="RESPONSE" max-choices="1">
+        <object type="image/svg+xml" data="/items/images/japan-map.svg" width="400" height="300">日本地図</object>
+        <qti-hotspot-choice identifier="hotspot_tokyo" shape="circle" coords="267,193,20" hotspot-label="東京"/>
+        <qti-hotspot-choice identifier="hotspot_osaka" shape="circle" coords="172,218,20" hotspot-label="大阪"/>
+        <qti-hotspot-choice identifier="hotspot_kyoto" shape="circle" coords="176,205,20" hotspot-label="京都"/>
+        <qti-hotspot-choice identifier="hotspot_nagoya" shape="circle" coords="210,209,20" hotspot-label="名古屋"/>
+      </qti-hotspot-interaction>
+      <!-- 右側：縦書きテキスト2列 -->
+      <div style="display: flex; flex-direction: row; gap: 1rem;">
+        <p style="writing-mode: vertical-rl; margin: 0; line-height: 1.8;">下の地図から東京を選んでください。</p>
+        <p style="writing-mode: vertical-rl; margin: 0; line-height: 1.8;">日本地図上で東京の位置をクリックしてください。</p>
+      </div>
     </div>
-    <qti-hotspot-interaction response-identifier="RESPONSE" max-choices="1">
-      <qti-prompt class="qti3-player-writing-mode-vertical-rl">下の地図から東京を選んでください。</qti-prompt>
-      <object type="image/svg+xml" data="/items/images/japan-map.svg" width="400" height="300">日本地図</object>
-      <qti-hotspot-choice identifier="hotspot_tokyo" shape="circle" coords="267,193,20" hotspot-label="東京"/>
-      <qti-hotspot-choice identifier="hotspot_osaka" shape="circle" coords="172,218,20" hotspot-label="大阪"/>
-      <qti-hotspot-choice identifier="hotspot_kyoto" shape="circle" coords="176,205,20" hotspot-label="京都"/>
-      <qti-hotspot-choice identifier="hotspot_nagoya" shape="circle" coords="210,209,20" hotspot-label="名古屋"/>
-    </qti-hotspot-interaction>
   </qti-item-body>
 
   <qti-response-processing
