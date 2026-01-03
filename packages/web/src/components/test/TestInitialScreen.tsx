@@ -67,8 +67,10 @@ export function TestInitialScreen({
       <Box
         sx={{
           display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
+          flexDirection: { xs: 'column', sm: 'row' },
+          justifyContent: { xs: 'flex-start', sm: 'space-between' },
+          alignItems: { xs: 'stretch', sm: 'center' },
+          gap: { xs: 2, sm: 0 },
           mb: 3,
         }}
       >
@@ -93,62 +95,61 @@ export function TestInitialScreen({
           はじめる
         </Button>
 
-        {/* 設定エリア */}
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 3, flexWrap: 'wrap' }}>
-          {/* 問題バー位置選択 */}
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <Box component="label" sx={{ fontWeight: 'bold', fontSize: '0.9rem' }}>
-              問題バー：
-            </Box>
-            <Box
-              component="select"
-              value={questionBarPosition}
-              onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-                onQuestionBarPositionChange(e.target.value as QuestionBarPosition)
-              }
-              sx={{
-                padding: '8px 12px',
-                fontSize: '0.9rem',
-                borderRadius: '4px',
-                border: '1px solid #ccc',
-                backgroundColor: '#fff',
-                cursor: 'pointer',
-              }}
-            >
-              {Object.entries(questionBarLabels).map(([value, label]) => (
-                <option key={value} value={value}>
-                  {label}
-                </option>
-              ))}
-            </Box>
+        {/* 問題バー位置選択 */}
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <Box component="label" sx={{ fontWeight: 'bold', fontSize: '0.9rem' }}>
+            問題バー：
           </Box>
+          <Box
+            component="select"
+            value={questionBarPosition}
+            onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+              onQuestionBarPositionChange(e.target.value as QuestionBarPosition)
+            }
+            sx={{
+              padding: '8px 12px',
+              fontSize: '0.9rem',
+              borderRadius: '4px',
+              border: '1px solid #ccc',
+              backgroundColor: '#fff',
+              cursor: 'pointer',
+              flex: 1,
+            }}
+          >
+            {Object.entries(questionBarLabels).map(([value, label]) => (
+              <option key={value} value={value}>
+                {label}
+              </option>
+            ))}
+          </Box>
+        </Box>
 
-          {/* フォント選択 */}
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <Box component="label" sx={{ fontWeight: 'bold', fontSize: '0.9rem' }}>
-              フォント：
-            </Box>
-            <Box
-              component="select"
-              value={selectedFont}
-              onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-                onFontChange(e.target.value as FontOption)
-              }
-              sx={{
-                padding: '8px 12px',
-                fontSize: '0.9rem',
-                borderRadius: '4px',
-                border: '1px solid #ccc',
-                backgroundColor: '#fff',
-                cursor: 'pointer',
-              }}
-            >
-              {Object.entries(fontLabels).map(([value, label]) => (
-                <option key={value} value={value}>
-                  {label}
-                </option>
-              ))}
-            </Box>
+        {/* フォント選択 */}
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <Box component="label" sx={{ fontWeight: 'bold', fontSize: '0.9rem' }}>
+            フォント：
+          </Box>
+          <Box
+            component="select"
+            value={selectedFont}
+            onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+              onFontChange(e.target.value as FontOption)
+            }
+            sx={{
+              padding: '8px 12px',
+              fontSize: '0.9rem',
+              borderRadius: '4px',
+              border: '1px solid #ccc',
+              backgroundColor: '#fff',
+              cursor: 'pointer',
+              flex: 1,
+            }}
+          >
+            {Object.entries(fontLabels).map(([value, label]) => (
+              <option key={value} value={value}>
+                {label}
+              </option>
+            ))}
           </Box>
         </Box>
       </Box>
