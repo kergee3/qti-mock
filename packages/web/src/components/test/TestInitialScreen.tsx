@@ -156,12 +156,12 @@ export function TestInitialScreen({
 
       {/* 問題一覧テーブル */}
       <TableContainer component={Paper} elevation={0} sx={{ border: '1px solid #ddd' }}>
-        <Table>
+        <Table size="small">
           <TableHead>
             <TableRow sx={{ backgroundColor: '#000' }}>
-              <TableCell sx={{ color: '#fff', fontWeight: 'bold', width: 60 }}>問</TableCell>
-              <TableCell sx={{ color: '#fff', fontWeight: 'bold' }}>タイトル</TableCell>
-              <TableCell sx={{ color: '#fff', fontWeight: 'bold' }}>インタラクション</TableCell>
+              <TableCell sx={{ color: '#fff', fontWeight: 'bold', width: { xs: 40, sm: 60 }, px: { xs: 1, sm: 2 }, py: { xs: 0.5, sm: 1 } }}>問</TableCell>
+              <TableCell sx={{ color: '#fff', fontWeight: 'bold', px: { xs: 1, sm: 2 }, py: { xs: 0.5, sm: 1 } }}>タイトル</TableCell>
+              <TableCell sx={{ color: '#fff', fontWeight: 'bold', px: { xs: 1, sm: 2 }, py: { xs: 0.5, sm: 1 } }}>インタラクション</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -173,9 +173,9 @@ export function TestInitialScreen({
                   '&:hover': { backgroundColor: '#f0f0f0' },
                 }}
               >
-                <TableCell sx={{ textAlign: 'center' }}>{index + 1}</TableCell>
-                <TableCell>{item.title}</TableCell>
-                <TableCell sx={{ color: '#666', whiteSpace: 'pre-line' }}>
+                <TableCell sx={{ textAlign: 'center', px: { xs: 1, sm: 2 }, py: { xs: 0.5, sm: 1 } }}>{index + 1}</TableCell>
+                <TableCell sx={{ px: { xs: 1, sm: 2 }, py: { xs: 0.5, sm: 1 }, fontSize: { xs: '0.85rem', sm: '1rem' } }}>{item.title}</TableCell>
+                <TableCell sx={{ color: '#666', whiteSpace: 'pre-line', px: { xs: 1, sm: 2 }, py: { xs: 0.5, sm: 1 }, fontSize: { xs: '0.85rem', sm: '1rem' } }}>
                   {item.type.split('\n').map(t => t.replace(/Interaction$/, '')).join('\n')}
                 </TableCell>
               </TableRow>

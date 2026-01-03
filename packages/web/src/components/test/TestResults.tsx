@@ -87,14 +87,14 @@ export function TestResults({
 
       {/* 結果テーブル */}
       <TableContainer component={Paper} elevation={0} sx={{ border: '1px solid #ddd', mb: 4 }}>
-        <Table>
+        <Table size="small">
           <TableHead>
             <TableRow sx={{ backgroundColor: '#000' }}>
-              <TableCell sx={{ color: '#fff', fontWeight: 'bold', width: 60 }}>問</TableCell>
-              <TableCell sx={{ color: '#fff', fontWeight: 'bold' }}>タイトル</TableCell>
-              <TableCell sx={{ color: '#fff', fontWeight: 'bold', width: 225 }}>回答</TableCell>
-              <TableCell sx={{ color: '#fff', fontWeight: 'bold', width: 80, textAlign: 'center' }}>時間(秒)</TableCell>
-              <TableCell sx={{ color: '#fff', fontWeight: 'bold', width: 100 }}>結果</TableCell>
+              <TableCell sx={{ color: '#fff', fontWeight: 'bold', width: { xs: 35, sm: 60 }, px: { xs: 0.5, sm: 2 }, py: { xs: 0.5, sm: 1 } }}>問</TableCell>
+              <TableCell sx={{ color: '#fff', fontWeight: 'bold', px: { xs: 0.5, sm: 2 }, py: { xs: 0.5, sm: 1 } }}>タイトル</TableCell>
+              <TableCell sx={{ color: '#fff', fontWeight: 'bold', width: { xs: 80, sm: 225 }, px: { xs: 0.5, sm: 2 }, py: { xs: 0.5, sm: 1 }, display: { xs: 'none', sm: 'table-cell' } }}>回答</TableCell>
+              <TableCell sx={{ color: '#fff', fontWeight: 'bold', width: { xs: 45, sm: 80 }, textAlign: 'center', px: { xs: 0.5, sm: 2 }, py: { xs: 0.5, sm: 1 } }}>時間</TableCell>
+              <TableCell sx={{ color: '#fff', fontWeight: 'bold', width: { xs: 60, sm: 100 }, px: { xs: 0.5, sm: 2 }, py: { xs: 0.5, sm: 1 } }}>結果</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -109,9 +109,9 @@ export function TestResults({
                     backgroundColor: index % 2 === 0 ? '#fff' : '#f9f9f9',
                   }}
                 >
-                  <TableCell sx={{ textAlign: 'center' }}>{index + 1}</TableCell>
-                  <TableCell>{item.title}</TableCell>
-                  <TableCell sx={{ color: '#666', maxWidth: 225 }}>
+                  <TableCell sx={{ textAlign: 'center', px: { xs: 0.5, sm: 2 }, py: { xs: 0.5, sm: 1 } }}>{index + 1}</TableCell>
+                  <TableCell sx={{ px: { xs: 0.5, sm: 2 }, py: { xs: 0.5, sm: 1 }, fontSize: { xs: '0.8rem', sm: '1rem' } }}>{item.title}</TableCell>
+                  <TableCell sx={{ color: '#666', maxWidth: { xs: 80, sm: 225 }, px: { xs: 0.5, sm: 2 }, py: { xs: 0.5, sm: 1 }, display: { xs: 'none', sm: 'table-cell' } }}>
                     {result?.response ? (
                       <Tooltip title={result.response} arrow placement="top">
                         <Box
@@ -129,7 +129,7 @@ export function TestResults({
                       result?.answered ? '-' : ''
                     )}
                   </TableCell>
-                  <TableCell sx={{ textAlign: 'center', color: '#666' }}>
+                  <TableCell sx={{ textAlign: 'center', color: '#666', px: { xs: 0.5, sm: 2 }, py: { xs: 0.5, sm: 1 }, fontSize: { xs: '0.8rem', sm: '1rem' } }}>
                     {result?.duration != null ? result.duration : '-'}
                   </TableCell>
                   <TableCell
@@ -137,6 +137,9 @@ export function TestResults({
                       color: display.color,
                       fontWeight: display.style === 'italic' ? 'normal' : 'bold',
                       fontStyle: display.style,
+                      px: { xs: 0.5, sm: 2 },
+                      py: { xs: 0.5, sm: 1 },
+                      fontSize: { xs: '0.8rem', sm: '1rem' },
                     }}
                   >
                     {display.text}
