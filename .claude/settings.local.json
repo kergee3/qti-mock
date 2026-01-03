@@ -24,7 +24,12 @@
       "Bash(cat:*)",
       "Bash(git merge:*)",
       "Bash(git stash:*)",
-      "Bash(dir /b \"c:\\\\nexcbt\\\\qti3-demo\\\\packages\\\\web\\\\public\\\\items\")"
+      "Bash(dir /b \"c:\\\\nexcbt\\\\qti3-demo\\\\packages\\\\web\\\\public\\\\items\")",
+      "Bash(cp:*)",
+      "Bash(where:*)",
+      "Bash(npx sharp-cli:*)",
+      "Bash(ls:*)",
+      "Bash(dir:*)"
     ]
   }
 }

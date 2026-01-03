@@ -24,7 +24,7 @@ export default function TopTabs({ items }: TopTabsProps) {
     >
       <Toolbar sx={{ px: { xs: 1, sm: 2 } }}>
         <Typography variant="h6" component="div" sx={{ mr: 0.5, flexShrink: 0 }}>
-          QTI Demo
+          QTI Mock
         </Typography>
         <Tabs
           value={currentIndex !== -1 ? currentIndex : 0}
