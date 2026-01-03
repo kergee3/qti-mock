@@ -153,11 +153,17 @@ export function TestInProgress({
     return () => window.removeEventListener('resize', updateSize)
   }, [])
 
-  // 実際の位置を決定（auto の場合は画面サイズで判定）
+  // 実際の位置を決定（auto の場合は画面サイズと書字方向で判定）
   const effectivePosition: 'left' | 'right' | 'top-ltr' | 'top-rtl' | 'bottom-ltr' | 'bottom-rtl' = (() => {
     if (questionBarPosition === 'auto') {
-      // 横が大きい場合は左端、縦が大きい場合は上（左から）
-      return windowSize.width >= windowSize.height ? 'left' : 'top-ltr'
+      const isLandscape = windowSize.width >= windowSize.height
+      if (writingDirection === 'vertical') {
+        // 縦書き: 横長→右-縦並び、縦長→上-横並び(右から)
+        return isLandscape ? 'right' : 'top-rtl'
+      } else {
+        // 横書き: 横長→左-縦並び、縦長→上-横並び(左から)
+        return isLandscape ? 'left' : 'top-ltr'
+      }
     }
     return questionBarPosition
   })()
