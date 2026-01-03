@@ -151,26 +151,34 @@ export function TestInProgress({
   }, [])
 
   // 実際の位置を決定（auto の場合は画面サイズで判定）
-  const effectivePosition: 'left' | 'top' | 'bottom' = (() => {
+  const effectivePosition: 'left' | 'right' | 'top-ltr' | 'top-rtl' | 'bottom-ltr' | 'bottom-rtl' = (() => {
     if (questionBarPosition === 'auto') {
-      // 横が大きい場合は左端、縦が大きい場合は上
-      return windowSize.width >= windowSize.height ? 'left' : 'top'
+      // 横が大きい場合は左端、縦が大きい場合は上（左から）
+      return windowSize.width >= windowSize.height ? 'left' : 'top-ltr'
     }
     return questionBarPosition
   })()
 
   // 横並び（top/bottom）用かどうか
-  const isHorizontal = effectivePosition === 'top' || effectivePosition === 'bottom'
+  const isHorizontal = effectivePosition.startsWith('top') || effectivePosition.startsWith('bottom')
+  // 右から並べるかどうか
+  const isRtl = effectivePosition.endsWith('-rtl')
 
   // 問題番号ボタンをレンダリング
-  const renderQuestionButtons = () => (
+  const renderQuestionButtons = () => {
+    // RTLの場合は問題番号を逆順に表示
+    const displayItems = isRtl ? [...items].reverse() : items
+
+    return (
     <Box sx={{
       display: 'flex',
       flexDirection: isHorizontal ? 'row' : 'column',
       gap: 0.5,
       flexWrap: isHorizontal ? 'wrap' : 'nowrap',
     }}>
-      {items.map((item, index) => {
+      {displayItems.map((item) => {
+        // 元のインデックスを取得
+        const index = items.indexOf(item)
         const status = getQuestionStatus(index)
         const isCurrent = index === currentIndex
         const bgColor = getStatusColor(status, isCurrent)
@@ -208,7 +216,8 @@ export function TestInProgress({
         )
       })}
     </Box>
-  )
+    )
+  }
 
   // 次へボタンをレンダリング
   const renderNextButton = () => (
@@ -279,13 +288,14 @@ export function TestInProgress({
     <Box
       sx={{
         display: 'flex',
+        flexDirection: isRtl ? 'row-reverse' : 'row',
         alignItems: 'center',
         gap: 1.5,
         px: 2,
         py: 1,
         backgroundColor: '#fafafa',
-        borderBottom: effectivePosition === 'top' ? '2px solid #e0e0e0' : 'none',
-        borderTop: effectivePosition === 'bottom' ? '2px solid #e0e0e0' : 'none',
+        borderBottom: effectivePosition.startsWith('top') ? '2px solid #e0e0e0' : 'none',
+        borderTop: effectivePosition.startsWith('bottom') ? '2px solid #e0e0e0' : 'none',
       }}
     >
       {renderNextButton()}
@@ -308,7 +318,7 @@ export function TestInProgress({
   )
 
   // 問題バーをレンダリング（縦並び: left）
-  const renderVerticalBar = () => (
+  const renderVerticalBarLeft = () => (
     <Box
       sx={{
         width: 70,
@@ -328,8 +338,29 @@ export function TestInProgress({
     </Box>
   )
 
+  // 問題バーをレンダリング（縦並び: right）
+  const renderVerticalBarRight = () => (
+    <Box
+      sx={{
+        width: 70,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        py: 2,
+        borderLeft: '2px solid #e0e0e0',
+        backgroundColor: '#fafafa',
+      }}
+    >
+      {renderNextButton()}
+      {renderVerticalDivider()}
+      {renderQuestionButtons()}
+      {renderVerticalDivider()}
+      {renderFinishButton()}
+    </Box>
+  )
+
   // レイアウトに応じたレンダリング
-  if (effectivePosition === 'top') {
+  if (effectivePosition.startsWith('top')) {
     return (
       <Box sx={{ display: 'flex', flexDirection: 'column', height: 'calc(100vh - 120px)' }}>
         {renderHorizontalBar()}
@@ -338,11 +369,20 @@ export function TestInProgress({
     )
   }
 
-  if (effectivePosition === 'bottom') {
+  if (effectivePosition.startsWith('bottom')) {
     return (
       <Box sx={{ display: 'flex', flexDirection: 'column', height: 'calc(100vh - 120px)' }}>
         {renderIframe()}
         {renderHorizontalBar()}
+      </Box>
+    )
+  }
+
+  if (effectivePosition === 'right') {
+    return (
+      <Box sx={{ display: 'flex', height: 'calc(100vh - 120px)' }}>
+        {renderIframe()}
+        {renderVerticalBarRight()}
       </Box>
     )
   }
@@ -350,7 +390,7 @@ export function TestInProgress({
   // デフォルト: left
   return (
     <Box sx={{ display: 'flex', height: 'calc(100vh - 120px)' }}>
-      {renderVerticalBar()}
+      {renderVerticalBarLeft()}
       {renderIframe()}
     </Box>
   )

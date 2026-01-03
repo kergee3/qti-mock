@@ -26,7 +26,7 @@ export interface ItemResult {
 }
 
 /** 問題選択バーの位置 */
-export type QuestionBarPosition = 'auto' | 'left' | 'top' | 'bottom'
+export type QuestionBarPosition = 'auto' | 'left' | 'right' | 'top-ltr' | 'top-rtl' | 'bottom-ltr' | 'bottom-rtl'
 
 /** フォントオプション */
 export type FontOption =
