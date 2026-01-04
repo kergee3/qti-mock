@@ -410,15 +410,15 @@ export function FlexPlayPage() {
           <Box
             sx={{
               border: '1px solid #ccc',
-              minHeight: 300,
-              mb: 2,
+              mb: 1,
             }}
           >
             <iframe
               src={iframeSrc}
               style={{
                 width: '100%',
-                height: '400px',
+                height: 'calc(100vh - 340px)',
+                minHeight: '200px',
                 border: 'none',
               }}
               title="QTI Player"

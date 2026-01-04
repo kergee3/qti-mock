@@ -62,6 +62,9 @@ export default function TopTabs({ items }: TopTabsProps) {
                 minWidth: 'auto',
                 px: 1,
                 py: 0,
+                '& .MuiTab-iconWrapper': {
+                  marginRight: 0.5,
+                },
               }}
             />
           ))}
