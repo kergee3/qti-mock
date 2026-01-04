@@ -3,23 +3,23 @@
 import { Box, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Tooltip } from '@mui/material'
 import type { ItemInfo, ItemResult } from '@/types/test'
 
-interface TestResultsProps {
+interface BasicRunResultsProps {
   items: ItemInfo[]
   results: Map<string, ItemResult>
   onRestart: () => void
 }
 
 /**
- * テスト結果画面コンポーネント
+ * Basic Run 結果画面コンポーネント
  * - スコアサマリー
  * - 問題別結果テーブル
  * - もう一度ボタン
  */
-export function TestResults({
+export function BasicRunResults({
   items,
   results,
   onRestart,
-}: TestResultsProps) {
+}: BasicRunResultsProps) {
   // 集計
   const allResults = items.map(item => results.get(item.id))
 
@@ -57,7 +57,7 @@ export function TestResults({
       {/* スコアサマリー */}
       <Box sx={{ textAlign: 'center', mb: 4 }}>
         <Box component="h2" sx={{ fontSize: '1.5rem', mb: 2, color: '#333' }}>
-          テスト結果
+          Basic Run 結果
         </Box>
 
         {/* 点数 */}

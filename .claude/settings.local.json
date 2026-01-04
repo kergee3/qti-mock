@@ -29,7 +29,8 @@
       "Bash(where:*)",
       "Bash(npx sharp-cli:*)",
       "Bash(ls:*)",
-      "Bash(dir:*)"
+      "Bash(dir:*)",
+      "Bash(mkdir:*)"
     ]
   }
 }

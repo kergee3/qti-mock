@@ -4,7 +4,7 @@ import { AppLayout } from './navigation';
 import { NavigationItem } from '@/types/navigation';
 import HomeIcon from '@mui/icons-material/Home';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import FlashOnIcon from '@mui/icons-material/FlashOn';
+import EditIcon from '@mui/icons-material/Edit';
 import SettingsIcon from '@mui/icons-material/Settings';
 import InfoIcon from '@mui/icons-material/Info';
 import { SettingsProvider } from '@/contexts/SettingsContext';
@@ -16,14 +16,14 @@ const navigationItems: NavigationItem[] = [
     icon: <HomeIcon />,
   },
   {
-    label: 'Test',
-    path: '/test',
+    label: 'Basic Run',
+    path: '/basic',
     icon: <PlayArrowIcon />,
   },
   {
     label: 'Flex Play',
-    path: '/flex-play',
-    icon: <FlashOnIcon />,
+    path: '/flex',
+    icon: <EditIcon />,
   },
   {
     label: 'Settings',

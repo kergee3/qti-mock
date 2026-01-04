@@ -23,19 +23,26 @@ const fontLabels: Record<FontOption, string> = {
   'kosugi-maru': 'Kosugi Maru',
 }
 
-/** 回答結果 */
+/** 回答結果（ItemAnsweredMessage の全要素） */
 interface AnswerResult {
+  itemId: string
   score: number
   maxScore: number
-  isCorrect: boolean
   isExternalScored: boolean
+  response: string
+  duration: number
   correctAnswer: string
 }
 
 /**
- * XMLからメタデータ（タイトル、インタラクションタイプ）を抽出
+ * XMLからメタデータ（タイトル、インタラクションタイプ、外部リソース参照）を抽出
  */
-function parseXmlMetadata(xml: string): { title: string; interactionType: string } {
+function parseXmlMetadata(xml: string): {
+  title: string
+  interactionType: string
+  hasExternalResources: boolean
+  externalResources: string[]
+} {
   try {
     const parser = new DOMParser()
     const doc = parser.parseFromString(xml, 'text/xml')
@@ -53,6 +60,7 @@ function parseXmlMetadata(xml: string): { title: string; interactionType: string
       'qti-text-entry-interaction',
       'qti-extended-text-interaction',
       'qti-graphic-choice-interaction',
+      'qti-hotspot-interaction',
     ]
 
     const foundTypes: string[] = []
@@ -64,9 +72,24 @@ function parseXmlMetadata(xml: string): { title: string; interactionType: string
 
     const interactionType = foundTypes.length > 0 ? foundTypes.join(', ') : '(不明)'
 
-    return { title, interactionType }
+    // 外部リソース参照を検出（object, img, imageのdata/src/href属性）
+    const externalResources: string[] = []
+    const resourceElements = doc.querySelectorAll('object[data], img[src], image[href]')
+    resourceElements.forEach((el) => {
+      const src = el.getAttribute('data') || el.getAttribute('src') || el.getAttribute('href')
+      if (src && !src.startsWith('data:')) {
+        externalResources.push(src)
+      }
+    })
+
+    return {
+      title,
+      interactionType,
+      hasExternalResources: externalResources.length > 0,
+      externalResources
+    }
   } catch {
-    return { title: '(解析エラー)', interactionType: '(不明)' }
+    return { title: '(解析エラー)', interactionType: '(不明)', hasExternalResources: false, externalResources: [] }
   }
 }
 
@@ -130,6 +153,9 @@ export function FlexPlayPage() {
   const [itemTitle, setItemTitle] = useState<string>('')
   const [interactionType, setInteractionType] = useState<string>('')
   const [iframeSrc, setIframeSrc] = useState<string>('')
+
+  // 警告状態
+  const [resourceWarning, setResourceWarning] = useState<string[] | null>(null)
 
   // 結果状態
   const [result, setResult] = useState<AnswerResult | null>(null)
@@ -199,10 +225,17 @@ export function FlexPlayPage() {
       return
     }
 
-    // XMLメタデータ解析
-    const { title, interactionType: iType } = parseXmlMetadata(trimmedXml)
+    // XMLメタデータ解析（外部リソース検出含む）
+    const { title, interactionType: iType, hasExternalResources, externalResources } = parseXmlMetadata(trimmedXml)
     setItemTitle(title)
     setInteractionType(iType)
+
+    // 外部リソース警告を設定
+    if (hasExternalResources) {
+      setResourceWarning(externalResources)
+    } else {
+      setResourceWarning(null)
+    }
 
     // 結果をリセット
     setResult(null)
@@ -211,6 +244,11 @@ export function FlexPlayPage() {
     const dataUrl = generateDataUrl(trimmedXml)
     const timestamp = Date.now()
     const url = `${playerUrl}?item=${encodeURIComponent(dataUrl)}&font=${selectedFont}&t=${timestamp}`
+
+    // デバッグログ
+    console.log('[FlexPlayPage] Generated URL length:', url.length)
+    console.log('[FlexPlayPage] DataUrl length:', dataUrl.length)
+
     setIframeSrc(url)
 
     // プレイ開始
@@ -225,12 +263,14 @@ export function FlexPlayPage() {
       if (!event.data || !event.data.type) return
 
       if (event.data.type === 'ITEM_ANSWERED') {
-        const { score, maxScore, isExternalScored, correctAnswer } = event.data
+        const { itemId, score, maxScore, isExternalScored, response, duration, correctAnswer } = event.data
         setResult({
+          itemId: itemId ?? '',
           score: score ?? 0,
           maxScore: maxScore ?? 1,
-          isCorrect: (score ?? 0) >= 1,
           isExternalScored: isExternalScored ?? false,
+          response: response ?? '',
+          duration: duration ?? 0,
           correctAnswer: correctAnswer ?? '',
         })
       }
@@ -268,6 +308,7 @@ export function FlexPlayPage() {
             setItemTitle('')
             setInteractionType('')
             setIframeSrc('')
+            setResourceWarning(null)
           }}
           sx={{
             color: '#666',
@@ -294,7 +335,7 @@ export function FlexPlayPage() {
           multiline
           rows={5}
           fullWidth
-          placeholder="QTI 3.0のXMLデータを入力してください。"
+          placeholder={"QTI 3.0のXMLデータを入力してください。\nクリップボード経由での貼り付けや、ExplorerからxmlファイルのDrag and Dropができます。"}
           value={xmlInput}
           onChange={(e) => setXmlInput(e.target.value)}
           sx={{
@@ -407,6 +448,31 @@ export function FlexPlayPage() {
             <Typography>Interaction: {interactionType}</Typography>
           </Box>
 
+          {/* 外部リソース警告 */}
+          {resourceWarning && (
+            <Box
+              sx={{
+                mb: 1,
+                p: 1.5,
+                backgroundColor: '#fff3e0',
+                border: '1px solid #ffb74d',
+                borderRadius: 1,
+              }}
+            >
+              <Typography sx={{ color: '#e65100', fontWeight: 'bold', fontSize: '14px', mb: 0.5 }}>
+                ⚠ 外部リソース参照があります
+              </Typography>
+              <Typography sx={{ color: '#666', fontSize: '12px', mb: 0.5 }}>
+                Flex PlayではData URL経由でXMLを読み込むため、以下の外部リソースは読み込めません:
+              </Typography>
+              <Box component="ul" sx={{ m: 0, pl: 2, color: '#666', fontSize: '12px' }}>
+                {resourceWarning.map((src, i) => (
+                  <li key={i}><code>{src}</code></li>
+                ))}
+              </Box>
+            </Box>
+          )}
+
           {/* iframe */}
           <Box
             sx={{
@@ -418,45 +484,66 @@ export function FlexPlayPage() {
               src={iframeSrc}
               style={{
                 width: '100%',
-                height: 'calc(100vh - 340px)',
-                minHeight: '200px',
+                height: result ? 'calc(100vh - 520px)' : 'calc(100vh - 340px)',
+                minHeight: '250px',
+                maxHeight: result ? '350px' : 'none',
                 border: 'none',
               }}
               title="QTI Player"
             />
           </Box>
 
-          {/* 結果表示 */}
+          {/* 結果表示（技術者向け：ItemAnsweredMessage 全要素） */}
           {result && (
             <Box
               sx={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
                 p: 2,
-                backgroundColor: '#f5f5f5',
+                backgroundColor: '#1e1e1e',
                 borderRadius: 1,
+                fontFamily: 'monospace',
+                fontSize: '13px',
               }}
             >
-              <Box>
-                <Typography component="span" fontWeight="bold">
-                  回答済:
-                </Typography>{' '}
-                {result.isExternalScored ? (
-                  <Typography component="span" sx={{ color: 'warning.main' }}>
-                    未採点
-                  </Typography>
-                ) : result.isCorrect ? (
-                  <Typography component="span" sx={{ color: 'success.main' }}>
-                    正解
-                  </Typography>
-                ) : (
-                  <Typography component="span" sx={{ color: 'error.main' }}>
-                    不正解。正解は「{result.correctAnswer}」です。
-                  </Typography>
-                )}
+              <Typography
+                sx={{
+                  color: '#569cd6',
+                  fontFamily: 'monospace',
+                  fontSize: '13px',
+                  mb: 1,
+                }}
+              >
+                {'// ITEM_ANSWERED (postMessage)'}
+              </Typography>
+              <Box component="pre" sx={{ m: 0, color: '#d4d4d4', whiteSpace: 'pre-wrap' }}>
+                <Box component="span" sx={{ color: '#9cdcfe' }}>itemId</Box>
+                <Box component="span" sx={{ color: '#d4d4d4' }}>: </Box>
+                <Box component="span" sx={{ color: '#ce9178' }}>"{result.itemId}"</Box>
+                {'\n'}
+                <Box component="span" sx={{ color: '#9cdcfe' }}>score</Box>
+                <Box component="span" sx={{ color: '#d4d4d4' }}>: </Box>
+                <Box component="span" sx={{ color: '#b5cea8' }}>{result.score}</Box>
+                {'\n'}
+                <Box component="span" sx={{ color: '#9cdcfe' }}>maxScore</Box>
+                <Box component="span" sx={{ color: '#d4d4d4' }}>: </Box>
+                <Box component="span" sx={{ color: '#b5cea8' }}>{result.maxScore}</Box>
+                {'\n'}
+                <Box component="span" sx={{ color: '#9cdcfe' }}>isExternalScored</Box>
+                <Box component="span" sx={{ color: '#d4d4d4' }}>: </Box>
+                <Box component="span" sx={{ color: '#569cd6' }}>{result.isExternalScored ? 'true' : 'false'}</Box>
+                {'\n'}
+                <Box component="span" sx={{ color: '#9cdcfe' }}>response</Box>
+                <Box component="span" sx={{ color: '#d4d4d4' }}>: </Box>
+                <Box component="span" sx={{ color: '#ce9178' }}>"{result.response}"</Box>
+                {'\n'}
+                <Box component="span" sx={{ color: '#9cdcfe' }}>duration</Box>
+                <Box component="span" sx={{ color: '#d4d4d4' }}>: </Box>
+                <Box component="span" sx={{ color: '#b5cea8' }}>{result.duration}</Box>
+                <Box component="span" sx={{ color: '#6a9955' }}> // 秒</Box>
+                {'\n'}
+                <Box component="span" sx={{ color: '#9cdcfe' }}>correctAnswer</Box>
+                <Box component="span" sx={{ color: '#d4d4d4' }}>: </Box>
+                <Box component="span" sx={{ color: '#ce9178' }}>"{result.correctAnswer}"</Box>
               </Box>
-              <Typography>スコア: {result.score}</Typography>
             </Box>
           )}
         </>

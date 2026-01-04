@@ -24,7 +24,7 @@
       <p>次の文の空欄に入る最も適切な語を選んでください。</p>
       <p>
         富士山は日本で最も
-        <qti-inline-choice-interaction class="qti-input-width-6 qti-orientation-vertical" data-prompt="選択..." response-identifier="RESPONSE" shuffle="false">
+        <qti-inline-choice-interaction class="qti-input-width-6 qti-orientation-vertical" data-prompt="選択" response-identifier="RESPONSE" shuffle="false">
           <qti-inline-choice identifier="choice_a">高い</qti-inline-choice>
           <qti-inline-choice identifier="choice_b">広い</qti-inline-choice>
           <qti-inline-choice identifier="choice_c">長い</qti-inline-choice>

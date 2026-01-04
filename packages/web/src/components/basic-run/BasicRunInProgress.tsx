@@ -5,7 +5,7 @@ import { Box, Button, Tooltip } from '@mui/material'
 import { useSettings } from '@/contexts/SettingsContext'
 import type { ItemInfo, ItemResult, FontOption, QuestionStatus, QuestionBarPosition, WritingDirection } from '@/types/test'
 
-interface TestInProgressProps {
+interface BasicRunInProgressProps {
   items: ItemInfo[]
   results: Map<string, ItemResult>
   currentIndex: number
@@ -20,11 +20,11 @@ interface TestInProgressProps {
 }
 
 /**
- * テスト実行中画面コンポーネント
+ * Basic Run 実行中画面コンポーネント
  * - 左サイドバー: 問題番号ナビゲーション + 終了ボタン
  * - メインエリア: QTI Player (iframe)
  */
-export function TestInProgress({
+export function BasicRunInProgress({
   items,
   results,
   currentIndex,
@@ -36,7 +36,7 @@ export function TestInProgress({
   onItemLoaded,
   onItemScored,
   onFinish,
-}: TestInProgressProps) {
+}: BasicRunInProgressProps) {
   const iframeRef = useRef<HTMLIFrameElement>(null)
   const { setHideNavigation } = useSettings()
 

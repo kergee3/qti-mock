@@ -68,8 +68,19 @@ export function useItemLoader() {
    * Data URLの場合は直接デコードする
    */
   const loadItem = async () => {
+    // SVGや画像などの埋め込みリソース内で実行された場合はスキップ
+    const currentPath = window.location.pathname
+    if (currentPath.match(/\.(svg|png|jpg|jpeg|gif|webp)$/i)) {
+      console.log('[useItemLoader] Skipping: running inside embedded resource', currentPath)
+      return
+    }
+
     const params = new URLSearchParams(window.location.search)
     const itemUrl = params.get('item')
+
+    // デバッグログ
+    console.log('[useItemLoader] window.location.href:', window.location.href)
+    console.log('[useItemLoader] itemUrl:', itemUrl ? `${itemUrl.substring(0, 100)}...` : null)
 
     if (!itemUrl) {
       error.value = 'item parameter is required'

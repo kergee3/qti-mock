@@ -3,7 +3,7 @@
 import { Box, Button, ButtonGroup, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material'
 import type { ItemInfo, FontOption, QuestionBarPosition, WritingDirection } from '@/types/test'
 
-interface TestInitialScreenProps {
+interface BasicRunInitialScreenProps {
   items: ItemInfo[]
   writingDirection: WritingDirection
   onWritingDirectionChange: (dir: WritingDirection) => void
@@ -37,12 +37,12 @@ const questionBarLabels: Record<QuestionBarPosition, string> = {
 }
 
 /**
- * テスト初期画面コンポーネント
+ * Basic Run 初期画面コンポーネント
  * - 問題一覧テーブル
  * - フォント選択
  * - はじめるボタン
  */
-export function TestInitialScreen({
+export function BasicRunInitialScreen({
   items,
   writingDirection,
   onWritingDirectionChange,
@@ -51,7 +51,7 @@ export function TestInitialScreen({
   questionBarPosition,
   onQuestionBarPositionChange,
   onStart,
-}: TestInitialScreenProps) {
+}: BasicRunInitialScreenProps) {
   return (
     <Box sx={{ maxWidth: 900, mx: 'auto', p: 3 }}>
       {/* ヘッダー: タイトル + 書字方向選択 */}
@@ -60,28 +60,27 @@ export function TestInitialScreen({
           display: 'flex',
           alignItems: 'center',
           gap: 1,
-          mb: 3,
+          mb: 1.5,
         }}
       >
         <Box
-          component="h1"
+          component="span"
           sx={{
-            fontSize: '1.8rem',
+            fontSize: '1rem',
             fontWeight: 'bold',
             color: '#333',
-            m: 0,
           }}
         >
           問題選択:
         </Box>
-        <ButtonGroup variant="outlined" size="large">
+        <ButtonGroup variant="outlined" size="medium">
           <Button
             variant={writingDirection === 'horizontal' ? 'contained' : 'outlined'}
             onClick={() => onWritingDirectionChange('horizontal')}
             sx={{
-              fontSize: '1.2rem',
+              fontSize: '1rem',
               fontWeight: 'bold',
-              px: 2,
+              px: 1.5,
               py: 0.5,
               color: writingDirection === 'horizontal' ? '#fff' : '#333',
               backgroundColor: writingDirection === 'horizontal' ? '#333' : 'transparent',
@@ -98,9 +97,9 @@ export function TestInitialScreen({
             variant={writingDirection === 'vertical' ? 'contained' : 'outlined'}
             onClick={() => onWritingDirectionChange('vertical')}
             sx={{
-              fontSize: '1.2rem',
+              fontSize: '1rem',
               fontWeight: 'bold',
-              px: 2,
+              px: 1.5,
               py: 0.5,
               color: writingDirection === 'vertical' ? '#fff' : '#333',
               backgroundColor: writingDirection === 'vertical' ? '#333' : 'transparent',
@@ -123,8 +122,8 @@ export function TestInitialScreen({
           flexDirection: { xs: 'column', sm: 'row' },
           justifyContent: { xs: 'flex-start', sm: 'space-between' },
           alignItems: { xs: 'stretch', sm: 'center' },
-          gap: { xs: 2, sm: 0 },
-          mb: 3,
+          gap: { xs: 1.5, sm: 0 },
+          mb: 1.5,
         }}
       >
         {/* はじめるボタン */}
@@ -214,7 +213,7 @@ export function TestInitialScreen({
             <TableRow sx={{ backgroundColor: '#000' }}>
               <TableCell sx={{ color: '#fff', fontWeight: 'bold', width: { xs: 40, sm: 60 }, px: { xs: 1, sm: 2 }, py: { xs: 0.5, sm: 1 } }}>問</TableCell>
               <TableCell sx={{ color: '#fff', fontWeight: 'bold', px: { xs: 1, sm: 2 }, py: { xs: 0.5, sm: 1 } }}>タイトル</TableCell>
-              <TableCell sx={{ color: '#fff', fontWeight: 'bold', px: { xs: 1, sm: 2 }, py: { xs: 0.5, sm: 1 } }}>インタラクション</TableCell>
+              <TableCell sx={{ color: '#fff', fontWeight: 'bold', px: { xs: 1, sm: 2 }, py: { xs: 0.5, sm: 1 } }}>Interaction</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

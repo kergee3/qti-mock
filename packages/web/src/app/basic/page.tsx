@@ -2,19 +2,19 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import { Box, CircularProgress } from '@mui/material'
-import { TestInitialScreen } from '@/components/test/TestInitialScreen'
-import { TestInProgress } from '@/components/test/TestInProgress'
-import { TestResults } from '@/components/test/TestResults'
+import { BasicRunInitialScreen } from '@/components/basic-run/BasicRunInitialScreen'
+import { BasicRunInProgress } from '@/components/basic-run/BasicRunInProgress'
+import { BasicRunResults } from '@/components/basic-run/BasicRunResults'
 import type { TestPhase, ItemInfo, ItemResult, FontOption, QuestionBarPosition, WritingDirection } from '@/types/test'
 
 /**
- * テストページ
+ * Basic Run ページ
  * 3つのフェーズで構成:
  * - initial: 初期画面（問題一覧、フォント選択、はじめるボタン）
- * - testing: テスト実行中（サイドバー + iframe）
+ * - testing: 実行中（サイドバー + iframe）
  * - results: 結果画面（スコアサマリー、結果テーブル）
  */
-export default function TestPage() {
+export default function BasicRunPage() {
   // フェーズ管理
   const [phase, setPhase] = useState<TestPhase>('initial')
 
@@ -119,7 +119,7 @@ export default function TestPage() {
   if (error) {
     return (
       <Box sx={{ p: 4, textAlign: 'center' }}>
-        <Box component="h1" sx={{ mb: 2 }}>QTI3 Player テスト</Box>
+        <Box component="h1" sx={{ mb: 2 }}>QTI3 Player Basic Run</Box>
         <Box sx={{ color: '#c62828' }}>{error}</Box>
       </Box>
     )
@@ -129,7 +129,7 @@ export default function TestPage() {
   switch (phase) {
     case 'initial':
       return (
-        <TestInitialScreen
+        <BasicRunInitialScreen
           items={items}
           writingDirection={writingDirection}
           onWritingDirectionChange={setWritingDirection}
@@ -143,7 +143,7 @@ export default function TestPage() {
 
     case 'testing':
       return (
-        <TestInProgress
+        <BasicRunInProgress
           items={items}
           results={results}
           currentIndex={currentItemIndex}
@@ -160,7 +160,7 @@ export default function TestPage() {
 
     case 'results':
       return (
-        <TestResults
+        <BasicRunResults
           items={items}
           results={results}
           onRestart={handleRestart}

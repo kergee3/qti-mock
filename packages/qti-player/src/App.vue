@@ -116,35 +116,55 @@ const stripHtmlTags = (str) => {
 }
 
 const extractResponseData = (responseVariables) => {
-  if (!responseVariables || responseVariables.length === 0) {
+  // 配列でもオブジェクトでも対応
+  if (!responseVariables) {
     return { response: '', duration: null }
   }
 
   const responses = []
   let duration = null
 
-  for (const rv of responseVariables) {
-    if (rv.value === null || rv.value === undefined) continue
+  // responseVariablesを配列に正規化
+  let rvArray = []
+  if (Array.isArray(responseVariables)) {
+    rvArray = responseVariables
+  } else if (typeof responseVariables === 'object') {
+    // オブジェクトの場合はエントリを配列化
+    rvArray = Object.entries(responseVariables).map(([identifier, value]) => ({
+      identifier,
+      value: typeof value === 'object' && value !== null && 'value' in value ? value.value : value
+    }))
+  }
+
+  if (rvArray.length === 0) {
+    return { response: '', duration: null }
+  }
+
+  for (const rv of rvArray) {
+    const identifier = rv.identifier || rv.id || ''
+    const value = rv.value
+
+    if (value === null || value === undefined) continue
 
     // durationは別途取得
-    if (rv.identifier === 'duration') {
-      duration = rv.value
+    if (identifier === 'duration') {
+      duration = typeof value === 'number' ? value : parseFloat(value) || null
       continue
     }
 
     // メタ変数は除外
-    if (EXCLUDED_VARIABLES.includes(rv.identifier)) continue
+    if (EXCLUDED_VARIABLES.includes(identifier)) continue
 
     // 配列の場合（複数選択、並べ替えなど）
-    if (Array.isArray(rv.value)) {
-      if (rv.value.length > 0) {
-        const cleanedValues = rv.value.map(v => stripHtmlTags(v))
+    if (Array.isArray(value)) {
+      if (value.length > 0) {
+        const cleanedValues = value.map(v => stripHtmlTags(v))
         responses.push(cleanedValues.join(', '))
       }
     }
     // オブジェクトの場合（マッチングなど）
-    else if (typeof rv.value === 'object') {
-      const pairs = Object.entries(rv.value)
+    else if (typeof value === 'object') {
+      const pairs = Object.entries(value)
         .filter(([, v]) => v !== null && v !== undefined)
         .map(([k, v]) => `${stripHtmlTags(k)}-${stripHtmlTags(v)}`)
       if (pairs.length > 0) {
@@ -152,8 +172,8 @@ const extractResponseData = (responseVariables) => {
       }
     }
     // 文字列や数値の場合
-    else if (rv.value !== '') {
-      responses.push(stripHtmlTags(rv.value))
+    else if (value !== '') {
+      responses.push(stripHtmlTags(String(value)))
     }
   }
 
@@ -297,12 +317,30 @@ const handlePlayerReady = (player) => {
 const loadItemToPlayer = () => {
   if (!qti3Player || !itemXml.value) return
 
-  // URLからファイル名（拡張子なし）を抽出してitemIdとして使用
-  const params = new URLSearchParams(window.location.search)
-  const itemUrl = params.get('item')
-  if (itemUrl) {
-    const fileName = itemUrl.split('/').pop()?.replace('.xml', '') || ''
-    currentItemId.value = fileName
+  // XMLからidentifierを抽出してitemIdとして使用
+  const extractItemIdFromXml = (xml) => {
+    try {
+      const parser = new DOMParser()
+      const doc = parser.parseFromString(xml, 'text/xml')
+      const assessmentItem = doc.querySelector('qti-assessment-item')
+      return assessmentItem?.getAttribute('identifier') || ''
+    } catch {
+      return ''
+    }
+  }
+
+  // まずXMLのidentifierを試す
+  const xmlIdentifier = extractItemIdFromXml(itemXml.value)
+  if (xmlIdentifier) {
+    currentItemId.value = xmlIdentifier
+  } else {
+    // フォールバック: URLからファイル名（拡張子なし）を抽出
+    const params = new URLSearchParams(window.location.search)
+    const itemUrl = params.get('item')
+    if (itemUrl && !itemUrl.startsWith('data:')) {
+      const fileName = itemUrl.split('/').pop()?.replace('.xml', '') || ''
+      currentItemId.value = fileName
+    }
   }
 
   qti3Player.loadItemFromXml(itemXml.value, {
@@ -333,6 +371,10 @@ const handleItemReady = () => {
 const handleEndAttempt = async (data) => {
   const attemptState = data.state || data
 
+  // デバッグ: responseVariablesの内容を確認
+  console.log('[QTI Player] attemptState:', attemptState)
+  console.log('[QTI Player] responseVariables:', attemptState.responseVariables)
+
   if (attemptState.outcomeVariables) {
     const scoreOutcome = attemptState.outcomeVariables.find(
       v => v.identifier === 'SCORE'
@@ -344,6 +386,7 @@ const handleEndAttempt = async (data) => {
 
       // 回答内容とdurationを抽出（表示用）
       const { response, duration } = extractResponseData(attemptState.responseVariables)
+      console.log('[QTI Player] extracted response:', response, 'duration:', duration)
 
       // 親ウィンドウに回答完了を通知
       postMessageToParent({
