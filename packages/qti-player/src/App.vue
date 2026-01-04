@@ -371,10 +371,6 @@ const handleItemReady = () => {
 const handleEndAttempt = async (data) => {
   const attemptState = data.state || data
 
-  // デバッグ: responseVariablesの内容を確認
-  console.log('[QTI Player] attemptState:', attemptState)
-  console.log('[QTI Player] responseVariables:', attemptState.responseVariables)
-
   if (attemptState.outcomeVariables) {
     const scoreOutcome = attemptState.outcomeVariables.find(
       v => v.identifier === 'SCORE'
@@ -386,7 +382,6 @@ const handleEndAttempt = async (data) => {
 
       // 回答内容とdurationを抽出（表示用）
       const { response, duration } = extractResponseData(attemptState.responseVariables)
-      console.log('[QTI Player] extracted response:', response, 'duration:', duration)
 
       // 親ウィンドウに回答完了を通知
       postMessageToParent({

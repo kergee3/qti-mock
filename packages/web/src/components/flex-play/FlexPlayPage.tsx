@@ -244,11 +244,6 @@ export function FlexPlayPage() {
     const dataUrl = generateDataUrl(trimmedXml)
     const timestamp = Date.now()
     const url = `${playerUrl}?item=${encodeURIComponent(dataUrl)}&font=${selectedFont}&t=${timestamp}`
-
-    // デバッグログ
-    console.log('[FlexPlayPage] Generated URL length:', url.length)
-    console.log('[FlexPlayPage] DataUrl length:', dataUrl.length)
-
     setIframeSrc(url)
 
     // プレイ開始
