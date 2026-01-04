@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <qti-assessment-item
   xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0"
-  identifier="order-item-001"
-  title="並べ替え問題サンプル"
+  identifier="order-item-001-v"
+  title="北から順に並べ替えよう（縦書き）"
   adaptive="false"
-  time-dependent="false">
+  time-dependent="false"
+  xml:lang="ja">
 
   <qti-response-declaration identifier="RESPONSE" cardinality="ordered" base-type="identifier">
     <qti-correct-response>
@@ -22,13 +23,15 @@
   </qti-outcome-declaration>
 
   <qti-item-body>
-    <p>次の都道府県を北から南の順に並べ替えてください。</p>
-    <qti-order-interaction response-identifier="RESPONSE" shuffle="true">
-      <qti-simple-choice identifier="A">北海道</qti-simple-choice>
-      <qti-simple-choice identifier="B">東京都</qti-simple-choice>
-      <qti-simple-choice identifier="C">大阪府</qti-simple-choice>
-      <qti-simple-choice identifier="D">沖縄県</qti-simple-choice>
-    </qti-order-interaction>
+    <div class="qti-height-96 qti3-player-writing-mode-vertical-rl qti3-player-float-right">
+      <p>次の都道府県を北から南の順に並べ替えてください。</p>
+      <qti-order-interaction response-identifier="RESPONSE" shuffle="true">
+        <qti-simple-choice identifier="A">北海道</qti-simple-choice>
+        <qti-simple-choice identifier="B">東京都</qti-simple-choice>
+        <qti-simple-choice identifier="C">大阪府</qti-simple-choice>
+        <qti-simple-choice identifier="D">沖縄県</qti-simple-choice>
+      </qti-order-interaction>
+    </div>
   </qti-item-body>
 
   <qti-response-processing

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" adaptive="false" identifier="iVevAsnfp_1" time-dependent="false" title="設問　「月のさえた」とはどういう意味です">
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" adaptive="false" identifier="iVevAsnfp_1" time-dependent="false" title="「月のさえた」とは？（縦書き）">
     <qti-response-declaration xmlns="" base-type="identifier" cardinality="single" identifier="RESPONSE"><qti-correct-response><qti-value>choice_A</qti-value></qti-correct-response></qti-response-declaration> 
     <qti-outcome-declaration xmlns="" base-type="float" cardinality="single" identifier="SCORE"/>
     <qti-outcome-declaration xmlns="" base-type="identifier" cardinality="single" identifier="FEEDBACK"/>

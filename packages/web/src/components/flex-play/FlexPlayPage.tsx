@@ -107,7 +107,7 @@ function generateDataUrl(xml: string): string {
 const sampleXml = `<?xml version="1.0" encoding="UTF-8"?>
 <qti-assessment-item
   xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0"
-  identifier="choice-item-001"
+  identifier="choice-item-001-ruby"
   title="日本の首都はどこですか？"
   adaptive="false"
   time-dependent="false">
@@ -125,12 +125,12 @@ const sampleXml = `<?xml version="1.0" encoding="UTF-8"?>
   </qti-outcome-declaration>
 
   <qti-item-body>
-    <p>日本の首都はどこですか？</p>
+    <p><ruby>日本<rt>にほん</rt></ruby>の<ruby>首都<rt>しゅと</rt></ruby>はどこですか？</p>
     <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
-      <qti-simple-choice identifier="A">東京</qti-simple-choice>
-      <qti-simple-choice identifier="B">大阪</qti-simple-choice>
-      <qti-simple-choice identifier="C">京都</qti-simple-choice>
-      <qti-simple-choice identifier="D">名古屋</qti-simple-choice>
+      <qti-simple-choice identifier="A"><ruby>東京<rt>とうきょう</rt></ruby></qti-simple-choice>
+      <qti-simple-choice identifier="B"><ruby>大阪<rt>おおさか</rt></ruby></qti-simple-choice>
+      <qti-simple-choice identifier="C"><ruby>京都<rt>きょうと</rt></ruby></qti-simple-choice>
+      <qti-simple-choice identifier="D"><ruby>名古屋<rt>なごや</rt></ruby></qti-simple-choice>
     </qti-choice-interaction>
   </qti-item-body>
 

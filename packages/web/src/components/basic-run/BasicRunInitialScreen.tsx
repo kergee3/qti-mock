@@ -71,7 +71,7 @@ export function BasicRunInitialScreen({
             color: '#333',
           }}
         >
-          問題選択:
+          問題集の選択:
         </Box>
         <ButtonGroup variant="outlined" size="medium">
           <Button

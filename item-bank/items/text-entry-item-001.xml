@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<qti-assessment-item
+  xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0"
+  identifier="text-entry-item-001"
+  title="日本一の山は何ですか？"
+  adaptive="false"
+  time-dependent="false">
+
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="string">
+    <qti-correct-response>
+      <qti-value>富士山</qti-value>
+    </qti-correct-response>
+    <qti-mapping default-value="0">
+      <qti-map-entry map-key="富士山" mapped-value="1"/>
+      <qti-map-entry map-key="ふじさん" mapped-value="1"/>
+      <qti-map-entry map-key="フジサン" mapped-value="1"/>
+      <qti-map-entry map-key="Mt.Fuji" mapped-value="1"/>
+      <qti-map-entry map-key="Mt. Fuji" mapped-value="1"/>
+    </qti-mapping>
+  </qti-response-declaration>
+
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+
+  <qti-item-body>
+    <p>日本で一番高い山の名前を入力してください。</p>
+    <p>
+      <qti-text-entry-interaction response-identifier="RESPONSE" expected-length="10"/>
+    </p>
+  </qti-item-body>
+
+  <qti-response-processing
+    template="https://purl.imsglobal.org/spec/qti/v3p0/rptemplates/map_response"/>
+</qti-assessment-item>

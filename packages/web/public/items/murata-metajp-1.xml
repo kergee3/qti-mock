@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" adaptive="false" identifier="iVeUWJ11p_1" time-dependent="false" title="以下のうち、完全変態における4つの生活段">
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" adaptive="false" identifier="iVeUWJ11p_1" time-dependent="false" title="完全変態における4つの生活段階の順序は？" xml:lang="ja">
     <qti-response-declaration xmlns="" base-type="identifier" cardinality="single" identifier="RESPONSE"><qti-correct-response><qti-value>choice_C</qti-value></qti-correct-response></qti-response-declaration>
     <qti-outcome-declaration xmlns="" base-type="float" cardinality="single" identifier="SCORE"/>
     <qti-outcome-declaration xmlns="" base-type="identifier" cardinality="single" identifier="FEEDBACK"/>

@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <qti-assessment-item
   xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0"
-  identifier="text-entry-item-001"
-  title="テキスト入力問題サンプル"
+  identifier="text-entry-item-001-v"
+  title="日本一の山は何ですか？（縦書き）"
   adaptive="false"
-  time-dependent="false">
+  time-dependent="false"
+  xml:lang="ja">
 
   <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="string">
     <qti-correct-response>
@@ -26,10 +27,12 @@
   </qti-outcome-declaration>
 
   <qti-item-body>
-    <p>日本で一番高い山の名前を入力してください。</p>
-    <p>
-      <qti-text-entry-interaction response-identifier="RESPONSE" expected-length="10"/>
-    </p>
+    <div class="qti-height-96 qti3-player-writing-mode-vertical-rl qti3-player-float-right">
+      <p>日本で一番高い山の名前を入力してください。</p>
+      <p>
+        <qti-text-entry-interaction response-identifier="RESPONSE" expected-length="10" class="qti-input-width-6 qti-orientation-vertical"/>
+      </p>
+    </div>
   </qti-item-body>
 
   <qti-response-processing
