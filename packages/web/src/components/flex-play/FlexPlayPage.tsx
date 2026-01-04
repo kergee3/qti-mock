@@ -73,11 +73,12 @@ function parseXmlMetadata(xml: string): {
     const interactionType = foundTypes.length > 0 ? foundTypes.join(', ') : '(不明)'
 
     // 外部リソース参照を検出（object, img, imageのdata/src/href属性）
+    // 相対パスのみ警告対象（絶対URL http/https はアクセス可能なので除外）
     const externalResources: string[] = []
     const resourceElements = doc.querySelectorAll('object[data], img[src], image[href]')
     resourceElements.forEach((el) => {
       const src = el.getAttribute('data') || el.getAttribute('src') || el.getAttribute('href')
-      if (src && !src.startsWith('data:')) {
+      if (src && !src.startsWith('data:') && !src.startsWith('http://') && !src.startsWith('https://')) {
         externalResources.push(src)
       }
     })
@@ -479,9 +480,8 @@ export function FlexPlayPage() {
               src={iframeSrc}
               style={{
                 width: '100%',
-                height: result ? 'calc(100vh - 520px)' : 'calc(100vh - 340px)',
-                minHeight: '250px',
-                maxHeight: result ? '350px' : 'none',
+                height: result ? 'calc(100vh - 450px)' : 'calc(100vh - 320px)',
+                minHeight: '200px',
                 border: 'none',
               }}
               title="QTI Player"
@@ -492,36 +492,42 @@ export function FlexPlayPage() {
           {result && (
             <Box
               sx={{
-                p: 2,
+                p: 1,
                 backgroundColor: '#1e1e1e',
                 borderRadius: 1,
                 fontFamily: 'monospace',
-                fontSize: '13px',
+                fontSize: '12px',
+                lineHeight: 1.3,
               }}
             >
               <Typography
                 sx={{
                   color: '#569cd6',
                   fontFamily: 'monospace',
-                  fontSize: '13px',
-                  mb: 1,
+                  fontSize: '12px',
+                  mb: 0.5,
                 }}
               >
                 {'// ITEM_ANSWERED (postMessage)'}
               </Typography>
-              <Box component="pre" sx={{ m: 0, color: '#d4d4d4', whiteSpace: 'pre-wrap' }}>
+              <Box component="pre" sx={{ m: 0, color: '#d4d4d4', whiteSpace: 'pre-wrap', lineHeight: 1.3 }}>
                 <Box component="span" sx={{ color: '#9cdcfe' }}>itemId</Box>
                 <Box component="span" sx={{ color: '#d4d4d4' }}>: </Box>
                 <Box component="span" sx={{ color: '#ce9178' }}>"{result.itemId}"</Box>
+                <Box component="span" sx={{ color: '#d4d4d4' }}>, </Box>
+                <Box component="span" sx={{ color: '#9cdcfe' }}>duration</Box>
+                <Box component="span" sx={{ color: '#d4d4d4' }}>: </Box>
+                <Box component="span" sx={{ color: '#b5cea8' }}>{result.duration}</Box>
+                <Box component="span" sx={{ color: '#6a9955' }}> // 秒</Box>
                 {'\n'}
                 <Box component="span" sx={{ color: '#9cdcfe' }}>score</Box>
                 <Box component="span" sx={{ color: '#d4d4d4' }}>: </Box>
                 <Box component="span" sx={{ color: '#b5cea8' }}>{result.score}</Box>
-                {'\n'}
+                <Box component="span" sx={{ color: '#d4d4d4' }}>, </Box>
                 <Box component="span" sx={{ color: '#9cdcfe' }}>maxScore</Box>
                 <Box component="span" sx={{ color: '#d4d4d4' }}>: </Box>
                 <Box component="span" sx={{ color: '#b5cea8' }}>{result.maxScore}</Box>
-                {'\n'}
+                <Box component="span" sx={{ color: '#d4d4d4' }}>, </Box>
                 <Box component="span" sx={{ color: '#9cdcfe' }}>isExternalScored</Box>
                 <Box component="span" sx={{ color: '#d4d4d4' }}>: </Box>
                 <Box component="span" sx={{ color: '#569cd6' }}>{result.isExternalScored ? 'true' : 'false'}</Box>
@@ -529,12 +535,7 @@ export function FlexPlayPage() {
                 <Box component="span" sx={{ color: '#9cdcfe' }}>response</Box>
                 <Box component="span" sx={{ color: '#d4d4d4' }}>: </Box>
                 <Box component="span" sx={{ color: '#ce9178' }}>"{result.response}"</Box>
-                {'\n'}
-                <Box component="span" sx={{ color: '#9cdcfe' }}>duration</Box>
-                <Box component="span" sx={{ color: '#d4d4d4' }}>: </Box>
-                <Box component="span" sx={{ color: '#b5cea8' }}>{result.duration}</Box>
-                <Box component="span" sx={{ color: '#6a9955' }}> // 秒</Box>
-                {'\n'}
+                <Box component="span" sx={{ color: '#d4d4d4' }}>, </Box>
                 <Box component="span" sx={{ color: '#9cdcfe' }}>correctAnswer</Box>
                 <Box component="span" sx={{ color: '#d4d4d4' }}>: </Box>
                 <Box component="span" sx={{ color: '#ce9178' }}>"{result.correctAnswer}"</Box>

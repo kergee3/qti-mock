@@ -65,7 +65,7 @@ export function BasicRunInProgress({
     const item = items[index]
     if (!item) return 'not-started'
 
-    const result = results.get(item.id)
+    const result = results.get(item.identifier)
     if (!result || !result.answered) {
       return index === currentIndex ? 'in-progress' : 'not-started'
     }

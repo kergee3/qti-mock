@@ -36,6 +36,7 @@
       <div v-if="isScored" class="result">
         <span class="result-label">回答済：</span>
         <span v-if="score >= 1" class="correct">正解</span>
+        <span v-else-if="noScoringLogic" class="external-scored">未採点（採点ロジックなし）</span>
         <span v-else-if="isExternalScored" class="external-scored">未採点</span>
         <span v-else class="incorrect">
           不正解<template v-if="correctAnswer">。正解は「{{ correctAnswer }}」です。</template>
@@ -69,6 +70,7 @@ const score = ref(null)
 const currentItemId = ref(null)
 const correctAnswer = ref(null)
 const isExternalScored = ref(false)
+const noScoringLogic = ref(false)
 
 // フォント設定
 const fontFamily = ref('system')
@@ -185,7 +187,7 @@ const extractResponseData = (responseVariables) => {
 
 // XMLから正解情報を抽出
 const extractCorrectAnswer = (xml) => {
-  if (!xml) return { answer: null, isExternal: false }
+  if (!xml) return { answer: null, isExternal: false, noScoringLogic: false }
 
   try {
     const parser = new DOMParser()
@@ -194,7 +196,7 @@ const extractCorrectAnswer = (xml) => {
     // 外部採点かどうかを確認
     const outcomeDecl = doc.querySelector('qti-outcome-declaration[identifier="SCORE"]')
     if (outcomeDecl && outcomeDecl.getAttribute('external-scored') === 'human') {
-      return { answer: null, isExternal: true }
+      return { answer: null, isExternal: true, noScoringLogic: false }
     }
 
     // テキスト入力問題かどうかを確認
@@ -204,36 +206,44 @@ const extractCorrectAnswer = (xml) => {
     // 正解情報を取得
     const correctResponse = doc.querySelector('qti-correct-response qti-value')
 
+    // 採点ロジック（response-processing）の有無を確認
+    const responseProcessing = doc.querySelector('qti-response-processing')
+
     // テキスト入力問題で正解情報がない場合は外部採点扱い
     if ((textEntryInteraction || extendedTextInteraction) && !correctResponse) {
-      return { answer: null, isExternal: true }
+      return { answer: null, isExternal: true, noScoringLogic: false }
+    }
+
+    // 正解情報も採点ロジックもない場合は「採点不可」として扱う
+    if (!correctResponse && !responseProcessing) {
+      return { answer: null, isExternal: true, noScoringLogic: true }
     }
 
     if (!correctResponse) {
-      return { answer: null, isExternal: false }
+      return { answer: null, isExternal: false, noScoringLogic: false }
     }
 
     const correctIdentifier = correctResponse.textContent?.trim()
     if (!correctIdentifier) {
-      return { answer: null, isExternal: false }
+      return { answer: null, isExternal: false, noScoringLogic: false }
     }
 
     // 選択肢から正解のテキストを取得
     const simpleChoice = doc.querySelector(`qti-simple-choice[identifier="${correctIdentifier}"]`)
     if (simpleChoice) {
-      return { answer: simpleChoice.textContent?.trim(), isExternal: false }
+      return { answer: simpleChoice.textContent?.trim(), isExternal: false, noScoringLogic: false }
     }
 
     // テキスト入力問題の場合は正解テキストをそのまま返す
     if (textEntryInteraction || extendedTextInteraction) {
-      return { answer: correctIdentifier, isExternal: false }
+      return { answer: correctIdentifier, isExternal: false, noScoringLogic: false }
     }
 
     // 選択肢が見つからない場合は識別子を返す
-    return { answer: correctIdentifier, isExternal: false }
+    return { answer: correctIdentifier, isExternal: false, noScoringLogic: false }
   } catch (e) {
     console.error('Error extracting correct answer:', e)
-    return { answer: null, isExternal: false }
+    return { answer: null, isExternal: false, noScoringLogic: false }
   }
 }
 
@@ -357,9 +367,10 @@ const handleItemReady = () => {
   score.value = null
 
   // XMLから正解情報を抽出
-  const { answer, isExternal } = extractCorrectAnswer(itemXml.value)
+  const { answer, isExternal, noScoringLogic: noLogic } = extractCorrectAnswer(itemXml.value)
   correctAnswer.value = answer
   isExternalScored.value = isExternal
+  noScoringLogic.value = noLogic
 
   // 親ウィンドウに問題読み込み完了を通知
   postMessageToParent({
@@ -417,7 +428,7 @@ const submitResponse = () => {
 <style scoped>
 .qti-player-app {
   width: 100%;
-  padding: 10px;
+  padding: 4px;
 }
 
 .loading {
@@ -440,7 +451,7 @@ const submitResponse = () => {
 
 .player-container {
   border: 1px solid #ccc;
-  padding: 20px;
+  padding: 12px;
   min-height: 200px;
   overflow: hidden;
 }
@@ -452,7 +463,7 @@ const submitResponse = () => {
 }
 
 .controls {
-  margin-top: 20px;
+  margin-top: 8px;
 }
 
 .controls.controls-rtl {
@@ -471,8 +482,8 @@ const submitResponse = () => {
 }
 
 .result {
-  margin-top: 20px;
-  padding: 15px;
+  margin-top: 8px;
+  padding: 10px 15px;
   background: #f5f5f5;
   border-radius: 4px;
   display: flex;

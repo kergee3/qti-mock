@@ -20,8 +20,8 @@ export function BasicRunResults({
   results,
   onRestart,
 }: BasicRunResultsProps) {
-  // 集計
-  const allResults = items.map(item => results.get(item.id))
+  // 集計（resultsのキーはXMLのidentifier属性）
+  const allResults = items.map(item => results.get(item.identifier))
 
   // 採点済み（自動採点）の結果
   const scoredResults = allResults.filter(r => r?.answered && !r.isExternalScored)
@@ -99,7 +99,7 @@ export function BasicRunResults({
           </TableHead>
           <TableBody>
             {items.map((item, index) => {
-              const result = results.get(item.id)
+              const result = results.get(item.identifier)
               const display = getResultDisplay(result)
 
               return (
