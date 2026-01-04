@@ -207,9 +207,10 @@ export function FlexPlayPage() {
     // 結果をリセット
     setResult(null)
 
-    // iframe URL生成
+    // iframe URL生成（タイムスタンプを追加して毎回リロードを強制）
     const dataUrl = generateDataUrl(trimmedXml)
-    const url = `${playerUrl}?item=${encodeURIComponent(dataUrl)}&font=${selectedFont}`
+    const timestamp = Date.now()
+    const url = `${playerUrl}?item=${encodeURIComponent(dataUrl)}&font=${selectedFont}&t=${timestamp}`
     setIframeSrc(url)
 
     // プレイ開始
