@@ -240,7 +240,7 @@ export function FlexPlayPage() {
   }, [])
 
   return (
-    <Box sx={{ maxWidth: 1200, mx: 'auto', px: 3, py: 1 }}>
+    <Box sx={{ maxWidth: 1200, mx: 'auto', px: 3, pt: 0.5, pb: 1 }}>
       {/* 説明文 + クリアボタン */}
       <Box
         sx={{
