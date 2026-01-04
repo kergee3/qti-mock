@@ -4,8 +4,8 @@ import { AppLayout } from './navigation';
 import { NavigationItem } from '@/types/navigation';
 import HomeIcon from '@mui/icons-material/Home';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import FlashOnIcon from '@mui/icons-material/FlashOn';
 import SettingsIcon from '@mui/icons-material/Settings';
-import LockIcon from '@mui/icons-material/Lock';
 import InfoIcon from '@mui/icons-material/Info';
 import { SettingsProvider } from '@/contexts/SettingsContext';
 
@@ -21,14 +21,14 @@ const navigationItems: NavigationItem[] = [
     icon: <PlayArrowIcon />,
   },
   {
+    label: 'Flex Play',
+    path: '/flex-play',
+    icon: <FlashOnIcon />,
+  },
+  {
     label: 'Settings',
     path: '/settings',
     icon: <SettingsIcon />,
-  },
-  {
-    label: 'Private',
-    path: '/private',
-    icon: <LockIcon />,
   },
   {
     label: 'About',

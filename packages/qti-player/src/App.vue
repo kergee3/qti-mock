@@ -353,7 +353,8 @@ const handleEndAttempt = async (data) => {
         maxScore: 1,
         isExternalScored: isExternalScored.value,
         response: response,
-        duration: duration
+        duration: duration,
+        correctAnswer: correctAnswer.value
       })
 
       // 結果をサーバーに送信

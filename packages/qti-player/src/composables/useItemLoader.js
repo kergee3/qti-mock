@@ -40,7 +40,32 @@ export function useItemLoader() {
   }
 
   /**
+   * Data URLからXMLをデコードする
+   * @param {string} dataUrl - Data URL (data:application/xml;base64,XXXX)
+   * @returns {string} デコードされたXML
+   */
+  const decodeDataUrl = (dataUrl) => {
+    // data:[<mediatype>][;base64],<data> 形式をパース
+    const matches = dataUrl.match(/^data:([^;,]+)?(?:;([^,]+))?,(.*)$/)
+    if (!matches) {
+      throw new Error('Invalid data URL format')
+    }
+
+    const encoding = matches[2]
+    const data = matches[3]
+
+    if (encoding === 'base64') {
+      // Base64デコード (UTF-8対応)
+      return decodeURIComponent(escape(atob(data)))
+    } else {
+      // URLエンコードされたテキスト
+      return decodeURIComponent(data)
+    }
+  }
+
+  /**
    * URLパラメータからitemのURLを取得し、XMLをfetchする
+   * Data URLの場合は直接デコードする
    */
   const loadItem = async () => {
     const params = new URLSearchParams(window.location.search)
@@ -55,13 +80,23 @@ export function useItemLoader() {
     error.value = null
 
     try {
-      const response = await fetch(itemUrl)
-      if (!response.ok) {
-        throw new Error(`Failed to fetch item: ${response.status}`)
+      let xml
+
+      // Data URLの場合
+      if (itemUrl.startsWith('data:')) {
+        xml = decodeDataUrl(itemUrl)
+        // Data URLの場合は相対パス解決不要（画像等は使用できない）
+      } else {
+        // 通常のURL fetchの場合
+        const response = await fetch(itemUrl)
+        if (!response.ok) {
+          throw new Error(`Failed to fetch item: ${response.status}`)
+        }
+        xml = await response.text()
+        // 相対パスを絶対URLに変換
+        xml = resolveRelativePaths(xml, itemUrl)
       }
-      let xml = await response.text()
-      // 相対パスを絶対URLに変換
-      xml = resolveRelativePaths(xml, itemUrl)
+
       itemXml.value = xml
     } catch (e) {
       error.value = e.message

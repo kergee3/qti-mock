@@ -59,4 +59,5 @@ export interface PlayerMessage {
   isExternalScored?: boolean
   response?: string
   duration?: number
+  correctAnswer?: string
 }
