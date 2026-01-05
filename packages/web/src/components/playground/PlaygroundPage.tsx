@@ -139,9 +139,9 @@ const sampleXml = `<?xml version="1.0" encoding="UTF-8"?>
 </qti-assessment-item>`
 
 /**
- * Flex Play ページコンポーネント
+ * Playground ページコンポーネント
  */
-export function FlexPlayPage() {
+export function PlaygroundPage() {
   // Player URL
   const playerUrl = process.env.NEXT_PUBLIC_PLAYER_URL || 'http://localhost:5173'
 
@@ -459,7 +459,7 @@ export function FlexPlayPage() {
                 ⚠ 外部リソース参照があります
               </Typography>
               <Typography sx={{ color: '#666', fontSize: '12px', mb: 0.5 }}>
-                Flex PlayではData URL経由でXMLを読み込むため、以下の外部リソースは読み込めません:
+                PlaygroundではData URL経由でXMLを読み込むため、以下の外部リソースは読み込めません:
               </Typography>
               <Box component="ul" sx={{ m: 0, pl: 2, color: '#666', fontSize: '12px' }}>
                 {resourceWarning.map((src, i) => (

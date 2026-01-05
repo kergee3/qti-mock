@@ -21,8 +21,8 @@ const navigationItems: NavigationItem[] = [
     icon: <PlayArrowIcon />,
   },
   {
-    label: 'Flex Play',
-    path: '/flex',
+    label: 'Playground',
+    path: '/playground',
     icon: <EditIcon />,
   },
   {

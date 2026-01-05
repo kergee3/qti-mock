@@ -38,22 +38,22 @@ export default function HomePage() {
         </CardContent>
       </Card>
 
-      {/* Flex Play */}
+      {/* Playground */}
       <Card sx={{ mt: 2 }}>
         <CardContent>
           <Typography variant="h6" gutterBottom>
-            Flex Play
+            Playground
           </Typography>
           <Typography variant="body2" color="text.secondary" paragraph>
-            アイテムを選んで、1問ずつ自由にテストを実行できます。
+            QTI XML を直接入力またはドラッグ＆ドロップで自由にテストを実行できます。
             問題の編集やカスタマイズも可能です。
           </Typography>
           <Button
             variant="outlined"
             startIcon={<EditIcon />}
-            onClick={() => router.push('/flex')}
+            onClick={() => router.push('/playground')}
           >
-            Flex Play を開始
+            Playground を開始
           </Button>
         </CardContent>
       </Card>

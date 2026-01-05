@@ -44,7 +44,7 @@ export default function AboutPage() {
                   {' '}から引用しています
                 </Typography>
               </li>
-              <li><strong>Flex Play</strong> - QTI XML を直接入力またはドラッグ＆ドロップで実行</li>
+              <li><strong>Playground</strong> - QTI XML を直接入力またはドラッグ＆ドロップで実行</li>
               <li><strong>縦書き対応</strong> - 日本語縦書きレイアウトをサポート</li>
               <li><strong>ルビ対応</strong> - 漢字へのふりがな表示をサポート</li>
               <li><strong>フォント選択</strong> - 複数の日本語フォントから選択可能</li>
