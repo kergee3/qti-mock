@@ -1,5 +1,5 @@
 <template>
-  <div class="qti-player-app" :class="fontClass" :style="{ fontFamily: fontStyle }">
+  <div class="qti-player-app" :class="[fontClass, { 'vertical-layout': isVerticalWriting }]" :style="{ fontFamily: fontStyle }">
     <!-- エラー -->
     <div v-if="error" class="error">
       <p>{{ error }}</p>
@@ -15,33 +15,68 @@
         問題を読み込み中...
       </div>
 
-      <div class="player-container" :class="{ 'hidden': isLoading || !isItemLoaded }">
-        <Qti3Player
-          ref="qti3player"
-          container-class="qti3-player-container"
-          @notifyQti3PlayerReady="handlePlayerReady"
-          @notifyQti3ItemReady="handleItemReady"
-          @notifyQti3EndAttemptCompleted="handleEndAttempt"
-        />
-      </div>
+      <!-- メインコンテンツ: 縦書き時は横並び、横書き時は縦並び -->
+      <div
+        class="main-content"
+        :class="{
+          'main-content-vertical': isVerticalWriting,
+          'hidden': isLoading || !isItemLoaded
+        }"
+      >
+        <!-- プレイヤー（常に1つだけ） -->
+        <div class="player-container" :class="{ 'vertical-player': isVerticalWriting }">
+          <Qti3Player
+            ref="qti3player"
+            container-class="qti3-player-container"
+            @notifyQti3PlayerReady="handlePlayerReady"
+            @notifyQti3ItemReady="handleItemReady"
+            @notifyQti3EndAttemptCompleted="handleEndAttempt"
+          />
+        </div>
 
-      <!-- 回答ボタン -->
-      <div v-if="isItemLoaded && !isScored" class="controls" :class="{ 'controls-rtl': isVerticalWriting }">
-        <button @click="submitResponse" :disabled="isSubmitting">
-          {{ isSubmitting ? '送信中...' : '回答' }}
-        </button>
-      </div>
+        <!-- 縦書き時: 左側に回答/結果 -->
+        <div v-if="isVerticalWriting" class="vertical-controls-area">
+          <!-- 回答ボタン -->
+          <div v-if="isItemLoaded && !isScored" class="controls-vertical">
+            <button @click="submitResponse" :disabled="isSubmitting">
+              {{ isSubmitting ? '送信中' : '回答' }}
+            </button>
+          </div>
 
-      <!-- 結果表示 -->
-      <div v-if="isScored" class="result">
-        <span class="result-label">回答済：</span>
-        <span v-if="score >= 1" class="correct">正解</span>
-        <span v-else-if="noScoringLogic" class="external-scored">未採点（採点ロジックなし）</span>
-        <span v-else-if="isExternalScored" class="external-scored">未採点</span>
-        <span v-else class="incorrect">
-          不正解<template v-if="correctAnswer">。正解は「{{ correctAnswer }}」です。</template>
-        </span>
-        <span class="score-text">スコア: {{ score }}</span>
+          <!-- 結果表示 -->
+          <div v-if="isScored" class="result-vertical">
+            <span class="result-label">回答済</span>
+            <span v-if="score >= 1" class="correct">正解</span>
+            <span v-else-if="noScoringLogic" class="external-scored">未採点</span>
+            <span v-else-if="isExternalScored" class="external-scored">未採点</span>
+            <span v-else class="incorrect">
+              不正解
+            </span>
+            <span class="score-text">スコア：<span class="score-number">{{ score }}</span></span>
+          </div>
+        </div>
+
+        <!-- 横書き時: 下に回答/結果 -->
+        <template v-if="!isVerticalWriting">
+          <!-- 回答ボタン -->
+          <div v-if="isItemLoaded && !isScored" class="controls">
+            <button @click="submitResponse" :disabled="isSubmitting">
+              {{ isSubmitting ? '送信中...' : '回答' }}
+            </button>
+          </div>
+
+          <!-- 結果表示 -->
+          <div v-if="isScored" class="result">
+            <span class="result-label">回答済：</span>
+            <span v-if="score >= 1" class="correct">正解</span>
+            <span v-else-if="noScoringLogic" class="external-scored">未採点（採点ロジックなし）</span>
+            <span v-else-if="isExternalScored" class="external-scored">未採点</span>
+            <span v-else class="incorrect">
+              不正解<template v-if="correctAnswer">。正解は「{{ correctAnswer }}」です。</template>
+            </span>
+            <span class="score-text">スコア: {{ score }}</span>
+          </div>
+        </template>
       </div>
 
       <!-- 送信エラー -->
@@ -453,7 +488,6 @@ const submitResponse = () => {
   border: 1px solid #ccc;
   padding: 12px;
   min-height: 200px;
-  overflow: hidden;
 }
 
 .player-container.hidden {
@@ -462,12 +496,9 @@ const submitResponse = () => {
   visibility: hidden;
 }
 
+/* 横書き用レイアウト */
 .controls {
   margin-top: 8px;
-}
-
-.controls.controls-rtl {
-  text-align: right;
 }
 
 .controls button {
@@ -489,6 +520,85 @@ const submitResponse = () => {
   display: flex;
   align-items: center;
   gap: 15px;
+}
+
+/* メインコンテンツ */
+.main-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content.hidden {
+  position: absolute;
+  left: -9999px;
+  visibility: hidden;
+}
+
+/* 縦書き用レイアウト: 回答ボタン（左）+ 問題（右）の横並び */
+.main-content-vertical {
+  flex-direction: row;
+  align-items: flex-start;
+}
+
+.main-content-vertical .player-container {
+  flex: 1;
+  order: 2; /* 問題を右側に */
+  display: flex;
+  justify-content: flex-end; /* 縦書きコンテンツを右端に配置 */
+  overflow: hidden;
+}
+
+.vertical-controls-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px;
+  flex-shrink: 0;
+  border-right: 1px solid #ccc;
+  margin-right: 8px;
+  order: 1; /* 回答ボタンを左側に */
+}
+
+.controls-vertical {
+  writing-mode: vertical-rl;
+}
+
+.controls-vertical button {
+  padding: 20px 10px;
+  font-size: 16px;
+  cursor: pointer;
+  writing-mode: vertical-rl;
+  letter-spacing: 0.2em;
+}
+
+.controls-vertical button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.result-vertical {
+  writing-mode: vertical-rl;
+  padding: 15px 10px;
+  background: #f5f5f5;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  letter-spacing: 0.2em;
+}
+
+.result-vertical .result-label {
+  font-weight: bold;
+}
+
+.result-vertical .score-text {
+  margin-top: auto;
+}
+
+.result-vertical .score-number {
+  writing-mode: horizontal-tb;
+  display: inline-block;
 }
 
 .result .result-label {
