@@ -224,6 +224,9 @@ export function BasicRunInProgress({
     )
   }
 
+  // 縦書きボタンにするかどうか（縦書き問題の場合）
+  const useVerticalButton = writingDirection === 'vertical'
+
   // 次へボタンをレンダリング
   const renderNextButton = () => (
     <Button
@@ -232,8 +235,11 @@ export function BasicRunInProgress({
       onClick={handleNextClick}
       disabled={isLastQuestion}
       sx={{
-        minWidth: 50,
+        minWidth: useVerticalButton ? 32 : 50,
         fontWeight: 'bold',
+        writingMode: useVerticalButton ? 'vertical-rl' : 'horizontal-tb',
+        py: useVerticalButton ? 1 : 0.5,
+        px: useVerticalButton ? 0.5 : 1,
       }}
     >
       次へ
@@ -247,8 +253,11 @@ export function BasicRunInProgress({
       color="error"
       onClick={onFinish}
       sx={{
-        minWidth: 50,
+        minWidth: useVerticalButton ? 32 : 50,
         fontWeight: 'bold',
+        writingMode: useVerticalButton ? 'vertical-rl' : 'horizontal-tb',
+        py: useVerticalButton ? 1 : 0.5,
+        px: useVerticalButton ? 0.5 : 1,
       }}
     >
       終了
