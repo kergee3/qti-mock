@@ -52,7 +52,7 @@
             <span v-else class="incorrect">
               不正解
             </span>
-            <span class="score-text">スコア：<span class="score-number">{{ score }}</span></span>
+            <span class="score-text">スコア＝<span class="score-number">{{ score }}</span></span>
           </div>
         </div>
 
@@ -117,6 +117,15 @@ const isVerticalWriting = ref(false)
 const detectWritingDirection = (xml) => {
   if (!xml) return false
   return xml.includes('qti3-player-writing-mode-vertical-rl')
+}
+
+// html要素に縦書きクラスを追加/削除
+const updateHtmlWritingClass = (isVertical) => {
+  if (isVertical) {
+    document.documentElement.classList.add('vertical-writing')
+  } else {
+    document.documentElement.classList.remove('vertical-writing')
+  }
 }
 
 const fontStyle = computed(() => {
@@ -343,7 +352,9 @@ const loadGoogleFont = (fontKey) => {
 // XMLが読み込まれたら縦書き判定を実行
 watch(itemXml, (newXml) => {
   if (newXml) {
-    isVerticalWriting.value = detectWritingDirection(newXml)
+    const isVertical = detectWritingDirection(newXml)
+    isVerticalWriting.value = isVertical
+    updateHtmlWritingClass(isVertical)
   }
 })
 
@@ -407,6 +418,16 @@ const handleItemReady = () => {
   isExternalScored.value = isExternal
   noScoringLogic.value = noLogic
 
+  // 縦書き時はスクロール位置を右端（読み始め）に設定
+  if (isVerticalWriting.value) {
+    setTimeout(() => {
+      const playerContainer = document.querySelector('.player-container')
+      if (playerContainer) {
+        playerContainer.scrollLeft = playerContainer.scrollWidth
+      }
+    }, 150)
+  }
+
   // 親ウィンドウに問題読み込み完了を通知
   postMessageToParent({
     type: 'ITEM_LOADED',
@@ -462,6 +483,15 @@ const submitResponse = () => {
 
 <style scoped>
 .qti-player-app {
+  width: 100%;
+  padding: 4px;
+}
+
+.qti-player-app.vertical-layout {
+  height: 100%;
+  max-height: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
   width: 100%;
   padding: 4px;
 }
@@ -537,15 +567,20 @@ const submitResponse = () => {
 /* 縦書き用レイアウト: 回答ボタン（左）+ 問題（右）の横並び */
 .main-content-vertical {
   flex-direction: row;
-  align-items: flex-start;
+  align-items: stretch;
+  height: calc(100% - 8px);
+  max-height: calc(100% - 8px);
+  overflow: hidden;
+  width: 100%;
 }
 
 .main-content-vertical .player-container {
-  flex: 1;
   order: 2; /* 問題を右側に */
-  display: flex;
-  justify-content: flex-end; /* 縦書きコンテンツを右端に配置 */
-  overflow: hidden;
+  flex: 1;
+  height: calc(100% - 8px);
+  max-height: calc(100% - 8px);
+  overflow-x: auto;
+  overflow-y: hidden;
 }
 
 .vertical-controls-area {
@@ -634,6 +669,84 @@ const submitResponse = () => {
 </style>
 
 <style>
+/* 縦書きレイアウト時の設定（グローバル） */
+.vertical-layout .main-content-vertical {
+  height: calc(100% - 8px) !important;
+  max-height: calc(100% - 8px) !important;
+  overflow: hidden !important;
+  width: 100% !important;
+}
+
+/* player-containerでスクロール */
+.vertical-layout .player-container {
+  height: calc(100% - 8px) !important;
+  max-height: calc(100% - 8px) !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+}
+
+/* 内部要素: コンテンツに合わせて横に拡張可能にする */
+.vertical-layout .qti3-player-container {
+  height: calc(100% - 30px) !important;
+  max-height: calc(100% - 30px) !important;
+  overflow: visible !important;
+  width: fit-content !important;
+  min-width: 100% !important;
+  display: block !important;
+}
+
+.vertical-layout .qti-assessment-item {
+  height: calc(100% - 30px) !important;
+  max-height: calc(100% - 30px) !important;
+  overflow: visible !important;
+  width: fit-content !important;
+  min-width: 100% !important;
+  display: block !important;
+}
+
+.vertical-layout .qti-item-body {
+  height: calc(100% - 50px) !important;
+  max-height: calc(100% - 50px) !important;
+  overflow: visible !important;
+  width: fit-content !important;
+  min-width: 100% !important;
+  display: block !important;
+}
+
+/* qti-item-body自体が縦書きクラスを持つ場合: 幅を内容に合わせる（floatは使わない） */
+.vertical-layout .qti-item-body.qti3-player-writing-mode-vertical-rl,
+.vertical-layout .qti-item-body.qti3-player-float-right,
+.vertical-layout .qti-item-body[class*="qti-height-"] {
+  width: fit-content !important;
+  display: block !important;
+  height: calc(100% - 50px) !important;
+  max-height: calc(100% - 50px) !important;
+}
+
+/* 縦書きコンテンツ: 高さを固定（qti-item-body以外） */
+.vertical-layout div.qti3-player-writing-mode-vertical-rl:not(.qti-item-body),
+.vertical-layout [class*="qti3-player-writing-mode-vertical"]:not(.qti-item-body) {
+  height: calc(100% - 70px) !important;
+  max-height: calc(100% - 70px) !important;
+  width: fit-content !important;
+  overflow: visible !important;
+}
+
+/* 縦書き時の共有刺激も同様 */
+.vertical-layout .qti-shared-stimulus {
+  height: calc(100% - 70px) !important;
+  max-height: calc(100% - 70px) !important;
+  width: fit-content !important;
+  overflow: visible !important;
+}
+
+/* qti-height-* クラスの高さを上書き（縦書き時のみ、qti-item-body以外） */
+.vertical-layout [class*="qti-height-"]:not(.qti-item-body) {
+  height: calc(100% - 70px) !important;
+  max-height: calc(100% - 70px) !important;
+  width: fit-content !important;
+}
+
 /* QTI3 Player 選択肢の幅調整（グローバル） */
 .player-container ul.qti-choice-list.qti-orientation-vertical {
   display: flex !important;

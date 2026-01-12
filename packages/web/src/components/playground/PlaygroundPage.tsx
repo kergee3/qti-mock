@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useLayoutEffect } from 'react'
 import {
   Box,
   Typography,
@@ -276,8 +276,34 @@ export function PlaygroundPage() {
     return () => window.removeEventListener('message', handleMessage)
   }, [])
 
+  /**
+   * ページ表示時にスクロールを無効化
+   */
+  useLayoutEffect(() => {
+    // body と html のoverflowを無効化
+    const originalBodyOverflow = document.body.style.overflow
+    const originalHtmlOverflow = document.documentElement.style.overflow
+    document.body.style.overflow = 'hidden'
+    document.documentElement.style.overflow = 'hidden'
+
+    // 親のmain要素のoverflowも無効化
+    const mainElement = document.querySelector('main')
+    const originalMainOverflow = mainElement?.style.overflow || ''
+    if (mainElement) {
+      mainElement.style.overflow = 'hidden'
+    }
+
+    return () => {
+      document.body.style.overflow = originalBodyOverflow
+      document.documentElement.style.overflow = originalHtmlOverflow
+      if (mainElement) {
+        mainElement.style.overflow = originalMainOverflow
+      }
+    }
+  }, [])
+
   return (
-    <Box sx={{ maxWidth: 1200, mx: 'auto', px: 3, pt: 0.5, pb: 1 }}>
+    <Box sx={{ maxWidth: 1200, mx: 'auto', px: 3, pt: 0.5, pb: 1, maxHeight: '100vh', overflow: 'hidden', boxSizing: 'border-box' }}>
       {/* 説明文 + クリアボタン */}
       <Box
         sx={{
@@ -474,21 +500,29 @@ export function PlaygroundPage() {
             sx={{
               border: '1px solid #ccc',
               mb: 1,
+              boxSizing: 'border-box',
             }}
           >
             <iframe
               src={iframeSrc}
               style={{
                 width: '100%',
-                height: result ? 'calc(100vh - 450px)' : 'calc(100vh - 320px)',
+                height: 'calc(100vh - 510px)',
                 minHeight: '200px',
                 border: 'none',
+                display: 'block',
               }}
               title="QTI Player"
             />
           </Box>
 
-          {/* 結果表示（技術者向け：ItemAnsweredMessage 全要素） */}
+          {/* 結果表示（技術者向け：ItemAnsweredMessage 全要素） - 常に領域を確保 */}
+          <Box
+            sx={{
+              height: '130px',
+              visibility: result ? 'visible' : 'hidden',
+            }}
+          >
           {result && (
             <Box
               sx={{
@@ -542,6 +576,7 @@ export function PlaygroundPage() {
               </Box>
             </Box>
           )}
+          </Box>
         </>
       )}
     </Box>
