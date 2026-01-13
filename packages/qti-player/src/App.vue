@@ -579,23 +579,27 @@ const submitResponse = () => {
 /* 縦書き用レイアウト: 回答ボタン（左固定）+ 問題領域（右、スクロール可能）*/
 .main-content-vertical {
   flex-direction: row;
-  justify-content: flex-end; /* 右端揃え */
   align-items: stretch;
-  height: 100%;
-  max-height: 100%;
-  overflow: hidden;
+  height: 100dvh;
+  max-height: 100dvh;
+  overflow: auto; /* モバイルでコンテンツが見えるように */
   width: 100%;
 }
 
+@supports not (height: 100dvh) {
+  .main-content-vertical {
+    height: 100vh;
+    max-height: 100vh;
+  }
+}
+
 .main-content-vertical .player-container {
-  flex: 0 1 auto; /* 縮小可能、内容に応じた幅 */
+  flex: 1 1 auto; /* 内容に応じた幅、縮小可能 */
+  min-width: 0; /* flexアイテムの縮小を許可 */
   height: 100%;
   max-height: 100%;
-  overflow-x: auto; /* 問題領域内でスクロール */
-  overflow-y: hidden;
+  overflow: auto; /* 問題領域内でスクロール */
   position: relative;
-  display: flex;
-  justify-content: flex-end; /* 内容を右寄せ */
 }
 
 .vertical-controls-area {
@@ -728,21 +732,25 @@ html.vertical-writing #app {
 
 /* 縦書きレイアウト: 回答ボタン（左固定）+ 問題領域（右、スクロール可能）*/
 .vertical-layout .main-content-vertical {
-  height: 100% !important;
-  max-height: 100% !important;
+  height: 100dvh !important;
+  max-height: 100dvh !important;
   overflow: hidden !important; /* スクロールはplayer-containerで行う */
   width: 100% !important;
   flex-direction: row !important;
-  justify-content: flex-end !important; /* 右端揃え */
   position: relative !important;
 }
 
+@supports not (height: 100dvh) {
+  .vertical-layout .main-content-vertical {
+    height: 100vh !important;
+    max-height: 100vh !important;
+  }
+}
+
 .vertical-layout .main-content-vertical .player-container {
-  flex: 0 1 auto !important; /* 縮小可能、内容に応じた幅 */
-  overflow-x: auto !important; /* 問題領域内でスクロール */
-  overflow-y: hidden !important;
-  display: flex !important;
-  justify-content: flex-end !important; /* 内容を右寄せ */
+  flex: 1 1 auto !important; /* 内容に応じた幅、縮小可能 */
+  min-width: 0 !important; /* flexアイテムの縮小を許可 */
+  overflow: auto !important; /* 問題領域内でスクロール */
 }
 
 .vertical-layout .main-content-vertical .vertical-controls-area {
