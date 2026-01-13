@@ -492,20 +492,13 @@ const submitResponse = () => {
 }
 
 .qti-player-app.vertical-layout {
-  height: 100dvh;
-  max-height: 100dvh;
+  /* Safari対応: dvhの代わりにvhを使用 */
+  height: 100vh;
+  max-height: 100vh;
   box-sizing: border-box;
   overflow: hidden;
   width: 100%;
   padding: 0;
-}
-
-/* dvh非対応ブラウザ用フォールバック */
-@supports not (height: 100dvh) {
-  .qti-player-app.vertical-layout {
-    height: 100vh;
-    max-height: 100vh;
-  }
 }
 
 .loading {
@@ -583,7 +576,7 @@ const submitResponse = () => {
   align-items: stretch;
   height: 100dvh;
   max-height: 100dvh;
-  overflow: visible; /* iOS: hiddenだとタッチスクロールがブロックされる */
+  overflow: hidden; /* Safari対応: visible→hiddenに変更 */
   width: 100%;
 }
 
@@ -595,10 +588,11 @@ const submitResponse = () => {
 }
 
 .main-content-vertical .player-container {
-  flex: 0 1 auto; /* 縮小可能、内容に応じた幅 */
+  flex: 1 1 auto; /* Safari対応: flex-shrinkを1に */
   height: 100%;
   max-height: 100%;
-  overflow-x: scroll; /* 横スクロール */
+  min-width: 0; /* Safari対応: flexアイテムの最小幅を0に */
+  overflow-x: auto; /* Safari対応: scroll→autoに */
   overflow-y: hidden;
   -webkit-overflow-scrolling: touch; /* iOS Safari: 慣性スクロール有効化 */
   position: relative;
@@ -703,10 +697,11 @@ const submitResponse = () => {
 </style>
 
 <style>
-/* 縦書きレイアウト時: html, body, #app を100dvh高さに設定（モバイル対応） */
+/* 縦書きレイアウト時: html, body, #app を100vh高さに設定 */
+/* Safari対応: dvhの代わりにvhを使用 */
 html.vertical-writing {
-  height: 100dvh !important;
-  max-height: 100dvh !important;
+  height: 100vh !important;
+  max-height: 100vh !important;
   margin: 0 !important;
   padding: 0 !important;
   overflow: hidden !important;
@@ -715,25 +710,12 @@ html.vertical-writing {
 
 html.vertical-writing body,
 html.vertical-writing #app {
-  height: 100dvh !important;
-  max-height: 100dvh !important;
+  height: 100vh !important;
+  max-height: 100vh !important;
   margin: 0 !important;
   padding: 0 !important;
   overflow: hidden !important;
   box-sizing: border-box !important;
-}
-
-/* dvh非対応ブラウザ用フォールバック */
-@supports not (height: 100dvh) {
-  html.vertical-writing {
-    height: 100vh !important;
-    max-height: 100vh !important;
-  }
-  html.vertical-writing body,
-  html.vertical-writing #app {
-    height: 100vh !important;
-    max-height: 100vh !important;
-  }
 }
 
 /* 縦書きレイアウト時の設定（グローバル） */
@@ -746,26 +728,21 @@ html.vertical-writing #app {
 }
 
 /* 縦書きレイアウト: 回答ボタン（左固定）+ 問題領域（右、スクロール可能）*/
+/* Safari対応: dvhの代わりにvhを使用 */
 .vertical-layout .main-content-vertical {
-  height: 100dvh !important;
-  max-height: 100dvh !important;
-  overflow: visible !important; /* iOS: hiddenだとタッチスクロールがブロックされる */
+  height: 100vh !important;
+  max-height: 100vh !important;
+  overflow: hidden !important; /* Safari対応: visible→hiddenに */
   width: 100% !important;
   flex-direction: row !important;
   justify-content: flex-end !important; /* 右端揃え */
   position: relative !important;
 }
 
-@supports not (height: 100dvh) {
-  .vertical-layout .main-content-vertical {
-    height: 100vh !important;
-    max-height: 100vh !important;
-  }
-}
-
 .vertical-layout .main-content-vertical .player-container {
-  flex: 0 1 auto !important; /* 縮小可能、内容に応じた幅 */
-  overflow-x: scroll !important; /* 横スクロール */
+  flex: 1 1 auto !important; /* Safari対応: flex-shrinkを1に */
+  min-width: 0 !important; /* Safari対応: flexアイテムの最小幅を0に */
+  overflow-x: auto !important; /* Safari対応: scroll→autoに */
   overflow-y: hidden !important;
   -webkit-overflow-scrolling: touch !important; /* iOS Safari: 慣性スクロール有効化 */
   display: flex !important;
@@ -797,11 +774,13 @@ html.vertical-writing #app {
 }
 
 /* 内部要素: player-containerの内側で内容に応じた幅 */
+/* Safari対応: fit-contentにmin-widthを追加して幅が0にならないように */
 .vertical-layout .qti3-player-container {
   height: 100% !important;
   max-height: 100% !important;
   overflow: visible !important; /* inlineChoiceドロップダウン用 */
   width: fit-content !important;
+  min-width: min-content !important; /* Safari対応: 最小幅を確保 */
   display: block !important;
 }
 
@@ -810,6 +789,7 @@ html.vertical-writing #app {
   max-height: 100% !important;
   overflow: visible !important; /* inlineChoiceドロップダウン用 */
   width: fit-content !important;
+  min-width: min-content !important; /* Safari対応: 最小幅を確保 */
   display: block !important;
 }
 
@@ -818,6 +798,7 @@ html.vertical-writing #app {
   max-height: 100% !important;
   overflow: visible !important; /* inlineChoiceドロップダウン用 */
   width: fit-content !important;
+  min-width: min-content !important; /* Safari対応: 最小幅を確保 */
   display: block !important;
 }
 
@@ -828,6 +809,7 @@ html.vertical-writing #app {
   height: 100% !important;
   max-height: 100% !important;
   width: fit-content !important;
+  min-width: min-content !important; /* Safari対応: 最小幅を確保 */
   overflow: visible !important; /* inlineChoiceドロップダウン用 */
 }
 
@@ -840,6 +822,33 @@ html.vertical-writing #app {
 
 .player-container ul.qti-choice-list.qti-orientation-vertical > li {
   width: auto !important;
+}
+
+/* Safari対応: 選択肢のハイライト表示を確実にする */
+.player-container [role="radio"],
+.player-container [role="checkbox"] {
+  /* Safari で疑似要素の背景色レンダリングを強制 */
+  transform: translateZ(0) !important;
+  -webkit-transform: translateZ(0) !important;
+}
+
+.player-container [role="radio"]:before,
+.player-container [role="checkbox"]:before {
+  /* Safari で背景色の変化を強制的に描画 */
+  will-change: background-color, border-color !important;
+  /* GPU アクセラレーションを有効化 */
+  transform: translateZ(0) !important;
+  -webkit-transform: translateZ(0) !important;
+  /* transition の完了を確実にする */
+  -webkit-backface-visibility: hidden !important;
+  backface-visibility: hidden !important;
+}
+
+.player-container [role="radio"][aria-checked="true"]:before,
+.player-container [role="checkbox"][aria-checked="true"]:before {
+  /* Safari で選択状態の描画を強制 */
+  transform: translateZ(0) !important;
+  -webkit-transform: translateZ(0) !important;
 }
 
 /* フォント設定（グローバル - QTI Player内部にも適用） */
