@@ -598,26 +598,25 @@ const submitResponse = () => {
   flex: 0 1 auto; /* 縮小可能、内容に応じた幅 */
   height: 100%;
   max-height: 100%;
-  overflow: auto; /* iOS: scrollよりautoが効く場合がある */
+  overflow-x: scroll; /* 横スクロール */
+  overflow-y: hidden;
   -webkit-overflow-scrolling: touch; /* iOS Safari: 慣性スクロール有効化 */
   position: relative;
-  display: flex;
-  justify-content: flex-end; /* 内容を右寄せ */
-  touch-action: pan-x pan-y; /* iOS: タッチ操作を明示的に許可 */
+  /* iOS: display:flexを削除してblockに */
+  display: block;
 }
 
 /* モバイル縦画面: player-containerが残りのスペースを使う */
 @media (max-width: 600px) and (orientation: portrait) {
   .main-content-vertical {
-    justify-content: stretch;
-    overflow: visible;
+    justify-content: flex-start; /* stretchは無効な値 */
   }
   .main-content-vertical .player-container {
     flex: 1 1 0;
     min-width: 0;
-    overflow: auto;
+    overflow-x: scroll;
+    overflow-y: hidden;
     -webkit-overflow-scrolling: touch;
-    touch-action: pan-x pan-y;
   }
 }
 
@@ -769,25 +768,24 @@ html.vertical-writing #app {
 
 .vertical-layout .main-content-vertical .player-container {
   flex: 0 1 auto !important; /* 縮小可能、内容に応じた幅 */
-  overflow: auto !important; /* iOS: scrollよりautoが効く場合がある */
+  overflow-x: scroll !important; /* 横スクロール */
+  overflow-y: hidden !important;
   -webkit-overflow-scrolling: touch !important; /* iOS Safari: 慣性スクロール有効化 */
-  display: flex !important;
-  justify-content: flex-end !important; /* 内容を右寄せ */
-  touch-action: pan-x pan-y !important; /* iOS: タッチ操作を明示的に許可 */
+  /* iOS: display:flexを削除してblockに */
+  display: block !important;
 }
 
 /* モバイル縦画面: player-containerが残りのスペースを使う */
 @media (max-width: 600px) and (orientation: portrait) {
   .vertical-layout .main-content-vertical {
-    justify-content: stretch !important;
-    overflow: visible !important;
+    justify-content: flex-start !important;
   }
   .vertical-layout .main-content-vertical .player-container {
     flex: 1 1 0 !important;
     min-width: 0 !important;
-    overflow: auto !important;
+    overflow-x: scroll !important;
+    overflow-y: hidden !important;
     -webkit-overflow-scrolling: touch !important;
-    touch-action: pan-x pan-y !important;
   }
 }
 

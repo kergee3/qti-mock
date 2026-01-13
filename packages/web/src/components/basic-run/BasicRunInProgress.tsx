@@ -268,18 +268,23 @@ export function BasicRunInProgress({
   const renderIframe = () => (
     <Box sx={{
       flex: 1,
-      overflow: 'visible', // iOS: hiddenだとiframe内のタッチスクロールがブロックされる
+      overflow: 'auto',
       WebkitOverflowScrolling: 'touch',
+      // iOS iframe スクロール対応
+      position: 'relative',
     }}>
       {iframeSrc ? (
         <iframe
           ref={iframeRef}
           src={iframeSrc}
+          scrolling="yes"
           style={{
             width: '100%',
             height: '100%',
             border: 'none',
-          }}
+            // iOS iframe スクロール対応
+            WebkitOverflowScrolling: 'touch',
+          } as React.CSSProperties}
           title="QTI Player"
         />
       ) : (
