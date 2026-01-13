@@ -30,7 +30,8 @@
       "Bash(npx sharp-cli:*)",
       "Bash(ls:*)",
       "Bash(dir:*)",
-      "Bash(mkdir:*)"
+      "Bash(mkdir:*)",
+      "Bash(tr:*)"
     ]
   }
 }

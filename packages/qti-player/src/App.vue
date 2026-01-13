@@ -810,4 +810,12 @@ html.vertical-writing #app {
 .font-kosugi-maru * {
   font-family: "Kosugi Maru", sans-serif !important;
 }
+
+/* qti3-player-containerの固定幅と中央揃えを解除（横書き・縦書き共通） */
+.qti3-player-container {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
 </style>
