@@ -266,7 +266,11 @@ export function BasicRunInProgress({
 
   // iframeをレンダリング
   const renderIframe = () => (
-    <Box sx={{ flex: 1, overflow: 'hidden' }}>
+    <Box sx={{
+      flex: 1,
+      overflow: 'visible', // iOS: hiddenだとiframe内のタッチスクロールがブロックされる
+      WebkitOverflowScrolling: 'touch',
+    }}>
       {iframeSrc ? (
         <iframe
           ref={iframeRef}

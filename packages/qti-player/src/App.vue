@@ -583,7 +583,7 @@ const submitResponse = () => {
   align-items: stretch;
   height: 100dvh;
   max-height: 100dvh;
-  overflow: hidden;
+  overflow: visible; /* iOS: hiddenだとタッチスクロールがブロックされる */
   width: 100%;
 }
 
@@ -598,24 +598,26 @@ const submitResponse = () => {
   flex: 0 1 auto; /* 縮小可能、内容に応じた幅 */
   height: 100%;
   max-height: 100%;
-  overflow-x: scroll; /* iOS Safari対応: autoではなくscroll */
-  overflow-y: hidden;
+  overflow: auto; /* iOS: scrollよりautoが効く場合がある */
   -webkit-overflow-scrolling: touch; /* iOS Safari: 慣性スクロール有効化 */
   position: relative;
   display: flex;
   justify-content: flex-end; /* 内容を右寄せ */
+  touch-action: pan-x pan-y; /* iOS: タッチ操作を明示的に許可 */
 }
 
 /* モバイル縦画面: player-containerが残りのスペースを使う */
 @media (max-width: 600px) and (orientation: portrait) {
   .main-content-vertical {
     justify-content: stretch;
+    overflow: visible;
   }
   .main-content-vertical .player-container {
     flex: 1 1 0;
     min-width: 0;
-    overflow-x: scroll;
+    overflow: auto;
     -webkit-overflow-scrolling: touch;
+    touch-action: pan-x pan-y;
   }
 }
 
@@ -751,7 +753,7 @@ html.vertical-writing #app {
 .vertical-layout .main-content-vertical {
   height: 100dvh !important;
   max-height: 100dvh !important;
-  overflow: hidden !important; /* スクロールはplayer-containerで行う */
+  overflow: visible !important; /* iOS: hiddenだとタッチスクロールがブロックされる */
   width: 100% !important;
   flex-direction: row !important;
   justify-content: flex-end !important; /* 右端揃え */
@@ -767,23 +769,25 @@ html.vertical-writing #app {
 
 .vertical-layout .main-content-vertical .player-container {
   flex: 0 1 auto !important; /* 縮小可能、内容に応じた幅 */
-  overflow-x: scroll !important; /* iOS Safari対応: autoではなくscroll */
-  overflow-y: hidden !important;
+  overflow: auto !important; /* iOS: scrollよりautoが効く場合がある */
   -webkit-overflow-scrolling: touch !important; /* iOS Safari: 慣性スクロール有効化 */
   display: flex !important;
   justify-content: flex-end !important; /* 内容を右寄せ */
+  touch-action: pan-x pan-y !important; /* iOS: タッチ操作を明示的に許可 */
 }
 
 /* モバイル縦画面: player-containerが残りのスペースを使う */
 @media (max-width: 600px) and (orientation: portrait) {
   .vertical-layout .main-content-vertical {
     justify-content: stretch !important;
+    overflow: visible !important;
   }
   .vertical-layout .main-content-vertical .player-container {
     flex: 1 1 0 !important;
     min-width: 0 !important;
-    overflow-x: scroll !important;
+    overflow: auto !important;
     -webkit-overflow-scrolling: touch !important;
+    touch-action: pan-x pan-y !important;
   }
 }
 
