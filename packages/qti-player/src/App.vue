@@ -493,7 +493,7 @@ const submitResponse = () => {
   box-sizing: border-box;
   overflow: hidden;
   width: 100%;
-  padding: 4px;
+  padding: 0;
 }
 
 .loading {
@@ -568,8 +568,8 @@ const submitResponse = () => {
 .main-content-vertical {
   flex-direction: row;
   align-items: stretch;
-  height: calc(100% - 8px);
-  max-height: calc(100% - 8px);
+  height: 100%;
+  max-height: 100%;
   overflow: hidden;
   width: 100%;
 }
@@ -577,8 +577,8 @@ const submitResponse = () => {
 .main-content-vertical .player-container {
   order: 2; /* 問題を右側に */
   flex: 1;
-  height: calc(100% - 8px);
-  max-height: calc(100% - 8px);
+  height: 100%;
+  max-height: 100%;
   overflow-x: auto;
   overflow-y: hidden;
 }
@@ -669,26 +669,48 @@ const submitResponse = () => {
 </style>
 
 <style>
+/* 縦書きレイアウト時: html, body, #app を100%高さに設定 */
+html.vertical-writing,
+html.vertical-writing body,
+html.vertical-writing #app {
+  height: 100% !important;
+  max-height: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
+}
+
 /* 縦書きレイアウト時の設定（グローバル） */
+/* すべての要素にbox-sizing: border-boxを適用 */
+.vertical-layout,
+.vertical-layout *,
+.vertical-layout *::before,
+.vertical-layout *::after {
+  box-sizing: border-box !important;
+}
+
 .vertical-layout .main-content-vertical {
-  height: calc(100% - 8px) !important;
-  max-height: calc(100% - 8px) !important;
+  height: 100% !important;
+  max-height: 100% !important;
   overflow: hidden !important;
   width: 100% !important;
 }
 
 /* player-containerでスクロール */
 .vertical-layout .player-container {
-  height: calc(100% - 8px) !important;
-  max-height: calc(100% - 8px) !important;
+  height: 100% !important;
+  max-height: 100% !important;
   overflow-x: auto !important;
   overflow-y: hidden !important;
+  padding: 4px !important;
+  border: none !important;
 }
 
-/* 内部要素: コンテンツに合わせて横に拡張可能にする */
+/* 内部要素: player-containerの内側で100%を維持 */
 .vertical-layout .qti3-player-container {
-  height: calc(100% - 30px) !important;
-  max-height: calc(100% - 30px) !important;
+  height: 100% !important;
+  max-height: 100% !important;
   overflow: visible !important;
   width: fit-content !important;
   min-width: 100% !important;
@@ -696,8 +718,8 @@ const submitResponse = () => {
 }
 
 .vertical-layout .qti-assessment-item {
-  height: calc(100% - 30px) !important;
-  max-height: calc(100% - 30px) !important;
+  height: 100% !important;
+  max-height: 100% !important;
   overflow: visible !important;
   width: fit-content !important;
   min-width: 100% !important;
@@ -705,8 +727,8 @@ const submitResponse = () => {
 }
 
 .vertical-layout .qti-item-body {
-  height: calc(100% - 50px) !important;
-  max-height: calc(100% - 50px) !important;
+  height: 100% !important;
+  max-height: 100% !important;
   overflow: visible !important;
   width: fit-content !important;
   min-width: 100% !important;
@@ -719,31 +741,31 @@ const submitResponse = () => {
 .vertical-layout .qti-item-body[class*="qti-height-"] {
   width: fit-content !important;
   display: block !important;
-  height: calc(100% - 50px) !important;
-  max-height: calc(100% - 50px) !important;
+  height: 100% !important;
+  max-height: 100% !important;
 }
 
 /* 縦書きコンテンツ: 高さを固定（qti-item-body以外） */
 .vertical-layout div.qti3-player-writing-mode-vertical-rl:not(.qti-item-body),
 .vertical-layout [class*="qti3-player-writing-mode-vertical"]:not(.qti-item-body) {
-  height: calc(100% - 70px) !important;
-  max-height: calc(100% - 70px) !important;
+  height: 100% !important;
+  max-height: 100% !important;
   width: fit-content !important;
   overflow: visible !important;
 }
 
 /* 縦書き時の共有刺激も同様 */
 .vertical-layout .qti-shared-stimulus {
-  height: calc(100% - 70px) !important;
-  max-height: calc(100% - 70px) !important;
+  height: 100% !important;
+  max-height: 100% !important;
   width: fit-content !important;
   overflow: visible !important;
 }
 
 /* qti-height-* クラスの高さを上書き（縦書き時のみ、qti-item-body以外） */
 .vertical-layout [class*="qti-height-"]:not(.qti-item-body) {
-  height: calc(100% - 70px) !important;
-  max-height: calc(100% - 70px) !important;
+  height: 100% !important;
+  max-height: 100% !important;
   width: fit-content !important;
 }
 
