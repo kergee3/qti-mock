@@ -492,12 +492,20 @@ const submitResponse = () => {
 }
 
 .qti-player-app.vertical-layout {
-  height: 100%;
-  max-height: 100%;
+  height: 100dvh;
+  max-height: 100dvh;
   box-sizing: border-box;
   overflow: hidden;
   width: 100%;
   padding: 0;
+}
+
+/* dvh非対応ブラウザ用フォールバック */
+@supports not (height: 100dvh) {
+  .qti-player-app.vertical-layout {
+    height: 100vh;
+    max-height: 100vh;
+  }
 }
 
 .loading {
@@ -676,10 +684,10 @@ const submitResponse = () => {
 </style>
 
 <style>
-/* 縦書きレイアウト時: html, body, #app を100%高さに設定 */
+/* 縦書きレイアウト時: html, body, #app を100dvh高さに設定（モバイル対応） */
 html.vertical-writing {
-  height: 100% !important;
-  max-height: 100% !important;
+  height: 100dvh !important;
+  max-height: 100dvh !important;
   margin: 0 !important;
   padding: 0 !important;
   overflow: hidden !important;
@@ -688,12 +696,25 @@ html.vertical-writing {
 
 html.vertical-writing body,
 html.vertical-writing #app {
-  height: 100% !important;
-  max-height: 100% !important;
+  height: 100dvh !important;
+  max-height: 100dvh !important;
   margin: 0 !important;
   padding: 0 !important;
   overflow: hidden !important;
   box-sizing: border-box !important;
+}
+
+/* dvh非対応ブラウザ用フォールバック */
+@supports not (height: 100dvh) {
+  html.vertical-writing {
+    height: 100vh !important;
+    max-height: 100vh !important;
+  }
+  html.vertical-writing body,
+  html.vertical-writing #app {
+    height: 100vh !important;
+    max-height: 100vh !important;
+  }
 }
 
 /* 縦書きレイアウト時の設定（グローバル） */

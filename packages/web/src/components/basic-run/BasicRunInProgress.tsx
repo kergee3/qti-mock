@@ -374,9 +374,24 @@ export function BasicRunInProgress({
   )
 
   // レイアウトに応じたレンダリング
+  // ナビゲーション非表示時は100dvhを使用（モバイルブラウザのアドレスバー対応）
+  const containerSx = {
+    display: 'flex',
+    height: '100dvh',
+    minHeight: '100dvh',
+    maxHeight: '100dvh',
+    overflow: 'hidden',
+    // dvh非対応ブラウザ（古いブラウザ）用のフォールバック
+    '@supports not (height: 100dvh)': {
+      height: '100vh',
+      minHeight: '100vh',
+      maxHeight: '100vh',
+    },
+  }
+
   if (effectivePosition.startsWith('top')) {
     return (
-      <Box sx={{ display: 'flex', flexDirection: 'column', height: 'calc(100vh - 120px)' }}>
+      <Box sx={{ ...containerSx, flexDirection: 'column' }}>
         {renderHorizontalBar()}
         {renderIframe()}
       </Box>
@@ -385,7 +400,7 @@ export function BasicRunInProgress({
 
   if (effectivePosition.startsWith('bottom')) {
     return (
-      <Box sx={{ display: 'flex', flexDirection: 'column', height: 'calc(100vh - 120px)' }}>
+      <Box sx={{ ...containerSx, flexDirection: 'column' }}>
         {renderIframe()}
         {renderHorizontalBar()}
       </Box>
@@ -394,7 +409,7 @@ export function BasicRunInProgress({
 
   if (effectivePosition === 'right') {
     return (
-      <Box sx={{ display: 'flex', height: 'calc(100vh - 120px)' }}>
+      <Box sx={containerSx}>
         {renderIframe()}
         {renderVerticalBarRight()}
       </Box>
@@ -403,7 +418,7 @@ export function BasicRunInProgress({
 
   // デフォルト: left
   return (
-    <Box sx={{ display: 'flex', height: 'calc(100vh - 120px)' }}>
+    <Box sx={containerSx}>
       {renderVerticalBarLeft()}
       {renderIframe()}
     </Box>
