@@ -41,7 +41,7 @@
             <span v-else class="incorrect">
               不正解
             </span>
-            <span class="score-text">スコア＝<span class="score-number">{{ score }}</span></span>
+            <span class="score-text">点数<span class="score-number">{{ score }}</span></span>
           </div>
         </div>
 
@@ -74,7 +74,7 @@
             <span v-else class="incorrect">
               不正解<template v-if="correctAnswer">。正解は「{{ correctAnswer }}」です。</template>
             </span>
-            <span class="score-text">スコア: {{ score }}</span>
+            <span class="score-text">点数 {{ score }}</span>
           </div>
         </template>
       </div>

@@ -26,14 +26,12 @@ const fontLabels: Record<FontOption, string> = {
 }
 
 /** 問題バー位置のラベル */
-const questionBarLabels: Record<QuestionBarPosition, string> = {
+const questionBarLabels: Partial<Record<QuestionBarPosition, string>> = {
   'auto': '自動',
   'left': '左-縦並び',
   'right': '右-縦並び',
   'top-ltr': '上-横並び(左から)',
   'top-rtl': '上-横並び(右から)',
-  'bottom-ltr': '下-横並び(左から)',
-  'bottom-rtl': '下-横並び(右から)',
 }
 
 /**
