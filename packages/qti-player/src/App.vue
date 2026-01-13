@@ -579,10 +579,11 @@ const submitResponse = () => {
 /* 縦書き用レイアウト: 回答ボタン（左固定）+ 問題領域（右、スクロール可能）*/
 .main-content-vertical {
   flex-direction: row;
+  justify-content: flex-end; /* 右端揃え */
   align-items: stretch;
   height: 100dvh;
   max-height: 100dvh;
-  overflow: auto; /* モバイルでコンテンツが見えるように */
+  overflow: hidden;
   width: 100%;
 }
 
@@ -594,12 +595,25 @@ const submitResponse = () => {
 }
 
 .main-content-vertical .player-container {
-  flex: 1 1 auto; /* 内容に応じた幅、縮小可能 */
-  min-width: 0; /* flexアイテムの縮小を許可 */
+  flex: 0 1 auto; /* 縮小可能、内容に応じた幅 */
   height: 100%;
   max-height: 100%;
-  overflow: auto; /* 問題領域内でスクロール */
+  overflow-x: auto; /* 問題領域内でスクロール */
+  overflow-y: hidden;
   position: relative;
+  display: flex;
+  justify-content: flex-end; /* 内容を右寄せ */
+}
+
+/* モバイル縦画面: player-containerが残りのスペースを使う */
+@media (max-width: 600px) and (orientation: portrait) {
+  .main-content-vertical {
+    justify-content: stretch;
+  }
+  .main-content-vertical .player-container {
+    flex: 1 1 0;
+    min-width: 0;
+  }
 }
 
 .vertical-controls-area {
@@ -737,6 +751,7 @@ html.vertical-writing #app {
   overflow: hidden !important; /* スクロールはplayer-containerで行う */
   width: 100% !important;
   flex-direction: row !important;
+  justify-content: flex-end !important; /* 右端揃え */
   position: relative !important;
 }
 
@@ -748,9 +763,22 @@ html.vertical-writing #app {
 }
 
 .vertical-layout .main-content-vertical .player-container {
-  flex: 1 1 auto !important; /* 内容に応じた幅、縮小可能 */
-  min-width: 0 !important; /* flexアイテムの縮小を許可 */
-  overflow: auto !important; /* 問題領域内でスクロール */
+  flex: 0 1 auto !important; /* 縮小可能、内容に応じた幅 */
+  overflow-x: auto !important; /* 問題領域内でスクロール */
+  overflow-y: hidden !important;
+  display: flex !important;
+  justify-content: flex-end !important; /* 内容を右寄せ */
+}
+
+/* モバイル縦画面: player-containerが残りのスペースを使う */
+@media (max-width: 600px) and (orientation: portrait) {
+  .vertical-layout .main-content-vertical {
+    justify-content: stretch !important;
+  }
+  .vertical-layout .main-content-vertical .player-container {
+    flex: 1 1 0 !important;
+    min-width: 0 !important;
+  }
 }
 
 .vertical-layout .main-content-vertical .vertical-controls-area {
