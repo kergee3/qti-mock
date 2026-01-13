@@ -602,15 +602,12 @@ const submitResponse = () => {
   overflow-y: hidden;
   -webkit-overflow-scrolling: touch; /* iOS Safari: 慣性スクロール有効化 */
   position: relative;
-  /* iOS: display:flexを削除してblockに */
-  display: block;
+  display: flex;
+  justify-content: flex-end; /* 内容を右寄せ */
 }
 
 /* モバイル縦画面: player-containerが残りのスペースを使う */
 @media (max-width: 600px) and (orientation: portrait) {
-  .main-content-vertical {
-    justify-content: flex-start; /* stretchは無効な値 */
-  }
   .main-content-vertical .player-container {
     flex: 1 1 0;
     min-width: 0;
@@ -771,15 +768,12 @@ html.vertical-writing #app {
   overflow-x: scroll !important; /* 横スクロール */
   overflow-y: hidden !important;
   -webkit-overflow-scrolling: touch !important; /* iOS Safari: 慣性スクロール有効化 */
-  /* iOS: display:flexを削除してblockに */
-  display: block !important;
+  display: flex !important;
+  justify-content: flex-end !important; /* 内容を右寄せ */
 }
 
 /* モバイル縦画面: player-containerが残りのスペースを使う */
 @media (max-width: 600px) and (orientation: portrait) {
-  .vertical-layout .main-content-vertical {
-    justify-content: flex-start !important;
-  }
   .vertical-layout .main-content-vertical .player-container {
     flex: 1 1 0 !important;
     min-width: 0 !important;
