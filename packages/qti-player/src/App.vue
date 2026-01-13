@@ -23,18 +23,7 @@
           'hidden': isLoading || !isItemLoaded
         }"
       >
-        <!-- プレイヤー（常に1つだけ） -->
-        <div class="player-container" :class="{ 'vertical-player': isVerticalWriting }">
-          <Qti3Player
-            ref="qti3player"
-            container-class="qti3-player-container"
-            @notifyQti3PlayerReady="handlePlayerReady"
-            @notifyQti3ItemReady="handleItemReady"
-            @notifyQti3EndAttemptCompleted="handleEndAttempt"
-          />
-        </div>
-
-        <!-- 縦書き時: 左側に回答/結果 -->
+        <!-- 縦書き時: 回答/結果エリア（HTMLで先に配置、CSSで右側の問題の左隣に） -->
         <div v-if="isVerticalWriting" class="vertical-controls-area">
           <!-- 回答ボタン -->
           <div v-if="isItemLoaded && !isScored" class="controls-vertical">
@@ -54,6 +43,17 @@
             </span>
             <span class="score-text">スコア＝<span class="score-number">{{ score }}</span></span>
           </div>
+        </div>
+
+        <!-- プレイヤー（常に1つだけ） -->
+        <div class="player-container" :class="{ 'vertical-player': isVerticalWriting }">
+          <Qti3Player
+            ref="qti3player"
+            container-class="qti3-player-container"
+            @notifyQti3PlayerReady="handlePlayerReady"
+            @notifyQti3ItemReady="handleItemReady"
+            @notifyQti3EndAttemptCompleted="handleEndAttempt"
+          />
         </div>
 
         <!-- 横書き時: 下に回答/結果 -->
@@ -88,7 +88,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch, computed } from 'vue'
+import { ref, onMounted, onUnmounted, watch, computed } from 'vue'
 import { useItemLoader } from './composables/useItemLoader'
 import { useResultSubmit } from './composables/useResultSubmit'
 
@@ -328,6 +328,10 @@ onMounted(() => {
   loadItem()
 })
 
+onUnmounted(() => {
+  window.removeEventListener('message', handleParentMessage)
+})
+
 // Google Fontsを動的に読み込む
 const loadGoogleFont = (fontKey) => {
   const fontUrls = {
@@ -421,7 +425,7 @@ const handleItemReady = () => {
   // 縦書き時はスクロール位置を右端（読み始め）に設定
   if (isVerticalWriting.value) {
     setTimeout(() => {
-      const playerContainer = document.querySelector('.player-container')
+      const playerContainer = document.querySelector('.main-content-vertical .player-container')
       if (playerContainer) {
         playerContainer.scrollLeft = playerContainer.scrollWidth
       }
@@ -564,9 +568,10 @@ const submitResponse = () => {
   visibility: hidden;
 }
 
-/* 縦書き用レイアウト: 回答ボタン（左）+ 問題（右）の横並び */
+/* 縦書き用レイアウト: 回答ボタン（左固定）+ 問題領域（右、スクロール可能）*/
 .main-content-vertical {
   flex-direction: row;
+  justify-content: flex-end; /* 右端揃え */
   align-items: stretch;
   height: 100%;
   max-height: 100%;
@@ -575,23 +580,25 @@ const submitResponse = () => {
 }
 
 .main-content-vertical .player-container {
-  order: 2; /* 問題を右側に */
-  flex: 1;
+  flex: 0 1 auto; /* 縮小可能、内容に応じた幅 */
   height: 100%;
   max-height: 100%;
-  overflow-x: auto;
+  overflow-x: auto; /* 問題領域内でスクロール */
   overflow-y: hidden;
+  position: relative;
+  display: flex;
+  justify-content: flex-end; /* 内容を右寄せ */
 }
 
 .vertical-controls-area {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: flex-start;
   padding: 8px;
   flex-shrink: 0;
-  border-right: 1px solid #ccc;
+  border-right: 1px solid #ccc; /* 問題領域との境界線 */
   margin-right: 8px;
-  order: 1; /* 回答ボタンを左側に */
 }
 
 .controls-vertical {
@@ -670,7 +677,15 @@ const submitResponse = () => {
 
 <style>
 /* 縦書きレイアウト時: html, body, #app を100%高さに設定 */
-html.vertical-writing,
+html.vertical-writing {
+  height: 100% !important;
+  max-height: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
+}
+
 html.vertical-writing body,
 html.vertical-writing #app {
   height: 100% !important;
@@ -690,83 +705,71 @@ html.vertical-writing #app {
   box-sizing: border-box !important;
 }
 
+/* 縦書きレイアウト: 回答ボタン（左固定）+ 問題領域（右、スクロール可能）*/
 .vertical-layout .main-content-vertical {
   height: 100% !important;
   max-height: 100% !important;
-  overflow: hidden !important;
+  overflow: hidden !important; /* スクロールはplayer-containerで行う */
   width: 100% !important;
+  flex-direction: row !important;
+  justify-content: flex-end !important; /* 右端揃え */
+  position: relative !important;
 }
 
-/* player-containerでスクロール */
+.vertical-layout .main-content-vertical .player-container {
+  flex: 0 1 auto !important; /* 縮小可能、内容に応じた幅 */
+  overflow-x: auto !important; /* 問題領域内でスクロール */
+  overflow-y: hidden !important;
+  display: flex !important;
+  justify-content: flex-end !important; /* 内容を右寄せ */
+}
+
+.vertical-layout .main-content-vertical .vertical-controls-area {
+  flex-shrink: 0 !important;
+  background: white !important;
+}
+
+/* player-container: スクロール領域 */
 .vertical-layout .player-container {
   height: 100% !important;
   max-height: 100% !important;
-  overflow-x: auto !important;
-  overflow-y: hidden !important;
   padding: 4px !important;
   border: none !important;
 }
 
-/* 内部要素: player-containerの内側で100%を維持 */
+/* 内部要素: player-containerの内側で内容に応じた幅 */
 .vertical-layout .qti3-player-container {
   height: 100% !important;
   max-height: 100% !important;
-  overflow: visible !important;
+  overflow: visible !important; /* inlineChoiceドロップダウン用 */
   width: fit-content !important;
-  min-width: 100% !important;
   display: block !important;
 }
 
 .vertical-layout .qti-assessment-item {
   height: 100% !important;
   max-height: 100% !important;
-  overflow: visible !important;
+  overflow: visible !important; /* inlineChoiceドロップダウン用 */
   width: fit-content !important;
-  min-width: 100% !important;
   display: block !important;
 }
 
 .vertical-layout .qti-item-body {
   height: 100% !important;
   max-height: 100% !important;
-  overflow: visible !important;
-  width: fit-content !important;
-  min-width: 100% !important;
-  display: block !important;
-}
-
-/* qti-item-body自体が縦書きクラスを持つ場合: 幅を内容に合わせる（floatは使わない） */
-.vertical-layout .qti-item-body.qti3-player-writing-mode-vertical-rl,
-.vertical-layout .qti-item-body.qti3-player-float-right,
-.vertical-layout .qti-item-body[class*="qti-height-"] {
+  overflow: visible !important; /* inlineChoiceドロップダウン用 */
   width: fit-content !important;
   display: block !important;
-  height: 100% !important;
-  max-height: 100% !important;
 }
 
-/* 縦書きコンテンツ: 高さを固定（qti-item-body以外） */
-.vertical-layout div.qti3-player-writing-mode-vertical-rl:not(.qti-item-body),
-.vertical-layout [class*="qti3-player-writing-mode-vertical"]:not(.qti-item-body) {
-  height: 100% !important;
-  max-height: 100% !important;
-  width: fit-content !important;
-  overflow: visible !important;
-}
-
-/* 縦書き時の共有刺激も同様 */
-.vertical-layout .qti-shared-stimulus {
-  height: 100% !important;
-  max-height: 100% !important;
-  width: fit-content !important;
-  overflow: visible !important;
-}
-
-/* qti-height-* クラスの高さを上書き（縦書き時のみ、qti-item-body以外） */
+/* 縦書きコンテンツ・共有刺激・高さ指定要素: 高さを固定 */
+.vertical-layout [class*="qti3-player-writing-mode-vertical"]:not(.qti-item-body),
+.vertical-layout .qti-shared-stimulus,
 .vertical-layout [class*="qti-height-"]:not(.qti-item-body) {
   height: 100% !important;
   max-height: 100% !important;
   width: fit-content !important;
+  overflow: visible !important; /* inlineChoiceドロップダウン用 */
 }
 
 /* QTI3 Player 選択肢の幅調整（グローバル） */
@@ -817,5 +820,30 @@ html.vertical-writing #app {
   max-width: 100% !important;
   margin-left: 0 !important;
   margin-right: 0 !important;
+}
+
+/* 縦書き時のinlineChoice ドロップダウン表示のためのスタイル */
+.vertical-layout .qti-inline-choice-interaction,
+.vertical-layout .inline-choice-wrapper,
+.vertical-layout .inline-choice-select-prompt {
+  overflow: visible !important;
+  position: relative !important;
+  z-index: 100 !important;
+}
+
+.vertical-layout .inline-choice-select-prompt button {
+  pointer-events: auto !important;
+  cursor: pointer !important;
+  position: relative !important;
+  z-index: 101 !important;
+}
+
+/* ドロップダウンリストボックス - 最前面に表示（fixedでoverflowに影響されない） */
+.vertical-layout [role="listbox"],
+.vertical-layout .inline-choice-select-listbox {
+  z-index: 10000 !important;
+  pointer-events: auto !important;
+  position: fixed !important;
+  overflow: visible !important;
 }
 </style>
