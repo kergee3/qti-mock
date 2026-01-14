@@ -45,6 +45,7 @@ export default function AboutPage() {
                 </Typography>
               </li>
               <li><strong>Playground</strong> - QTI XML を直接入力またはドラッグ＆ドロップで実行</li>
+              <li><strong>外部連携</strong> - iframe + postMessage API / Callback API で外部アプリから利用可能</li>
               <li><strong>縦書き対応</strong> - 日本語縦書きレイアウトをサポート</li>
               <li><strong>ルビ対応</strong> - 漢字へのふりがな表示をサポート</li>
               <li><strong>フォント選択</strong> - 複数の日本語フォントから選択可能</li>
@@ -116,7 +117,8 @@ export default function AboutPage() {
             技術スタック
           </Typography>
           <Typography variant="body2" color="text.secondary" component="ul" sx={{ pl: 2, mb: 0, '& li': { mb: 0.5 }, '& li:last-child': { mb: 0 } }}>
-            <li>Next.js 15 (App Router)</li>
+            <li>Next.js 16 (App Router)</li>
+            <li>React 19</li>
             <li>Vue 3 + Vite (QTI Player)</li>
             <li>
               <Link
@@ -148,6 +150,23 @@ export default function AboutPage() {
           <Typography variant="body2" color="text.secondary" component="ul" sx={{ pl: 2, mb: 0, '& li': { mb: 0.5 }, '& li:last-child': { mb: 0 } }}>
             <li><strong>packages/web</strong> - Next.js メインアプリケーション</li>
             <li><strong>packages/qti-player</strong> - Vue 3 QTI Player (iframe埋め込み)</li>
+          </Typography>
+        </CardContent>
+      </Card>
+
+      <Card sx={{ mt: 2, border: '1px solid #ccc' }}>
+        <CardContent sx={{ p: 3 }}>
+          <Typography variant="h6" gutterBottom>
+            外部連携
+          </Typography>
+          <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+            QTI Player は独立したサービスとして外部アプリケーションから利用可能です。
+            iframe で埋め込み、postMessage API または Callback API を通じて連携できます。
+          </Typography>
+          <Typography variant="body2" color="text.secondary" component="ul" sx={{ pl: 2, mb: 0, '& li': { mb: 0.5 }, '& li:last-child': { mb: 0 } }}>
+            <li><strong>postMessage API</strong> - iframe経由でリアルタイムに採点結果を受信</li>
+            <li><strong>Callback API</strong> - 採点結果をサーバーに直接送信</li>
+            <li><strong>フォント・認証トークン</strong> - URLパラメータで設定可能</li>
           </Typography>
         </CardContent>
       </Card>

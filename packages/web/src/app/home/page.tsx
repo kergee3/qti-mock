@@ -11,7 +11,7 @@ export default function HomePage() {
   return (
     <Box sx={{ maxWidth: 800, mx: 'auto', p: 3 }}>
       <Typography variant="h4" component="h1" gutterBottom>
-        QTI Demo
+        QTI Mock
       </Typography>
 
       <Typography variant="body1" color="text.secondary" paragraph>
@@ -26,7 +26,7 @@ export default function HomePage() {
           </Typography>
           <Typography variant="body2" color="text.secondary" paragraph>
             あらかじめ用意された基本的な一連のテストを体験できます。
-            選択問題、並べ替え問題、テキスト入力問題などが含まれています。
+            選択問題、並べ替え問題、テキスト入力問題などが含まれています。横書きと縦書きの簡単な問題集を選べます。
           </Typography>
           <Button
             variant="contained"
@@ -67,10 +67,11 @@ export default function HomePage() {
           <Typography variant="body2" color="text.secondary" component="ul" sx={{ pl: 2 }}>
             <li>choiceInteraction (単一/複数選択)</li>
             <li>inlineChoiceInteraction (インライン選択)</li>
-            <li>matchInteraction (マッチング)</li>
-            <li>orderInteraction (並べ替え)</li>
             <li>textEntryInteraction (テキスト入力)</li>
-            <li>extendedTextInteraction (長文入力)</li>
+            <li>extendedTextInteraction (長文入力 - 外部採点)</li>
+            <li>orderInteraction (並べ替え)</li>
+            <li>matchInteraction (マッチング)</li>
+            <li>hotspotInteraction (画像上の領域選択)</li>
             <li>graphicChoiceInteraction (画像選択)</li>
           </Typography>
         </CardContent>
