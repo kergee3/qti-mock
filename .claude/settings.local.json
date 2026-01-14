@@ -34,7 +34,8 @@
       "Bash(tr:*)",
       "Bash(python3:*)",
       "Bash(pkill:*)",
-      "Bash(npm run dev:player:*)"
+      "Bash(npm run dev:player:*)",
+      "Bash(npm ls:*)"
     ]
   }
 }

@@ -438,6 +438,11 @@ const handleItemReady = () => {
     type: 'ITEM_LOADED',
     itemId: currentItemId.value
   })
+
+  // iPadOS対応: 縦書き時のinlineChoiceドロップダウン位置を修正
+  if (isVerticalWriting.value) {
+    setupInlineChoicePositionFix()
+  }
 }
 
 const handleEndAttempt = async (data) => {
@@ -483,6 +488,79 @@ const submitResponse = () => {
   if (qti3Player) {
     qti3Player.endAttempt()
   }
+}
+
+// iPadOS対応: 縦書き時のinlineChoiceドロップダウン位置修正
+// WebKitのwriting-mode: vertical-rlとposition: absoluteの組み合わせで
+// 位置計算がおかしくなるバグを回避
+const setupInlineChoicePositionFix = () => {
+  // iPadOS/iOSの判定
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)
+
+  if (!isIOS) return
+
+  setTimeout(() => {
+    // すべてのinlineChoice buttonにクリックイベントを追加
+    const buttons = document.querySelectorAll('.inline-choice-select-prompt button')
+
+    buttons.forEach(button => {
+      button.addEventListener('click', () => {
+        // 少し遅延してlistboxが表示されてから位置を調整
+        requestAnimationFrame(() => {
+          setTimeout(() => {
+            fixListboxPosition(button)
+          }, 10)
+        })
+      })
+    })
+  }, 200)
+}
+
+// listboxの位置をボタンに合わせて調整
+const fixListboxPosition = (button) => {
+  const wrapper = button.closest('.inline-choice-wrapper')
+  if (!wrapper) return
+
+  const listbox = wrapper.querySelector('.inline-choice-select-listbox')
+  if (!listbox || listbox.classList.contains('inline-choice-select-listbox-hidden')) return
+
+  // ボタンの位置を取得
+  const buttonRect = button.getBoundingClientRect()
+  const wrapperRect = wrapper.getBoundingClientRect()
+
+  // listboxのサイズを取得
+  const listboxRect = listbox.getBoundingClientRect()
+
+  // 縦書きの場合、listboxをボタンの下に配置
+  // ボタンの下端からlistboxを表示
+  const topOffset = buttonRect.bottom - wrapperRect.top + 4
+
+  // 横位置はボタンの左端に合わせる
+  const leftOffset = buttonRect.left - wrapperRect.left
+
+  // 画面外にはみ出す場合の調整
+  const viewportHeight = window.innerHeight
+  const viewportWidth = window.innerWidth
+
+  let finalTop = topOffset
+  let finalLeft = leftOffset
+
+  // 下にはみ出す場合は上に表示
+  if (buttonRect.bottom + listboxRect.height > viewportHeight) {
+    finalTop = buttonRect.top - wrapperRect.top - listboxRect.height - 4
+  }
+
+  // 右にはみ出す場合は左にずらす
+  if (buttonRect.left + listboxRect.width > viewportWidth) {
+    finalLeft = viewportWidth - wrapperRect.left - listboxRect.width - 10
+  }
+
+  // スタイルを適用
+  listbox.style.position = 'absolute'
+  listbox.style.top = `${finalTop}px`
+  listbox.style.left = `${finalLeft}px`
+  listbox.style.transform = 'none'
 }
 </script>
 
@@ -926,12 +1004,27 @@ html.vertical-writing #app {
   z-index: 101 !important;
 }
 
-/* ドロップダウンリストボックス - 最前面に表示（fixedでoverflowに影響されない） */
+/* ドロップダウンリストボックス - 最前面に表示 */
+/* iPadOS Safari/Chrome では position: fixed と writing-mode: vertical-rl の組み合わせで */
+/* 座標計算がおかしくなるため、position: absolute を維持 */
 .vertical-layout [role="listbox"],
 .vertical-layout .inline-choice-select-listbox {
   z-index: 10000 !important;
   pointer-events: auto !important;
-  position: fixed !important;
+  position: absolute !important; /* iPadOS対応: fixedではなくabsoluteを使用 */
+  overflow: visible !important;
+}
+
+/* iPadOS対応: listboxの親要素（inline-choice-wrapper）を相対位置に設定 */
+.vertical-layout .qti-inline-choice-interaction {
+  position: relative !important;
+  overflow: visible !important;
+  z-index: 100 !important;
+}
+
+/* iPadOS対応: 縦書きコンテナでのoverflow:visibleを確保 */
+.vertical-layout .inline-choice-wrapper {
+  position: relative !important;
   overflow: visible !important;
 }
 </style>
