@@ -2,7 +2,7 @@
 <qti-assessment-item
   xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0"
   identifier="text-entry-item-001-v"
-  title="日本一の山は何ですか？（縦書き）"
+  title="日本一の山は何ですか？"
   adaptive="false"
   time-dependent="false"
   xml:lang="ja">

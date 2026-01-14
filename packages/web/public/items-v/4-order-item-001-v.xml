@@ -2,7 +2,7 @@
 <qti-assessment-item
   xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0"
   identifier="order-item-001-v"
-  title="北から順に並べ替えよう（縦書き）"
+  title="北から順に並べ替えよう"
   adaptive="false"
   time-dependent="false"
   xml:lang="ja">
