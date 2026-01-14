@@ -617,8 +617,9 @@ const submitResponse = () => {
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  padding: 8px;
+  padding: 8px 12px; /* 左右のパディングを増やす */
   flex-shrink: 0;
+  min-width: 60px; /* 最小幅を設定 */
   border-right: 1px solid #ccc; /* 問題領域との境界線 */
   margin-right: 8px;
 }
@@ -642,14 +643,16 @@ const submitResponse = () => {
 
 .result-vertical {
   writing-mode: vertical-rl;
-  padding: 15px 10px;
+  padding: 15px 8px;
   background: #f5f5f5;
   border-radius: 4px;
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 10px;
-  letter-spacing: 0.2em;
+  gap: 8px;
+  letter-spacing: 0.1em; /* 文字間隔を少し狭くして収まりやすく */
+  white-space: nowrap; /* 改行を防止 */
+  font-size: 14px; /* フォントサイズを少し小さく */
 }
 
 .result-vertical .result-label {
