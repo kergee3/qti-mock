@@ -40,6 +40,7 @@ export type FontOption =
   | 'biz-udpmincho'
   | 'source-han-sans'
   | 'kosugi-maru'
+  | 'ud-digikyo'
 
 /** 問題のステータス */
 export type QuestionStatus =

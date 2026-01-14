@@ -142,6 +142,8 @@ const fontStyle = computed(() => {
       return '"Source Han Sans JP", sans-serif'
     case 'kosugi-maru':
       return '"Kosugi Maru", sans-serif'
+    case 'ud-digikyo':
+      return '"UD Digi Kyokasho N-R", "UD デジタル 教科書体 N", sans-serif'
     default:
       return 'inherit'
   }
@@ -318,11 +320,13 @@ onMounted(() => {
 
   // フォント設定
   const fontParam = params.get('font')
-  const validFonts = ['noto-sans-jp', 'noto-serif-jp', 'biz-udpgothic', 'biz-udpmincho', 'source-han-sans', 'kosugi-maru']
+  const validFonts = ['noto-sans-jp', 'noto-serif-jp', 'biz-udpgothic', 'biz-udpmincho', 'source-han-sans', 'kosugi-maru', 'ud-digikyo']
   if (fontParam && validFonts.includes(fontParam)) {
     fontFamily.value = fontParam
-    // Google Fontsを動的に読み込み
-    loadGoogleFont(fontParam)
+    // Google Fontsを動的に読み込み（システムフォントは除く）
+    if (fontParam !== 'ud-digikyo') {
+      loadGoogleFont(fontParam)
+    }
   }
 
   loadItem()
@@ -978,6 +982,11 @@ html.vertical-writing #app {
 .font-kosugi-maru,
 .font-kosugi-maru * {
   font-family: "Kosugi Maru", sans-serif !important;
+}
+
+.font-ud-digikyo,
+.font-ud-digikyo * {
+  font-family: "UD Digi Kyokasho N-R", "UD デジタル 教科書体 N", sans-serif !important;
 }
 
 /* qti3-player-containerの固定幅と中央揃えを解除（横書き・縦書き共通） */

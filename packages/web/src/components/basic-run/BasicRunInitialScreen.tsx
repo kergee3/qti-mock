@@ -2,6 +2,7 @@
 
 import { Box, Button, ButtonGroup, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material'
 import type { ItemInfo, FontOption, QuestionBarPosition, WritingDirection } from '@/types/test'
+import { usePlatformDetection } from '@/hooks/usePlatformDetection'
 
 interface BasicRunInitialScreenProps {
   items: ItemInfo[]
@@ -14,8 +15,8 @@ interface BasicRunInitialScreenProps {
   onStart: () => void
 }
 
-/** フォントオプションのラベル */
-const fontLabels: Record<FontOption, string> = {
+/** フォントオプションのラベル（基本） */
+const baseFontLabels: Record<Exclude<FontOption, 'ud-digikyo'>, string> = {
   'system': 'システム既定',
   'noto-sans-jp': 'Noto Sans JP',
   'noto-serif-jp': 'Noto Serif JP',
@@ -50,6 +51,13 @@ export function BasicRunInitialScreen({
   onQuestionBarPositionChange,
   onStart,
 }: BasicRunInitialScreenProps) {
+  const { isWindows } = usePlatformDetection()
+
+  // Windows環境ではUDデジタル教科書体を追加
+  const fontLabels: Partial<Record<FontOption, string>> = isWindows
+    ? { ...baseFontLabels, 'ud-digikyo': 'UDデジタル教科書体' }
+    : baseFontLabels
+
   return (
     <Box sx={{ maxWidth: 900, mx: 'auto', p: 3 }}>
       {/* ヘッダー: タイトル + 書字方向選択 */}

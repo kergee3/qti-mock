@@ -11,9 +11,10 @@ import {
   FormControl,
 } from '@mui/material'
 import type { FontOption } from '@/types/test'
+import { usePlatformDetection } from '@/hooks/usePlatformDetection'
 
-/** フォントオプションのラベル */
-const fontLabels: Record<FontOption, string> = {
+/** フォントオプションのラベル（基本） */
+const baseFontLabels: Record<Exclude<FontOption, 'ud-digikyo'>, string> = {
   'system': 'システム既定',
   'noto-sans-jp': 'Noto Sans JP',
   'noto-serif-jp': 'Noto Serif JP',
@@ -144,6 +145,14 @@ const sampleXml = `<?xml version="1.0" encoding="UTF-8"?>
 export function PlaygroundPage() {
   // Player URL
   const playerUrl = process.env.NEXT_PUBLIC_PLAYER_URL || 'http://localhost:5173'
+
+  // プラットフォーム検出
+  const { isWindows } = usePlatformDetection()
+
+  // Windows環境ではUDデジタル教科書体を追加
+  const fontLabels: Partial<Record<FontOption, string>> = isWindows
+    ? { ...baseFontLabels, 'ud-digikyo': 'UDデジタル教科書体' }
+    : baseFontLabels
 
   // 入力状態
   const [xmlInput, setXmlInput] = useState<string>(sampleXml)

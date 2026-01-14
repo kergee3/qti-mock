@@ -35,7 +35,9 @@
       "Bash(python3:*)",
       "Bash(pkill:*)",
       "Bash(npm run dev:player:*)",
-      "Bash(npm ls:*)"
+      "Bash(npm ls:*)",
+      "Bash(reg query \"HKLM\\\\SOFTWARE\\\\Microsoft\\\\Windows NT\\\\CurrentVersion\\\\Fonts\")",
+      "Bash(findstr:*)"
     ]
   }
 }
