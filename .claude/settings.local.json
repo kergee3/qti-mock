@@ -32,7 +32,9 @@
       "Bash(dir:*)",
       "Bash(mkdir:*)",
       "Bash(tr:*)",
-      "Bash(python3:*)"
+      "Bash(python3:*)",
+      "Bash(pkill:*)",
+      "Bash(npm run dev:player:*)"
     ]
   }
 }

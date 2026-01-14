@@ -326,6 +326,7 @@ onMounted(() => {
   }
 
   loadItem()
+
 })
 
 onUnmounted(() => {
@@ -592,7 +593,7 @@ const submitResponse = () => {
   height: 100%;
   max-height: 100%;
   min-width: 0; /* Safari対応: flexアイテムの最小幅を0に */
-  overflow-x: auto; /* Safari対応: scroll→autoに */
+  overflow-x: scroll; /* 常にスクロールバーを表示 */
   overflow-y: hidden;
   -webkit-overflow-scrolling: touch; /* iOS Safari: 慣性スクロール有効化 */
   position: relative;
@@ -742,11 +743,38 @@ html.vertical-writing #app {
 .vertical-layout .main-content-vertical .player-container {
   flex: 1 1 auto !important; /* Safari対応: flex-shrinkを1に */
   min-width: 0 !important; /* Safari対応: flexアイテムの最小幅を0に */
-  overflow-x: auto !important; /* Safari対応: scroll→autoに */
+  overflow-x: scroll !important; /* 常にスクロールバーを表示 */
   overflow-y: hidden !important;
   -webkit-overflow-scrolling: touch !important; /* iOS Safari: 慣性スクロール有効化 */
   display: flex !important;
   justify-content: flex-end !important; /* 内容を右寄せ */
+}
+
+/* Safari用: スクロールバーを常に表示 */
+.vertical-layout .main-content-vertical .player-container::-webkit-scrollbar {
+  -webkit-appearance: none !important;
+  height: 14px !important; /* 横スクロールバーの高さを大きく */
+  display: block !important; /* Safari対応: 強制表示 */
+}
+
+.vertical-layout .main-content-vertical .player-container::-webkit-scrollbar-track {
+  background-color: #e0e0e0 !important; /* より目立つ色 */
+  border: 1px solid #ccc !important; /* ボーダーを追加 */
+}
+
+.vertical-layout .main-content-vertical .player-container::-webkit-scrollbar-thumb {
+  background-color: #666 !important; /* より濃い色 */
+  border: 1px solid #555 !important; /* ボーダーを追加 */
+  min-width: 50px !important; /* 最小幅を設定 */
+}
+
+.vertical-layout .main-content-vertical .player-container::-webkit-scrollbar-thumb:hover {
+  background-color: #444 !important;
+}
+
+/* Safari対応: padding-bottomでスクロールバー用のスペースを確保 */
+.vertical-layout .main-content-vertical .player-container {
+  padding-bottom: 0px !important; /* paddingは不要（スクロールバーは外側） */
 }
 
 /* モバイル縦画面: player-containerが残りのスペースを使う */
@@ -774,13 +802,13 @@ html.vertical-writing #app {
 }
 
 /* 内部要素: player-containerの内側で内容に応じた幅 */
-/* Safari対応: fit-contentにmin-widthを追加して幅が0にならないように */
+/* Safari対応: max-contentで内容の最大幅を確保 + flex-shrinkで縮小防止 */
 .vertical-layout .qti3-player-container {
   height: 100% !important;
   max-height: 100% !important;
   overflow: visible !important; /* inlineChoiceドロップダウン用 */
-  width: fit-content !important;
-  min-width: min-content !important; /* Safari対応: 最小幅を確保 */
+  width: max-content !important; /* Safari対応: 内容の最大幅を使用 */
+  flex-shrink: 0 !important; /* Safari対応: flexboxで縮小しない */
   display: block !important;
 }
 
@@ -788,8 +816,8 @@ html.vertical-writing #app {
   height: 100% !important;
   max-height: 100% !important;
   overflow: visible !important; /* inlineChoiceドロップダウン用 */
-  width: fit-content !important;
-  min-width: min-content !important; /* Safari対応: 最小幅を確保 */
+  width: max-content !important; /* Safari対応: 内容の最大幅を使用 */
+  flex-shrink: 0 !important; /* Safari対応: flexboxで縮小しない */
   display: block !important;
 }
 
@@ -797,8 +825,8 @@ html.vertical-writing #app {
   height: 100% !important;
   max-height: 100% !important;
   overflow: visible !important; /* inlineChoiceドロップダウン用 */
-  width: fit-content !important;
-  min-width: min-content !important; /* Safari対応: 最小幅を確保 */
+  width: max-content !important; /* Safari対応: 内容の最大幅を使用 */
+  flex-shrink: 0 !important; /* Safari対応: flexboxで縮小しない */
   display: block !important;
 }
 
@@ -808,8 +836,7 @@ html.vertical-writing #app {
 .vertical-layout [class*="qti-height-"]:not(.qti-item-body) {
   height: 100% !important;
   max-height: 100% !important;
-  width: fit-content !important;
-  min-width: min-content !important; /* Safari対応: 最小幅を確保 */
+  width: max-content !important; /* Safari対応: 内容の最大幅を使用 */
   overflow: visible !important; /* inlineChoiceドロップダウン用 */
 }
 
@@ -825,21 +852,11 @@ html.vertical-writing #app {
 }
 
 /* Safari対応: 選択肢のハイライト表示を確実にする */
-.player-container [role="radio"],
-.player-container [role="checkbox"] {
-  /* Safari で疑似要素の背景色レンダリングを強制 */
-  transform: translateZ(0) !important;
-  -webkit-transform: translateZ(0) !important;
-}
-
 .player-container [role="radio"]:before,
 .player-container [role="checkbox"]:before {
   /* Safari で背景色の変化を強制的に描画 */
   will-change: background-color, border-color !important;
-  /* GPU アクセラレーションを有効化 */
-  transform: translateZ(0) !important;
-  -webkit-transform: translateZ(0) !important;
-  /* transition の完了を確実にする */
+  /* GPU アクセラレーションを有効化（疑似要素のみに適用） */
   -webkit-backface-visibility: hidden !important;
   backface-visibility: hidden !important;
 }
@@ -847,8 +864,8 @@ html.vertical-writing #app {
 .player-container [role="radio"][aria-checked="true"]:before,
 .player-container [role="checkbox"][aria-checked="true"]:before {
   /* Safari で選択状態の描画を強制 */
-  transform: translateZ(0) !important;
-  -webkit-transform: translateZ(0) !important;
+  -webkit-backface-visibility: hidden !important;
+  backface-visibility: hidden !important;
 }
 
 /* フォント設定（グローバル - QTI Player内部にも適用） */

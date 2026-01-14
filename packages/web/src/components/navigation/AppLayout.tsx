@@ -58,7 +58,7 @@ export default function AppLayout({ children, navigationItems }: AppLayoutProps)
     sidebarWidth = deviceInfo.isMobile ? MOBILE_DRAWER_WIDTH : DRAWER_WIDTH;
   }
 
-  // 向き変更時にビューポートをリセットとレイアウトを再計算
+  // 向き変更時にビューポートをリセット
   useEffect(() => {
     const handleOrientationChange = () => {
       // ビューポートのメタタグをリセット
@@ -67,16 +67,14 @@ export default function AppLayout({ children, navigationItems }: AppLayoutProps)
         viewport.setAttribute('content', 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover');
       }
 
-      // レイアウトの再計算を強制
-      window.dispatchEvent(new Event('resize'));
+      // 無限ループ防止: resize イベントは発火しない
     };
 
+    // orientationchange のみリッスン（resize は除外して無限ループ防止）
     window.addEventListener('orientationchange', handleOrientationChange);
-    window.addEventListener('resize', handleOrientationChange);
 
     return () => {
       window.removeEventListener('orientationchange', handleOrientationChange);
-      window.removeEventListener('resize', handleOrientationChange);
     };
   }, []);
 
