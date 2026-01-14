@@ -429,7 +429,8 @@ export function PlaygroundPage() {
           variant="outlined"
           onClick={handlePlay}
           sx={{
-            minWidth: 120,
+            minWidth: 80,
+            px: 2,
             backgroundColor: '#fff',
             borderColor: '#333',
             color: '#333',
@@ -439,7 +440,7 @@ export function PlaygroundPage() {
             },
           }}
         >
-          Play
+          PLAY
         </Button>
 
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
