@@ -6,7 +6,8 @@ QTI 3.0 規格に基づいたオンラインテストプラットフォームの
 
 | サービス | URL |
 |---------|-----|
-| テストページ | https://qti-mock.shumi.dev/test |
+| Basic Run | https://qti-mock.shumi.dev/basic |
+| Playground | https://qti-mock.shumi.dev/playground |
 | Web (Next.js) | https://qti-mock.shumi.dev/ |
 | Player (Vue) | https://qti3-player.shumi.dev/ |
 
@@ -20,7 +21,7 @@ QTI 3.0 規格に基づいたオンラインテストプラットフォームの
 ┌─────────────────────────────────────────────────────────────┐
 │  Next.js (packages/web)        https://qti-mock.shumi.dev  │
 │  ┌─────────────────────────────────────────────────────┐   │
-│  │  TestInProgress (iframe + サイドバー)               │   │
+│  │  BasicRunInProgress (iframe + サイドバー)          │   │
 │  │  ┌───────────────────────────────────────────────┐  │   │
 │  │  │  Vue Player (packages/qti-player)             │  │   │
 │  │  │  https://qti3-player.shumi.dev               │  │   │
@@ -32,7 +33,7 @@ QTI 3.0 規格に基づいたオンラインテストプラットフォームの
 │                           │                                 │
 │                           ▼ postMessage                     │
 │  ┌─────────────────────────────────────────────────────┐   │
-│  │  TestResults                                        │   │
+│  │  BasicRunResults                                    │   │
 │  │  - 問題別結果テーブル（回答・時間・スコア）        │   │
 │  │  - 正答率・総合成績表示                            │   │
 │  │  - 未採点問題（外部採点）の識別                    │   │
@@ -43,7 +44,7 @@ QTI 3.0 規格に基づいたオンラインテストプラットフォームの
 ## プロジェクト構成
 
 ```
-qti3-demo/
+qti-mock/
 ├── packages/
 │   ├── qti-player/          # Vue 3 QTI Player
 │   │   ├── src/
@@ -57,16 +58,19 @@ qti3-demo/
 │   └── web/                  # Next.js Web Application
 │       ├── src/
 │       │   ├── app/
-│       │   │   ├── page.tsx           # ホームページ
-│       │   │   ├── test/page.tsx      # テストページ
-│       │   │   └── api/results/route.ts  # 結果受信API
+│       │   │   ├── page.tsx           # ルート（/home へリダイレクト）
+│       │   │   ├── home/page.tsx      # ホームページ
+│       │   │   ├── basic/page.tsx     # Basic Run ページ
+│       │   │   └── playground/page.tsx # Playground ページ
 │       │   ├── components/
 │       │   │   ├── QtiPlayerFrame/    # iframe wrapper
 │       │   │   ├── navigation/        # ナビゲーション（サイドバー等）
-│       │   │   └── test/              # テスト関連コンポーネント
-│       │   │       ├── TestInProgress.tsx   # テスト実行画面
-│       │   │       ├── TestResults.tsx      # 結果表示画面
-│       │   │       └── TestInitialScreen.tsx # 開始画面
+│       │   │   ├── basic-run/         # Basic Run 関連コンポーネント
+│       │   │   │   ├── BasicRunInProgress.tsx   # テスト実行画面
+│       │   │   │   ├── BasicRunResults.tsx      # 結果表示画面
+│       │   │   │   └── BasicRunInitialScreen.tsx # 開始画面
+│       │   │   └── playground/        # Playground コンポーネント
+│       │   │       └── PlaygroundPage.tsx
 │       │   └── types/
 │       │       └── test.ts            # 型定義（ItemResult等）
 │       ├── public/
@@ -125,10 +129,12 @@ npm run dev:web     # http://localhost:3000
 
 ### 動作確認
 
-1. ブラウザで http://localhost:3000/test を開く
-2. 9問のテストを実行（各種インタラクション）
+1. ブラウザで http://localhost:3000/basic を開く
+2. プリセット問題でテストを実行（各種インタラクション）
 3. 問題番号にホバーすると、タイトルとインタラクションタイプを表示
 4. 全問完了後、結果画面で回答内容・所要時間・スコアを確認
+
+または http://localhost:3000/playground で QTI XML を直接入力してテストを実行
 
 ## サポートしているインタラクション
 
@@ -144,13 +150,19 @@ npm run dev:web     # http://localhost:3000
 
 ## 主要機能
 
-### テスト実行画面 (TestInProgress)
+### Basic Run
+プリセット問題でテストを体験できるモード。選択問題、並べ替え問題、テキスト入力問題などが含まれています。
+
+### Playground
+QTI XML を直接入力またはドラッグ＆ドロップで自由にテストを実行できるモード。
+
+### テスト実行画面 (BasicRunInProgress)
 - 左サイドバーに問題番号ボタンを表示
 - 問題番号にホバーでタイトル・インタラクションタイプをTooltip表示
 - 回答状況に応じた色分け（青: 現在、緑: 正解、赤: 不正解、オレンジ: 未採点、グレー: 未回答）
 - 問題番号下に区切り線を引いて終了ボタンを配置
 
-### 結果表示画面 (TestResults)
+### 結果表示画面 (BasicRunResults)
 - 問題別結果テーブル（問題番号、タイトル、回答、所要時間、結果）
 - 回答列は長文の場合省略表示（...）、Tooltipで全文表示
 - 所要時間（秒）を独立した列で表示

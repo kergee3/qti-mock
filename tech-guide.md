@@ -55,6 +55,7 @@ qti-player は QTI 3.0 規格に準拠したアセスメントアイテムを表
 | `item` | ○ | QTI XMLファイルのURL（URLエンコード必須） |
 | `session` | ○ | セッションID（結果の追跡に使用） |
 | `callback` | - | 結果送信先のAPI URL（オプション） |
+| `token` | - | 認証トークン（Authorizationヘッダーに付与、callback使用時） |
 | `font` | - | フォント設定（後述） |
 
 ### 3. URLの構築例
@@ -95,6 +96,7 @@ interface ItemAnsweredMessage {
   isExternalScored: boolean // 外部採点が必要か（記述式など）
   response: string         // 回答内容（表示用テキスト）
   duration: number         // 所要時間（秒）
+  correctAnswer: string | null // 正解（取得可能な場合）
 }
 ```
 
