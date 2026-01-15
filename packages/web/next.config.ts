@@ -1,6 +1,12 @@
 import type { NextConfig } from "next";
+import packageJson from "./package.json";
 
 const nextConfig: NextConfig = {
+  env: {
+    APP_VERSION: packageJson.version,
+    BUILD_YEAR: new Date().getFullYear().toString(),
+    BUILD_MONTH: (new Date().getMonth() + 1).toString().padStart(2, '0'),
+  },
   async headers() {
     const playerUrl = process.env.PLAYER_URL || 'http://localhost:5173'
     return [
