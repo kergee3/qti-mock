@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<qti-assessment-item
+  xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd"
+  identifier="8220263300000000-001"
+  title="国旗と国歌の意義"
+  adaptive="false"
+  time-dependent="false">
+
+  <!-- 解答の宣言 -->
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>A</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+
+  <!-- スコアの宣言 -->
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+
+  <!-- フィードバック用の宣言 -->
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+
+  <!-- 問題本文 -->
+  <qti-item-body>
+    <div class="question-stem">
+      <p>国際社会における国旗と国歌について、正しく説明しているものはどれですか。</p>
+    </div>
+
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-simple-choice identifier="A">ア　どの国も国旗と国歌をもっており、その国の象徴として大切にされているため、互いに尊重し合うことが必要である</qti-simple-choice>
+      <qti-simple-choice identifier="B">イ　国旗と国歌は一部の国だけがもっているものであり、それぞれの国が自由に扱ってよいものである</qti-simple-choice>
+      <qti-simple-choice identifier="C">ウ　国旗と国歌は国際的な取り決めによって決められており、すべての国で同じ意味をもっている</qti-simple-choice>
+      <qti-simple-choice identifier="D">エ　国旗と国歌は政治的な意味だけをもつものであり、文化や伝統とは関係がない</qti-simple-choice>
+    </qti-choice-interaction>
+  </qti-item-body>
+
+  <!-- 解答処理 -->
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-correct identifier="RESPONSE"/>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">feedback_correct</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">feedback_incorrect</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+
+  <!-- フィードバック（正解時） -->
+  <qti-modal-feedback identifier="feedback_correct" outcome-identifier="FEEDBACK" show-hide="show">
+    <qti-content-body>
+      <p>正解です！</p>
+      <p>国旗と国歌はすべての国がもっており、それぞれの国の象徴として大切にされています。国際社会では、自分の国の国旗と国歌を大切にするとともに、他の国の国旗と国歌も尊重する態度が重要です。これにより、互いの文化や伝統を理解し、平和な国際関係を築くことができます。</p>
+    </qti-content-body>
+  </qti-modal-feedback>
+
+  <!-- フィードバック（不正解時） -->
+  <qti-modal-feedback identifier="feedback_incorrect" outcome-identifier="FEEDBACK" show-hide="show">
+    <qti-content-body>
+      <p>残念、不正解です。</p>
+      <p>正解は「ア　どの国も国旗と国歌をもっており、その国の象徴として大切にされているため、互いに尊重し合うことが必要である」です。</p>
+      <p>国旗と国歌はすべての国がもっており、それぞれの国の象徴として大切にされています。国際社会では、自分の国の国旗と国歌を大切にするとともに、他の国の国旗と国歌も尊重する態度が重要です。これにより、互いの文化や伝統を理解し、平和な国際関係を築くことができます。</p>
+    </qti-content-body>
+  </qti-modal-feedback>
+
+</qti-assessment-item>

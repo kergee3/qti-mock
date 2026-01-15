@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<qti-assessment-item
+  xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd"
+  identifier="8220263200000000-004"
+  title="文化遺産の学習"
+  adaptive="false"
+  time-dependent="false">
+
+  <!-- 解答の宣言 -->
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>A</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+
+  <!-- スコアの宣言 -->
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+
+  <!-- フィードバック用の宣言 -->
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+
+  <!-- 問題本文 -->
+  <qti-item-body>
+    <div class="question-stem">
+      <p>歴史学習で取り上げる代表的な文化遺産について、正しい説明はどれですか。</p>
+    </div>
+
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-simple-choice identifier="A">ア　国宝は重要文化財のうち、学術的に価値が極めて高く、かつ代表的なものとして指定されたもの</qti-simple-choice>
+      <qti-simple-choice identifier="B">イ　重要文化財は世界文化遺産のうち、日本政府が特に価値が高いと認めたもの</qti-simple-choice>
+      <qti-simple-choice identifier="C">ウ　世界文化遺産は日本の文化庁によって指定された最も価値の高い文化財</qti-simple-choice>
+      <qti-simple-choice identifier="D">エ　国宝と重要文化財は同じ意味で、どちらも世界遺産に登録されたもの</qti-simple-choice>
+    </qti-choice-interaction>
+  </qti-item-body>
+
+  <!-- 解答処理 -->
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-correct identifier="RESPONSE"/>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">feedback_correct</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">feedback_incorrect</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+
+  <!-- フィードバック（正解時） -->
+  <qti-modal-feedback identifier="feedback_correct" outcome-identifier="FEEDBACK" show-hide="show">
+    <qti-content-body>
+      <p>正解です！</p>
+      <p>国宝は、重要文化財の中から学術的に価値が極めて高く、かつ代表的なものとして国によって指定されたものです。歴史学習では、これらの文化遺産を通して我が国の伝統や文化の特色を学びます。</p>
+    </qti-content-body>
+  </qti-modal-feedback>
+
+  <!-- フィードバック（不正解時） -->
+  <qti-modal-feedback identifier="feedback_incorrect" outcome-identifier="FEEDBACK" show-hide="show">
+    <qti-content-body>
+      <p>残念、不正解です。</p>
+      <p>正解は「ア　国宝は重要文化財のうち、学術的に価値が極めて高く、かつ代表的なものとして指定されたもの」です。</p>
+      <p>国宝は、重要文化財の中から学術的に価値が極めて高く、かつ代表的なものとして国によって指定されたものです。歴史学習では、これらの文化遺産を通して我が国の伝統や文化の特色を学びます。</p>
+    </qti-content-body>
+  </qti-modal-feedback>
+
+</qti-assessment-item>

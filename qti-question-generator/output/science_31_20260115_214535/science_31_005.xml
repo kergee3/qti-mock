@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<qti-assessment-item
+  xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd"
+  identifier="8260263100000000-005"
+  title="ものづくりの種類"
+  adaptive="false"
+  time-dependent="false">
+
+  <!-- 解答の宣言 -->
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>A</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+
+  <!-- スコアの宣言 -->
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+
+  <!-- フィードバック用の宣言 -->
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+
+  <!-- 問題本文 -->
+  <qti-item-body>
+    <div class="question-stem">
+      <p>小学6年生の理科「物質・エネルギー」の学習で、学習指導要領に基づいて行うものづくりについて正しく説明しているものはどれですか。</p>
+    </div>
+
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-simple-choice identifier="A">ア　2種類以上のものづくりを行う必要がある</qti-simple-choice>
+      <qti-simple-choice identifier="B">イ　1種類のものづくりを詳しく行えばよい</qti-simple-choice>
+      <qti-simple-choice identifier="C">ウ　3種類以上のものづくりを必ず行う</qti-simple-choice>
+      <qti-simple-choice identifier="D">エ　ものづくりの種類に決まりはない</qti-simple-choice>
+    </qti-choice-interaction>
+  </qti-item-body>
+
+  <!-- 解答処理 -->
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-correct identifier="RESPONSE"/>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">feedback_correct</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">feedback_incorrect</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+
+  <!-- フィードバック（正解時） -->
+  <qti-modal-feedback identifier="feedback_correct" outcome-identifier="FEEDBACK" show-hide="show">
+    <qti-content-body>
+      <p>正解です！</p>
+      <p>学習指導要領では、内容「A物質・エネルギー」の指導において、2種類以上のものづくりを行うことが定められています。例えば、てこを活用したものづくりと電気を活用したものづくりなど、異なる仕組みを学ぶために複数種類のものづくりが重要です。</p>
+    </qti-content-body>
+  </qti-modal-feedback>
+
+  <!-- フィードバック（不正解時） -->
+  <qti-modal-feedback identifier="feedback_incorrect" outcome-identifier="FEEDBACK" show-hide="show">
+    <qti-content-body>
+      <p>残念、不正解です。</p>
+      <p>正解は「ア　2種類以上のものづくりを行う必要がある」です。</p>
+      <p>学習指導要領では、内容「A物質・エネルギー」の指導において、2種類以上のものづくりを行うことが定められています。例えば、てこを活用したものづくりと電気を活用したものづくりなど、異なる仕組みを学ぶために複数種類のものづくりが重要です。</p>
+    </qti-content-body>
+  </qti-modal-feedback>
+
+</qti-assessment-item>
