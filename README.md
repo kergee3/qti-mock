@@ -1,4 +1,4 @@
-# NexCBT - QTI3 Assessment Platform
+# QTI Mock - QTI3 Assessment Platform
 
 QTI 3.0 規格に基づいたオンラインテストプラットフォームのデモ実装です。
 

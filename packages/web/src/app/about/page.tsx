@@ -80,7 +80,7 @@ export default function AboutPage() {
                 </ListItemIcon>
                 <ListItemText
                   primary="Playground"
-                  secondary="QTI XML を直接入力またはドラッグ＆ドロップで実行"
+                  secondary="QTI XML を直接入力またはドラッグ＆ドロップで実行。URLパラメータ（?set=items-h&startswith=1）でBasic Runのサンプルを直接ロード可能"
                 />
               </ListItem>
               <ListItem>
