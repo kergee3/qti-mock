@@ -172,6 +172,9 @@ export function PlaygroundPage() {
   // 結果状態
   const [result, setResult] = useState<AnswerResult | null>(null)
 
+  // 自動PLAY用フラグ（Paste/Drop時に使用）
+  const [shouldAutoPlay, setShouldAutoPlay] = useState<boolean>(false)
+
   // 設定
   const [selectedFont, setSelectedFont] = useState<FontOption>('system')
 
@@ -195,6 +198,17 @@ export function PlaygroundPage() {
     setIsDragging(false)
   }
 
+  /**
+   * ペーストハンドラ（自動PLAY用）
+   */
+  const handlePaste = (e: React.ClipboardEvent<HTMLDivElement>) => {
+    const pastedText = e.clipboardData.getData('text')
+    if (pastedText.trim()) {
+      // onChangeでxmlInputが更新された後、useEffectで自動PLAYが実行される
+      setShouldAutoPlay(true)
+    }
+  }
+
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault()
     e.stopPropagation()
@@ -213,14 +227,13 @@ export function PlaygroundPage() {
       if (content) {
         // 既存データをクリアして新しい内容を設定
         setXmlInput(content)
-        // iframe表示をクリア
-        setIsPlaying(false)
+        // 状態をリセット
         setResult(null)
-        setItemTitle('')
-        setInteractionType('')
-        setIframeSrc('')
+        setResourceWarning(null)
         // URLパラメータを消去
         router.replace('/playground', { scroll: false })
+        // 自動PLAYをトリガー
+        setShouldAutoPlay(true)
       }
     }
     reader.onerror = () => {
@@ -346,6 +359,31 @@ export function PlaygroundPage() {
   }, [])
 
   /**
+   * 自動PLAY実行（Paste/Drop時）
+   */
+  useEffect(() => {
+    if (shouldAutoPlay && xmlInput.trim()) {
+      setShouldAutoPlay(false)
+      // handlePlayの処理を直接実行（state依存の問題を回避）
+      const trimmedXml = xmlInput.trim()
+      const { title, interactionType: iType, hasExternalResources, externalResources } = parseXmlMetadata(trimmedXml)
+      setItemTitle(title)
+      setInteractionType(iType)
+      if (hasExternalResources) {
+        setResourceWarning(externalResources)
+      } else {
+        setResourceWarning(null)
+      }
+      setResult(null)
+      const dataUrl = generateDataUrl(trimmedXml)
+      const timestamp = Date.now()
+      const url = `${playerUrl}?item=${encodeURIComponent(dataUrl)}&font=${selectedFont}&t=${timestamp}`
+      setIframeSrc(url)
+      setIsPlaying(true)
+    }
+  }, [shouldAutoPlay, xmlInput, playerUrl, selectedFont])
+
+  /**
    * ページ表示時にスクロールを無効化
    */
   useLayoutEffect(() => {
@@ -437,6 +475,7 @@ export function PlaygroundPage() {
               router.replace('/playground', { scroll: false })
             }
           }}
+          onPaste={handlePaste}
           sx={{
             mb: 2,
             '& .MuiInputBase-root': {
