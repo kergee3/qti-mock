@@ -33,6 +33,20 @@ export default function BasicRunPage() {
   const [questionBarPosition, setQuestionBarPosition] = useState<QuestionBarPosition>('auto')
   const [writingDirection, setWritingDirection] = useState<WritingDirection>('horizontal')
 
+  // sessionStorageからフォント設定を復元
+  useEffect(() => {
+    const savedFont = sessionStorage.getItem('basic-font')
+    if (savedFont) {
+      setSelectedFont(savedFont as FontOption)
+    }
+  }, [])
+
+  // フォント設定変更時にsessionStorageに保存
+  const handleFontChange = useCallback((font: FontOption) => {
+    setSelectedFont(font)
+    sessionStorage.setItem('basic-font', font)
+  }, [])
+
   // アイテム一覧を取得（書字方向が変更されたら再取得）
   useEffect(() => {
     const fetchItems = async () => {
@@ -134,7 +148,7 @@ export default function BasicRunPage() {
           writingDirection={writingDirection}
           onWritingDirectionChange={setWritingDirection}
           selectedFont={selectedFont}
-          onFontChange={setSelectedFont}
+          onFontChange={handleFontChange}
           questionBarPosition={questionBarPosition}
           onQuestionBarPositionChange={setQuestionBarPosition}
           onStart={handleStart}

@@ -178,6 +178,20 @@ export function PlaygroundPage() {
   // 設定
   const [selectedFont, setSelectedFont] = useState<FontOption>('system')
 
+  // sessionStorageからフォント設定を復元
+  useEffect(() => {
+    const savedFont = sessionStorage.getItem('playground-font')
+    if (savedFont) {
+      setSelectedFont(savedFont as FontOption)
+    }
+  }, [])
+
+  // フォント設定変更ハンドラ（sessionStorageに保存）
+  const handleFontChange = (font: FontOption) => {
+    setSelectedFont(font)
+    sessionStorage.setItem('playground-font', font)
+  }
+
   /**
    * ドラッグ＆ドロップハンドラ
    */
@@ -555,7 +569,7 @@ export function PlaygroundPage() {
           <FormControl size="small">
             <Select
               value={selectedFont}
-              onChange={(e) => setSelectedFont(e.target.value as FontOption)}
+              onChange={(e) => handleFontChange(e.target.value as FontOption)}
               sx={{
                 minWidth: 150,
                 backgroundColor: '#fff',
