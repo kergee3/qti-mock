@@ -6,7 +6,7 @@ export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url)
     const dir = searchParams.get('dir') || 'horizontal'
-    const subDir = dir === 'vertical' ? 'items-v' : 'items'
+    const subDir = dir === 'vertical' ? 'items-v' : 'items-h'
     const itemsDir = path.join(process.cwd(), 'public', subDir)
     const files = fs.readdirSync(itemsDir)
 

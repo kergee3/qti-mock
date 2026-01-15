@@ -51,7 +51,7 @@ export function BasicRunInProgress({
 
   // 現在のアイテムURL（書字方向に応じてディレクトリを変更）
   const currentItem = items[currentIndex]
-  const itemsSubDir = writingDirection === 'vertical' ? 'items-v' : 'items'
+  const itemsSubDir = writingDirection === 'vertical' ? 'items-v' : 'items-h'
   const itemUrl = currentItem ? `${appUrl}/${itemsSubDir}/${currentItem.fileName}` : ''
   const callbackUrl = `${appUrl}/api/results`
 

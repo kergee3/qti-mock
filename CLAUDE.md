@@ -53,13 +53,13 @@ npm workspaces を使用した Turborepo モノレポ構成です。
 - `/home` - ホームページ（Basic Run / Playground への導線）
 - `/basic` - Basic Run（プリセット問題でのテスト実行）
 - `/playground` - Playground（QTI XML を自由に入力してテスト）
-- `public/items/` から QTI XML ファイルを配信
+- `public/items-h/`（横書き）、`public/items-v/`（縦書き）から QTI XML ファイルを配信
 
 ### データフロー
 
 1. Next.js の `/basic` ページで `BasicRunInProgress` をレンダリング
 2. iframe が URL パラメータ付きで Vue Player を読み込み
-3. Vue Player が Next.js から QTI XML を fetch (`/items/*.xml`)
+3. Vue Player が Next.js から QTI XML を fetch (`/items-h/*.xml` または `/items-v/*.xml`)
 4. ユーザーが回答、Vue Player がローカルで採点
 5. Vue Player が postMessage で結果を親ウィンドウに送信
 6. `BasicRunInProgress` が結果を受信し、状態を更新
@@ -96,7 +96,7 @@ PLAYER_URL=http://localhost:5173
 
 ## QTI アイテム形式
 
-QTI 3.0 XML ファイルを `packages/web/public/items/` に配置。サポートするインタラクション:
+QTI 3.0 XML ファイルを `packages/web/public/items-h/`（横書き）または `packages/web/public/items-v/`（縦書き）に配置。サポートするインタラクション:
 - `choiceInteraction` (単一/複数選択)
 - `inlineChoiceInteraction` (インライン選択)
 - `matchInteraction` (マッチング)
@@ -144,7 +144,7 @@ qti-player は独立したサービスとして外部アプリから利用可能
 
 **レスポンス（次の問題がある場合）**
 ```json
-{ "success": true, "nextItem": "https://example.com/items/question-002.xml", "isComplete": false }
+{ "success": true, "nextItem": "https://example.com/items-h/question-002.xml", "isComplete": false }
 ```
 
 詳細は `tech-guide.md` を参照。

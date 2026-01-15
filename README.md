@@ -74,7 +74,8 @@ qti-mock/
 │       │   └── types/
 │       │       └── test.ts            # 型定義（ItemResult等）
 │       ├── public/
-│       │   └── items/        # QTI XMLファイル
+│       │   ├── items-h/      # QTI XMLファイル（横書き）
+│       │   └── items-v/      # QTI XMLファイル（縦書き）
 │       └── package.json
 │
 ├── package.json              # ルート (npm workspaces)

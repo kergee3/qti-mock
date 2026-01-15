@@ -24,7 +24,7 @@ const nextConfig: NextConfig = {
       },
       {
         // XMLファイル用のCORS（Vue Playerからfetchできるように）- 横書き
-        source: '/items/:path*',
+        source: '/items-h/:path*',
         headers: [
           {
             key: 'Access-Control-Allow-Origin',

@@ -19,7 +19,7 @@ export function useItemLoader() {
     const baseDir = baseUrl.substring(0, baseUrl.lastIndexOf('/') + 1)
 
     // data属性の相対パスを絶対URLに変換
-    // data="/items/..." はそのまま（オリジン相対）
+    // data="/items-h/..." や data="/items-v/..." はそのまま（オリジン相対）
     // data="images/..." や data="./images/..." は baseDir を付与
     return xml.replace(
       /data="([^"]+)"/g,
