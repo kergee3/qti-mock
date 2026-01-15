@@ -1,6 +1,7 @@
 'use client'
 
-import { useState, useEffect, useLayoutEffect } from 'react'
+import { useState, useEffect, useLayoutEffect, useRef } from 'react'
+import { useSearchParams, useRouter } from 'next/navigation'
 import {
   Box,
   Typography,
@@ -12,6 +13,34 @@ import {
 } from '@mui/material'
 import type { FontOption } from '@/types/test'
 import { usePlatformDetection } from '@/hooks/usePlatformDetection'
+
+/** フォルダ内のXMLファイルリスト */
+const FILE_LISTS: Record<string, string[]> = {
+  'items-h': [
+    '1-choice-item-001-ruby.xml',
+    '2-inline-choice-item-001.xml',
+    '3-graphic-choice-item-001.xml',
+    '4-order-item-001.xml',
+    '5-text-entry-item-001.xml',
+    '6-match-item-001.xml',
+    '7-murata-metajp-1.xml',
+    '8-a13-a15-captions-glossary.xml',
+  ],
+  'items-v': [
+    '1-choice-item-001-v-ruby.xml',
+    '2-inline-choice-item-001-v.xml',
+    '3-text-entry-item-001-v.xml',
+    '4-order-item-001-v.xml',
+    '5-vertical-choice-1.xml',
+    '6-vertical-inlinechoice-16.xml',
+    '7-murata-bronze-1.xml',
+    '8-vertical-choice-15fix.xml',
+  ],
+}
+
+/** デフォルトのURLパラメータ */
+const DEFAULT_SET = 'items-h'
+const DEFAULT_STARTSWITH = '1'
 
 /** フォントオプションのラベル（基本） */
 const baseFontLabels: Record<Exclude<FontOption, 'ud-digikyo'>, string> = {
@@ -104,47 +133,17 @@ function generateDataUrl(xml: string): string {
   return `data:application/xml;base64,${base64}`
 }
 
-/** サンプルXMLデータ */
-const sampleXml = `<?xml version="1.0" encoding="UTF-8"?>
-<qti-assessment-item
-  xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0"
-  identifier="choice-item-001-ruby"
-  title="日本の首都はどこですか？"
-  adaptive="false"
-  time-dependent="false">
-
-  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
-    <qti-correct-response>
-      <qti-value>A</qti-value>
-    </qti-correct-response>
-  </qti-response-declaration>
-
-  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
-    <qti-default-value>
-      <qti-value>0</qti-value>
-    </qti-default-value>
-  </qti-outcome-declaration>
-
-  <qti-item-body>
-    <p><ruby>日本<rt>にほん</rt></ruby>の<ruby>首都<rt>しゅと</rt></ruby>はどこですか？</p>
-    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
-      <qti-simple-choice identifier="A"><ruby>東京<rt>とうきょう</rt></ruby></qti-simple-choice>
-      <qti-simple-choice identifier="B"><ruby>大阪<rt>おおさか</rt></ruby></qti-simple-choice>
-      <qti-simple-choice identifier="C"><ruby>京都<rt>きょうと</rt></ruby></qti-simple-choice>
-      <qti-simple-choice identifier="D"><ruby>名古屋<rt>なごや</rt></ruby></qti-simple-choice>
-    </qti-choice-interaction>
-  </qti-item-body>
-
-  <qti-response-processing
-    template="https://purl.imsglobal.org/spec/qti/v3p0/rptemplates/match_correct"/>
-</qti-assessment-item>`
-
 /**
  * Playground ページコンポーネント
  */
 export function PlaygroundPage() {
   // Player URL
   const playerUrl = process.env.NEXT_PUBLIC_PLAYER_URL || 'http://localhost:5173'
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
+
+  // URLパラメータ
+  const searchParams = useSearchParams()
+  const router = useRouter()
 
   // プラットフォーム検出
   const { isWindows } = usePlatformDetection()
@@ -154,8 +153,11 @@ export function PlaygroundPage() {
     ? { ...baseFontLabels, 'ud-digikyo': 'UDデジタル教科書体' }
     : baseFontLabels
 
+  // 初期化完了フラグ（URLパラメータからのロード）
+  const isInitializedRef = useRef<boolean>(false)
+
   // 入力状態
-  const [xmlInput, setXmlInput] = useState<string>(sampleXml)
+  const [xmlInput, setXmlInput] = useState<string>('')
   const [isDragging, setIsDragging] = useState<boolean>(false)
 
   // 表示状態
@@ -217,6 +219,8 @@ export function PlaygroundPage() {
         setItemTitle('')
         setInteractionType('')
         setIframeSrc('')
+        // URLパラメータを消去
+        router.replace('/playground', { scroll: false })
       }
     }
     reader.onerror = () => {
@@ -259,6 +263,62 @@ export function PlaygroundPage() {
     // プレイ開始
     setIsPlaying(true)
   }
+
+  /**
+   * 初期化: URLパラメータの処理
+   */
+  useEffect(() => {
+    if (isInitializedRef.current) return
+    isInitializedRef.current = true
+
+    const set = searchParams.get('set')
+    const startswith = searchParams.get('startswith')
+
+    // 使用するパラメータを決定
+    let effectiveSet: string
+    let effectiveStartswith: string
+    let shouldUpdateUrl = false
+
+    if (!set && !startswith) {
+      // パラメータなしの場合はデフォルト値を使用し、URLを書き換え
+      effectiveSet = DEFAULT_SET
+      effectiveStartswith = DEFAULT_STARTSWITH
+      shouldUpdateUrl = true
+    } else {
+      // パラメータがある場合はそれを使用
+      effectiveSet = set && FILE_LISTS[set] ? set : DEFAULT_SET
+      effectiveStartswith = startswith || DEFAULT_STARTSWITH
+    }
+
+    // 非同期処理を内部関数で実行
+    const loadXml = async () => {
+      const fileList = FILE_LISTS[effectiveSet]
+      if (!fileList) return
+
+      // startswithに一致する最初のファイルを検索
+      const matchedFile = fileList.find(file => file.startsWith(effectiveStartswith))
+      if (!matchedFile) return
+
+      // XMLファイルをfetch
+      try {
+        const response = await fetch(`${appUrl}/${effectiveSet}/${matchedFile}`)
+        if (response.ok) {
+          const xmlContent = await response.text()
+          setXmlInput(xmlContent)
+        }
+      } catch (error) {
+        console.error('Failed to load XML file:', error)
+      }
+    }
+
+    // URLの更新（必要な場合のみ）
+    if (shouldUpdateUrl) {
+      router.replace(`/playground?set=${effectiveSet}&startswith=${effectiveStartswith}`, { scroll: false })
+    }
+
+    // XMLをロード
+    loadXml()
+  }, [searchParams, router, appUrl])
 
   /**
    * postMessageリスナー
@@ -340,6 +400,8 @@ export function PlaygroundPage() {
             setInteractionType('')
             setIframeSrc('')
             setResourceWarning(null)
+            // URLパラメータを消去
+            router.replace('/playground', { scroll: false })
           }}
           sx={{
             color: '#666',
@@ -368,7 +430,13 @@ export function PlaygroundPage() {
           fullWidth
           placeholder={"QTI 3.0のXMLデータを入力してください。\nクリップボード経由での貼り付けや、ExplorerからxmlファイルのDrag and Dropができます。"}
           value={xmlInput}
-          onChange={(e) => setXmlInput(e.target.value)}
+          onChange={(e) => {
+            setXmlInput(e.target.value)
+            // URLパラメータがあれば消去（Paste含む）
+            if (searchParams.get('set') || searchParams.get('startswith')) {
+              router.replace('/playground', { scroll: false })
+            }
+          }}
           sx={{
             mb: 2,
             '& .MuiInputBase-root': {
