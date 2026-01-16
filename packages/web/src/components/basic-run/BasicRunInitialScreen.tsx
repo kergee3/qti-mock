@@ -60,6 +60,11 @@ export function BasicRunInitialScreen({
 
   return (
     <Box sx={{ maxWidth: 900, mx: 'auto', p: 3 }}>
+      {/* 説明文 */}
+      <Box sx={{ mb: 3, color: '#333', fontSize: '0.95rem', lineHeight: 1.6 }}>
+        横書き用と縦書き用に作成されたQTI3.0形式の基本的な問題集を用意しました。問題集を選んで実行してください。
+      </Box>
+
       {/* ヘッダー: タイトル + 書字方向選択 */}
       <Box
         sx={{
@@ -73,7 +78,6 @@ export function BasicRunInitialScreen({
           component="span"
           sx={{
             fontSize: '1rem',
-            fontWeight: 'bold',
             color: '#333',
           }}
         >
@@ -85,7 +89,7 @@ export function BasicRunInitialScreen({
             onClick={() => onWritingDirectionChange('horizontal')}
             sx={{
               fontSize: '1rem',
-              fontWeight: 'bold',
+              fontWeight: 'normal',
               px: 1.5,
               py: 0.5,
               color: writingDirection === 'horizontal' ? '#fff' : '#333',
@@ -104,7 +108,7 @@ export function BasicRunInitialScreen({
             onClick={() => onWritingDirectionChange('vertical')}
             sx={{
               fontSize: '1rem',
-              fontWeight: 'bold',
+              fontWeight: 'normal',
               px: 1.5,
               py: 0.5,
               color: writingDirection === 'vertical' ? '#fff' : '#333',
@@ -142,6 +146,7 @@ export function BasicRunInitialScreen({
             px: 1,
             py: 1,
             fontSize: '1rem',
+            fontWeight: 'normal',
             borderColor: '#333',
             color: '#333',
             '&:hover': {
@@ -155,7 +160,7 @@ export function BasicRunInitialScreen({
 
         {/* 問題バー位置選択 */}
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          <Box component="label" sx={{ fontWeight: 'bold', fontSize: '0.9rem' }}>
+          <Box component="label" sx={{ fontSize: '0.9rem' }}>
             問題バー：
           </Box>
           <Box
@@ -184,7 +189,7 @@ export function BasicRunInitialScreen({
 
         {/* フォント選択 */}
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          <Box component="label" sx={{ fontWeight: 'bold', fontSize: '0.9rem' }}>
+          <Box component="label" sx={{ fontSize: '0.9rem' }}>
             フォント：
           </Box>
           <Box

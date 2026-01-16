@@ -66,6 +66,11 @@ export function AiChoiceInitialScreen({
 
   return (
     <Box sx={{ maxWidth: 900, mx: 'auto', p: 3 }}>
+      {/* 説明文 */}
+      <Box sx={{ mb: 3, color: '#333', fontSize: '0.95rem', lineHeight: 1.6 }}>
+        生成AIに学習指導要領とその解説を元に4択問題を生成させました。問題集を選んで実行してください。
+      </Box>
+
       {/* ヘッダー: タイトル + 問題集選択 */}
       <Box
         sx={{
@@ -79,7 +84,6 @@ export function AiChoiceInitialScreen({
           component="span"
           sx={{
             fontSize: '1rem',
-            fontWeight: 'bold',
             color: '#333',
           }}
         >
@@ -132,6 +136,7 @@ export function AiChoiceInitialScreen({
             px: 1,
             py: 1,
             fontSize: '1rem',
+            fontWeight: 'normal',
             borderColor: '#333',
             color: '#333',
             '&:hover': {
@@ -145,7 +150,7 @@ export function AiChoiceInitialScreen({
 
         {/* 問題バー位置選択 */}
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          <Box component="label" sx={{ fontWeight: 'bold', fontSize: '0.9rem' }}>
+          <Box component="label" sx={{ fontSize: '0.9rem' }}>
             問題バー：
           </Box>
           <Box
@@ -174,7 +179,7 @@ export function AiChoiceInitialScreen({
 
         {/* フォント選択 */}
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          <Box component="label" sx={{ fontWeight: 'bold', fontSize: '0.9rem' }}>
+          <Box component="label" sx={{ fontSize: '0.9rem' }}>
             フォント：
           </Box>
           <Box
