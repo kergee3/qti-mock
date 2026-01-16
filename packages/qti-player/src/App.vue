@@ -1,5 +1,5 @@
 <template>
-  <div class="qti-player-app" :class="[fontClass, { 'vertical-layout': isVerticalWriting }]" :style="{ fontFamily: fontStyle }">
+  <div class="qti-player-app" :class="[fontClass, { 'vertical-layout': isVerticalWriting }]" :style="{ fontFamily: fontStyle, ...fontSizeStyle }">
     <!-- エラー -->
     <div v-if="error" class="error">
       <p>{{ error }}</p>
@@ -109,6 +109,32 @@ const noScoringLogic = ref(false)
 
 // フォント設定
 const fontFamily = ref('system')
+
+// フォントサイズ設定（100 = 100%）
+const fontSize = ref(100)
+
+// フォントサイズをCSS変数として適用するスタイル
+const fontSizeStyle = computed(() => {
+  return {
+    '--qti-font-size': fontSize.value / 100
+  }
+})
+
+// フォントサイズが変更されたらQTI Playerコンテナに直接スタイルを適用
+const applyFontSizeToPlayer = () => {
+  const scale = fontSize.value / 100
+  const container = document.querySelector('.qti3-player-container')
+  if (container) {
+    // zoomプロパティを使用（レイアウトも含めて拡大縮小）
+    // Firefoxではサポートされていないが、Safari/Chromeでは動作する
+    container.style.zoom = String(scale)
+    // Firefoxフォールバック: transformを使用
+    if (!('zoom' in document.body.style)) {
+      container.style.transform = `scale(${scale})`
+      container.style.transformOrigin = 'top left'
+    }
+  }
+}
 
 // 縦書きかどうか（XMLの内容から判定）
 const isVerticalWriting = ref(false)
@@ -329,6 +355,16 @@ onMounted(() => {
     }
   }
 
+  // フォントサイズ設定
+  const fontSizeParam = params.get('fontSize')
+  if (fontSizeParam) {
+    const parsedSize = parseInt(fontSizeParam, 10)
+    const validSizes = [80, 90, 100, 110, 120, 130, 150]
+    if (validSizes.includes(parsedSize)) {
+      fontSize.value = parsedSize
+    }
+  }
+
   loadItem()
 
 })
@@ -420,6 +456,9 @@ const handleItemReady = () => {
   isItemLoaded.value = true
   isScored.value = false
   score.value = null
+
+  // フォントサイズを適用
+  applyFontSizeToPlayer()
 
   // XMLから正解情報を抽出
   const { answer, isExternal, noScoringLogic: noLogic } = extractCorrectAnswer(itemXml.value)
@@ -1037,5 +1076,72 @@ html.vertical-writing #app {
 .vertical-layout .inline-choice-wrapper {
   position: relative !important;
   overflow: visible !important;
+}
+
+/* ========================================
+   フォントサイズ設定（グローバル）
+   JavaScriptから直接transform: scale()を適用
+   handleItemReady()でapplyFontSizeToPlayer()を呼び出し
+   ======================================== */
+
+/* ========================================
+   選択肢のベースライン揃え修正
+   ルビ要素がある場合、rubyのデフォルト表示ではベースラインがずれる。
+   ruby-align: center と適切な vertical-align でベースラインを揃える。
+   ======================================== */
+
+/* 横書き時: ベースライン揃えを維持 */
+:not(.vertical-layout) .qti-choice-label {
+  vertical-align: baseline !important;
+}
+
+:not(.vertical-layout) .qti-choice-description {
+  vertical-align: baseline !important;
+}
+
+/* ルビ要素のスタイル調整 - ベースラインを維持しながらルビを表示 */
+/* ruby-position: over でルビを上に配置（デフォルト） */
+/* line-height を調整してルビ分の余白を最小化 */
+:not(.vertical-layout) .qti-choice-description ruby {
+  ruby-position: over !important;
+  ruby-align: center !important;
+}
+
+:not(.vertical-layout) .qti-choice-description rt {
+  font-size: 0.5em !important;
+  line-height: 1 !important;
+  /* ルビとベーステキストの間隔を詰める */
+  transform: translateY(0.1em) !important;
+}
+
+/* ルビなしテキストとルビありテキストのベースラインを揃えるための調整 */
+/* ルビの高さ分（約0.6em）を考慮して、ラベルとラジオボタンを下げる */
+:not(.vertical-layout) .qti-choice-label {
+  margin-top: 0.6em !important;
+}
+
+/* ラジオボタン・チェックボックスの位置も同様に調整 */
+:not(.vertical-layout) .qti-simple-choice::before,
+:not(.vertical-layout) li[role="radio"]::before,
+:not(.vertical-layout) li[role="checkbox"]::before {
+  margin-top: 0.6em !important;
+}
+
+/* 縦書き時: 元のレイアウトを維持 */
+.vertical-layout .qti-simple-choice,
+.vertical-layout li[role="radio"],
+.vertical-layout li[role="checkbox"] {
+  display: block !important;
+  align-items: initial !important;
+}
+
+.vertical-layout .qti-choice-label {
+  display: inline-block !important;
+  vertical-align: top !important;
+}
+
+.vertical-layout .qti-choice-description {
+  display: inline-block !important;
+  vertical-align: top !important;
 }
 </style>

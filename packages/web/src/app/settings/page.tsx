@@ -10,14 +10,29 @@ import {
   RadioGroup,
   FormControlLabel,
   Radio,
+  Slider,
 } from '@mui/material';
-import { useSettings, NavigationPosition } from '@/contexts/SettingsContext';
+import { useSettings, NavigationPosition, FontSize } from '@/contexts/SettingsContext';
+
+const fontSizeMarks = [
+  { value: 80, label: '80%' },
+  { value: 90, label: '90%' },
+  { value: 100, label: '100%' },
+  { value: 110, label: '110%' },
+  { value: 120, label: '120%' },
+  { value: 130, label: '130%' },
+  { value: 150, label: '150%' },
+];
 
 export default function SettingsPage() {
-  const { navigationPosition, setNavigationPosition } = useSettings();
+  const { navigationPosition, setNavigationPosition, fontSize, setFontSize } = useSettings();
 
   const handlePositionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNavigationPosition(event.target.value as NavigationPosition);
+  };
+
+  const handleFontSizeChange = (_event: Event, newValue: number | number[]) => {
+    setFontSize(newValue as FontSize);
   };
 
   return (
@@ -88,6 +103,35 @@ export default function SettingsPage() {
                 }
               />
             </RadioGroup>
+          </FormControl>
+        </CardContent>
+      </Card>
+
+      <Card sx={{ mt: 3 }}>
+        <CardContent>
+          <FormControl component="fieldset" sx={{ width: '100%' }}>
+            <FormLabel component="legend">
+              <Typography variant="h6">文字サイズ</Typography>
+            </FormLabel>
+            <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
+              問題文やルビの表示サイズを調整します。Basic RunとPlaygroundに共通で適用されます。
+            </Typography>
+            <Box sx={{ px: 2 }}>
+              <Slider
+                value={fontSize}
+                onChange={handleFontSizeChange}
+                aria-labelledby="font-size-slider"
+                step={null}
+                marks={fontSizeMarks}
+                min={80}
+                max={150}
+                valueLabelDisplay="auto"
+                valueLabelFormat={(value) => `${value}%`}
+              />
+            </Box>
+            <Typography variant="body2" color="text.secondary" sx={{ mt: 2, textAlign: 'center' }}>
+              現在の設定: {fontSize}%
+            </Typography>
           </FormControl>
         </CardContent>
       </Card>

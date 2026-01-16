@@ -38,7 +38,7 @@ export function BasicRunInProgress({
   onFinish,
 }: BasicRunInProgressProps) {
   const iframeRef = useRef<HTMLIFrameElement>(null)
-  const { setHideNavigation } = useSettings()
+  const { setHideNavigation, fontSize } = useSettings()
 
   // テスト中はナビゲーションを非表示にする
   useEffect(() => {
@@ -57,7 +57,7 @@ export function BasicRunInProgress({
 
   // iframe の src URL
   const iframeSrc = currentItem
-    ? `${playerUrl}?item=${encodeURIComponent(itemUrl)}&callback=${encodeURIComponent(callbackUrl)}&session=${sessionId}&font=${font}`
+    ? `${playerUrl}?item=${encodeURIComponent(itemUrl)}&callback=${encodeURIComponent(callbackUrl)}&session=${sessionId}&font=${font}&fontSize=${fontSize}`
     : ''
 
   // 問題のステータスを取得

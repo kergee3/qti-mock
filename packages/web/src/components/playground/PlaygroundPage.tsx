@@ -13,6 +13,7 @@ import {
 } from '@mui/material'
 import type { FontOption } from '@/types/test'
 import { usePlatformDetection } from '@/hooks/usePlatformDetection'
+import { useSettings } from '@/contexts/SettingsContext'
 
 /** フォルダ内のXMLファイルリスト */
 const FILE_LISTS: Record<string, string[]> = {
@@ -147,6 +148,9 @@ export function PlaygroundPage() {
 
   // プラットフォーム検出
   const { isWindows } = usePlatformDetection()
+
+  // Settings から fontSize を取得
+  const { fontSize } = useSettings()
 
   // Windows環境ではUDデジタル教科書体を追加
   const fontLabels: Partial<Record<FontOption, string>> = isWindows
@@ -288,7 +292,7 @@ export function PlaygroundPage() {
     // iframe URL生成（タイムスタンプを追加して毎回リロードを強制）
     const dataUrl = generateDataUrl(trimmedXml)
     const timestamp = Date.now()
-    const url = `${playerUrl}?item=${encodeURIComponent(dataUrl)}&font=${selectedFont}&t=${timestamp}`
+    const url = `${playerUrl}?item=${encodeURIComponent(dataUrl)}&font=${selectedFont}&fontSize=${fontSize}&t=${timestamp}`
     setIframeSrc(url)
 
     // プレイ開始
@@ -399,11 +403,11 @@ export function PlaygroundPage() {
       setResult(null)
       const dataUrl = generateDataUrl(trimmedXml)
       const timestamp = Date.now()
-      const url = `${playerUrl}?item=${encodeURIComponent(dataUrl)}&font=${selectedFont}&t=${timestamp}`
+      const url = `${playerUrl}?item=${encodeURIComponent(dataUrl)}&font=${selectedFont}&fontSize=${fontSize}&t=${timestamp}`
       setIframeSrc(url)
       setIsPlaying(true)
     }
-  }, [shouldAutoPlay, xmlInput, playerUrl, selectedFont])
+  }, [shouldAutoPlay, xmlInput, playerUrl, selectedFont, fontSize])
 
   /**
    * ページ表示時にスクロールを無効化
