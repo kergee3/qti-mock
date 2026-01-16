@@ -68,7 +68,7 @@ export function AiChoiceInitialScreen({
     <Box sx={{ maxWidth: 900, mx: 'auto', p: 3 }}>
       {/* 説明文 */}
       <Box sx={{ mb: 3, color: '#333', fontSize: '0.95rem', lineHeight: 1.6 }}>
-        生成AIが学習指導要領とその解説を元に4択問題を作成しました。問題集を選んで実行してください。
+        生成AIが学習指導要領とその解説を元に4択問題を作成しました。問題集を選んではじめましょう。
       </Box>
 
       {/* ヘッダー: タイトル + 問題集選択 */}

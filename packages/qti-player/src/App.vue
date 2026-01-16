@@ -32,8 +32,8 @@
             </button>
           </div>
 
-          <!-- 結果表示 -->
-          <div v-if="isScored" class="result-vertical">
+          <!-- 結果表示（フィードバックがない場合のみ表示） -->
+          <div v-if="isScored && !currentFeedback" class="result-vertical">
             <span class="result-label">回答済</span>
             <span v-if="score >= 1" class="correct">正解</span>
             <span v-else-if="noScoringLogic" class="external-scored">未採点</span>
@@ -41,8 +41,9 @@
             <span v-else class="incorrect">
               不正解
             </span>
-            <span class="score-text">点数<span class="score-number">{{ score }}</span></span>
           </div>
+          <!-- フィードバック表示（縦書き） -->
+          <div v-if="isScored && currentFeedback" class="feedback-vertical" v-html="currentFeedback"></div>
         </div>
 
         <!-- プレイヤー（常に1つだけ） -->
@@ -66,7 +67,7 @@
           </div>
 
           <!-- 結果表示 -->
-          <div v-if="isScored" class="result">
+          <div v-if="isScored && !currentFeedback" class="result">
             <span class="result-label">回答済：</span>
             <span v-if="score >= 1" class="correct">正解</span>
             <span v-else-if="noScoringLogic" class="external-scored">未採点（採点ロジックなし）</span>
@@ -74,8 +75,9 @@
             <span v-else class="incorrect">
               不正解<template v-if="correctAnswer">。正解は「{{ correctAnswer }}」です。</template>
             </span>
-            <span class="score-text">点数 {{ score }}</span>
           </div>
+          <!-- フィードバック表示（横書き） -->
+          <div v-if="isScored && currentFeedback" class="feedback" v-html="currentFeedback"></div>
         </template>
       </div>
 
@@ -106,6 +108,10 @@ const currentItemId = ref(null)
 const correctAnswer = ref(null)
 const isExternalScored = ref(false)
 const noScoringLogic = ref(false)
+
+// モーダルフィードバック
+const modalFeedbacks = ref({}) // { identifier: { content: HTMLコンテンツ, outcomeIdentifier: 'FEEDBACK' } }
+const currentFeedback = ref(null) // 表示するフィードバックのHTMLコンテンツ
 
 // フォント設定
 const fontFamily = ref('system')
@@ -254,6 +260,41 @@ const extractResponseData = (responseVariables) => {
   return {
     response: responses.join(' / '),
     duration: duration
+  }
+}
+
+// XMLからモーダルフィードバックを抽出
+const extractModalFeedbacks = (xml) => {
+  if (!xml) return {}
+
+  try {
+    const parser = new DOMParser()
+    const doc = parser.parseFromString(xml, 'text/xml')
+
+    const feedbacks = {}
+    const modalFeedbackElements = doc.querySelectorAll('qti-modal-feedback')
+
+    modalFeedbackElements.forEach(feedback => {
+      const identifier = feedback.getAttribute('identifier')
+      const outcomeIdentifier = feedback.getAttribute('outcome-identifier')
+      const showHide = feedback.getAttribute('show-hide') || 'show'
+
+      if (identifier && showHide === 'show') {
+        // qti-content-body内のHTMLを取得
+        const contentBody = feedback.querySelector('qti-content-body')
+        if (contentBody) {
+          feedbacks[identifier] = {
+            content: contentBody.innerHTML,
+            outcomeIdentifier: outcomeIdentifier
+          }
+        }
+      }
+    })
+
+    return feedbacks
+  } catch (e) {
+    console.error('Error extracting modal feedbacks:', e)
+    return {}
   }
 }
 
@@ -456,6 +497,7 @@ const handleItemReady = () => {
   isItemLoaded.value = true
   isScored.value = false
   score.value = null
+  currentFeedback.value = null
 
   // フォントサイズを適用
   applyFontSizeToPlayer()
@@ -465,6 +507,9 @@ const handleItemReady = () => {
   correctAnswer.value = answer
   isExternalScored.value = isExternal
   noScoringLogic.value = noLogic
+
+  // XMLからモーダルフィードバックを抽出
+  modalFeedbacks.value = extractModalFeedbacks(itemXml.value)
 
   // 縦書き時はスクロール位置を右端（読み始め）に設定
   if (isVerticalWriting.value) {
@@ -499,6 +544,19 @@ const handleEndAttempt = async (data) => {
     if (scoreOutcome) {
       score.value = scoreOutcome.value
       isScored.value = true
+
+      // モーダルフィードバックを探す
+      // FEEDBACK変数の値に対応するフィードバックを取得
+      const feedbackOutcome = attemptState.outcomeVariables.find(
+        v => v.identifier === 'FEEDBACK'
+      )
+      if (feedbackOutcome && feedbackOutcome.value) {
+        const feedbackId = feedbackOutcome.value
+        const feedback = modalFeedbacks.value[feedbackId]
+        if (feedback) {
+          currentFeedback.value = feedback.content
+        }
+      }
 
       // 回答内容とdurationを抽出（表示用）
       const { response, duration } = extractResponseData(attemptState.responseVariables)
@@ -780,15 +838,6 @@ const fixListboxPosition = (button) => {
   font-weight: bold;
 }
 
-.result-vertical .score-text {
-  margin-top: auto;
-}
-
-.result-vertical .score-number {
-  writing-mode: horizontal-tb;
-  display: inline-block;
-}
-
 .result .result-label {
   font-weight: bold;
 }
@@ -808,8 +857,43 @@ const fixListboxPosition = (button) => {
   font-weight: bold;
 }
 
-.score-text {
-  margin-left: auto;
+/* フィードバック表示（横書き） */
+.feedback {
+  margin-top: 8px;
+  padding: 15px 20px;
+  background: #e3f2fd;
+  border-left: 4px solid #1976d2;
+  border-radius: 4px;
+  line-height: 1.6;
+}
+
+.feedback :deep(p) {
+  margin: 0 0 8px 0;
+}
+
+.feedback :deep(p:last-child) {
+  margin-bottom: 0;
+}
+
+/* フィードバック表示（縦書き） */
+.feedback-vertical {
+  writing-mode: vertical-rl;
+  padding: 12px 15px;
+  background: #e3f2fd;
+  border-top: 4px solid #1976d2;
+  border-radius: 4px;
+  line-height: 1.8;
+  max-height: 60vh;
+  overflow-y: auto;
+  font-size: 14px;
+}
+
+.feedback-vertical :deep(p) {
+  margin: 0 8px 0 0;
+}
+
+.feedback-vertical :deep(p:last-child) {
+  margin-right: 0;
 }
 
 .submit-error {

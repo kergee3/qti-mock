@@ -62,7 +62,7 @@ export function BasicRunInitialScreen({
     <Box sx={{ maxWidth: 900, mx: 'auto', p: 3 }}>
       {/* 説明文 */}
       <Box sx={{ mb: 3, color: '#333', fontSize: '0.95rem', lineHeight: 1.6 }}>
-        横書き用と縦書き用に作成されたQTI3.0形式の基本的な問題集を用意しました。問題集を選んで実行してください。
+        横書き用と縦書き用に作成されたQTI3.0形式の基本的な問題集を用意しました。問題集を選んではじめましょう。
       </Box>
 
       {/* ヘッダー: タイトル + 書字方向選択 */}
