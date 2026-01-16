@@ -153,8 +153,8 @@ export function PlaygroundPage() {
     ? { ...baseFontLabels, 'ud-digikyo': 'UDデジタル教科書体' }
     : baseFontLabels
 
-  // 初期化完了フラグ（URLパラメータからのロード）
-  const isInitializedRef = useRef<boolean>(false)
+  // URLパラメータの前回値を保存（変更検知用）
+  const prevParamsRef = useRef<string>('')
 
   // 入力状態
   const [xmlInput, setXmlInput] = useState<string>('')
@@ -186,10 +186,14 @@ export function PlaygroundPage() {
     }
   }, [])
 
-  // フォント設定変更ハンドラ（sessionStorageに保存）
+  // フォント設定変更ハンドラ（sessionStorageに保存 + 自動PLAY）
   const handleFontChange = (font: FontOption) => {
     setSelectedFont(font)
     sessionStorage.setItem('playground-font', font)
+    // XML入力がある場合は自動PLAYをトリガー
+    if (xmlInput.trim()) {
+      setShouldAutoPlay(true)
+    }
   }
 
   /**
@@ -292,12 +296,9 @@ export function PlaygroundPage() {
   }
 
   /**
-   * 初期化: URLパラメータの処理
+   * URLパラメータの処理（初期化＆変更検知）
    */
   useEffect(() => {
-    if (isInitializedRef.current) return
-    isInitializedRef.current = true
-
     const set = searchParams.get('set')
     const startswith = searchParams.get('startswith')
 
@@ -317,6 +318,11 @@ export function PlaygroundPage() {
       effectiveStartswith = startswith || DEFAULT_STARTSWITH
     }
 
+    // パラメータの変更を検知（同じパラメータなら何もしない）
+    const currentParams = `${effectiveSet}:${effectiveStartswith}`
+    if (prevParamsRef.current === currentParams) return
+    prevParamsRef.current = currentParams
+
     // 非同期処理を内部関数で実行
     const loadXml = async () => {
       const fileList = FILE_LISTS[effectiveSet]
@@ -332,6 +338,8 @@ export function PlaygroundPage() {
         if (response.ok) {
           const xmlContent = await response.text()
           setXmlInput(xmlContent)
+          // 自動PLAYをトリガー
+          setShouldAutoPlay(true)
         }
       } catch (error) {
         console.error('Failed to load XML file:', error)
