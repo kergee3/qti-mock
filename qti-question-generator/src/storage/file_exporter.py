@@ -98,14 +98,14 @@ class FileExporter:
             filename = f"{prefix}_{i+1:03d}.xml"
             file_path = batch_dir / filename
             file_path.write_text(xml, encoding="utf-8")
-            exported_files.append(str(file_path))
+            exported_files.append(filename)  # basename のみ
 
         # メタデータを出力
         summary = {
             "timestamp": timestamp,
             "model": model or "unknown",
             "total_questions": len(questions),
-            "output_directory": str(batch_dir),
+            "output_directory": batch_dir.name,  # フォルダ名のみ
             "files": exported_files,
             "questions": questions,
             "metadata": metadata or {},

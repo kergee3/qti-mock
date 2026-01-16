@@ -15,12 +15,14 @@ from src.generator.question_generator import QuestionGenerator
 from src.generator.topic_extractor import TopicExtractor
 from src.converter.qti_converter import QTIConverter
 from src.storage.file_exporter import FileExporter
+from src.storage.blob_uploader import BlobUploader
 
 
 def generate_questions(
     code: str,
     count: int = 3,
     output_dir: Path = None,
+    upload: bool = False,
 ) -> dict:
     """
     指定した学習指導要領コードから問題を生成
@@ -29,6 +31,7 @@ def generate_questions(
         code: 学習指導要領コード
         count: 生成する問題数
         output_dir: 出力ディレクトリ
+        upload: Vercel Blobにアップロードするか
 
     Returns:
         dict: 生成結果のサマリー
@@ -140,6 +143,30 @@ def generate_questions(
     print(f"出力先: {summary['output_directory']}")
     print(f"{'='*60}\n")
 
+    # 6. Vercel Blobにアップロード（オプション）
+    if upload:
+        print(f"[Step 6] Vercel Blobにアップロード中...")
+        try:
+            uploader = BlobUploader()
+            batch_dir = exporter.output_dir / summary['output_directory']
+            upload_results = uploader.upload_directory(batch_dir)
+
+            success_count = sum(1 for r in upload_results if "error" not in r)
+            print(f"\n{'='*60}")
+            print(f"アップロード完了！")
+            print(f"{'='*60}")
+            print(f"成功: {success_count}/{len(upload_results)}")
+
+            # 公開URLを表示
+            if upload_results and "url" in upload_results[0]:
+                print(f"公開URL: {uploader.PUBLIC_BASE_URL}/ai-choice/{summary['output_directory']}/")
+            print(f"{'='*60}\n")
+
+            summary['upload_results'] = upload_results
+        except Exception as e:
+            print(f"[ERROR] アップロードに失敗しました: {e}")
+            summary['upload_error'] = str(e)
+
     return summary
 
 
@@ -175,6 +202,11 @@ def main():
         action="store_true",
         help="利用可能な分野一覧を表示",
     )
+    parser.add_argument(
+        "--upload",
+        action="store_true",
+        help="生成後にVercel Blobにアップロード",
+    )
 
     args = parser.parse_args()
 
@@ -209,7 +241,7 @@ def main():
 
     # 問題生成を実行
     try:
-        generate_questions(code=code, count=args.count, output_dir=output_dir)
+        generate_questions(code=code, count=args.count, output_dir=output_dir, upload=args.upload)
     except Exception as e:
         print(f"\n[ERROR] 生成に失敗しました: {e}")
         import traceback
