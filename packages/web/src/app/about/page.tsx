@@ -58,7 +58,7 @@ export default function AboutPage() {
                   <PlayArrow color="primary" />
                 </ListItemIcon>
                 <ListItemText
-                  primary="Basic Run"
+                  primary="基本問題"
                   secondary={
                     <>
                       事前定義されたテストセットを順番に実行し、結果をサマリー表示。一部のサンプルは{' '}
@@ -80,7 +80,7 @@ export default function AboutPage() {
                 </ListItemIcon>
                 <ListItemText
                   primary="Playground"
-                  secondary="QTI XML を直接入力またはドラッグ＆ドロップで実行。URLパラメータ（?set=items-h&startswith=1）でBasic Runのサンプルを直接ロード可能"
+                  secondary="QTI XML を直接入力またはドラッグ＆ドロップで実行。URLパラメータ（?set=items-h&startswith=1）で基本問題のサンプルを直接ロード可能"
                 />
               </ListItem>
               <ListItem>

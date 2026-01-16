@@ -28,9 +28,6 @@ export default function TopTabs({ items }: TopTabsProps) {
         </Typography>
         <Tabs
           value={currentIndex !== -1 ? currentIndex : 0}
-          onChange={(event, newValue) => {
-            router.push(items[newValue].path);
-          }}
           textColor="inherit"
           indicatorColor="secondary"
           variant="scrollable"
@@ -57,6 +54,14 @@ export default function TopTabs({ items }: TopTabsProps) {
               label={item.label}
               icon={item.icon as ReactElement}
               iconPosition="start"
+              onClick={() => {
+                if (pathname === item.path) {
+                  // 同じページをクリックした場合はリロードして初期状態に戻す
+                  window.location.href = item.path;
+                } else {
+                  router.push(item.path);
+                }
+              }}
               sx={{
                 minHeight: 48,
                 minWidth: 'auto',

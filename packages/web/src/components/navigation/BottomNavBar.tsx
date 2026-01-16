@@ -29,9 +29,6 @@ export default function BottomNavBar({ items }: BottomNavBarProps) {
     >
       <BottomNavigation
         value={currentIndex !== -1 ? currentIndex : 0}
-        onChange={(event, newValue) => {
-          router.push(items[newValue].path);
-        }}
         showLabels
       >
         {items.map((item) => (
@@ -39,6 +36,14 @@ export default function BottomNavBar({ items }: BottomNavBarProps) {
             key={item.path}
             label={item.label}
             icon={item.icon}
+            onClick={() => {
+              if (pathname === item.path) {
+                // 同じページをクリックした場合はリロードして初期状態に戻す
+                window.location.href = item.path;
+              } else {
+                router.push(item.path);
+              }
+            }}
             sx={{
               minWidth: 'auto',
               px: 0.5,

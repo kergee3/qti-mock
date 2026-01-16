@@ -114,7 +114,7 @@ export default function SettingsPage() {
               <Typography variant="h6">文字サイズ</Typography>
             </FormLabel>
             <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-              問題文やルビの表示サイズを調整します。Basic RunとPlaygroundに共通で適用されます。
+              問題文やルビの表示サイズを調整します。基本問題とPlaygroundに共通で適用されます。
             </Typography>
             <Box sx={{ px: 2 }}>
               <Slider

@@ -68,7 +68,7 @@ export function AiChoiceInitialScreen({
     <Box sx={{ maxWidth: 900, mx: 'auto', p: 3 }}>
       {/* 説明文 */}
       <Box sx={{ mb: 3, color: '#333', fontSize: '0.95rem', lineHeight: 1.6 }}>
-        生成AIに学習指導要領とその解説を元に4択問題を生成させました。問題集を選んで実行してください。
+        生成AIが学習指導要領とその解説を元に4択問題を作成しました。問題集を選んで実行してください。
       </Box>
 
       {/* ヘッダー: タイトル + 問題集選択 */}
@@ -109,7 +109,7 @@ export function AiChoiceInitialScreen({
           <option value="">選択してください</option>
           {entries.map((entry) => (
             <option key={entry.summaryUrl} value={entry.summaryUrl}>
-              {entry.grade}-{entry.subject}-{entry.field}
+              {entry.grade}{entry.subject}_{entry.field}={entry.curriculumCode}
             </option>
           ))}
         </Box>

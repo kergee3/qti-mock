@@ -28,7 +28,12 @@ export default function Sidebar({ items, isMobile = false, isOpen = true, onClos
   const drawerWidth = width || (isMobile ? MOBILE_DRAWER_WIDTH : DRAWER_WIDTH);
 
   const handleNavigation = (path: string) => {
-    router.push(path);
+    if (pathname === path) {
+      // 同じページをクリックした場合はリロードして初期状態に戻す
+      window.location.href = path;
+    } else {
+      router.push(path);
+    }
     if (isMobile && onClose) {
       onClose();
     }

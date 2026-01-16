@@ -2,7 +2,6 @@
 
 import { AppLayout } from './navigation';
 import { NavigationItem } from '@/types/navigation';
-import HomeIcon from '@mui/icons-material/Home';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import EditIcon from '@mui/icons-material/Edit';
@@ -12,17 +11,12 @@ import { SettingsProvider } from '@/contexts/SettingsContext';
 
 const navigationItems: NavigationItem[] = [
   {
-    label: 'Home',
-    path: '/home',
-    icon: <HomeIcon />,
-  },
-  {
-    label: 'Basic Run',
+    label: '基本問題',
     path: '/basic',
     icon: <PlayArrowIcon />,
   },
   {
-    label: 'AI生成問題',
+    label: 'AI作成問題',
     path: '/ai-choice',
     icon: <AutoAwesomeIcon />,
   },

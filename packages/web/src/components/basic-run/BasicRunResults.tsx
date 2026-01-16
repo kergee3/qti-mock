@@ -53,12 +53,12 @@ export function BasicRunResults({
   }
 
   return (
-    <Box sx={{ maxWidth: 900, mx: 'auto', p: 3 }}>
+    <Box sx={{ maxWidth: 900, mx: 'auto', p: 2 }}>
       {/* スコアサマリー */}
-      <Box sx={{ textAlign: 'center', mb: 4 }}>
-        <Box component="h2" sx={{ fontSize: '1.5rem', mb: 2, color: '#333' }}>
+      <Box sx={{ textAlign: 'center', mb: 2 }}>
+        {/* <Box component="h2" sx={{ fontSize: '1.5rem', mb: 2, color: '#333' }}>
           Basic Run 結果
-        </Box>
+        </Box> */}
 
         {/* 点数 */}
         <Box sx={{ fontSize: '2.5rem', mb: 1 }}>
@@ -86,7 +86,7 @@ export function BasicRunResults({
       </Box>
 
       {/* 結果テーブル */}
-      <TableContainer component={Paper} elevation={0} sx={{ border: '1px solid #ddd', mb: 4 }}>
+      <TableContainer component={Paper} elevation={0} sx={{ border: '1px solid #ddd', mb: 2 }}>
         <Table size="small">
           <TableHead>
             <TableRow sx={{ backgroundColor: '#000' }}>

@@ -104,6 +104,12 @@ export function BasicRunInProgress({
     }
   }
 
+  // currentIndexをrefで保持（postMessageハンドラ内で最新値を参照するため）
+  const currentIndexRef = useRef(currentIndex)
+  useEffect(() => {
+    currentIndexRef.current = currentIndex
+  }, [currentIndex])
+
   // postMessage リスナー
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
@@ -114,9 +120,13 @@ export function BasicRunInProgress({
       }
 
       if (event.data.type === 'ITEM_ANSWERED') {
-        const { itemId, score, maxScore, isExternalScored, response, duration } = event.data
+        const { score, maxScore, isExternalScored, response, duration } = event.data
+        // items[currentIndex].identifier をキーとして使用
+        // これにより、XMLのidentifier属性とItemInfo.identifierが異なる場合でも正しくマッチする
+        const currentItem = items[currentIndexRef.current]
+        const itemIdentifier = currentItem?.identifier || event.data.itemId
         onItemScored({
-          itemId,
+          itemId: itemIdentifier,
           score: score ?? 0,
           maxScore: maxScore ?? 1,
           isExternalScored: isExternalScored ?? false,
@@ -129,7 +139,7 @@ export function BasicRunInProgress({
 
     window.addEventListener('message', handleMessage)
     return () => window.removeEventListener('message', handleMessage)
-  }, [onItemLoaded, onItemScored])
+  }, [items, onItemLoaded, onItemScored])
 
   // 問題をクリックしたときの処理
   const handleQuestionClick = (index: number) => {
