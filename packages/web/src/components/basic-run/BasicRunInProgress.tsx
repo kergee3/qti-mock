@@ -13,6 +13,7 @@ interface BasicRunInProgressProps {
   font: FontOption
   questionBarPosition: QuestionBarPosition
   writingDirection: WritingDirection
+  xmlBaseUrl?: string  // 外部URL（Vercel Blob等）を使用する場合に指定
   onNavigate: (index: number) => void
   onItemLoaded: (itemId: string) => void
   onItemScored: (result: ItemResult) => void
@@ -32,6 +33,7 @@ export function BasicRunInProgress({
   font,
   questionBarPosition,
   writingDirection,
+  xmlBaseUrl,
   onNavigate,
   onItemLoaded,
   onItemScored,
@@ -49,10 +51,25 @@ export function BasicRunInProgress({
   const playerUrl = process.env.NEXT_PUBLIC_PLAYER_URL || 'http://localhost:5173'
   const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
 
-  // 現在のアイテムURL（書字方向に応じてディレクトリを変更）
+  // 現在のアイテムURL（書字方向に応じてディレクトリを変更、または外部URLを使用）
   const currentItem = items[currentIndex]
   const itemsSubDir = writingDirection === 'vertical' ? 'items-v' : 'items-h'
-  const itemUrl = currentItem ? `${appUrl}/${itemsSubDir}/${currentItem.fileName}` : ''
+
+  // itemUrlを生成するヘルパー関数
+  const getItemUrl = (item: ItemInfo): string => {
+    // fileNameが完全URLの場合はそのまま使用
+    if (item.fileName.startsWith('http://') || item.fileName.startsWith('https://')) {
+      return item.fileName
+    }
+    // xmlBaseUrlが指定されている場合はそれをベースに使用
+    if (xmlBaseUrl) {
+      return `${xmlBaseUrl}${item.fileName}`
+    }
+    // デフォルトはローカルパス
+    return `${appUrl}/${itemsSubDir}/${item.fileName}`
+  }
+
+  const itemUrl = currentItem ? getItemUrl(currentItem) : ''
   const callbackUrl = `${appUrl}/api/results`
 
   // iframe の src URL
@@ -121,7 +138,7 @@ export function BasicRunInProgress({
     // iframe に CHANGE_ITEM メッセージを送信
     const newItem = items[index]
     if (newItem && iframeRef.current?.contentWindow) {
-      const newItemUrl = `${appUrl}/${itemsSubDir}/${newItem.fileName}`
+      const newItemUrl = getItemUrl(newItem)
       iframeRef.current.contentWindow.postMessage({
         type: 'CHANGE_ITEM',
         itemUrl: newItemUrl,

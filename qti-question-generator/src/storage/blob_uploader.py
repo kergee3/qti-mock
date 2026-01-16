@@ -2,6 +2,7 @@
 
 import os
 import sys
+import json
 import requests
 from pathlib import Path
 from typing import Optional
@@ -72,13 +73,14 @@ class BlobUploader:
         print(f"[INFO] Uploaded: {result.get('url', blob_path)}")
         return result
 
-    def upload_directory(self, dir_path: Path, blob_prefix: str = "ai-choice") -> list[dict]:
+    def upload_directory(self, dir_path: Path, blob_prefix: str = "ai-choice", update_summary: bool = True) -> list[dict]:
         """
         ディレクトリ内の全ファイルをアップロード
 
         Args:
             dir_path: アップロードするディレクトリのパス
             blob_prefix: Blob上のプレフィックス（デフォルト: ai-choice）
+            update_summary: summary.jsonのfilesを完全URLに更新するか（デフォルト: True）
 
         Returns:
             list[dict]: アップロード結果のリスト
@@ -91,17 +93,64 @@ class BlobUploader:
 
         results = []
         folder_name = dir_path.name
+        xml_url_map = {}  # ファイル名 -> URL のマッピング
 
-        # ディレクトリ内の全ファイルをアップロード
+        # XMLファイルを先にアップロード（summary.json以外）
         for file_path in sorted(dir_path.iterdir()):
-            if file_path.is_file():
+            if file_path.is_file() and file_path.name != "summary.json":
                 blob_path = f"{blob_prefix}/{folder_name}/{file_path.name}"
                 try:
                     result = self.upload_file(file_path, blob_path)
                     results.append(result)
+                    # XMLファイルのURLを記録
+                    if file_path.suffix == ".xml" and "url" in result:
+                        xml_url_map[file_path.name] = result["url"]
                 except Exception as e:
                     print(f"[ERROR] {file_path.name} のアップロードに失敗: {e}")
                     results.append({"error": str(e), "file": str(file_path)})
+
+        # summary.jsonを更新してアップロード
+        summary_path = dir_path / "summary.json"
+        if summary_path.exists() and update_summary and xml_url_map:
+            try:
+                # summary.jsonを読み込み
+                with open(summary_path, "r", encoding="utf-8") as f:
+                    summary = json.load(f)
+
+                # filesを完全URLに置き換え
+                original_files = summary.get("files", [])
+                updated_files = []
+                for filename in original_files:
+                    if filename in xml_url_map:
+                        updated_files.append(xml_url_map[filename])
+                    else:
+                        # URLが見つからない場合は元のファイル名を保持
+                        updated_files.append(filename)
+                        print(f"[WARN] {filename} のURLが見つかりませんでした")
+
+                summary["files"] = updated_files
+
+                # ローカルのsummary.jsonも更新
+                with open(summary_path, "w", encoding="utf-8") as f:
+                    json.dump(summary, f, ensure_ascii=False, indent=2)
+                print(f"[INFO] summary.json を更新しました（{len(xml_url_map)}個のURL）")
+
+                # 更新したsummary.jsonをアップロード
+                blob_path = f"{blob_prefix}/{folder_name}/summary.json"
+                result = self.upload_file(summary_path, blob_path)
+                results.append(result)
+
+            except Exception as e:
+                print(f"[ERROR] summary.json の更新に失敗: {e}")
+                # 更新に失敗した場合は元のsummary.jsonをアップロード
+                blob_path = f"{blob_prefix}/{folder_name}/summary.json"
+                result = self.upload_file(summary_path, blob_path)
+                results.append(result)
+        elif summary_path.exists():
+            # update_summaryがFalseの場合はそのままアップロード
+            blob_path = f"{blob_prefix}/{folder_name}/summary.json"
+            result = self.upload_file(summary_path, blob_path)
+            results.append(result)
 
         return results
 
