@@ -882,7 +882,7 @@ html.vertical-writing #app {
 .vertical-layout .player-container {
   height: 100% !important;
   max-height: 100% !important;
-  padding: 4px !important;
+  padding: 0 4px !important; /* 左右のみパディング */
   border: none !important;
 }
 
@@ -915,12 +915,14 @@ html.vertical-writing #app {
   display: block !important;
 }
 
-/* 縦書きコンテンツ・共有刺激・高さ指定要素: 高さを固定 */
+/* 縦書きコンテンツ・共有刺激・高さ指定要素: 高さを固定（上下マージン確保） */
 .vertical-layout [class*="qti3-player-writing-mode-vertical"]:not(.qti-item-body),
 .vertical-layout .qti-shared-stimulus,
 .vertical-layout [class*="qti-height-"]:not(.qti-item-body) {
-  height: 100% !important;
-  max-height: 100% !important;
+  height: calc(100% - 24px) !important;
+  max-height: calc(100% - 24px) !important;
+  margin-top: 12px !important;
+  margin-bottom: 12px !important;
   width: max-content !important; /* Safari対応: 内容の最大幅を使用 */
   overflow: visible !important; /* inlineChoiceドロップダウン用 */
 }
