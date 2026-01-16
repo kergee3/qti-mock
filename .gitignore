@@ -28,3 +28,6 @@ dist-ssr
 
 # Next.js
 .next
+
+# QTI Question Generator output
+qti-question-generator/output
