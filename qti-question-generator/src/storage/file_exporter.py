@@ -72,6 +72,7 @@ class FileExporter:
         xml_contents: list[str],
         prefix: str = "generated",
         metadata: Optional[dict] = None,
+        model: Optional[str] = None,
     ) -> dict:
         """
         複数の問題をバッチ出力
@@ -81,6 +82,7 @@ class FileExporter:
             xml_contents: QTI XMLのリスト
             prefix: ファイル名のプレフィックス
             metadata: 追加メタデータ
+            model: 問題生成に使用したAIモデル名
 
         Returns:
             dict: 出力結果のサマリー
@@ -101,6 +103,7 @@ class FileExporter:
         # メタデータを出力
         summary = {
             "timestamp": timestamp,
+            "model": model or "unknown",
             "total_questions": len(questions),
             "output_directory": str(batch_dir),
             "files": exported_files,

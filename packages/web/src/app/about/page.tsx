@@ -129,7 +129,7 @@ export default function AboutPage() {
               QTI Player
             </Typography>
             <Typography variant="body1" color="text.secondary" sx={{ mb: 2 }}>
-              本デモの QTI Player は、1EdTech によって認定された Vue 3 ベースの QTI 3.0 レンダリングライブラリ{' '}
+              本デモの QTI Player は、<Link href="https://www.amp-up.io/" target="_blank" rel="noopener noreferrer">Amp-up.io社</Link> で開発され 1EdTech によって認定された Vue 3 ベースの QTI 3.0 レンダリングライブラリ{' '}
               <Link
                 href="https://github.com/amp-up-io/qti3-item-player-vue3"
                 target="_blank"

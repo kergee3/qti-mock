@@ -116,7 +116,7 @@ class QTIConverter:
 
   <qti-item-body>
     <p>{html.escape(question_text)}</p>
-    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="true" max-choices="1">
 {options_xml}
     </qti-choice-interaction>
   </qti-item-body>
@@ -173,7 +173,7 @@ class QTIConverter:
       <p>{html.escape(question_text)}</p>
     </div>
 
-    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="true" max-choices="1">
 {options_xml}
     </qti-choice-interaction>
   </qti-item-body>

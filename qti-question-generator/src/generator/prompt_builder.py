@@ -80,8 +80,8 @@ class PromptBuilder:
 
 ## 追加指示
 - 問題番号: {question_number}問目
-- 前の問題と重複しない内容にしてください
-{f"- 特にフォーカスするトピック: {focus_topic}" if focus_topic else ""}
+{f'''- 【重要】今回は必ず「{focus_topic}」に関する問題を作成してください
+- 他のトピックではなく、指定されたトピックに焦点を当ててください''' if focus_topic else "- 前の問題と重複しない内容にしてください"}
 
 上記の情報に基づいて、小学{grade}年生向けの4択問題をJSON形式で出力してください。"""
 

@@ -206,6 +206,63 @@ class COSFetcher:
             "commentary_count": len(commentaries),
         }
 
+    def get_full_context_with_children(self, code: str) -> dict:
+        """
+        学習指導要領コード + 下位コード（hasPart）から問題生成に必要な情報を取得
+
+        Args:
+            code: 学習指導要領コード
+
+        Returns:
+            dict: 学習目標、解説テキスト（下位コード含む）を含む完全なコンテキスト
+        """
+        # 基本情報を取得
+        data = self.fetch(code)
+
+        # 親コードの解説テキストを取得
+        commentaries = []
+        for commentary_id in data.get("commentary_ids", []):
+            commentary = self.fetch_commentary(commentary_id)
+            if commentary["text"]:
+                commentaries.append(commentary)
+
+        print(f"[INFO] 親コードから {len(commentaries)} 件の解説を取得")
+
+        # 下位コード（hasPart）の解説テキストも取得
+        child_codes = data.get("has_part", [])
+        print(f"[INFO] 下位コード数: {len(child_codes)}")
+
+        for child_url in child_codes:
+            # URLから下位コードを抽出（例: "https://w3id.org/jp-cos/82202631ア0000000" → "82202631ア0000000"）
+            child_code = child_url.split("/")[-1]
+            print(f"[INFO] 下位コード {child_code} の解説を取得中...")
+
+            try:
+                child_data = self.fetch(child_code)
+                for commentary_id in child_data.get("commentary_ids", []):
+                    commentary = self.fetch_commentary(commentary_id)
+                    if commentary["text"]:
+                        commentaries.append(commentary)
+            except Exception as e:
+                print(f"[WARN] 下位コード {child_code} の取得に失敗: {e}")
+                continue
+
+        print(f"[INFO] 合計 {len(commentaries)} 件の解説を取得")
+
+        # 解説テキストを結合
+        commentary_texts = [c["text"] for c in commentaries]
+        combined_commentary = "\n\n---\n\n".join(commentary_texts)
+
+        return {
+            "code": data["code"],
+            "grade": data["grade"],
+            "subject": data["subject"],
+            "description": data["description"] or "",
+            "commentary": combined_commentary,
+            "commentary_count": len(commentaries),
+            "child_codes_count": len(child_codes),
+        }
+
 
 # テスト用
 if __name__ == "__main__":

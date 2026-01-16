@@ -12,6 +12,7 @@ from config.settings import TARGET_CODES
 from src.fetcher.cos_fetcher import COSFetcher
 from src.generator.prompt_builder import PromptBuilder
 from src.generator.question_generator import QuestionGenerator
+from src.generator.topic_extractor import TopicExtractor
 from src.converter.qti_converter import QTIConverter
 from src.storage.file_exporter import FileExporter
 
@@ -39,26 +40,40 @@ def generate_questions(
     print(f"生成問題数: {count}")
     print(f"{'='*60}\n")
 
-    # 1. 学習指導要領LODからデータ取得
-    print("[Step 1/4] 学習指導要領LODからデータを取得中...")
+    # 1. 学習指導要領LODからデータ取得（下位コード含む）
+    print("[Step 1/5] 学習指導要領LODからデータを取得中...")
     fetcher = COSFetcher()
-    context = fetcher.get_full_context(code)
+    context = fetcher.get_full_context_with_children(code)
 
     print(f"  - 教科: {context['subject']}")
     print(f"  - 学年: {context['grade']}年")
     print(f"  - 解説テキスト数: {context['commentary_count']}")
+    print(f"  - 下位コード数: {context.get('child_codes_count', 0)}")
 
     if not context['commentary']:
         print("[WARN] 解説テキストが見つかりませんでした")
         return {"error": "No commentary found"}
 
-    # 2. 問題を生成
-    print(f"\n[Step 2/4] Claude APIで問題を生成中...")
+    # 2. トピックを抽出
+    print(f"\n[Step 2/5] 解説テキストからトピックを抽出中...")
+    topic_extractor = TopicExtractor()
+    topics = topic_extractor.extract(context['commentary'], max_topics=count)
+
+    if not topics:
+        print("[WARN] トピックが抽出できませんでした。デフォルトモードで生成します。")
+        topics = [None]  # トピック指定なしで生成
+
+    print(f"  - 抽出トピック数: {len(topics)}")
+
+    # 3. 問題を生成（各問題に異なるトピックを割り当て）
+    print(f"\n[Step 3/5] Claude APIで問題を生成中...")
     generator = QuestionGenerator()
     questions = []
 
     for i in range(count):
-        print(f"\n  問題 {i+1}/{count} を生成中...")
+        # トピックを循環して割り当て
+        topic = topics[i % len(topics)] if topics[0] is not None else None
+        print(f"\n  問題 {i+1}/{count} を生成中... (トピック: {topic or '指定なし'})")
 
         # プロンプトを構築
         system_prompt, user_prompt = PromptBuilder.build(
@@ -67,6 +82,7 @@ def generate_questions(
             description=context['description'] or "",
             commentary=context['commentary'],
             question_number=i + 1,
+            focus_topic=topic,
         )
 
         try:
@@ -84,8 +100,8 @@ def generate_questions(
         print("\n[ERROR] 有効な問題が生成されませんでした")
         return {"error": "No valid questions generated"}
 
-    # 3. QTI XMLに変換
-    print(f"\n[Step 3/4] QTI XMLに変換中...")
+    # 4. QTI XMLに変換
+    print(f"\n[Step 4/5] QTI XMLに変換中...")
     xml_contents = []
     for i, question in enumerate(valid_questions):
         identifier = f"{code}-{i+1:03d}"
@@ -93,8 +109,8 @@ def generate_questions(
         xml_contents.append(xml)
         print(f"  - {identifier}: {question.get('title', 'N/A')}")
 
-    # 4. ファイル出力
-    print(f"\n[Step 4/4] ファイルを出力中...")
+    # 5. ファイル出力
+    print(f"\n[Step 5/5] ファイルを出力中...")
     exporter = FileExporter(output_dir)
 
     # 科目名を取得してプレフィックスに使用
@@ -113,7 +129,8 @@ def generate_questions(
             "subject": context['subject'],
             "grade": context['grade'],
             "description": context['description'],
-        }
+        },
+        model=generator.model,
     )
 
     print(f"\n{'='*60}")
