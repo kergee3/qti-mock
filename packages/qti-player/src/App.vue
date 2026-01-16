@@ -1169,24 +1169,19 @@ html.vertical-writing #app {
    ======================================== */
 
 /* ========================================
-   選択肢のベースライン揃え修正
-   ルビ要素がある場合、rubyのデフォルト表示ではベースラインがずれる。
-   ruby-align: center と適切な vertical-align でベースラインを揃える。
+   選択肢の配置修正（横書き時）
    ======================================== */
 
-/* 横書き時: ベースライン揃えを維持 */
-:not(.vertical-layout) .qti-choice-label {
-  vertical-align: baseline !important;
-}
+/*
+ * 注意: ライブラリのデフォルトCSS:
+ * .qti-choice-label: display: inline-block; vertical-align: top; width: 1.5rem;
+ * .qti-choice-description: display: inline-block; vertical-align: top; width: calc(100% - 1.5em);
+ *
+ * デフォルトではラベルと説明文が横に並ぶはず。
+ * 以下は必要最小限の調整のみ。
+ */
 
-:not(.vertical-layout) .qti-choice-description {
-  vertical-align: baseline !important;
-}
-
-/* ルビ要素のスタイル調整 - ベースラインを維持しながらルビを表示 */
-/* ruby-position: over でルビを上に配置（デフォルト） */
-/* line-height を調整してルビ分の余白を最小化 */
-/* 横書き時のみ適用 */
+/* ルビ要素のスタイル調整（横書き時のみ） */
 .qti-player-app:not(.vertical-layout) .qti-choice-description ruby {
   ruby-position: over !important;
   ruby-align: center !important;
@@ -1195,23 +1190,6 @@ html.vertical-writing #app {
 .qti-player-app:not(.vertical-layout) .qti-choice-description rt {
   font-size: 0.5em !important;
   line-height: 1 !important;
-  /* ルビとベーステキストの間隔を詰める */
-  transform: translateY(0.1em) !important;
-}
-
-/* ルビなしテキストとルビありテキストのベースラインを揃えるための調整 */
-/* ルビの高さ分（約0.6em）を考慮して、ラベルとラジオボタンを下げる */
-/* 横書き時のみ適用 */
-.qti-player-app:not(.vertical-layout) .qti-choice-label {
-  margin-top: 0.6em !important;
-}
-
-/* ラジオボタン・チェックボックスの位置も同様に調整 */
-/* 横書き時のみ適用: .vertical-layout の子孫ではない場合 */
-.qti-player-app:not(.vertical-layout) .qti-simple-choice::before,
-.qti-player-app:not(.vertical-layout) li[role="radio"]::before,
-.qti-player-app:not(.vertical-layout) li[role="checkbox"]::before {
-  margin-top: 0.6em !important;
 }
 
 /* 縦書き時: 元のレイアウトを維持 */

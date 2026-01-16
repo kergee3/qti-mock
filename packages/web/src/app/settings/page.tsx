@@ -37,11 +37,36 @@ export default function SettingsPage() {
 
   return (
     <Box sx={{ maxWidth: 600, mx: 'auto' }}>
-      <Typography variant="h4" component="h1" gutterBottom>
-        Settings
-      </Typography>
+      <Card sx={{ mt: 2 }}>
+        <CardContent>
+          <FormControl component="fieldset" sx={{ width: '100%' }}>
+            <FormLabel component="legend">
+              <Typography variant="h6">文字サイズ</Typography>
+            </FormLabel>
+            <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
+              問題文やルビの表示サイズを調整します。基本問題とPlaygroundに共通で適用されます。
+            </Typography>
+            <Box sx={{ px: 2 }}>
+              <Slider
+                value={fontSize}
+                onChange={handleFontSizeChange}
+                aria-labelledby="font-size-slider"
+                step={null}
+                marks={fontSizeMarks}
+                min={80}
+                max={150}
+                valueLabelDisplay="auto"
+                valueLabelFormat={(value) => `${value}%`}
+              />
+            </Box>
+            <Typography variant="body2" color="text.secondary" sx={{ mt: 2, textAlign: 'center' }}>
+              現在の設定: {fontSize}%
+            </Typography>
+          </FormControl>
+        </CardContent>
+      </Card>
 
-      <Card sx={{ mt: 3 }}>
+      <Card sx={{ mt: 2 }}>
         <CardContent>
           <FormControl component="fieldset">
             <FormLabel component="legend">
@@ -103,35 +128,6 @@ export default function SettingsPage() {
                 }
               />
             </RadioGroup>
-          </FormControl>
-        </CardContent>
-      </Card>
-
-      <Card sx={{ mt: 3 }}>
-        <CardContent>
-          <FormControl component="fieldset" sx={{ width: '100%' }}>
-            <FormLabel component="legend">
-              <Typography variant="h6">文字サイズ</Typography>
-            </FormLabel>
-            <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-              問題文やルビの表示サイズを調整します。基本問題とPlaygroundに共通で適用されます。
-            </Typography>
-            <Box sx={{ px: 2 }}>
-              <Slider
-                value={fontSize}
-                onChange={handleFontSizeChange}
-                aria-labelledby="font-size-slider"
-                step={null}
-                marks={fontSizeMarks}
-                min={80}
-                max={150}
-                valueLabelDisplay="auto"
-                valueLabelFormat={(value) => `${value}%`}
-              />
-            </Box>
-            <Typography variant="body2" color="text.secondary" sx={{ mt: 2, textAlign: 'center' }}>
-              現在の設定: {fontSize}%
-            </Typography>
           </FormControl>
         </CardContent>
       </Card>

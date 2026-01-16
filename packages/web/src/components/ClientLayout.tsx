@@ -26,7 +26,7 @@ const navigationItems: NavigationItem[] = [
     icon: <EditIcon />,
   },
   {
-    label: 'Settings',
+    label: '設定',
     path: '/settings',
     icon: <SettingsIcon />,
   },

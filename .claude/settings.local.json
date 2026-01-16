@@ -47,7 +47,8 @@
       "Bash(node -e:*)",
       "Bash(xargs ls:*)",
       "Bash(python:*)",
-      "Bash(pip install:*)"
+      "Bash(pip install:*)",
+      "Bash(npx css-beautify:*)"
     ]
   }
 }
