@@ -201,6 +201,24 @@ export function PlaygroundPage() {
   }
 
   /**
+   * URLからXMLをフェッチして自動PLAY
+   */
+  const fetchXmlFromUrl = async (url: string) => {
+    try {
+      const response = await fetch(url)
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+      const xmlContent = await response.text()
+      setXmlInput(xmlContent)
+      setShouldAutoPlay(true)
+    } catch (error) {
+      console.error('Failed to fetch XML from URL:', error)
+      alert(`XMLの取得に失敗しました: ${error instanceof Error ? error.message : 'Unknown error'}`)
+    }
+  }
+
+  /**
    * ドラッグ＆ドロップハンドラ
    */
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
@@ -495,10 +513,21 @@ export function PlaygroundPage() {
           placeholder={"QTI 3.0のXMLデータを入力してください。\nクリップボード経由での貼り付けや、ExplorerからxmlファイルのDrag and Dropができます。"}
           value={xmlInput}
           onChange={(e) => {
-            setXmlInput(e.target.value)
+            const newValue = e.target.value
+            const prevValue = xmlInput
+            setXmlInput(newValue)
             // URLパラメータがあれば消去（Paste含む）
             if (searchParams.get('set') || searchParams.get('startswith')) {
               router.replace('/playground', { scroll: false })
+            }
+            // URL入力時の自動フェッチ: 元が空 かつ https://で始まり.xmlで終わる
+            const trimmedValue = newValue.trim()
+            if (
+              !prevValue.trim() &&
+              trimmedValue.toLowerCase().startsWith('https://') &&
+              trimmedValue.toLowerCase().endsWith('.xml')
+            ) {
+              fetchXmlFromUrl(trimmedValue)
             }
           }}
           onPaste={handlePaste}

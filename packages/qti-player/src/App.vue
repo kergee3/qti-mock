@@ -1102,12 +1102,13 @@ html.vertical-writing #app {
 /* ルビ要素のスタイル調整 - ベースラインを維持しながらルビを表示 */
 /* ruby-position: over でルビを上に配置（デフォルト） */
 /* line-height を調整してルビ分の余白を最小化 */
-:not(.vertical-layout) .qti-choice-description ruby {
+/* 横書き時のみ適用 */
+.qti-player-app:not(.vertical-layout) .qti-choice-description ruby {
   ruby-position: over !important;
   ruby-align: center !important;
 }
 
-:not(.vertical-layout) .qti-choice-description rt {
+.qti-player-app:not(.vertical-layout) .qti-choice-description rt {
   font-size: 0.5em !important;
   line-height: 1 !important;
   /* ルビとベーステキストの間隔を詰める */
@@ -1116,14 +1117,16 @@ html.vertical-writing #app {
 
 /* ルビなしテキストとルビありテキストのベースラインを揃えるための調整 */
 /* ルビの高さ分（約0.6em）を考慮して、ラベルとラジオボタンを下げる */
-:not(.vertical-layout) .qti-choice-label {
+/* 横書き時のみ適用 */
+.qti-player-app:not(.vertical-layout) .qti-choice-label {
   margin-top: 0.6em !important;
 }
 
 /* ラジオボタン・チェックボックスの位置も同様に調整 */
-:not(.vertical-layout) .qti-simple-choice::before,
-:not(.vertical-layout) li[role="radio"]::before,
-:not(.vertical-layout) li[role="checkbox"]::before {
+/* 横書き時のみ適用: .vertical-layout の子孫ではない場合 */
+.qti-player-app:not(.vertical-layout) .qti-simple-choice::before,
+.qti-player-app:not(.vertical-layout) li[role="radio"]::before,
+.qti-player-app:not(.vertical-layout) li[role="checkbox"]::before {
   margin-top: 0.6em !important;
 }
 
