@@ -29,5 +29,5 @@ dist-ssr
 # Next.js
 .next
 
-# QTI Question Generator output
-qti-question-generator/output
+# QTI Choice Generator output
+qti-choice-generator/output
