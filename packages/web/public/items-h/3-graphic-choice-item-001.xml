@@ -22,7 +22,7 @@
     <p>日本地図上で東京の位置をクリックしてください。</p>
     <qti-hotspot-interaction response-identifier="RESPONSE" max-choices="1">
       <qti-prompt>下の地図から東京を選んでください。</qti-prompt>
-      <object type="image/svg+xml" data="/items/images/japan-map.svg" width="400" height="300">日本地図</object>
+      <object type="image/svg+xml" data="https://tckuafka85ded2kl.public.blob.vercel-storage.com/basic/images/japan-map.svg" width="400" height="300">日本地図</object>
       <qti-hotspot-choice identifier="hotspot_tokyo" shape="circle" coords="267,193,20" hotspot-label="東京"/>
       <qti-hotspot-choice identifier="hotspot_osaka" shape="circle" coords="172,218,20" hotspot-label="大阪"/>
       <qti-hotspot-choice identifier="hotspot_kyoto" shape="circle" coords="176,205,20" hotspot-label="京都"/>
