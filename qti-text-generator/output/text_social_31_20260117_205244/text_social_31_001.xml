@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqti_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="text-8220263100000000-001" title="税金の役割と国民生活" adaptive="false" time-dependent="false">
+  <qti-response-declaration identifier="RESPONSE" base-type="string" cardinality="single"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float" external-scored="human">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-rubric-block view="scorer" use="ai-scoring">
+    <scoring-criteria>
+      <model-answer>税金は道路や学校の建設、社会保障制度、災害復旧などの取組に使われ、私たちの安全で豊かな生活を支える重要な役割を果たしている。</model-answer>
+      <required-concepts>
+        <concept>租税の役割</concept>
+        <concept>国や地方公共団体の取組</concept>
+        <concept>国民生活との関係</concept>
+      </required-concepts>
+      <scoring-matrix>
+        <criterion aspect="understanding" aspect-name="理解力" max-score="4">
+          <level score="4">完全に理解している</level>
+          <level score="3">概ね理解している</level>
+          <level score="2">部分的に理解している</level>
+          <level score="1">理解が不十分</level>
+          <level score="0">理解していない</level>
+        </criterion>
+        <criterion aspect="expression" aspect-name="表現力" max-score="3">
+          <level score="3">論理的で明確な表現</level>
+          <level score="2">概ね論理的な表現</level>
+          <level score="1">やや不明確な表現</level>
+          <level score="0">表現が不適切</level>
+        </criterion>
+        <criterion aspect="accuracy" aspect-name="正確性" max-score="3">
+          <level score="3">正確で適切な用語使用</level>
+          <level score="2">概ね正確</level>
+          <level score="1">一部不正確</level>
+          <level score="0">不正確</level>
+        </criterion>
+      </scoring-matrix>
+      <common-errors>
+        <error pattern="税金は国が使うお金という程度の理解で、具体的な使い道が不明確" feedback="税金がどのような事業や取組に使われているか、具体例を挙げて説明しましょう"/>
+        <error pattern="国民生活への影響について言及がない" feedback="税金によって行われる取組が、私たちの生活にどのような良い影響を与えているかも考えてみましょう"/>
+        <error pattern="社会保障や公共事業など、一つの分野しか挙げていない" feedback="税金は教育、福祉、安全など様々な分野で使われています。複数の例を挙げてみましょう"/>
+      </common-errors>
+      <char-limits min="60" max="100"/>
+    </scoring-criteria>
+  </qti-rubric-block>
+  <qti-item-body>
+    <div class="question-text">
+      <p>私たちが納める税金は、国や地方公共団体によってどのような取組に使われ、国民の生活にどのような影響を与えているのでしょうか。具体例を挙げて60文字以上で説明しなさい。</p>
+    </div>
+    <qti-extended-text-interaction response-identifier="RESPONSE" expected-length="100" min-strings="1" max-strings="1" expected-lines="5" format="plain" class="qti-counter-up">
+      <qti-prompt>
+        <p>以下の条件に従って回答してください：</p>
+        <ul>
+          <li>60文字以上100文字以内で回答すること</li>
+          <li>60文字未満の回答は採点対象外となります</li>
+        </ul>
+      </qti-prompt>
+    </qti-extended-text-interaction>
+  </qti-item-body>
+</qti-assessment-item>

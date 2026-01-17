@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqti_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="text-8220263100000000-005" title="政治学習で思考力が必要な理由" adaptive="false" time-dependent="false">
+  <qti-response-declaration identifier="RESPONSE" base-type="string" cardinality="single"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float" external-scored="human">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-rubric-block view="scorer" use="ai-scoring">
+    <scoring-criteria>
+      <model-answer>国民主権の下では、国民一人一人が政治の主体となるため、複雑な政治課題を理解し、適切に判断し、自分の考えを表現する能力が必要である。将来有権者として責任ある政治参加をするために不可欠だから。</model-answer>
+      <required-concepts>
+        <concept>国民主権</concept>
+        <concept>民主政治</concept>
+        <concept>政治参加</concept>
+        <concept>思考力・判断力・表現力</concept>
+        <concept>有権者としての責任</concept>
+      </required-concepts>
+      <scoring-matrix>
+        <criterion aspect="understanding" aspect-name="理解力" max-score="4">
+          <level score="4">国民主権と思考力の関係を完全に理解している</level>
+          <level score="3">国民主権の意味を概ね理解している</level>
+          <level score="2">政治参加の重要性を部分的に理解している</level>
+          <level score="1">基本概念の理解が不十分</level>
+          <level score="0">政治の基本概念を理解していない</level>
+        </criterion>
+        <criterion aspect="expression" aspect-name="表現力" max-score="3">
+          <level score="3">論理的で説得力のある表現</level>
+          <level score="2">概ね筋道立った表現</level>
+          <level score="1">やや論理性に欠ける表現</level>
+          <level score="0">論理性のない表現</level>
+        </criterion>
+        <criterion aspect="accuracy" aspect-name="正確性" max-score="3">
+          <level score="3">政治用語を正確に使用している</level>
+          <level score="2">概ね正確な用語使用</level>
+          <level score="1">一部用語の使用が不正確</level>
+          <level score="0">用語の使用が不適切</level>
+        </criterion>
+      </scoring-matrix>
+      <common-errors>
+        <error pattern="単に「勉強のため」「大切だから」という抽象的な理由" feedback="国民主権や民主政治の仕組みと関連付けて、具体的な理由を説明しましょう。"/>
+        <error pattern="思考力・判断力・表現力の必要性を個別に述べるだけ" feedback="これらの力がなぜ政治参加に必要なのか、民主政治の仕組みと関連付けて説明しましょう。"/>
+        <error pattern="将来の政治参加への言及がない回答" feedback="小学生が将来有権者になることを意識して、政治参加の重要性も含めて説明しましょう。"/>
+      </common-errors>
+      <char-limits min="60" max="100"/>
+    </scoring-criteria>
+  </qti-rubric-block>
+  <qti-item-body>
+    <div class="question-text">
+      <p>小学生が政治について学習する際、なぜ思考力・判断力・表現力を身に付けることが大切なのでしょうか。国民主権や民主政治の考え方と関連付けて、将来の政治参加を見すえた理由を60文字以上100文字以内で説明しなさい。</p>
+    </div>
+    <qti-extended-text-interaction response-identifier="RESPONSE" expected-length="100" min-strings="1" max-strings="1" expected-lines="5" format="plain" class="qti-counter-up">
+      <qti-prompt>
+        <p>以下の条件に従って回答してください：</p>
+        <ul>
+          <li>60文字以上100文字以内で回答すること</li>
+          <li>60文字未満の回答は採点対象外となります</li>
+        </ul>
+      </qti-prompt>
+    </qti-extended-text-interaction>
+  </qti-item-body>
+</qti-assessment-item>

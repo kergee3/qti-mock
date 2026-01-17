@@ -52,7 +52,9 @@
       "Bash(for:*)",
       "Bash(do echo \"=== Run $i ===\")",
       "Bash(done)",
-      "Bash(npm -w @nexcbt/web run build)"
+      "Bash(npm -w @nexcbt/web run build)",
+      "Bash(npm -w @nexcbt/web install @anthropic-ai/sdk)",
+      "Bash(py:*)"
     ]
   }
 }

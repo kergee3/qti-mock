@@ -4,6 +4,7 @@ import { AppLayout } from './navigation';
 import { NavigationItem } from '@/types/navigation';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
+import RateReviewIcon from '@mui/icons-material/RateReview';
 import EditIcon from '@mui/icons-material/Edit';
 import SettingsIcon from '@mui/icons-material/Settings';
 import InfoIcon from '@mui/icons-material/Info';
@@ -19,6 +20,11 @@ const navigationItems: NavigationItem[] = [
     label: 'AI作成問題',
     path: '/ai-choice',
     icon: <AutoAwesomeIcon />,
+  },
+  {
+    label: 'AI記述式採点',
+    path: '/ai-scoring',
+    icon: <RateReviewIcon />,
   },
   {
     label: 'Playground',
