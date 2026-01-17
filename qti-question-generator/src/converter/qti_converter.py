@@ -1,15 +1,13 @@
 """問題データをQTI 3.0 XML形式に変換するモジュール"""
 
 import html
+import random
 from typing import Optional
 import uuid
 
 
 class QTIConverter:
     """問題JSONをQTI 3.0 XMLに変換"""
-
-    # 選択肢のラベル（日本語）
-    CHOICE_LABELS = ["ア", "イ", "ウ", "エ"]
 
     # 選択肢のID
     CHOICE_IDS = ["A", "B", "C", "D"]
@@ -41,15 +39,27 @@ class QTIConverter:
         if not identifier:
             identifier = f"generated-{uuid.uuid4().hex[:8]}"
 
-        # 正解のインデックスを取得
-        correct_index = question.get("correct_index", 0)
-        if correct_index < 0 or correct_index >= len(question.get("options", [])):
-            correct_index = 0
+        # 選択肢を取得
+        options = question.get("options", [])
+        original_correct_index = question.get("correct_index", 0)
+        if original_correct_index < 0 or original_correct_index >= len(options):
+            original_correct_index = 0
+
+        # 選択肢をシャッフルして正解位置をランダム化
+        if options and len(options) > 1:
+            correct_option = options[original_correct_index]
+            indices = list(range(len(options)))
+            random.shuffle(indices)
+            shuffled_options = [options[i] for i in indices]
+            correct_index = shuffled_options.index(correct_option)
+        else:
+            shuffled_options = options
+            correct_index = original_correct_index
 
         correct_id = cls.CHOICE_IDS[correct_index]
 
-        # 選択肢XMLを生成
-        options_xml = cls._build_options_xml(question.get("options", []))
+        # 選択肢XMLを生成（シャッフル後の選択肢を使用）
+        options_xml = cls._build_options_xml(shuffled_options)
 
         # フィードバックを含める場合
         if include_feedback and question.get("explanation"):
@@ -60,8 +70,7 @@ class QTIConverter:
                 options_xml=options_xml,
                 correct_id=correct_id,
                 correct_index=correct_index,
-                correct_label=cls.CHOICE_LABELS[correct_index],
-                correct_text=question.get("options", [])[correct_index] if question.get("options") else "",
+                correct_text=shuffled_options[correct_index] if shuffled_options else "",
                 explanation=question.get("explanation", ""),
             )
         else:
@@ -79,9 +88,8 @@ class QTIConverter:
         options_xml = ""
         for i, option in enumerate(options[:4]):  # 最大4つ
             choice_id = cls.CHOICE_IDS[i]
-            label = cls.CHOICE_LABELS[i]
             option_text = html.escape(option)
-            options_xml += f'      <qti-simple-choice identifier="{choice_id}">{label}　{option_text}</qti-simple-choice>\n'
+            options_xml += f'      <qti-simple-choice identifier="{choice_id}">{option_text}</qti-simple-choice>\n'
         return options_xml.rstrip("\n")
 
     @classmethod
@@ -116,7 +124,7 @@ class QTIConverter:
 
   <qti-item-body>
     <p>{html.escape(question_text)}</p>
-    <qti-choice-interaction response-identifier="RESPONSE" shuffle="true" max-choices="1">
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
 {options_xml}
     </qti-choice-interaction>
   </qti-item-body>
@@ -135,7 +143,6 @@ class QTIConverter:
         options_xml: str,
         correct_id: str,
         correct_index: int,
-        correct_label: str,
         correct_text: str,
         explanation: str,
     ) -> str:
@@ -173,7 +180,7 @@ class QTIConverter:
       <p>{html.escape(question_text)}</p>
     </div>
 
-    <qti-choice-interaction response-identifier="RESPONSE" shuffle="true" max-choices="1">
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
 {options_xml}
     </qti-choice-interaction>
   </qti-item-body>
@@ -216,7 +223,7 @@ class QTIConverter:
   <qti-modal-feedback identifier="feedback_incorrect" outcome-identifier="FEEDBACK" show-hide="show">
     <qti-content-body>
       <p>残念、不正解です。</p>
-      <p>正解は「{correct_label}　{html.escape(correct_text)}」です。</p>
+      <p>正解は「{html.escape(correct_text)}」です。</p>
       <p>{html.escape(explanation)}</p>
     </qti-content-body>
   </qti-modal-feedback>

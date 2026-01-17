@@ -48,7 +48,10 @@
       "Bash(xargs ls:*)",
       "Bash(python:*)",
       "Bash(pip install:*)",
-      "Bash(npx css-beautify:*)"
+      "Bash(npx css-beautify:*)",
+      "Bash(for:*)",
+      "Bash(do echo \"=== Run $i ===\")",
+      "Bash(done)"
     ]
   }
 }

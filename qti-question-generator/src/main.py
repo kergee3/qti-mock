@@ -3,6 +3,7 @@
 import argparse
 import sys
 import os
+import shutil
 from pathlib import Path
 
 # 親ディレクトリをパスに追加
@@ -163,6 +164,21 @@ def generate_questions(
             print(f"{'='*60}\n")
 
             summary['upload_results'] = upload_results
+
+            # 7. summary.jsonをoutput/summaryフォルダにコピー
+            print(f"[Step 7] summary.jsonをsummaryフォルダにコピー中...")
+            try:
+                summary_src = batch_dir / "summary.json"
+                summary_dest_dir = exporter.output_dir / "summary"
+                summary_dest_dir.mkdir(parents=True, exist_ok=True)
+                summary_dest = summary_dest_dir / f"{summary['output_directory']}_summary.json"
+                shutil.copy2(summary_src, summary_dest)
+                print(f"[INFO] コピー完了: {summary_dest}")
+                summary['summary_copy_path'] = str(summary_dest)
+            except Exception as e:
+                print(f"[ERROR] summary.jsonのコピーに失敗しました: {e}")
+                summary['summary_copy_error'] = str(e)
+
         except Exception as e:
             print(f"[ERROR] アップロードに失敗しました: {e}")
             summary['upload_error'] = str(e)
