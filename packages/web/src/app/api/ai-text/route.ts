@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import Anthropic from '@anthropic-ai/sdk'
-import type { AiScoringRequest, AiScoringResponse, AspectScore } from '@/types/ai-scoring'
+import type { AiScoringRequest, AiScoringResponse, AspectScore } from '@/types/ai-text'
 
 // Claude APIクライアント
 const anthropic = new Anthropic({
@@ -12,7 +12,7 @@ const MODEL = 'claude-sonnet-4-20250514'
 
 /**
  * AI採点APIエンドポイント
- * POST /api/ai-scoring
+ * POST /api/ai-text
  */
 export async function POST(request: Request) {
   try {

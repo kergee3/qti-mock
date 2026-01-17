@@ -4,9 +4,9 @@ import { useRef, useEffect, useCallback, useState } from 'react'
 import { Box, Button, Tooltip, CircularProgress, Dialog, DialogTitle, DialogContent, DialogActions, Typography } from '@mui/material'
 import { useSettings } from '@/contexts/SettingsContext'
 import type { ItemInfo, ItemResult, FontOption, QuestionStatus, QuestionBarPosition, WritingDirection } from '@/types/test'
-import type { AiTextSummary, AiScoringResult, AiScoringResponse, ScoringCriteria } from '@/types/ai-scoring'
+import type { AiTextSummary, AiScoringResult, AiScoringResponse, ScoringCriteria } from '@/types/ai-text'
 
-interface AiScoringInProgressProps {
+interface AiTextInProgressProps {
   items: ItemInfo[]
   results: Map<string, ItemResult>
   scoringResults: Map<string, AiScoringResult>
@@ -29,7 +29,7 @@ interface AiScoringInProgressProps {
  * - メインエリア: QTI Player (iframe)
  * - 採点ダイアログ: AI採点中/結果表示
  */
-export function AiScoringInProgress({
+export function AiTextInProgress({
   items,
   results,
   scoringResults,
@@ -44,7 +44,7 @@ export function AiScoringInProgress({
   onItemScored,
   onScoringResultUpdate,
   onFinish,
-}: AiScoringInProgressProps) {
+}: AiTextInProgressProps) {
   const iframeRef = useRef<HTMLIFrameElement>(null)
   const { setHideNavigation, fontSize } = useSettings()
 
@@ -161,7 +161,7 @@ export function AiScoringInProgress({
       }
 
       // AI採点APIを呼び出し
-      const apiResponse = await fetch('/api/ai-scoring', {
+      const apiResponse = await fetch('/api/ai-text', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

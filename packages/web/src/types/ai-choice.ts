@@ -2,7 +2,7 @@
  * AI Choice Types - AI生成問題関連の型定義
  */
 
-/** ai-choice.mdのテーブル行を表す型 */
+/** ai-choice-menu.mdのテーブル行を表す型 */
 export interface AiChoiceEntry {
   grade: string           // 学年 (例: "小6")
   subject: string         // 科目 (例: "社会")

@@ -1,5 +1,5 @@
 /**
- * AI Scoring Types - AI記述式採点関連の型定義
+ * AI Text Types - AI記述式採点関連の型定義
  */
 
 /** ai-text.mdのテーブル行を表す型 */

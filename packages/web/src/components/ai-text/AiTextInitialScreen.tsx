@@ -2,10 +2,10 @@
 
 import { Box, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, CircularProgress } from '@mui/material'
 import type { ItemInfo, FontOption, QuestionBarPosition } from '@/types/test'
-import type { AiTextEntry, AiTextSummary } from '@/types/ai-scoring'
+import type { AiTextEntry, AiTextSummary } from '@/types/ai-text'
 import { usePlatformDetection } from '@/hooks/usePlatformDetection'
 
-interface AiScoringInitialScreenProps {
+interface AiTextInitialScreenProps {
   entries: AiTextEntry[]
   selectedEntry: AiTextEntry | null
   onEntrySelect: (entry: AiTextEntry) => void
@@ -68,7 +68,7 @@ const difficultyLabels: Record<number, string> = {
  * - フォント選択
  * - はじめるボタン
  */
-export function AiScoringInitialScreen({
+export function AiTextInitialScreen({
   entries,
   selectedEntry,
   onEntrySelect,
@@ -80,7 +80,7 @@ export function AiScoringInitialScreen({
   questionBarPosition,
   onQuestionBarPositionChange,
   onStart,
-}: AiScoringInitialScreenProps) {
+}: AiTextInitialScreenProps) {
   const { isWindows } = usePlatformDetection()
 
   // Windows環境ではUDデジタル教科書体を追加

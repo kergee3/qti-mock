@@ -2,11 +2,11 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import { Box, CircularProgress } from '@mui/material'
-import { AiScoringInitialScreen } from '@/components/ai-scoring/AiScoringInitialScreen'
-import { AiScoringInProgress } from '@/components/ai-scoring/AiScoringInProgress'
-import { AiScoringResults } from '@/components/ai-scoring/AiScoringResults'
+import { AiTextInitialScreen } from '@/components/ai-text/AiTextInitialScreen'
+import { AiTextInProgress } from '@/components/ai-text/AiTextInProgress'
+import { AiTextResults } from '@/components/ai-text/AiTextResults'
 import type { TestPhase, ItemInfo, ItemResult, FontOption, QuestionBarPosition } from '@/types/test'
-import type { AiTextEntry, AiTextSummary, AiScoringResult } from '@/types/ai-scoring'
+import type { AiTextEntry, AiTextSummary, AiScoringResult } from '@/types/ai-text'
 import { parseAiTextMd, extractFileNameFromUrl } from '@/lib/ai-text-parser'
 
 /**
@@ -16,7 +16,7 @@ import { parseAiTextMd, extractFileNameFromUrl } from '@/lib/ai-text-parser'
  * - testing: 実行中（サイドバー + iframe）
  * - results: 結果画面（AI採点結果、フィードバック）
  */
-export default function AiScoringPage() {
+export default function AiTextPage() {
   // フェーズ管理
   const [phase, setPhase] = useState<TestPhase>('initial')
 
@@ -43,7 +43,7 @@ export default function AiScoringPage() {
 
   // sessionStorageからフォント設定を復元
   useEffect(() => {
-    const savedFont = sessionStorage.getItem('ai-scoring-font')
+    const savedFont = sessionStorage.getItem('ai-text-font')
     if (savedFont) {
       setSelectedFont(savedFont as FontOption)
     }
@@ -52,7 +52,7 @@ export default function AiScoringPage() {
   // フォント設定変更時にsessionStorageに保存
   const handleFontChange = useCallback((font: FontOption) => {
     setSelectedFont(font)
-    sessionStorage.setItem('ai-scoring-font', font)
+    sessionStorage.setItem('ai-text-font', font)
   }, [])
 
   // 初期ロード: ai-text.mdを解析
@@ -111,7 +111,7 @@ export default function AiScoringPage() {
 
   // テスト開始
   const handleStart = useCallback(() => {
-    setSessionId(`ai-scoring-${Date.now()}`)
+    setSessionId(`ai-text-${Date.now()}`)
     setResults(new Map())
     setScoringResults(new Map())
     setCurrentItemIndex(0)
@@ -189,7 +189,7 @@ export default function AiScoringPage() {
   switch (phase) {
     case 'initial':
       return (
-        <AiScoringInitialScreen
+        <AiTextInitialScreen
           entries={entries}
           selectedEntry={selectedEntry}
           onEntrySelect={handleEntrySelect}
@@ -206,7 +206,7 @@ export default function AiScoringPage() {
 
     case 'testing':
       return (
-        <AiScoringInProgress
+        <AiTextInProgress
           items={items}
           results={results}
           scoringResults={scoringResults}
@@ -226,7 +226,7 @@ export default function AiScoringPage() {
 
     case 'results':
       return (
-        <AiScoringResults
+        <AiTextResults
           items={items}
           results={results}
           scoringResults={scoringResults}

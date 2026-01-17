@@ -5,9 +5,9 @@ import { Box, Button, Table, TableBody, TableCell, TableContainer, TableHead, Ta
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import ExpandLessIcon from '@mui/icons-material/ExpandLess'
 import type { ItemInfo, ItemResult } from '@/types/test'
-import type { AiTextSummary, AiScoringResult } from '@/types/ai-scoring'
+import type { AiTextSummary, AiScoringResult } from '@/types/ai-text'
 
-interface AiScoringResultsProps {
+interface AiTextResultsProps {
   items: ItemInfo[]
   results: Map<string, ItemResult>
   scoringResults: Map<string, AiScoringResult>
@@ -21,13 +21,13 @@ interface AiScoringResultsProps {
  * - 問題別結果テーブル
  * - 詳細フィードバック表示
  */
-export function AiScoringResults({
+export function AiTextResults({
   items,
   results,
   scoringResults,
   summary,
   onRestart,
-}: AiScoringResultsProps) {
+}: AiTextResultsProps) {
   // 詳細ダイアログの状態
   const [detailDialogOpen, setDetailDialogOpen] = useState(false)
   const [selectedItemIndex, setSelectedItemIndex] = useState<number | null>(null)

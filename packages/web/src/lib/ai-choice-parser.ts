@@ -1,17 +1,17 @@
 /**
- * AI Choice Parser - ai-choice.mdのMarkdownテーブル解析ユーティリティ
+ * AI Choice Parser - ai-choice-menu.md のMarkdownテーブル解析ユーティリティ
  */
 
 import type { AiChoiceEntry } from '@/types/ai-choice'
 
 /**
- * ai-choice.mdをフェッチしてテーブルを解析する
+ * ai-choice-menu.mdをフェッチしてテーブルを解析する
  * @returns AiChoiceEntry[]
  */
 export async function parseAiChoiceMd(): Promise<AiChoiceEntry[]> {
-  const response = await fetch('/ai-choice.md')
+  const response = await fetch('/ai-choice/ai-choice-menu.md')
   if (!response.ok) {
-    throw new Error('ai-choice.mdの取得に失敗しました')
+    throw new Error('ai-choice-menu.mdの取得に失敗しました')
   }
 
   const text = await response.text()

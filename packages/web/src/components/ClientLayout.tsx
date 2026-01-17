@@ -6,7 +6,6 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import RateReviewIcon from '@mui/icons-material/RateReview';
 import EditIcon from '@mui/icons-material/Edit';
-import SettingsIcon from '@mui/icons-material/Settings';
 import InfoIcon from '@mui/icons-material/Info';
 import { SettingsProvider } from '@/contexts/SettingsContext';
 
@@ -17,24 +16,19 @@ const navigationItems: NavigationItem[] = [
     icon: <PlayArrowIcon />,
   },
   {
-    label: 'AI作成問題',
+    label: 'AI選択問題',
     path: '/ai-choice',
     icon: <AutoAwesomeIcon />,
   },
   {
-    label: 'AI記述式採点',
-    path: '/ai-scoring',
+    label: 'AI記述問題',
+    path: '/ai-text',
     icon: <RateReviewIcon />,
   },
   {
     label: 'Playground',
     path: '/playground',
     icon: <EditIcon />,
-  },
-  {
-    label: '設定',
-    path: '/settings',
-    icon: <SettingsIcon />,
   },
   {
     label: 'About',

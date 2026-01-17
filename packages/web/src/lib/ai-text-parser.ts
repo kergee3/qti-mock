@@ -1,18 +1,18 @@
 /**
- * AI Text Parser - ai-text.md 解析ユーティリティ
+ * AI Text Parser - ai-text-menu.md 解析ユーティリティ
  */
 
-import type { AiTextEntry } from '@/types/ai-scoring'
+import type { AiTextEntry } from '@/types/ai-text'
 
 /**
- * ai-text.md をフェッチしてパースする
+ * ai-text-menu.md をフェッチしてパースする
  *
  * @returns AiTextEntry[] - パースされた問題集リスト
  */
 export async function parseAiTextMd(): Promise<AiTextEntry[]> {
-  const response = await fetch('/ai-text/ai-text.md')
+  const response = await fetch('/ai-text/ai-text-menu.md')
   if (!response.ok) {
-    throw new Error(`Failed to fetch ai-text.md: ${response.status}`)
+    throw new Error(`Failed to fetch ai-text-menu.md: ${response.status}`)
   }
 
   const mdContent = await response.text()

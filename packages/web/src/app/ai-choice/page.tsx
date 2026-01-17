@@ -20,7 +20,7 @@ export default function AiChoicePage() {
   // フェーズ管理
   const [phase, setPhase] = useState<TestPhase>('initial')
 
-  // 問題集リスト（ai-choice.mdから取得）
+  // 問題集リスト（ai-choice-menu.mdから取得）
   const [entries, setEntries] = useState<AiChoiceEntry[]>([])
   const [selectedEntry, setSelectedEntry] = useState<AiChoiceEntry | null>(null)
   const [isLoadingEntries, setIsLoadingEntries] = useState(true)
@@ -55,14 +55,14 @@ export default function AiChoicePage() {
     sessionStorage.setItem('ai-choice-font', font)
   }, [])
 
-  // 初期ロード: ai-choice.mdを解析
+  // 初期ロード: ai-choice-menu.mdを解析
   useEffect(() => {
     const loadEntries = async () => {
       try {
         const parsedEntries = await parseAiChoiceMd()
         setEntries(parsedEntries)
       } catch (e) {
-        console.error('Failed to load ai-choice.md:', e)
+        console.error('Failed to load ai-choice-menu.md:', e)
         setEntriesError('問題集リストの取得に失敗しました')
       } finally {
         setIsLoadingEntries(false)
