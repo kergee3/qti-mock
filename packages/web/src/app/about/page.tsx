@@ -21,6 +21,7 @@ import {
   VerticalAlignCenter,
   Translate,
   FontDownload,
+  AutoAwesome,
 } from '@mui/icons-material';
 import AppFooter from '@/components/AppFooter';
 
@@ -72,6 +73,15 @@ export default function AboutPage() {
                       {' '}から引用
                     </>
                   }
+                />
+              </ListItem>
+              <ListItem>
+                <ListItemIcon>
+                  <AutoAwesome color="primary" />
+                </ListItemIcon>
+                <ListItemText
+                  primary="AI作成問題"
+                  secondary="生成AIが学習指導要領とその解説を元に作成した4択問題集。教科・学年・分野別に問題を選択して学習可能"
                 />
               </ListItem>
               <ListItem>
@@ -149,93 +159,26 @@ export default function AboutPage() {
 
           <Box sx={{ my: 3 }}>
             <Typography variant="h6" gutterBottom>
-              サポートするインタラクション
+              学習指導要領LOD
             </Typography>
             <Typography variant="body1" color="text.secondary" sx={{ mb: 2 }}>
-              以下のインタラクションは qti3-item-player-vue3 がサポートする全てのインタラクションタイプです。
-            </Typography>
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-              <Chip label="choiceInteraction" size="small" variant="outlined" />
-              <Chip label="inlineChoiceInteraction" size="small" variant="outlined" />
-              <Chip label="matchInteraction" size="small" variant="outlined" />
-              <Chip label="gapMatchInteraction" size="small" variant="outlined" />
-              <Chip label="orderInteraction" size="small" variant="outlined" />
-              <Chip label="textEntryInteraction" size="small" variant="outlined" />
-              <Chip label="extendedTextInteraction" size="small" variant="outlined" />
-              <Chip label="hottextInteraction" size="small" variant="outlined" />
-              <Chip label="hotspotInteraction" size="small" variant="outlined" />
-              <Chip label="selectPointInteraction" size="small" variant="outlined" />
-              <Chip label="graphicOrderInteraction" size="small" variant="outlined" />
-              <Chip label="graphicAssociateInteraction" size="small" variant="outlined" />
-              <Chip label="graphicGapMatchInteraction" size="small" variant="outlined" />
-              <Chip label="positionObjectInteraction" size="small" variant="outlined" />
-              <Chip label="sliderInteraction" size="small" variant="outlined" />
-              <Chip label="mediaInteraction" size="small" variant="outlined" />
-              <Chip label="drawingInteraction" size="small" variant="outlined" />
-              <Chip label="uploadInteraction" size="small" variant="outlined" />
-              <Chip label="endAttemptInteraction" size="small" variant="outlined" />
-              <Chip label="customInteraction" size="small" variant="outlined" />
-              <Chip label="portableCustomInteraction" size="small" variant="outlined" />
-            </Box>
-          </Box>
-
-          <Divider sx={{ my: 3 }} />
-
-          <Box sx={{ my: 3 }}>
-            <Typography variant="h6" gutterBottom>
-              アーキテクチャ
+              AI作成問題では、
+              <Link
+                href="https://jp-cos.github.io/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                学習指導要領LOD
+              </Link>
+              {' '}を情報源として活用して自動的に問題集の作成を行いました。
             </Typography>
             <Typography variant="body1" color="text.secondary" sx={{ mb: 2 }}>
-              npm workspaces を使用した Turborepo モノレポ構成です。
-              Next.js (web) と Vue 3 (qti-player) の2つのパッケージで構成され、
-              postMessage API を通じて通信します。
+              学習指導要領LODは、文部科学省が公開している学習指導要領と教育要領の内容・コードおよび関連する情報をLinked Open Data (LOD) として公開しています。
+              本アプリでは、Linked Open Data (LOD)で整理された学習指導要領と解説の情報を効果的に活用して、生成AIを使って効率良く品質の高い問題集をプログラムを実行して作成します。
             </Typography>
-            <List dense>
-              <ListItem>
-                <ListItemText
-                  primary="packages/web"
-                  secondary="Next.js メインアプリケーション"
-                />
-              </ListItem>
-              <ListItem>
-                <ListItemText
-                  primary="packages/qti-player"
-                  secondary="Vue 3 QTI Player (iframe埋め込み)"
-                />
-              </ListItem>
-            </List>
-          </Box>
-
-          <Divider sx={{ my: 3 }} />
-
-          <Box sx={{ my: 3 }}>
-            <Typography variant="h6" gutterBottom>
-              外部連携
+            <Typography variant="body1" color="text.secondary">
+              2025-09-27版の学習指導要領LODのデータセットでは、小学校理科と社会科5・6年生分の学習指導要領解説の内容がLOD化されており、本アプリでは小学校6年生の理科と社会の学習指導要領解説を効率良く活用することができました。
             </Typography>
-            <Typography variant="body1" color="text.secondary" sx={{ mb: 2 }}>
-              QTI Player は独立したサービスとして外部アプリケーションから利用可能です。
-              iframe で埋め込み、postMessage API または Callback API を通じて連携できます。
-            </Typography>
-            <List dense>
-              <ListItem>
-                <ListItemText
-                  primary="postMessage API"
-                  secondary="iframe経由でリアルタイムに採点結果を受信"
-                />
-              </ListItem>
-              <ListItem>
-                <ListItemText
-                  primary="Callback API"
-                  secondary="採点結果をサーバーに直接送信"
-                />
-              </ListItem>
-              <ListItem>
-                <ListItemText
-                  primary="フォント・認証トークン"
-                  secondary="URLパラメータで設定可能"
-                />
-              </ListItem>
-            </List>
           </Box>
 
           <Divider sx={{ my: 3 }} />
@@ -252,6 +195,7 @@ export default function AboutPage() {
               <Chip label="React 19" color="primary" />
               <Chip label="TypeScript" color="primary" />
               <Chip label="Material-UI v7" color="primary" />
+              <Chip label="Tailwind CSS 4" color="primary" />
               <Chip label="Turborepo" color="primary" />
             </Box>
             <Typography variant="subtitle2" color="text.secondary" sx={{ mt: 2, mb: 1 }}>
@@ -259,7 +203,7 @@ export default function AboutPage() {
             </Typography>
             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
               <Chip label="Vue 3" color="secondary" />
-              <Chip label="Vite" color="secondary" />
+              <Chip label="Vite 7" color="secondary" />
               <Chip
                 label="qti3-item-player-vue3"
                 color="secondary"
@@ -268,6 +212,16 @@ export default function AboutPage() {
                 target="_blank"
                 clickable
               />
+            </Box>
+            <Typography variant="subtitle2" color="text.secondary" sx={{ mt: 2, mb: 1 }}>
+              生成AIでの問題作成
+            </Typography>
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+              <Chip label="Python" color="success" />
+              <Chip label="Claude API" color="success" />
+              <Chip label="rdflib" color="success" />
+              <Chip label="BeautifulSoup" color="success" />
+              <Chip label="lxml" color="success" />
             </Box>
           </Box>
 

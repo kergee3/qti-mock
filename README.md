@@ -89,15 +89,16 @@ qti-mock/
 | パッケージ | 技術 | 説明 |
 |-----------|------|------|
 | qti-player | Vue 3 + Vite 7 | QTI 3.0 アイテムのレンダリング・採点 |
-| web | Next.js 15 + TypeScript | アプリケーション本体 |
+| web | Next.js 16 + React 19 + TypeScript | アプリケーション本体 |
 | - | Turborepo | モノレポ管理 |
 | - | Vercel | ホスティング（東京リージョン） |
 
 ### 主要ライブラリ
 
 - [qti3-item-player-vue3](https://github.com/amp-up-io/qti3-item-player-vue3) - QTI 3.0 プレイヤーコンポーネント
-- [Vercel Analytics](https://vercel.com/analytics) - ユーザー行動分析（両パッケージで有効）
 - [Material UI](https://mui.com/) - UIコンポーネント（Tooltip, Table等）
+- [Tailwind CSS 4](https://tailwindcss.com/) - ユーティリティファーストCSS
+- [Vercel Analytics](https://vercel.com/analytics) - ユーザー行動分析（両パッケージで有効）
 
 ## セットアップ
 

@@ -42,14 +42,14 @@ npm workspaces を使用した Turborepo モノレポ構成です。
 
 ### パッケージ構成
 
-**packages/qti-player** (Vue 3 + Vite)
+**packages/qti-player** (Vue 3 + Vite 7)
 - `qti3-item-player-vue3` ライブラリを使用した QTI 3.0 アイテムレンダラー
 - URL駆動方式: `?item=<xml-url>&callback=<api-url>&session=<id>` を受け取る
 - XML読み込み、アイテム表示、採点を処理
 - postMessage で親ウィンドウに結果を送信
 
-**packages/web** (Next.js 15 + TypeScript)
-- メインアプリケーション
+**packages/web** (Next.js 16 + React 19 + TypeScript)
+- メインアプリケーション（Material UI + Tailwind CSS 4）
 - `/home` - ホームページ（Basic Run / Playground への導線）
 - `/basic` - Basic Run（プリセット問題でのテスト実行）
 - `/playground` - Playground（QTI XML を自由に入力してテスト）
