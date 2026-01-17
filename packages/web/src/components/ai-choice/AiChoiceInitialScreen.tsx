@@ -82,10 +82,10 @@ export function AiChoiceInitialScreen({
     : baseFontLabels
 
   return (
-    <Box sx={{ maxWidth: 900, mx: 'auto', p: 3 }}>
+    <Box sx={{ maxWidth: 900, mx: 'auto', p: 2 }}>
       {/* 説明文 */}
-      <Box sx={{ mb: 3, color: '#333', fontSize: '0.95rem', lineHeight: 1.6 }}>
-        生成AIが学習指導要領とその解説を元に4択問題を作成しました。問題集を選んで解いてみよう。
+      <Box sx={{ mb: 1.5, color: '#333', fontSize: '0.95rem', lineHeight: 1.4 }}>
+        生成AIが学習指導要領とその解説を元に作成した4択問題集を解いてみよう。
       </Box>
 
       {/* ヘッダー: タイトル + 問題集選択 */}
@@ -94,7 +94,7 @@ export function AiChoiceInitialScreen({
           display: 'flex',
           alignItems: 'center',
           gap: 1,
-          mb: 1.5,
+          mb: 1,
         }}
       >
         <Box
@@ -139,8 +139,8 @@ export function AiChoiceInitialScreen({
           flexDirection: { xs: 'column', sm: 'row' },
           justifyContent: { xs: 'flex-start', sm: 'space-between' },
           alignItems: { xs: 'stretch', sm: 'center' },
-          gap: { xs: 1.5, sm: 0 },
-          mb: 1.5,
+          gap: { xs: 1, sm: 0 },
+          mb: 1,
         }}
       >
         {/* はじめるボタン */}
@@ -228,21 +228,21 @@ export function AiChoiceInitialScreen({
       {summary && (
         <Box
           sx={{
-            mb: 2,
-            p: 2,
+            mb: 1,
+            p: 1,
             backgroundColor: '#f5f5f5',
             borderRadius: '4px',
             fontSize: '0.9rem',
-            lineHeight: 1.8,
+            lineHeight: 1.3,
           }}
         >
-          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: { xs: 1, sm: 2 } }}>
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: { xs: 0.5, sm: 1.5 } }}>
             <Box><strong>教科:</strong> {summary.metadata.subject}</Box>
             <Box><strong>学年:</strong> {summary.metadata.grade}</Box>
             <Box><strong>学習指導要領コード:</strong> <a href={getCosLodUrl(summary.metadata.cos_code)} target="_blank" rel="noopener noreferrer" style={{ color: '#1976d2' }}>{summary.metadata.cos_code}</a></Box>
             <Box><strong>内容:</strong> {truncateText(summary.metadata.description, 20)}</Box>
           </Box>
-          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: { xs: 1, sm: 2 }, mt: 1 }}>
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: { xs: 0.5, sm: 1.5 }, mt: 0.5 }}>
             <Box><strong>問題数:</strong> {summary.total_questions}</Box>
             <Box><strong>生成AIモデル:</strong> {summary.model}</Box>
           </Box>

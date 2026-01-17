@@ -59,10 +59,10 @@ export function BasicRunInitialScreen({
     : baseFontLabels
 
   return (
-    <Box sx={{ maxWidth: 900, mx: 'auto', p: 3 }}>
+    <Box sx={{ maxWidth: 900, mx: 'auto', p: 2 }}>
       {/* 説明文 */}
-      <Box sx={{ mb: 3, color: '#333', fontSize: '0.95rem', lineHeight: 1.6 }}>
-        横書き用と縦書き用に作成されたQTI3.0形式の基本的な問題集を用意しました。問題集を選んではじめましょう。
+      <Box sx={{ mb: 1.5, color: '#333', fontSize: '0.95rem', lineHeight: 1.4 }}>
+        横書き用と縦書き用に作成されたQTI3.0の基本的な問題集を選んで解いてみよう。
       </Box>
 
       {/* ヘッダー: タイトル + 書字方向選択 */}
@@ -71,7 +71,7 @@ export function BasicRunInitialScreen({
           display: 'flex',
           alignItems: 'center',
           gap: 1,
-          mb: 1.5,
+          mb: 1,
         }}
       >
         <Box
@@ -132,8 +132,8 @@ export function BasicRunInitialScreen({
           flexDirection: { xs: 'column', sm: 'row' },
           justifyContent: { xs: 'flex-start', sm: 'space-between' },
           alignItems: { xs: 'stretch', sm: 'center' },
-          gap: { xs: 1.5, sm: 0 },
-          mb: 1.5,
+          gap: { xs: 1, sm: 0 },
+          mb: 1,
         }}
       >
         {/* はじめるボタン */}
