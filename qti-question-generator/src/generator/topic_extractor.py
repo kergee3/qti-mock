@@ -129,6 +129,62 @@ class TopicExtractor:
             print(f"[DEBUG] Raw content:\n{content}")
             raise ValueError(f"Invalid JSON response: {e}")
 
+    def extract_from_sections(
+        self, sections: list[dict], max_topics: int = 10
+    ) -> list[str]:
+        """
+        複数セクション（下位コード別）からトピックを均等に抽出
+
+        Args:
+            sections: 各セクションの辞書リスト
+                      [{"code": "...", "description": "...", "commentary": "..."}, ...]
+            max_topics: 抽出する最大トピック数
+
+        Returns:
+            list[str]: 抽出されたトピックのリスト（全セクションから均等に）
+        """
+        if not sections:
+            return []
+
+        print(f"[INFO] セクション数: {len(sections)}, 目標トピック数: {max_topics}")
+
+        # 各セクションから抽出するトピック数を計算（均等配分）
+        topics_per_section = max(1, max_topics // len(sections))
+        # 端数は最初のセクションに追加
+        extra_topics = max_topics - (topics_per_section * len(sections))
+
+        all_topics = []
+
+        for i, section in enumerate(sections):
+            commentary = section.get("commentary", "")
+            if not commentary:
+                print(f"[WARN] セクション {section.get('code', i)} に解説テキストがありません")
+                continue
+
+            # このセクションから抽出するトピック数
+            section_max = topics_per_section + (1 if i < extra_topics else 0)
+
+            print(f"[INFO] セクション {i+1}/{len(sections)} ({section.get('code', 'unknown')}) からトピックを抽出中... (目標: {section_max}個)")
+
+            try:
+                topics = self.extract(commentary, max_topics=section_max)
+                all_topics.extend(topics)
+                print(f"[INFO] セクション {i+1} から {len(topics)} トピックを抽出")
+            except Exception as e:
+                print(f"[WARN] セクション {section.get('code', i)} のトピック抽出に失敗: {e}")
+                continue
+
+        # 重複を除去（順序を維持）
+        seen = set()
+        unique_topics = []
+        for topic in all_topics:
+            if topic not in seen:
+                seen.add(topic)
+                unique_topics.append(topic)
+
+        print(f"[INFO] 全セクションから合計 {len(unique_topics)} トピックを抽出（重複除去後）")
+        return unique_topics[:max_topics]  # 最大数を超えないように
+
 
 # テスト用
 if __name__ == "__main__":

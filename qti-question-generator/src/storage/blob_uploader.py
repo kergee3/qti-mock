@@ -3,6 +3,7 @@
 import os
 import sys
 import json
+import time
 import requests
 from pathlib import Path
 from typing import Optional
@@ -30,13 +31,15 @@ class BlobUploader:
                 ".env ファイルに BLOB_READ_WRITE_TOKEN を設定してください。"
             )
 
-    def upload_file(self, file_path: Path, blob_path: str) -> dict:
+    def upload_file(self, file_path: Path, blob_path: str, max_retries: int = 3, retry_delay: float = 2.0) -> dict:
         """
-        単一ファイルをアップロード
+        単一ファイルをアップロード（リトライ機能付き）
 
         Args:
             file_path: アップロードするファイルのパス
             blob_path: Blob上のパス（例: ai-choice/social_31_xxx/file.xml）
+            max_retries: 最大リトライ回数（デフォルト: 3）
+            retry_delay: リトライ間隔（秒）（デフォルト: 2.0）
 
         Returns:
             dict: アップロード結果（url, pathname等）
@@ -62,16 +65,40 @@ class BlobUploader:
 
         print(f"[INFO] Uploading: {file_path.name} -> {blob_path}")
 
-        response = requests.put(url, headers=headers, data=content, timeout=60)
+        last_error = None
+        for attempt in range(max_retries):
+            try:
+                response = requests.put(url, headers=headers, data=content, timeout=60)
 
-        if response.status_code not in [200, 201]:
-            raise Exception(
-                f"アップロード失敗: {response.status_code} - {response.text}"
-            )
+                if response.status_code in [200, 201]:
+                    result = response.json()
+                    print(f"[INFO] Uploaded: {result.get('url', blob_path)}")
+                    return result
 
-        result = response.json()
-        print(f"[INFO] Uploaded: {result.get('url', blob_path)}")
-        return result
+                # 503エラー等のリトライ可能なエラー
+                if response.status_code in [500, 502, 503, 504]:
+                    last_error = f"アップロード失敗: {response.status_code} - {response.text}"
+                    if attempt < max_retries - 1:
+                        wait_time = retry_delay * (attempt + 1)  # 徐々に待機時間を増やす
+                        print(f"[WARN] アップロードエラー ({response.status_code})。{wait_time:.1f}秒後にリトライします... ({attempt + 1}/{max_retries})")
+                        time.sleep(wait_time)
+                        continue
+                else:
+                    # リトライ不要なエラー（400系など）
+                    raise Exception(
+                        f"アップロード失敗: {response.status_code} - {response.text}"
+                    )
+
+            except requests.exceptions.RequestException as e:
+                last_error = str(e)
+                if attempt < max_retries - 1:
+                    wait_time = retry_delay * (attempt + 1)
+                    print(f"[WARN] ネットワークエラー。{wait_time:.1f}秒後にリトライします... ({attempt + 1}/{max_retries})")
+                    time.sleep(wait_time)
+                    continue
+
+        # 全てのリトライが失敗
+        raise Exception(last_error or "アップロード失敗")
 
     def upload_directory(self, dir_path: Path, blob_prefix: str = "ai-choice", update_summary: bool = True) -> list[dict]:
         """

@@ -44,24 +44,38 @@ def generate_questions(
     print(f"生成問題数: {count}")
     print(f"{'='*60}\n")
 
-    # 1. 学習指導要領LODからデータ取得（下位コード含む）
+    # 1. 学習指導要領LODからデータ取得（下位コード別にセクション分け）
     print("[Step 1/5] 学習指導要領LODからデータを取得中...")
     fetcher = COSFetcher()
-    context = fetcher.get_full_context_with_children(code)
+    context = fetcher.get_full_context_with_sections(code)
 
     print(f"  - 教科: {context['subject']}")
     print(f"  - 学年: {context['grade']}年")
     print(f"  - 解説テキスト数: {context['commentary_count']}")
     print(f"  - 下位コード数: {context.get('child_codes_count', 0)}")
 
-    if not context['commentary']:
+    # 各セクションの情報を表示
+    if context.get('sections'):
+        print(f"  - セクション情報:")
+        for i, section in enumerate(context['sections'], 1):
+            desc = section.get('description', '')[:30] if section.get('description') else ''
+            print(f"    {i}. {section['code']}: {section['commentary_count']}件 ({desc}...)")
+
+    sections = context.get('sections', [])
+    if not sections and not context.get('parent_commentary'):
         print("[WARN] 解説テキストが見つかりませんでした")
         return {"error": "No commentary found"}
 
-    # 2. トピックを抽出
+    # 2. トピックを抽出（セクション単位で均等に）
     print(f"\n[Step 2/5] 解説テキストからトピックを抽出中...")
     topic_extractor = TopicExtractor()
-    topics = topic_extractor.extract(context['commentary'], max_topics=count)
+
+    if sections:
+        # 下位コードがある場合はセクション単位でトピックを抽出
+        topics = topic_extractor.extract_from_sections(sections, max_topics=count)
+    else:
+        # 下位コードがない場合は親コードの解説から抽出
+        topics = topic_extractor.extract(context.get('parent_commentary', ''), max_topics=count)
 
     if not topics:
         print("[WARN] トピックが抽出できませんでした。デフォルトモードで生成します。")
@@ -74,31 +88,80 @@ def generate_questions(
     generator = QuestionGenerator()
     questions = []
 
-    for i in range(count):
-        # トピックを循環して割り当て
-        topic = topics[i % len(topics)] if topics[0] is not None else None
-        print(f"\n  問題 {i+1}/{count} を生成中... (トピック: {topic or '指定なし'})")
+    # 全セクションの解説を結合（問題生成時に使用）
+    all_commentary_parts = []
+    if context.get('parent_commentary'):
+        all_commentary_parts.append(context['parent_commentary'])
+    for section in sections:
+        if section.get('commentary'):
+            all_commentary_parts.append(section['commentary'])
+    combined_commentary = "\n\n---\n\n".join(all_commentary_parts)
+
+    # 失敗したトピックを追跡
+    failed_topics = []
+    topic_index = 0
+    # トピックと問題のペアを保存（後でソート用）
+    questions_with_topics = []
+
+    while len(questions_with_topics) < count:
+        # トピックを選択
+        if topic_index < len(topics):
+            topic = topics[topic_index] if topics[0] is not None else None
+            original_topic_index = topic_index
+        else:
+            # 通常のトピックを使い切ったら、失敗していないトピックから再利用
+            remaining_topics = [t for t in topics if t not in failed_topics]
+            if remaining_topics:
+                reuse_index = (topic_index - len(topics)) % len(remaining_topics)
+                topic = remaining_topics[reuse_index]
+                # 元のトピックリストでのインデックスを取得
+                original_topic_index = topics.index(topic)
+            else:
+                print(f"    [WARN] 利用可能なトピックがなくなりました")
+                break
+
+        print(f"\n  問題 {len(questions_with_topics)+1}/{count} を生成中... (トピック: {topic or '指定なし'})")
 
         # プロンプトを構築
         system_prompt, user_prompt = PromptBuilder.build(
             subject=context['subject'],
             grade=context['grade'],
             description=context['description'] or "",
-            commentary=context['commentary'],
-            question_number=i + 1,
+            commentary=combined_commentary,
+            question_number=len(questions_with_topics) + 1,
             focus_topic=topic,
         )
 
         try:
             question = generator.generate(system_prompt, user_prompt)
-            questions.append(question)
+            # トピックのインデックスと一緒に保存
+            questions_with_topics.append({
+                'question': question,
+                'topic': topic,
+                'topic_index': original_topic_index,
+                'generation_order': len(questions_with_topics),
+            })
             print(f"    タイトル: {question.get('title', 'N/A')}")
         except Exception as e:
             print(f"    [ERROR] 生成失敗: {e}")
-            questions.append({"error": str(e)})
+            # 失敗したトピックを記録（同じトピックでリトライしない）
+            if topic is not None and topic not in failed_topics:
+                failed_topics.append(topic)
+                print(f"    [INFO] 別のトピックで再試行します...")
 
-    # エラーなしの問題のみ抽出
-    valid_questions = [q for q in questions if "error" not in q]
+        topic_index += 1
+
+        # 無限ループ防止
+        if topic_index > count * 3:
+            print(f"    [WARN] 最大試行回数に達しました")
+            break
+
+    # トピックの種類ごとに問題をソート（トピックインデックス順、同じトピック内は生成順）
+    questions_with_topics.sort(key=lambda x: (x['topic_index'], x['generation_order']))
+    valid_questions = [q['question'] for q in questions_with_topics]
+
+    if questions_with_topics:
+        print(f"\n  [INFO] 問題をトピック順に並び替えました")
 
     if not valid_questions:
         print("\n[ERROR] 有効な問題が生成されませんでした")

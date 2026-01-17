@@ -263,6 +263,82 @@ class COSFetcher:
             "child_codes_count": len(child_codes),
         }
 
+    def get_full_context_with_sections(self, code: str) -> dict:
+        """
+        学習指導要領コード + 下位コード（hasPart）から問題生成に必要な情報を取得
+        下位コード別に解説テキストをセクション分けして返す
+
+        Args:
+            code: 学習指導要領コード
+
+        Returns:
+            dict: 学習目標、セクション別の解説テキストを含む完全なコンテキスト
+        """
+        # 基本情報を取得
+        data = self.fetch(code)
+
+        # 親コードの解説テキストを取得
+        parent_commentaries = []
+        for commentary_id in data.get("commentary_ids", []):
+            commentary = self.fetch_commentary(commentary_id)
+            if commentary["text"]:
+                parent_commentaries.append(commentary)
+
+        print(f"[INFO] 親コードから {len(parent_commentaries)} 件の解説を取得")
+
+        # 下位コード（hasPart）の解説テキストをセクション別に取得
+        child_codes = data.get("has_part", [])
+        print(f"[INFO] 下位コード数: {len(child_codes)}")
+
+        sections = []
+        total_commentaries = len(parent_commentaries)
+
+        for child_url in child_codes:
+            # URLから下位コードを抽出
+            child_code = child_url.split("/")[-1]
+            print(f"[INFO] 下位コード {child_code} の解説を取得中...")
+
+            try:
+                child_data = self.fetch(child_code)
+                child_commentaries = []
+                for commentary_id in child_data.get("commentary_ids", []):
+                    commentary = self.fetch_commentary(commentary_id)
+                    if commentary["text"]:
+                        child_commentaries.append(commentary)
+
+                # 解説テキストを結合
+                commentary_texts = [c["text"] for c in child_commentaries]
+                combined_commentary = "\n\n---\n\n".join(commentary_texts)
+
+                sections.append({
+                    "code": child_code,
+                    "description": child_data.get("description", ""),
+                    "commentary": combined_commentary,
+                    "commentary_count": len(child_commentaries),
+                })
+                total_commentaries += len(child_commentaries)
+
+            except Exception as e:
+                print(f"[WARN] 下位コード {child_code} の取得に失敗: {e}")
+                continue
+
+        print(f"[INFO] 合計 {total_commentaries} 件の解説を取得")
+
+        # 親コードの解説テキストを結合
+        parent_commentary_texts = [c["text"] for c in parent_commentaries]
+        parent_combined = "\n\n---\n\n".join(parent_commentary_texts)
+
+        return {
+            "code": data["code"],
+            "grade": data["grade"],
+            "subject": data["subject"],
+            "description": data["description"] or "",
+            "parent_commentary": parent_combined,
+            "sections": sections,
+            "commentary_count": total_commentaries,
+            "child_codes_count": len(child_codes),
+        }
+
 
 # テスト用
 if __name__ == "__main__":
