@@ -25,6 +25,15 @@ function truncateText(text: string, maxLength: number): string {
   return text.slice(0, maxLength) + '...'
 }
 
+/** 学習指導要領コードからLOD URLを生成する */
+function getCosLodUrl(cosCode: string): string {
+  // コードの先頭3文字と残り（末尾の0を除く）からURLを構築
+  // 例: 8220263100000000 → https://jp-cos.github.io/822/0263100000000
+  const prefix = cosCode.slice(0, 3)
+  const suffix = cosCode.slice(3)
+  return `https://jp-cos.github.io/${prefix}/${suffix}`
+}
+
 /** フォントオプションのラベル（基本） */
 const baseFontLabels: Record<Exclude<FontOption, 'ud-digikyo'>, string> = {
   'system': 'システム既定',
@@ -230,7 +239,7 @@ export function AiChoiceInitialScreen({
           <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: { xs: 1, sm: 2 } }}>
             <Box><strong>教科:</strong> {summary.metadata.subject}</Box>
             <Box><strong>学年:</strong> {summary.metadata.grade}</Box>
-            <Box><strong>学習指導要領コード:</strong> {summary.metadata.cos_code}</Box>
+            <Box><strong>学習指導要領コード:</strong> <a href={getCosLodUrl(summary.metadata.cos_code)} target="_blank" rel="noopener noreferrer" style={{ color: '#1976d2' }}>{summary.metadata.cos_code}</a></Box>
             <Box><strong>内容:</strong> {truncateText(summary.metadata.description, 20)}</Box>
           </Box>
           <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: { xs: 1, sm: 2 }, mt: 1 }}>
