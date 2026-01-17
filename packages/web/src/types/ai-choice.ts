@@ -7,8 +7,15 @@ export interface AiChoiceEntry {
   grade: string           // 学年 (例: "小6")
   subject: string         // 科目 (例: "社会")
   field: string           // 分野 (例: "政治")
-  curriculumCode: string  // 学習指導要領コード
   summaryUrl: string      // Summary JSONのURL
+}
+
+/** Summary JSONのメタデータ */
+export interface AiChoiceMetadata {
+  cos_code: string        // 学習指導要領コード
+  subject: string         // 教科
+  grade: number           // 学年
+  description: string     // 内容
 }
 
 /** Summary JSONの構造 */
@@ -19,7 +26,7 @@ export interface AiChoiceSummary {
   output_directory: string
   files: string[]         // XMLファイルの完全URL配列
   questions: AiChoiceQuestion[]
-  metadata: Record<string, unknown>
+  metadata: AiChoiceMetadata
 }
 
 /** 個別問題のメタデータ */

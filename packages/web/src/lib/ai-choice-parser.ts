@@ -38,14 +38,13 @@ export function parseMarkdownTable(text: string): AiChoiceEntry[] {
       .map(c => c.trim())
       .filter(Boolean)
 
-    // 5列（学年、科目、分野、学習指導要領コード、Summary_URL）が必要
-    if (cells.length >= 5) {
+    // 4列（学年、科目、分野、Summary_URL）が必要
+    if (cells.length >= 4) {
       entries.push({
         grade: cells[0],
         subject: cells[1],
         field: cells[2],
-        curriculumCode: cells[3],
-        summaryUrl: cells[4],
+        summaryUrl: cells[3],
       })
     }
   }

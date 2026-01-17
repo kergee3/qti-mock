@@ -29,6 +29,7 @@ export default function AiChoicePage() {
   // アイテム情報（Summary JSONから取得）
   const [items, setItems] = useState<ItemInfo[]>([])
   const [isLoadingItems, setIsLoadingItems] = useState(false)
+  const [summary, setSummary] = useState<AiChoiceSummary | null>(null)
 
 
   // テスト状態
@@ -76,23 +77,25 @@ export default function AiChoicePage() {
     setSelectedEntry(entry)
     setIsLoadingItems(true)
     setItems([])
+    setSummary(null)
 
     try {
       const response = await fetch(entry.summaryUrl)
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`)
       }
-      const summary: AiChoiceSummary = await response.json()
+      const fetchedSummary: AiChoiceSummary = await response.json()
+      setSummary(fetchedSummary)
 
       // ItemInfo[]に変換
       // files配列には完全URL（https://...social_31_001-xxx.xml）が入っている前提
-      const itemInfos: ItemInfo[] = summary.files.map((fileUrl, index) => {
+      const itemInfos: ItemInfo[] = fetchedSummary.files.map((fileUrl, index) => {
         const baseName = extractFileNameFromUrl(fileUrl)
         return {
           id: baseName,
           fileName: fileUrl,  // 完全URLをfileNameに入れる
           identifier: baseName,
-          title: summary.questions[index]?.title || `問題 ${index + 1}`,
+          title: fetchedSummary.questions[index]?.title || `問題 ${index + 1}`,
           type: 'choiceInteraction', // AI生成問題は全て4択
         }
       })
@@ -101,6 +104,7 @@ export default function AiChoicePage() {
     } catch (e) {
       console.error('Failed to load summary:', e)
       setItems([])
+      setSummary(null)
     } finally {
       setIsLoadingItems(false)
     }
@@ -185,6 +189,7 @@ export default function AiChoicePage() {
           onEntrySelect={handleEntrySelect}
           items={items}
           isLoadingItems={isLoadingItems}
+          summary={summary}
           selectedFont={selectedFont}
           onFontChange={handleFontChange}
           questionBarPosition={questionBarPosition}

@@ -2,7 +2,7 @@
 
 import { Box, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, CircularProgress } from '@mui/material'
 import type { ItemInfo, FontOption, QuestionBarPosition } from '@/types/test'
-import type { AiChoiceEntry } from '@/types/ai-choice'
+import type { AiChoiceEntry, AiChoiceSummary } from '@/types/ai-choice'
 import { usePlatformDetection } from '@/hooks/usePlatformDetection'
 
 interface AiChoiceInitialScreenProps {
@@ -11,11 +11,18 @@ interface AiChoiceInitialScreenProps {
   onEntrySelect: (entry: AiChoiceEntry) => void
   items: ItemInfo[]
   isLoadingItems: boolean
+  summary: AiChoiceSummary | null
   selectedFont: FontOption
   onFontChange: (font: FontOption) => void
   questionBarPosition: QuestionBarPosition
   onQuestionBarPositionChange: (position: QuestionBarPosition) => void
   onStart: () => void
+}
+
+/** 文字列を指定文字数で切り詰める */
+function truncateText(text: string, maxLength: number): string {
+  if (text.length <= maxLength) return text
+  return text.slice(0, maxLength) + '...'
 }
 
 /** フォントオプションのラベル（基本） */
@@ -51,6 +58,7 @@ export function AiChoiceInitialScreen({
   onEntrySelect,
   items,
   isLoadingItems,
+  summary,
   selectedFont,
   onFontChange,
   questionBarPosition,
@@ -68,7 +76,7 @@ export function AiChoiceInitialScreen({
     <Box sx={{ maxWidth: 900, mx: 'auto', p: 3 }}>
       {/* 説明文 */}
       <Box sx={{ mb: 3, color: '#333', fontSize: '0.95rem', lineHeight: 1.6 }}>
-        生成AIが学習指導要領とその解説を元に4択問題を作成しました。問題集を選んではじめましょう。
+        生成AIが学習指導要領とその解説を元に4択問題を作成しました。問題集を選んで解いてみよう。
       </Box>
 
       {/* ヘッダー: タイトル + 問題集選択 */}
@@ -109,7 +117,7 @@ export function AiChoiceInitialScreen({
           <option value="">選択してください</option>
           {entries.map((entry) => (
             <option key={entry.summaryUrl} value={entry.summaryUrl}>
-              {entry.grade}{entry.subject}_{entry.field}={entry.curriculumCode}
+              {entry.grade}{entry.subject}_{entry.field}
             </option>
           ))}
         </Box>
@@ -206,6 +214,31 @@ export function AiChoiceInitialScreen({
           </Box>
         </Box>
       </Box>
+
+      {/* メタデータ表示 */}
+      {summary && (
+        <Box
+          sx={{
+            mb: 2,
+            p: 2,
+            backgroundColor: '#f5f5f5',
+            borderRadius: '4px',
+            fontSize: '0.9rem',
+            lineHeight: 1.8,
+          }}
+        >
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: { xs: 1, sm: 2 } }}>
+            <Box><strong>教科:</strong> {summary.metadata.subject}</Box>
+            <Box><strong>学年:</strong> {summary.metadata.grade}</Box>
+            <Box><strong>学習指導要領コード:</strong> {summary.metadata.cos_code}</Box>
+            <Box><strong>内容:</strong> {truncateText(summary.metadata.description, 20)}</Box>
+          </Box>
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: { xs: 1, sm: 2 }, mt: 1 }}>
+            <Box><strong>問題数:</strong> {summary.total_questions}</Box>
+            <Box><strong>生成AIモデル:</strong> {summary.model}</Box>
+          </Box>
+        </Box>
+      )}
 
       {/* 問題一覧テーブル */}
       {isLoadingItems ? (

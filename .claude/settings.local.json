@@ -51,7 +51,8 @@
       "Bash(npx css-beautify:*)",
       "Bash(for:*)",
       "Bash(do echo \"=== Run $i ===\")",
-      "Bash(done)"
+      "Bash(done)",
+      "Bash(npm -w @nexcbt/web run build)"
     ]
   }
 }
