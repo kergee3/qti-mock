@@ -352,6 +352,34 @@ export function PlaygroundPage() {
   useEffect(() => {
     const set = searchParams.get('set')
     const startswith = searchParams.get('startswith')
+    const urlParam = searchParams.get('url')
+
+    // url= パラメータがある場合は、そのURLからXMLをフェッチ
+    if (urlParam) {
+      // パラメータの変更を検知（同じパラメータなら何もしない）
+      const currentParams = `url:${urlParam}`
+      if (prevParamsRef.current === currentParams) return
+      prevParamsRef.current = currentParams
+
+      const loadXmlFromUrl = async () => {
+        try {
+          const response = await fetch(urlParam)
+          if (response.ok) {
+            const xmlContent = await response.text()
+            setXmlInput(xmlContent)
+            // 自動PLAYをトリガー
+            setShouldAutoPlay(true)
+          } else {
+            console.error('Failed to load XML from URL:', response.status)
+          }
+        } catch (error) {
+          console.error('Failed to load XML from URL:', error)
+        }
+      }
+
+      loadXmlFromUrl()
+      return
+    }
 
     // 使用するパラメータを決定
     let effectiveSet: string

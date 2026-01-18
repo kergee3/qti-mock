@@ -1,7 +1,11 @@
 'use client'
 
-import { Box, Button, ButtonGroup, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material'
+import { useState, useCallback } from 'react'
+import { Box, Button, ButtonGroup, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton, Tooltip, Snackbar } from '@mui/material'
 import PlayArrowIcon from '@mui/icons-material/PlayArrow'
+import ContentCopyIcon from '@mui/icons-material/ContentCopy'
+import CheckIcon from '@mui/icons-material/Check'
+import ConstructionOutlinedIcon from '@mui/icons-material/ConstructionOutlined'
 import type { ItemInfo, FontOption, QuestionBarPosition, WritingDirection } from '@/types/test'
 import { usePlatformDetection } from '@/hooks/usePlatformDetection'
 
@@ -53,11 +57,46 @@ export function BasicRunInitialScreen({
   onStart,
 }: BasicRunInitialScreenProps) {
   const { isWindows } = usePlatformDetection()
+  const [copiedItemId, setCopiedItemId] = useState<string | null>(null)
+  const [snackbarOpen, setSnackbarOpen] = useState(false)
 
   // Windows環境ではUDデジタル教科書体を追加
   const fontLabels: Partial<Record<FontOption, string>> = isWindows
     ? { ...baseFontLabels, 'ud-digikyo': 'UDデジタル教科書体' }
     : baseFontLabels
+
+  // XMLファイルの内容をクリップボードにコピー
+  const handleCopyXml = useCallback(async (item: ItemInfo) => {
+    const subDir = writingDirection === 'vertical' ? 'items-v' : 'items-h'
+    const xmlUrl = `/${subDir}/${item.fileName}`
+
+    try {
+      const response = await fetch(xmlUrl)
+      if (!response.ok) {
+        throw new Error('XMLファイルの取得に失敗しました')
+      }
+      const xmlContent = await response.text()
+      await navigator.clipboard.writeText(xmlContent)
+      setCopiedItemId(item.id)
+      setSnackbarOpen(true)
+
+      // 2秒後にコピー状態をリセット
+      setTimeout(() => {
+        setCopiedItemId(null)
+      }, 2000)
+    } catch (error) {
+      console.error('コピーに失敗しました:', error)
+    }
+  }, [writingDirection])
+
+  // Playgroundで問題を開く
+  const handleOpenInPlayground = useCallback((item: ItemInfo) => {
+    const subDir = writingDirection === 'vertical' ? 'items-v' : 'items-h'
+    // ファイル名の先頭部分（番号）を取得
+    const startswith = item.fileName.split('-')[0]
+    const playgroundUrl = `/playground?set=${subDir}&startswith=${startswith}`
+    window.open(playgroundUrl, '_blank')
+  }, [writingDirection])
 
   return (
     <Box sx={{ maxWidth: 900, mx: 'auto', p: 2 }}>
@@ -239,7 +278,41 @@ export function BasicRunInitialScreen({
                 }}
               >
                 <TableCell sx={{ textAlign: 'center', px: { xs: 1, sm: 2 }, py: { xs: 0.5, sm: 1 } }}>{index + 1}</TableCell>
-                <TableCell sx={{ px: { xs: 1, sm: 2 }, py: { xs: 0.5, sm: 1 }, fontSize: { xs: '0.85rem', sm: '1rem' } }}>{item.title}</TableCell>
+                <TableCell sx={{ px: { xs: 1, sm: 2 }, py: { xs: 0.5, sm: 1 }, fontSize: { xs: '0.85rem', sm: '1rem' } }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                    {item.title}
+                    <Tooltip title="XMLをコピー">
+                      <IconButton
+                        size="small"
+                        onClick={() => handleCopyXml(item)}
+                        sx={{
+                          p: 0.25,
+                          color: copiedItemId === item.id ? '#4caf50' : '#666',
+                          '&:hover': { color: copiedItemId === item.id ? '#4caf50' : '#333' },
+                        }}
+                      >
+                        {copiedItemId === item.id ? (
+                          <CheckIcon sx={{ fontSize: '1rem' }} />
+                        ) : (
+                          <ContentCopyIcon sx={{ fontSize: '1rem' }} />
+                        )}
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Playgroundで開く">
+                      <IconButton
+                        size="small"
+                        onClick={() => handleOpenInPlayground(item)}
+                        sx={{
+                          p: 0.25,
+                          color: '#666',
+                          '&:hover': { color: '#333' },
+                        }}
+                      >
+                        <ConstructionOutlinedIcon sx={{ fontSize: '1rem' }} />
+                      </IconButton>
+                    </Tooltip>
+                  </Box>
+                </TableCell>
                 <TableCell sx={{ color: '#666', whiteSpace: 'pre-line', px: { xs: 1, sm: 2 }, py: { xs: 0.5, sm: 1 }, fontSize: { xs: '0.85rem', sm: '1rem' } }}>
                   {item.type.split('\n').map(t => t.replace(/Interaction$/, '')).join('\n')}
                 </TableCell>
@@ -255,6 +328,15 @@ export function BasicRunInitialScreen({
           問題が見つかりませんでした
         </Box>
       )}
+
+      {/* コピー完了通知 */}
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={2000}
+        onClose={() => setSnackbarOpen(false)}
+        message="XMLをクリップボードにコピーしました"
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      />
     </Box>
   )
 }
