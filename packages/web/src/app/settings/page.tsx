@@ -13,6 +13,7 @@ import {
   Slider,
 } from '@mui/material';
 import { useSettings, NavigationPosition, FontSize, AiModel } from '@/contexts/SettingsContext';
+import MicIcon from '@mui/icons-material/Mic';
 
 const fontSizeMarks = [
   { value: 80, label: '80%' },
@@ -25,7 +26,7 @@ const fontSizeMarks = [
 ];
 
 export default function SettingsPage() {
-  const { navigationPosition, setNavigationPosition, fontSize, setFontSize, aiModel, setAiModel } = useSettings();
+  const { navigationPosition, setNavigationPosition, fontSize, setFontSize, aiModel, setAiModel, voiceInputEnabled, setVoiceInputEnabled } = useSettings();
 
   const handlePositionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNavigationPosition(event.target.value as NavigationPosition);
@@ -39,8 +40,49 @@ export default function SettingsPage() {
     setAiModel(event.target.value as AiModel);
   };
 
+  const handleVoiceInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setVoiceInputEnabled(event.target.value === 'enabled');
+  };
+
   return (
     <Box sx={{ maxWidth: 600, mx: 'auto' }}>
+      {/* 音声入力機能 */}
+      <Card sx={{ mt: 2 }}>
+        <CardContent>
+          <FormControl component="fieldset">
+            <FormLabel component="legend">
+              <Typography variant="h6" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <MicIcon fontSize="small" />
+                音声入力機能
+              </Typography>
+            </FormLabel>
+            <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+              QTI 3.0 のテキスト入力領域で Web Speech API を使用した音声入力機能を設定します。
+            </Typography>
+            <Typography variant="body2" color="warning.main" sx={{ mb: 2 }}>
+              ※ Chrome / Edge / Safari で利用可能です。Firefox は非対応です。
+            </Typography>
+            <RadioGroup
+              row
+              value={voiceInputEnabled ? 'enabled' : 'disabled'}
+              onChange={handleVoiceInputChange}
+            >
+              <FormControlLabel
+                value="enabled"
+                control={<Radio />}
+                label="有効"
+              />
+              <FormControlLabel
+                value="disabled"
+                control={<Radio />}
+                label="無効"
+              />
+            </RadioGroup>
+          </FormControl>
+        </CardContent>
+      </Card>
+
+      {/* AI採点モデル */}
       <Card sx={{ mt: 2 }}>
         <CardContent>
           <FormControl component="fieldset">

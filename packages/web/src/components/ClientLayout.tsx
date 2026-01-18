@@ -6,6 +6,7 @@ import PlaylistPlayOutlinedIcon from '@mui/icons-material/PlaylistPlayOutlined';
 import ListOutlinedIcon from '@mui/icons-material/ListOutlined';
 import EditNoteOutlinedIcon from '@mui/icons-material/EditNoteOutlined';
 import ConstructionOutlinedIcon from '@mui/icons-material/ConstructionOutlined';
+import SettingsIcon from '@mui/icons-material/Settings';
 import InfoIcon from '@mui/icons-material/Info';
 import { SettingsProvider } from '@/contexts/SettingsContext';
 
@@ -29,6 +30,11 @@ const navigationItems: NavigationItem[] = [
     label: 'Playground',
     path: '/playground',
     icon: <ConstructionOutlinedIcon />,
+  },
+  {
+    label: '設定',
+    path: '/settings',
+    icon: <SettingsIcon />,
   },
   {
     label: 'About',

@@ -55,6 +55,13 @@
             @notifyQti3ItemReady="handleItemReady"
             @notifyQti3EndAttemptCompleted="handleEndAttempt"
           />
+
+          <!-- 音声入力ボタン（text-entry / extended-text） -->
+          <VoiceInputButton
+            v-if="voiceInputEnabled && hasTextInputInteraction && isItemLoaded && !isScored"
+            target-selector=".qti-text-entry-interaction input, .qti-extended-text-interaction textarea"
+            lang="ja-JP"
+          />
         </div>
 
         <!-- 横書き時: 下に回答/結果 -->
@@ -93,6 +100,7 @@
 import { ref, onMounted, onUnmounted, watch, computed } from 'vue'
 import { useItemLoader } from './composables/useItemLoader'
 import { useResultSubmit } from './composables/useResultSubmit'
+import VoiceInputButton from './components/VoiceInputButton.vue'
 
 const qti3player = ref(null)
 let qti3Player = null
@@ -108,6 +116,16 @@ const currentItemId = ref(null)
 const correctAnswer = ref(null)
 const isExternalScored = ref(false)
 const noScoringLogic = ref(false)
+
+// 音声入力の有効/無効
+const voiceInputEnabled = ref(true)
+
+// テキスト入力系インタラクション（extended-text または text-entry）があるかどうか
+const hasTextInputInteraction = computed(() => {
+  if (!itemXml.value) return false
+  return itemXml.value.includes('qti-extended-text-interaction') ||
+         itemXml.value.includes('qti-text-entry-interaction')
+})
 
 // モーダルフィードバック
 const modalFeedbacks = ref({}) // { identifier: { content: HTMLコンテンツ, outcomeIdentifier: 'FEEDBACK' } }
@@ -404,6 +422,12 @@ onMounted(() => {
     if (validSizes.includes(parsedSize)) {
       fontSize.value = parsedSize
     }
+  }
+
+  // 音声入力設定
+  const voiceParam = params.get('voice')
+  if (voiceParam === 'false') {
+    voiceInputEnabled.value = false
   }
 
   loadItem()

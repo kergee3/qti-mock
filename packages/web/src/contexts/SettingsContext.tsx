@@ -15,6 +15,8 @@ interface SettingsContextType {
   setFontSize: (size: FontSize) => void;
   aiModel: AiModel;
   setAiModel: (model: AiModel) => void;
+  voiceInputEnabled: boolean;
+  setVoiceInputEnabled: (enabled: boolean) => void;
 }
 
 const SettingsContext = createContext<SettingsContextType | undefined>(undefined);
@@ -27,6 +29,7 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
   const [hideNavigation, setHideNavigation] = useState(false);
   const [fontSize, setFontSizeState] = useState<FontSize>(100);
   const [aiModel, setAiModelState] = useState<AiModel>('claude-haiku-4.5');
+  const [voiceInputEnabled, setVoiceInputEnabledState] = useState<boolean>(false); // 初期値: 無効
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
@@ -50,6 +53,13 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
     if (savedAiModel && VALID_AI_MODELS.includes(savedAiModel)) {
       setAiModelState(savedAiModel);
     }
+
+    // 音声入力設定を読み込む
+    const savedVoiceInput = localStorage.getItem('voiceInputEnabled');
+    if (savedVoiceInput !== null) {
+      setVoiceInputEnabledState(savedVoiceInput === 'true');
+    }
+
     setIsLoaded(true);
   }, []);
 
@@ -68,12 +78,17 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
     localStorage.setItem('aiModel', model);
   };
 
+  const setVoiceInputEnabled = (enabled: boolean) => {
+    setVoiceInputEnabledState(enabled);
+    localStorage.setItem('voiceInputEnabled', String(enabled));
+  };
+
   if (!isLoaded) {
     return null; // ローディング中は何も表示しない
   }
 
   return (
-    <SettingsContext.Provider value={{ navigationPosition, setNavigationPosition, hideNavigation, setHideNavigation, fontSize, setFontSize, aiModel, setAiModel }}>
+    <SettingsContext.Provider value={{ navigationPosition, setNavigationPosition, hideNavigation, setHideNavigation, fontSize, setFontSize, aiModel, setAiModel, voiceInputEnabled, setVoiceInputEnabled }}>
       {children}
     </SettingsContext.Provider>
   );

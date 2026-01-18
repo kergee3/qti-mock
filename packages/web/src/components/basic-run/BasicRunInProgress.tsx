@@ -40,7 +40,7 @@ export function BasicRunInProgress({
   onFinish,
 }: BasicRunInProgressProps) {
   const iframeRef = useRef<HTMLIFrameElement>(null)
-  const { setHideNavigation, fontSize } = useSettings()
+  const { setHideNavigation, fontSize, voiceInputEnabled } = useSettings()
 
   // テスト中はナビゲーションを非表示にする
   useEffect(() => {
@@ -73,8 +73,9 @@ export function BasicRunInProgress({
   const callbackUrl = `${appUrl}/api/results`
 
   // iframe の src URL
+  const voiceParam = voiceInputEnabled ? 'true' : 'false'
   const iframeSrc = currentItem
-    ? `${playerUrl}?item=${encodeURIComponent(itemUrl)}&callback=${encodeURIComponent(callbackUrl)}&session=${sessionId}&font=${font}&fontSize=${fontSize}`
+    ? `${playerUrl}?item=${encodeURIComponent(itemUrl)}&callback=${encodeURIComponent(callbackUrl)}&session=${sessionId}&font=${font}&fontSize=${fontSize}&voice=${voiceParam}`
     : ''
 
   // 問題のステータスを取得
@@ -313,6 +314,7 @@ export function BasicRunInProgress({
             WebkitOverflowScrolling: 'touch',
           } as React.CSSProperties}
           title="QTI Player"
+          allow="microphone"
         />
       ) : (
         <Box sx={{ p: 4, textAlign: 'center', color: '#666' }}>

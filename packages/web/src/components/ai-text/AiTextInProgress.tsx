@@ -46,7 +46,7 @@ export function AiTextInProgress({
   onFinish,
 }: AiTextInProgressProps) {
   const iframeRef = useRef<HTMLIFrameElement>(null)
-  const { setHideNavigation, fontSize, aiModel } = useSettings()
+  const { setHideNavigation, fontSize, aiModel, voiceInputEnabled } = useSettings()
 
   // 採点ダイアログの状態
   const [scoringDialogOpen, setScoringDialogOpen] = useState(false)
@@ -77,8 +77,9 @@ export function AiTextInProgress({
   const itemUrl = currentItem ? getItemUrl(currentItem) : ''
   const callbackUrl = `${appUrl}/api/results`
 
+  const voiceParam = voiceInputEnabled ? 'true' : 'false'
   const iframeSrc = currentItem
-    ? `${playerUrl}?item=${encodeURIComponent(itemUrl)}&callback=${encodeURIComponent(callbackUrl)}&session=${sessionId}&font=${font}&fontSize=${fontSize}`
+    ? `${playerUrl}?item=${encodeURIComponent(itemUrl)}&callback=${encodeURIComponent(callbackUrl)}&session=${sessionId}&font=${font}&fontSize=${fontSize}&voice=${voiceParam}`
     : ''
 
   // 問題のステータスを取得
@@ -441,6 +442,7 @@ export function AiTextInProgress({
             WebkitOverflowScrolling: 'touch',
           } as React.CSSProperties}
           title="QTI Player"
+          allow="microphone"
         />
       ) : (
         <Box sx={{ p: 4, textAlign: 'center', color: '#666' }}>

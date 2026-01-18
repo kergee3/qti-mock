@@ -66,6 +66,7 @@ export default function TopTabs({ items }: TopTabsProps) {
                 minHeight: 64,
                 minWidth: 'auto',
                 px: 1,
+                textTransform: 'none',
               }}
             />
           ))}

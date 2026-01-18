@@ -36,7 +36,7 @@ export default function AboutPage() {
             </Typography>
           </Box>
 
-          <Box sx={{ my: 3 }}>
+          <Box sx={{ my: 2 }}>
             <Typography variant="h6" gutterBottom>
               概要
             </Typography>
@@ -47,13 +47,13 @@ export default function AboutPage() {
             </Typography>
           </Box>
 
-          <Divider sx={{ my: 3 }} />
+          <Divider sx={{ my: 2 }} />
 
-          <Box sx={{ my: 3 }}>
+          <Box sx={{ my: 2 }}>
             <Typography variant="h6" gutterBottom>
               機能
             </Typography>
-            <List>
+            <List dense>
               <ListItem>
                 <ListItemIcon>
                   <PlayArrow color="primary" />
@@ -80,8 +80,17 @@ export default function AboutPage() {
                   <AutoAwesome color="primary" />
                 </ListItemIcon>
                 <ListItemText
-                  primary="AI作成問題"
+                  primary="AI選択問題"
                   secondary="生成AIが学習指導要領とその解説を元に作成した4択問題集。教科・学年・分野別に問題を選択して学習可能"
+                />
+              </ListItem>
+              <ListItem>
+                <ListItemIcon>
+                  <AutoAwesome color="primary" />
+                </ListItemIcon>
+                <ListItemText
+                  primary="AI記述問題"
+                  secondary="生成AIが作成した記述式問題をAIが採点。採点基準に基づいた詳細なフィードバックを提供"
                 />
               </ListItem>
               <ListItem>
@@ -125,18 +134,40 @@ export default function AboutPage() {
                   <FontDownload color="primary" />
                 </ListItemIcon>
                 <ListItemText
-                  primary="フォント選択"
-                  secondary="複数の日本語フォントから選択可能"
+                  primary="フォント・文字サイズ選択"
+                  secondary="複数の日本語フォントと文字サイズから選択可能"
+                />
+              </ListItem>
+              <ListItem>
+                <ListItemIcon>
+                  <AutoAwesome color="primary" />
+                </ListItemIcon>
+                <ListItemText
+                  primary="音声入力"
+                  secondary="Web Speech API を使用した音声入力機能（Chrome / Edge / Safari）"
                 />
               </ListItem>
             </List>
           </Box>
 
-          <Divider sx={{ my: 3 }} />
+          <Divider sx={{ my: 2 }} />
 
-          <Box sx={{ my: 3 }}>
+          <Box sx={{ my: 2 }}>
             <Typography variant="h6" gutterBottom>
-              QTI Player
+              QTI 3.0 と QTI Player
+            </Typography>
+            <Typography variant="body1" color="text.secondary" sx={{ mb: 2 }}>
+              QTI (Question and Test Interoperability) は、1EdTech (旧 IMS Global Learning Consortium) が策定した
+              アセスメントコンテンツの相互運用性を実現するための国際標準規格です。
+              詳細は{' '}
+              <Link
+                href="https://www.imsglobal.org/question/index.html"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                1EdTech - QTI Specification
+              </Link>
+              {' '}を参照してください。
             </Typography>
             <Typography variant="body1" color="text.secondary" sx={{ mb: 2 }}>
               本デモの QTI Player は、<Link href="https://www.amp-up.io/" target="_blank" rel="noopener noreferrer">Amp-up.io社</Link> で開発され 1EdTech によって認定された Vue 3 ベースの QTI 3.0 レンダリングライブラリ{' '}
@@ -155,9 +186,9 @@ export default function AboutPage() {
             </Typography>
           </Box>
 
-          <Divider sx={{ my: 3 }} />
+          <Divider sx={{ my: 2 }} />
 
-          <Box sx={{ my: 3 }}>
+          <Box sx={{ my: 2 }}>
             <Typography variant="h6" gutterBottom>
               学習指導要領LOD
             </Typography>
@@ -181,9 +212,9 @@ export default function AboutPage() {
             </Typography>
           </Box>
 
-          <Divider sx={{ my: 3 }} />
+          <Divider sx={{ my: 2 }} />
 
-          <Box sx={{ my: 3 }}>
+          <Box sx={{ my: 2 }}>
             <Typography variant="h6" gutterBottom>
               技術スタック
             </Typography>
@@ -223,25 +254,6 @@ export default function AboutPage() {
               <Chip label="BeautifulSoup" color="success" />
               <Chip label="lxml" color="success" />
             </Box>
-          </Box>
-
-          <Divider sx={{ my: 3 }} />
-
-          <Box sx={{ my: 3 }}>
-            <Typography variant="h6" gutterBottom>
-              QTI 3.0 について
-            </Typography>
-            <Typography variant="body1" color="text.secondary" sx={{ mb: 2 }}>
-              QTI (Question and Test Interoperability) は、1EdTech (旧 IMS Global Learning Consortium) が策定した
-              アセスメントコンテンツの相互運用性を実現するための国際標準規格です。
-            </Typography>
-            <Link
-              href="https://www.imsglobal.org/question/index.html"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              1EdTech - QTI Specification
-            </Link>
           </Box>
 
           <AppFooter />
