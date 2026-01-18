@@ -20,6 +20,37 @@ export async function parseAiTextMd(): Promise<AiTextEntry[]> {
 }
 
 /**
+ * Summary URLを正規化する
+ *
+ * - 絶対URL (http/https) はそのまま返す
+ * - 相対パス (xxx.json) は /ai-text/ を付与して絶対パスに変換
+ *
+ * @param urlOrPath - URLまたは相対パス
+ * @returns 正規化されたURL、無効な場合はnull
+ */
+function normalizeSummaryUrl(urlOrPath: string): string | null {
+  const trimmed = urlOrPath.trim()
+
+  // 空文字チェック
+  if (!trimmed) return null
+
+  // 絶対URLの場合はそのまま返す
+  if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) {
+    return trimmed
+  }
+
+  // .json ファイルの場合は相対パスとして処理
+  if (trimmed.endsWith('.json')) {
+    // 先頭のスラッシュを除去して正規化
+    const cleanPath = trimmed.replace(/^\/+/, '')
+    return `/ai-text/${cleanPath}`
+  }
+
+  // その他は無効
+  return null
+}
+
+/**
  * Markdownテーブルをパースする
  *
  * テーブル形式:
@@ -64,16 +95,19 @@ function parseMarkdownTable(content: string): AiTextEntry[] {
 
     // データ行
     if (headerFound && separatorPassed && cells.length >= 4) {
-      const [grade, subject, field, summaryUrl] = cells
+      const [grade, subject, field, summaryUrlRaw] = cells
 
-      // 有効なURLかチェック
-      if (summaryUrl && summaryUrl.startsWith('http')) {
-        entries.push({
-          grade,
-          subject,
-          field,
-          summaryUrl,
-        })
+      if (summaryUrlRaw) {
+        // 絶対URLまたは相対パスを正規化
+        const summaryUrl = normalizeSummaryUrl(summaryUrlRaw)
+        if (summaryUrl) {
+          entries.push({
+            grade,
+            subject,
+            field,
+            summaryUrl,
+          })
+        }
       }
     }
   }

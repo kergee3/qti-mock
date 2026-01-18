@@ -29,5 +29,6 @@ dist-ssr
 # Next.js
 .next
 
-# QTI Choice Generator output
+# QTI Generator output
 qti-choice-generator/output
+qti-text-generator/output

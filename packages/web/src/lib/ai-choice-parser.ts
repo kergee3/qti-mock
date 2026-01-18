@@ -19,6 +19,37 @@ export async function parseAiChoiceMd(): Promise<AiChoiceEntry[]> {
 }
 
 /**
+ * Summary URLを正規化する
+ *
+ * - 絶対URL (http/https) はそのまま返す
+ * - 相対パス (xxx.json) は /ai-choice/ を付与して絶対パスに変換
+ *
+ * @param urlOrPath - URLまたは相対パス
+ * @returns 正規化されたURL、無効な場合はnull
+ */
+function normalizeSummaryUrl(urlOrPath: string): string | null {
+  const trimmed = urlOrPath.trim()
+
+  // 空文字チェック
+  if (!trimmed) return null
+
+  // 絶対URLの場合はそのまま返す
+  if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) {
+    return trimmed
+  }
+
+  // .json ファイルの場合は相対パスとして処理
+  if (trimmed.endsWith('.json')) {
+    // 先頭のスラッシュを除去して正規化
+    const cleanPath = trimmed.replace(/^\/+/, '')
+    return `/ai-choice/${cleanPath}`
+  }
+
+  // その他は無効
+  return null
+}
+
+/**
  * Markdownテーブルを解析する
  * @param text Markdownテキスト
  * @returns AiChoiceEntry[]
@@ -40,12 +71,15 @@ export function parseMarkdownTable(text: string): AiChoiceEntry[] {
 
     // 4列（学年、科目、分野、Summary_URL）が必要
     if (cells.length >= 4) {
-      entries.push({
-        grade: cells[0],
-        subject: cells[1],
-        field: cells[2],
-        summaryUrl: cells[3],
-      })
+      const summaryUrl = normalizeSummaryUrl(cells[3])
+      if (summaryUrl) {
+        entries.push({
+          grade: cells[0],
+          subject: cells[1],
+          field: cells[2],
+          summaryUrl,
+        })
+      }
     }
   }
 
