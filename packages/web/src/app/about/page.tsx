@@ -16,12 +16,14 @@ import {
 import {
   Info as InfoIcon,
   PlayArrow,
-  Edit,
   IntegrationInstructions,
-  VerticalAlignCenter,
+  TextRotateVertical,
   Translate,
   FontDownload,
-  AutoAwesome,
+  Mic,
+  ListOutlined,
+  EditNoteOutlined,
+  ConstructionOutlined,
 } from '@mui/icons-material';
 import AppFooter from '@/components/AppFooter';
 
@@ -41,7 +43,7 @@ export default function AboutPage() {
               概要
             </Typography>
             <Typography variant="body1" color="text.secondary">
-              QTI Mock は QTI 3.0 (Question and Test Interoperability) アセスメントプラットフォームのデモ実装です。
+              QTI Mock は QTI 3.0 (Question and Test Interoperability) アセスメントプラットフォームのさまざまな試行的な実装を行ったWebアプリ及びサービスです。
               Next.js アプリケーションに QTI Player を iframe で埋め込み、
               QTI 準拠のアセスメントアイテムを表示・採点します。
             </Typography>
@@ -77,7 +79,7 @@ export default function AboutPage() {
               </ListItem>
               <ListItem>
                 <ListItemIcon>
-                  <AutoAwesome color="primary" />
+                  <ListOutlined color="primary" />
                 </ListItemIcon>
                 <ListItemText
                   primary="AI選択問題"
@@ -86,7 +88,7 @@ export default function AboutPage() {
               </ListItem>
               <ListItem>
                 <ListItemIcon>
-                  <AutoAwesome color="primary" />
+                  <EditNoteOutlined color="primary" />
                 </ListItemIcon>
                 <ListItemText
                   primary="AI記述問題"
@@ -95,11 +97,11 @@ export default function AboutPage() {
               </ListItem>
               <ListItem>
                 <ListItemIcon>
-                  <Edit color="primary" />
+                  <ConstructionOutlined color="primary" />
                 </ListItemIcon>
                 <ListItemText
                   primary="Playground"
-                  secondary="QTI XML を直接入力またはドラッグ＆ドロップで実行。URLパラメータ（?set=items-h&startswith=1）で基本問題のサンプルを直接ロード可能"
+                  secondary="QTI XML を直接入力またはドラッグ&ドロップで実行。URLパラメータ（set, startswith, url）で、基本問題、AI選択問題、AI記述問題のサンプルをロード及び編集可能"
                 />
               </ListItem>
               <ListItem>
@@ -113,7 +115,7 @@ export default function AboutPage() {
               </ListItem>
               <ListItem>
                 <ListItemIcon>
-                  <VerticalAlignCenter color="primary" />
+                  <TextRotateVertical color="primary" />
                 </ListItemIcon>
                 <ListItemText
                   primary="縦書き対応"
@@ -140,7 +142,7 @@ export default function AboutPage() {
               </ListItem>
               <ListItem>
                 <ListItemIcon>
-                  <AutoAwesome color="primary" />
+                  <Mic color="primary" />
                 </ListItemIcon>
                 <ListItemText
                   primary="音声入力"
@@ -170,7 +172,7 @@ export default function AboutPage() {
               {' '}を参照してください。
             </Typography>
             <Typography variant="body1" color="text.secondary" sx={{ mb: 2 }}>
-              本デモの QTI Player は、<Link href="https://www.amp-up.io/" target="_blank" rel="noopener noreferrer">Amp-up.io社</Link> で開発され 1EdTech によって認定された Vue 3 ベースの QTI 3.0 レンダリングライブラリ{' '}
+              本アプリの QTI Player は、<Link href="https://www.amp-up.io/" target="_blank" rel="noopener noreferrer">Amp-up.io社</Link> で開発され 1EdTech によって認定された Vue 3 ベースの QTI 3.0 レンダリングライブラリ{' '}
               <Link
                 href="https://github.com/amp-up-io/qti3-item-player-vue3"
                 target="_blank"
@@ -222,19 +224,19 @@ export default function AboutPage() {
               Web アプリ
             </Typography>
             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-              <Chip label="Next.js 16" color="primary" />
-              <Chip label="React 19" color="primary" />
-              <Chip label="TypeScript" color="primary" />
-              <Chip label="Material-UI v7" color="primary" />
+              <Chip label="Next.js 16.1" color="primary" />
+              <Chip label="React 19.2" color="primary" />
+              <Chip label="TypeScript 5" color="primary" />
+              <Chip label="Material-UI v7.3" color="primary" />
               <Chip label="Tailwind CSS 4" color="primary" />
-              <Chip label="Turborepo" color="primary" />
+              <Chip label="Turborepo 2" color="primary" />
             </Box>
             <Typography variant="subtitle2" color="text.secondary" sx={{ mt: 2, mb: 1 }}>
               QTI Player
             </Typography>
             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-              <Chip label="Vue 3" color="secondary" />
-              <Chip label="Vite 7" color="secondary" />
+              <Chip label="Vue 3.5" color="secondary" />
+              <Chip label="Vite 7.2" color="secondary" />
               <Chip
                 label="qti3-item-player-vue3"
                 color="secondary"
@@ -245,11 +247,11 @@ export default function AboutPage() {
               />
             </Box>
             <Typography variant="subtitle2" color="text.secondary" sx={{ mt: 2, mb: 1 }}>
-              生成AIでの問題作成
+              生成AI（問題作成・採点）
             </Typography>
             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-              <Chip label="Python" color="success" />
               <Chip label="Claude API" color="success" />
+              <Chip label="Python" color="success" />
               <Chip label="rdflib" color="success" />
               <Chip label="BeautifulSoup" color="success" />
               <Chip label="lxml" color="success" />
