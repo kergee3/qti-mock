@@ -39,7 +39,7 @@ function getCosLodUrl(cosCode: string): string {
 
 /** フォントオプションのラベル（基本） */
 const baseFontLabels: Record<Exclude<FontOption, 'ud-digikyo'>, string> = {
-  'system': 'システム既定',
+  'system': '既定フォント',
   'noto-sans-jp': 'Noto Sans JP',
   'noto-serif-jp': 'Noto Serif JP',
   'biz-udpgothic': 'BIZ UDPGothic',
@@ -189,7 +189,7 @@ export function AiChoiceInitialScreen({
         {/* フォント選択 */}
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           <Box component="label" sx={{ fontSize: '0.9rem' }}>
-            フォント：
+            問題でのフォント：
           </Box>
           <Box
             component="select"

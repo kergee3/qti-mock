@@ -106,15 +106,6 @@ export default function AboutPage() {
               </ListItem>
               <ListItem>
                 <ListItemIcon>
-                  <IntegrationInstructions color="primary" />
-                </ListItemIcon>
-                <ListItemText
-                  primary="外部連携"
-                  secondary="iframe + postMessage API / Callback API で外部アプリから利用可能"
-                />
-              </ListItem>
-              <ListItem>
-                <ListItemIcon>
                   <TextRotateVertical color="primary" />
                 </ListItemIcon>
                 <ListItemText

@@ -52,7 +52,7 @@ const DEFAULT_STARTSWITH = '1'
 
 /** フォントオプションのラベル（基本） */
 const baseFontLabels: Record<Exclude<FontOption, 'ud-digikyo'>, string> = {
-  'system': 'システム既定',
+  'system': '既定フォント',
   'noto-sans-jp': 'Noto Sans JP',
   'noto-serif-jp': 'Noto Serif JP',
   'biz-udpgothic': 'BIZ UDPGothic',
@@ -616,7 +616,6 @@ export function PlaygroundPage() {
         </Box>
 
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          <Typography sx={{ color: '#333', fontSize: '0.875rem' }}>フォント:</Typography>
           <FormControl size="small">
             <Select
               value={selectedFont}

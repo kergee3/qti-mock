@@ -129,7 +129,7 @@ export default function SettingsPage() {
         <CardContent>
           <FormControl component="fieldset" sx={{ width: '100%' }}>
             <FormLabel component="legend">
-              <Typography variant="h6">問題の文字サイズ</Typography>
+              <Typography variant="h6">問題での文字サイズ</Typography>
             </FormLabel>
             <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
               問題文やルビの表示サイズを調整します。基本問題からPlaygroundまで全ての問題の実行時に共通で適用されます。
