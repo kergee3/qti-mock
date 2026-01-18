@@ -10,7 +10,14 @@ import {
   Select,
   MenuItem,
   FormControl,
+  IconButton,
+  Divider,
 } from '@mui/material'
+import ContentCopyIcon from '@mui/icons-material/ContentCopy'
+import PlayArrowIcon from '@mui/icons-material/PlayArrow'
+import UnfoldMoreIcon from '@mui/icons-material/UnfoldMore'
+import UnfoldLessIcon from '@mui/icons-material/UnfoldLess'
+import ClearIcon from '@mui/icons-material/Clear'
 import type { FontOption } from '@/types/test'
 import { usePlatformDetection } from '@/hooks/usePlatformDetection'
 import { useSettings } from '@/contexts/SettingsContext'
@@ -182,6 +189,10 @@ export function PlaygroundPage() {
   // 設定
   const [selectedFont, setSelectedFont] = useState<FontOption>('system')
 
+  // TextField 表示設定
+  const [textFieldRows, setTextFieldRows] = useState<number>(3)
+  const [isExpanded, setIsExpanded] = useState<boolean>(false)
+
   // sessionStorageからフォント設定を復元
   useEffect(() => {
     const savedFont = sessionStorage.getItem('playground-font')
@@ -201,21 +212,39 @@ export function PlaygroundPage() {
   }
 
   /**
-   * URLからXMLをフェッチして自動PLAY
+   * 表示拡張トグルハンドラ
    */
-  const fetchXmlFromUrl = async (url: string) => {
-    try {
-      const response = await fetch(url)
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`)
-      }
-      const xmlContent = await response.text()
-      setXmlInput(xmlContent)
-      setShouldAutoPlay(true)
-    } catch (error) {
-      console.error('Failed to fetch XML from URL:', error)
-      alert(`XMLの取得に失敗しました: ${error instanceof Error ? error.message : 'Unknown error'}`)
+  const handleExpandToggle = () => {
+    if (isExpanded) {
+      setTextFieldRows(3)
+    } else {
+      setTextFieldRows(12)
     }
+    setIsExpanded(!isExpanded)
+  }
+
+  /**
+   * クリップボードコピーハンドラ
+   */
+  const handleCopyToClipboard = async () => {
+    if (xmlInput.trim()) {
+      await navigator.clipboard.writeText(xmlInput)
+    }
+  }
+
+  /**
+   * クリアハンドラ
+   */
+  const handleClear = () => {
+    setXmlInput('')
+    setIsPlaying(false)
+    setResult(null)
+    setItemTitle('')
+    setInteractionType('')
+    setIframeSrc('')
+    setResourceWarning(null)
+    // URLパラメータを消去
+    router.replace('/playground', { scroll: false })
   }
 
   /**
@@ -455,47 +484,130 @@ export function PlaygroundPage() {
 
   return (
     <Box sx={{ maxWidth: 1200, mx: 'auto', px: 3, pt: 0.5, pb: 1, maxHeight: '100vh', overflow: 'hidden', boxSizing: 'border-box' }}>
-      {/* 説明文 + クリアボタン */}
+      {/* 説明文 */}
+      <Typography
+        sx={{
+          color: '#666',
+          mb: 1,
+        }}
+      >
+        QTI 3.0に準拠したXMLデータを入力して、テストを実行します。
+      </Typography>
+
+      {/* コントロール行: Playボタン + 表示拡張 + クリア + コピー + フォント選択 */}
       <Box
         sx={{
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
           mb: 1,
+          backgroundColor: '#e8f4fd',
+          p: 1,
+          borderRadius: 1,
         }}
       >
-        <Typography
-          sx={{
-            color: '#666',
-          }}
-        >
-          QTI 3.0に準拠したXMLデータを入力して、テストを実行します。
-        </Typography>
-        <Button
-          variant="outlined"
-          size="small"
-          onClick={() => {
-            setXmlInput('')
-            setIsPlaying(false)
-            setResult(null)
-            setItemTitle('')
-            setInteractionType('')
-            setIframeSrc('')
-            setResourceWarning(null)
-            // URLパラメータを消去
-            router.replace('/playground', { scroll: false })
-          }}
-          sx={{
-            color: '#666',
-            borderColor: '#ccc',
-            '&:hover': {
-              backgroundColor: 'rgba(0, 0, 0, 0.04)',
-              borderColor: '#999',
-            },
-          }}
-        >
-          クリア
-        </Button>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <Button
+            variant="outlined"
+            size="small"
+            onClick={handlePlay}
+            startIcon={<PlayArrowIcon />}
+            sx={{
+              height: 32,
+              fontSize: '0.875rem',
+              backgroundColor: '#fff',
+              borderColor: '#333',
+              color: '#333',
+              '&:hover': {
+                backgroundColor: '#f5f5f5',
+                borderColor: '#333',
+              },
+            }}
+          >
+            PLAY
+          </Button>
+          <Divider orientation="vertical" flexItem sx={{ mx: 0.5 }} />
+          <Button
+            variant="outlined"
+            size="small"
+            onClick={handleExpandToggle}
+            startIcon={isExpanded ? <UnfoldLessIcon /> : <UnfoldMoreIcon />}
+            sx={{
+              height: 32,
+              fontSize: '0.875rem',
+              backgroundColor: '#fff',
+              borderColor: '#ccc',
+              color: '#666',
+              '&:hover': {
+                backgroundColor: '#f5f5f5',
+                borderColor: '#999',
+              },
+            }}
+          >
+            {isExpanded ? '表示を縮小' : '表示を拡張'}
+          </Button>
+          <Button
+            variant="outlined"
+            size="small"
+            onClick={handleClear}
+            startIcon={<ClearIcon />}
+            sx={{
+              height: 32,
+              fontSize: '0.875rem',
+              backgroundColor: '#fff',
+              borderColor: '#ccc',
+              color: '#666',
+              '&:hover': {
+                backgroundColor: '#f5f5f5',
+                borderColor: '#999',
+              },
+            }}
+          >
+            クリア
+          </Button>
+          <Button
+            variant="outlined"
+            size="small"
+            onClick={handleCopyToClipboard}
+            startIcon={<ContentCopyIcon />}
+            title="クリップボードにコピー"
+            sx={{
+              height: 32,
+              fontSize: '0.875rem',
+              backgroundColor: '#fff',
+              borderColor: '#ccc',
+              color: '#666',
+              '&:hover': {
+                backgroundColor: '#f5f5f5',
+                borderColor: '#999',
+              },
+            }}
+          >
+            コピー
+          </Button>
+        </Box>
+
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <Typography sx={{ color: '#333', fontSize: '0.875rem' }}>フォント:</Typography>
+          <FormControl size="small">
+            <Select
+              value={selectedFont}
+              onChange={(e) => handleFontChange(e.target.value as FontOption)}
+              sx={{
+                minWidth: 150,
+                height: 32,
+                fontSize: '0.875rem',
+                backgroundColor: '#fff',
+              }}
+            >
+              {Object.entries(fontLabels).map(([value, label]) => (
+                <MenuItem key={value} value={value} sx={{ fontSize: '0.875rem' }}>
+                  {label}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Box>
       </Box>
 
       {/* XML入力エリア */}
@@ -507,27 +619,18 @@ export function PlaygroundPage() {
         sx={{ position: 'relative' }}
       >
         <TextField
+          variant="outlined"
           multiline
-          rows={5}
+          rows={textFieldRows}
           fullWidth
           placeholder={"QTI 3.0のXMLデータを入力してください。\nクリップボード経由での貼り付けや、ExplorerからxmlファイルのDrag and Dropができます。"}
           value={xmlInput}
           onChange={(e) => {
             const newValue = e.target.value
-            const prevValue = xmlInput
             setXmlInput(newValue)
             // URLパラメータがあれば消去（Paste含む）
             if (searchParams.get('set') || searchParams.get('startswith')) {
               router.replace('/playground', { scroll: false })
-            }
-            // URL入力時の自動フェッチ: 元が空 かつ https://で始まり.xmlで終わる
-            const trimmedValue = newValue.trim()
-            if (
-              !prevValue.trim() &&
-              trimmedValue.toLowerCase().startsWith('https://') &&
-              trimmedValue.toLowerCase().endsWith('.xml')
-            ) {
-              fetchXmlFromUrl(trimmedValue)
             }
           }}
           onPaste={handlePaste}
@@ -573,57 +676,6 @@ export function PlaygroundPage() {
             </Typography>
           </Box>
         )}
-      </Box>
-
-      {/* コントロール行: Playボタン + フォント選択 */}
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          mb: 2,
-          backgroundColor: '#e8f4fd',
-          p: 1,
-          borderRadius: 1,
-        }}
-      >
-        <Button
-          variant="outlined"
-          onClick={handlePlay}
-          sx={{
-            minWidth: 80,
-            px: 2,
-            backgroundColor: '#fff',
-            borderColor: '#333',
-            color: '#333',
-            '&:hover': {
-              backgroundColor: '#f5f5f5',
-              borderColor: '#333',
-            },
-          }}
-        >
-          PLAY
-        </Button>
-
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          <Typography sx={{ color: '#333' }}>フォント:</Typography>
-          <FormControl size="small">
-            <Select
-              value={selectedFont}
-              onChange={(e) => handleFontChange(e.target.value as FontOption)}
-              sx={{
-                minWidth: 150,
-                backgroundColor: '#fff',
-              }}
-            >
-              {Object.entries(fontLabels).map(([value, label]) => (
-                <MenuItem key={value} value={value}>
-                  {label}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Box>
       </Box>
 
       {/* プレイ中の表示 */}

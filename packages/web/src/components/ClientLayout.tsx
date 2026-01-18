@@ -2,10 +2,10 @@
 
 import { AppLayout } from './navigation';
 import { NavigationItem } from '@/types/navigation';
-import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
-import RateReviewIcon from '@mui/icons-material/RateReview';
-import EditIcon from '@mui/icons-material/Edit';
+import PlaylistPlayOutlinedIcon from '@mui/icons-material/PlaylistPlayOutlined';
+import ListOutlinedIcon from '@mui/icons-material/ListOutlined';
+import EditNoteOutlinedIcon from '@mui/icons-material/EditNoteOutlined';
+import ConstructionOutlinedIcon from '@mui/icons-material/ConstructionOutlined';
 import InfoIcon from '@mui/icons-material/Info';
 import { SettingsProvider } from '@/contexts/SettingsContext';
 
@@ -13,22 +13,22 @@ const navigationItems: NavigationItem[] = [
   {
     label: '基本問題',
     path: '/basic',
-    icon: <PlayArrowIcon />,
+    icon: <PlaylistPlayOutlinedIcon />,
   },
   {
     label: 'AI選択問題',
     path: '/ai-choice',
-    icon: <AutoAwesomeIcon />,
+    icon: <ListOutlinedIcon />,
   },
   {
     label: 'AI記述問題',
     path: '/ai-text',
-    icon: <RateReviewIcon />,
+    icon: <EditNoteOutlinedIcon />,
   },
   {
     label: 'Playground',
     path: '/playground',
-    icon: <EditIcon />,
+    icon: <ConstructionOutlinedIcon />,
   },
   {
     label: 'About',

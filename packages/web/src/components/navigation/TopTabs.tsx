@@ -22,7 +22,7 @@ export default function TopTabs({ items }: TopTabsProps) {
         zIndex: (theme) => theme.zIndex.drawer + 1,
       }}
     >
-      <Toolbar sx={{ px: { xs: 1, sm: 2 }, minHeight: { xs: 48, sm: 48 } }}>
+      <Toolbar sx={{ px: { xs: 1, sm: 2 } }}>
         <Typography variant="h6" component="div" sx={{ mr: 0.5, flexShrink: 0 }}>
           QTI Mock
         </Typography>
@@ -63,13 +63,9 @@ export default function TopTabs({ items }: TopTabsProps) {
                 }
               }}
               sx={{
-                minHeight: 48,
+                minHeight: 64,
                 minWidth: 'auto',
                 px: 1,
-                py: 0,
-                '& .MuiTab-iconWrapper': {
-                  marginRight: 0.5,
-                },
               }}
             />
           ))}

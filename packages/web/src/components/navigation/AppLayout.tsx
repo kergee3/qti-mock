@@ -97,7 +97,7 @@ export default function AppLayout({ children, navigationItems }: AppLayoutProps)
             flexGrow: 1,
             p: 0,
             marginLeft: showSidebar ? `calc(${sidebarWidth}px + env(safe-area-inset-left))` : 0,
-            marginTop: showTopTabs ? '48px' : 0,
+            marginTop: showTopTabs ? '64px' : 0,
             marginBottom: showBottomNav ? 'calc(56px + env(safe-area-inset-bottom))' : 0,
             overflow: 'auto',
             minWidth: 0,

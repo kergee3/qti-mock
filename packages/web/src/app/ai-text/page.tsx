@@ -61,6 +61,10 @@ export default function AiTextPage() {
       try {
         const parsedEntries = await parseAiTextMd()
         setEntries(parsedEntries)
+        // 先頭のエントリを自動選択
+        if (parsedEntries.length > 0) {
+          handleEntrySelect(parsedEntries[0])
+        }
       } catch (e) {
         console.error('Failed to load ai-text.md:', e)
         setEntriesError('問題集リストの取得に失敗しました')
@@ -70,6 +74,7 @@ export default function AiTextPage() {
     }
 
     loadEntries()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   // 問題集選択時: Summary JSONをフェッチ
@@ -198,8 +203,6 @@ export default function AiTextPage() {
           summary={summary}
           selectedFont={selectedFont}
           onFontChange={handleFontChange}
-          questionBarPosition={questionBarPosition}
-          onQuestionBarPositionChange={setQuestionBarPosition}
           onStart={handleStart}
         />
       )

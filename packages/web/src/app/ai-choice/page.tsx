@@ -61,6 +61,10 @@ export default function AiChoicePage() {
       try {
         const parsedEntries = await parseAiChoiceMd()
         setEntries(parsedEntries)
+        // 先頭のエントリを自動選択
+        if (parsedEntries.length > 0) {
+          handleEntrySelect(parsedEntries[0])
+        }
       } catch (e) {
         console.error('Failed to load ai-choice-menu.md:', e)
         setEntriesError('問題集リストの取得に失敗しました')
@@ -70,6 +74,7 @@ export default function AiChoicePage() {
     }
 
     loadEntries()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   // 問題集選択時: Summary JSONをフェッチ
@@ -192,8 +197,6 @@ export default function AiChoicePage() {
           summary={summary}
           selectedFont={selectedFont}
           onFontChange={handleFontChange}
-          questionBarPosition={questionBarPosition}
-          onQuestionBarPositionChange={setQuestionBarPosition}
           onStart={handleStart}
         />
       )

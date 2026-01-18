@@ -1,6 +1,7 @@
 'use client'
 
 import { Box, Button, ButtonGroup, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material'
+import PlayArrowIcon from '@mui/icons-material/PlayArrow'
 import type { ItemInfo, FontOption, QuestionBarPosition, WritingDirection } from '@/types/test'
 import { usePlatformDetection } from '@/hooks/usePlatformDetection'
 
@@ -142,6 +143,7 @@ export function BasicRunInitialScreen({
           size="large"
           onClick={onStart}
           disabled={items.length === 0}
+          startIcon={<PlayArrowIcon />}
           sx={{
             px: 1,
             py: 1,

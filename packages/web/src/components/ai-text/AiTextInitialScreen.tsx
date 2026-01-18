@@ -1,7 +1,8 @@
 'use client'
 
 import { Box, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, CircularProgress } from '@mui/material'
-import type { ItemInfo, FontOption, QuestionBarPosition } from '@/types/test'
+import PlayArrowIcon from '@mui/icons-material/PlayArrow'
+import type { ItemInfo, FontOption } from '@/types/test'
 import type { AiTextEntry, AiTextSummary } from '@/types/ai-text'
 import { usePlatformDetection } from '@/hooks/usePlatformDetection'
 
@@ -14,8 +15,6 @@ interface AiTextInitialScreenProps {
   summary: AiTextSummary | null
   selectedFont: FontOption
   onFontChange: (font: FontOption) => void
-  questionBarPosition: QuestionBarPosition
-  onQuestionBarPositionChange: (position: QuestionBarPosition) => void
   onStart: () => void
 }
 
@@ -43,15 +42,6 @@ const baseFontLabels: Record<Exclude<FontOption, 'ud-digikyo'>, string> = {
   'kosugi-maru': 'Kosugi Maru',
 }
 
-/** 問題バー位置のラベル */
-const questionBarLabels: Partial<Record<QuestionBarPosition, string>> = {
-  'auto': '自動',
-  'left': '左-縦並び',
-  'right': '右-縦並び',
-  'top-ltr': '上-横並び(左から)',
-  'top-rtl': '上-横並び(右から)',
-}
-
 /** 難易度ラベル */
 const difficultyLabels: Record<number, string> = {
   1: '易しい',
@@ -77,8 +67,6 @@ export function AiTextInitialScreen({
   summary,
   selectedFont,
   onFontChange,
-  questionBarPosition,
-  onQuestionBarPositionChange,
   onStart,
 }: AiTextInitialScreenProps) {
   const { isWindows } = usePlatformDetection()
@@ -160,6 +148,7 @@ export function AiTextInitialScreen({
           size="large"
           onClick={onStart}
           disabled={items.length === 0 || isLoadingItems}
+          startIcon={<PlayArrowIcon />}
           sx={{
             px: 1,
             py: 1,
@@ -175,35 +164,6 @@ export function AiTextInitialScreen({
         >
           はじめる
         </Button>
-
-        {/* 問題バー位置選択 */}
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          <Box component="label" sx={{ fontSize: '0.9rem' }}>
-            問題バー：
-          </Box>
-          <Box
-            component="select"
-            value={questionBarPosition}
-            onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-              onQuestionBarPositionChange(e.target.value as QuestionBarPosition)
-            }
-            sx={{
-              padding: '8px 12px',
-              fontSize: '0.9rem',
-              borderRadius: '4px',
-              border: '1px solid #ccc',
-              backgroundColor: '#fff',
-              cursor: 'pointer',
-              flex: 1,
-            }}
-          >
-            {Object.entries(questionBarLabels).map(([value, label]) => (
-              <option key={value} value={value}>
-                {label}
-              </option>
-            ))}
-          </Box>
-        </Box>
 
         {/* フォント選択 */}
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
