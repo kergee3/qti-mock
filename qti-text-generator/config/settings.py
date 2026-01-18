@@ -42,8 +42,10 @@ CODE_PREFIX_MAP = {
 
 # 記述式問題の設定
 TEXT_QUESTION_CONFIG = {
-    "max_chars": 100,  # 最大文字数
-    "min_chars": 60,   # 最小文字数（これ以下は採点しない）
+    "max_chars": 140,  # 最大文字数
+    "min_chars": 70,   # 最小文字数（これ以下は採点しない）
+    "model_answer_min": 90,   # 模範解答の最小文字数
+    "model_answer_max": 120,  # 模範解答の最大文字数
     "default_count": 5,  # デフォルト生成問題数
     "max_score": 10,   # 満点（10点満点）
 }

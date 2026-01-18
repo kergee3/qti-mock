@@ -38,6 +38,8 @@ class PromptBuilder:
         """
         max_chars = TEXT_QUESTION_CONFIG["max_chars"]
         min_chars = TEXT_QUESTION_CONFIG["min_chars"]
+        model_answer_min = TEXT_QUESTION_CONFIG["model_answer_min"]
+        model_answer_max = TEXT_QUESTION_CONFIG["model_answer_max"]
 
         # 難易度に応じた説明
         difficulty_descriptions = {
@@ -69,7 +71,7 @@ class PromptBuilder:
   "difficulty": {difficulty},
   "title": "問題のタイトル（20文字以内）",
   "question_text": "問題文（条件・制約を明示）",
-  "model_answer": "模範解答（{min_chars}〜{max_chars}文字）",
+  "model_answer": "模範解答（{model_answer_min}〜{model_answer_max}文字）",
   "required_concepts": ["必須概念1", "必須概念2", "必須概念3"],
   "scoring_matrix": {{
     "understanding": {{
@@ -120,7 +122,7 @@ class PromptBuilder:
 ## 重要な注意点
 1. 問題文は小学{grade}年生が理解できる平易な言葉で書いてください
 2. 回答に必要な情報は全て問題文に含めてください
-3. 模範解答は{min_chars}文字以上{max_chars}文字以内で作成してください
+3. 模範解答は{model_answer_min}文字以上{model_answer_max}文字以内で作成してください
 4. 必須概念は最低3つ含めてください
 5. 典型的誤答パターンは具体的なものを3つ以上挙げてください
 6. thinking_skills の合計は100になるようにしてください"""

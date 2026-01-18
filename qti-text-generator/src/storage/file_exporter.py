@@ -139,8 +139,8 @@ if __name__ == "__main__":
         "difficulty": 1,
         "question_text": "テスト問題",
         "model_answer": "テスト模範解答",
-        "max_chars": 100,
-        "min_chars": 60,
+        "max_chars": 140,
+        "min_chars": 70,
     }
 
     # 単一ファイル出力
