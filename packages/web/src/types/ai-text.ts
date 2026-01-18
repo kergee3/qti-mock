@@ -90,11 +90,15 @@ export interface ScoringCriteria {
   max_chars?: number
 }
 
+/** AI採点モデル */
+export type AiModelType = 'claude-sonnet-4.5' | 'claude-haiku-4.5' | 'claude-sonnet-4' | 'claude-haiku-3.5'
+
 /** AI採点リクエスト */
 export interface AiScoringRequest {
   response: string           // 回答者の記述内容
   scoringCriteria: ScoringCriteria
   questionText: string       // 問題文
+  model?: AiModelType        // 使用するAIモデル
 }
 
 /** AI採点の観点別スコア */
@@ -120,6 +124,7 @@ export interface AiScoringResponse {
   scoringTimeMs?: number     // 採点にかかった時間（ミリ秒）
   inputTokens?: number       // 入力トークン数
   outputTokens?: number      // 出力トークン数
+  modelUsed?: string         // 使用したモデル
 }
 
 /** AI採点結果（保存用） */

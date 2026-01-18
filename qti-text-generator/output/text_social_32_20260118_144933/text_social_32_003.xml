@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqti_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="text-8220263200000000-003" title="江戸幕府の政策の目的" adaptive="false" time-dependent="false">
+  <qti-response-declaration identifier="RESPONSE" base-type="string" cardinality="single"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float" external-scored="human">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-rubric-block view="scorer" use="ai-scoring">
+    <scoring-criteria>
+      <model-answer>江戸幕府は、大名に参勤交代を義務づけることで、大名の経済的な力を弱め、反乱を起こす力をそぎました。また、鎖国政策により外国との貿易を幕府が管理することで、幕府の力を強め、全国を支配する体制を整えました。</model-answer>
+      <required-concepts>
+        <concept>参勤交代により大名の経済力を弱める</concept>
+        <concept>鎖国により幕府が貿易を管理・統制する</concept>
+        <concept>幕府による全国支配体制の確立</concept>
+      </required-concepts>
+      <scoring-matrix>
+        <criterion aspect="understanding" aspect-name="理解力" max-score="4">
+          <level score="4">参勤交代と鎖国の両方の目的を、幕府と大名の力関係から正確に理解している</level>
+          <level score="3">参勤交代または鎖国のいずれか一方の目的を、力関係の観点から理解している</level>
+          <level score="2">政策の目的について部分的な理解がある</level>
+          <level score="1">政策の目的についての理解が不十分</level>
+          <level score="0">政策の目的を理解していない</level>
+        </criterion>
+        <criterion aspect="expression" aspect-name="表現力" max-score="3">
+          <level score="3">指定語句を適切に使い、因果関係を論理的に説明している</level>
+          <level score="2">指定語句を使っているが、因果関係の説明がやや不明確</level>
+          <level score="1">指定語句の使用が不適切で、説明が分かりにくい</level>
+          <level score="0">指定語句を使用していない、または説明になっていない</level>
+        </criterion>
+        <criterion aspect="accuracy" aspect-name="正確性" max-score="3">
+          <level score="3">歴史的事実と用語が正確で、誤りがない</level>
+          <level score="2">概ね正確だが、一部に軽微な誤りがある</level>
+          <level score="1">重要な事実や用語に誤りがある</level>
+          <level score="0">歴史的事実を大きく誤解している</level>
+        </criterion>
+      </scoring-matrix>
+      <common-errors>
+        <error pattern="参勤交代は大名同士を仲良くさせるためだった" feedback="参勤交代の目的は大名同士の関係ではなく、幕府と大名の力関係にあります。大名の経済力を弱めることで、幕府への反乱を防ぐ目的がありました。"/>
+        <error pattern="鎖国は外国から日本を守るためだった" feedback="防衛も理由の一つですが、より重要なのは貿易を幕府が独占することで、大名が外国と結びついて力をつけることを防ぐ目的がありました。"/>
+        <error pattern="大名の力を強くするためだった" feedback="逆です。幕府は大名の力を弱めることで、自分たちの支配を確かなものにしようとしました。参勤交代も鎖国も、大名の力をそぐための政策でした。"/>
+        <error pattern="キリスト教を広めないためだった" feedback="キリスト教の禁止も鎖国の理由の一つですが、それだけではありません。幕府が貿易を管理することで、幕府の力を強め、大名の力を抑える目的もありました。"/>
+      </common-errors>
+      <char-limits min="60" max="100"/>
+    </scoring-criteria>
+  </qti-rubric-block>
+  <qti-item-body>
+    <div class="question-text">
+      <p>江戸幕府は、大名に参勤交代を義務づけたり、外国との貿易を制限する鎖国政策を行ったりしました。これらの政策を行った目的について、「幕府の力」「大名の力」という言葉を使って、60文字以上100文字以内で説明しなさい。</p>
+    </div>
+    <qti-extended-text-interaction response-identifier="RESPONSE" expected-length="100" min-strings="1" max-strings="1" expected-lines="5" format="plain" class="qti-counter-up">
+      <qti-prompt>
+        <p>以下の条件に従って回答してください：</p>
+        <ul>
+          <li>60文字以上100文字以内で回答すること</li>
+          <li>60文字未満の回答は採点対象外となります</li>
+        </ul>
+      </qti-prompt>
+    </qti-extended-text-interaction>
+  </qti-item-body>
+</qti-assessment-item>

@@ -1,40 +1,48 @@
-import { NextResponse } from 'next/server'
 import Anthropic from '@anthropic-ai/sdk'
-import type { AiScoringRequest, AiScoringResponse, AspectScore } from '@/types/ai-text'
+import type { AiScoringRequest, AiScoringResponse, AiModelType } from '@/types/ai-text'
 
 // Claude APIクライアント
 const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY || '',
 })
 
-// モデル設定（Claude Sonnet 4）
-const MODEL = 'claude-sonnet-4-20250514'
+// モデル設定のマッピング
+const MODEL_MAP: Record<AiModelType, string> = {
+  'claude-sonnet-4.5': 'claude-sonnet-4-5-20250929',
+  'claude-haiku-4.5': 'claude-haiku-4-5-20251001',
+  'claude-sonnet-4': 'claude-sonnet-4-20250514',
+  'claude-haiku-3.5': 'claude-3-5-haiku-20241022',
+}
 
 /**
- * AI採点APIエンドポイント
+ * AI採点APIエンドポイント（ストリーミング対応）
  * POST /api/ai-text
  */
 export async function POST(request: Request) {
   try {
     const body: AiScoringRequest = await request.json()
-    const { response, scoringCriteria, questionText } = body
+    const { response, scoringCriteria, questionText, model } = body
 
     // 入力バリデーション
     if (!response || !scoringCriteria || !questionText) {
-      return NextResponse.json(
-        { error: 'Missing required fields' },
-        { status: 400 }
+      return new Response(
+        JSON.stringify({ error: 'Missing required fields' }),
+        { status: 400, headers: { 'Content-Type': 'application/json' } }
       )
     }
 
     // 最小文字数チェック
     const minChars = scoringCriteria.min_chars || 60
     if (response.length < minChars) {
-      return NextResponse.json(
-        { error: `回答が${minChars}文字未満です` },
-        { status: 400 }
+      return new Response(
+        JSON.stringify({ error: `回答が${minChars}文字未満です` }),
+        { status: 400, headers: { 'Content-Type': 'application/json' } }
       )
     }
+
+    // モデル選択（デフォルトはSonnet 4）
+    const selectedModel: AiModelType = model || 'claude-sonnet-4'
+    const modelId = MODEL_MAP[selectedModel]
 
     // プロンプト構築
     const systemPrompt = buildSystemPrompt()
@@ -43,9 +51,9 @@ export async function POST(request: Request) {
     // 時間計測開始
     const startTime = Date.now()
 
-    // Claude APIを呼び出し
-    const message = await anthropic.messages.create({
-      model: MODEL,
+    // ストリーミングでClaude APIを呼び出し
+    const stream = await anthropic.messages.stream({
+      model: modelId,
       max_tokens: 2048,
       system: systemPrompt,
       messages: [
@@ -53,31 +61,71 @@ export async function POST(request: Request) {
       ],
     })
 
-    // 時間計測終了
-    const scoringTimeMs = Date.now() - startTime
+    // ストリーミングレスポンスを返す
+    const encoder = new TextEncoder()
+    let fullText = ''
+    let inputTokens = 0
+    let outputTokens = 0
 
-    // レスポンスをパース
-    const textContent = message.content.find(c => c.type === 'text')
-    if (!textContent || textContent.type !== 'text') {
-      throw new Error('No text response from Claude')
-    }
+    const readableStream = new ReadableStream({
+      async start(controller) {
+        try {
+          for await (const event of stream) {
+            if (event.type === 'content_block_delta') {
+              const delta = event.delta
+              if ('text' in delta) {
+                fullText += delta.text
+                // テキストチャンクをストリーミング
+                controller.enqueue(encoder.encode(`data: ${JSON.stringify({ type: 'text', content: delta.text })}\n\n`))
+              }
+            } else if (event.type === 'message_delta') {
+              // 使用量情報を取得
+              if (event.usage) {
+                outputTokens = event.usage.output_tokens
+              }
+            } else if (event.type === 'message_start') {
+              if (event.message.usage) {
+                inputTokens = event.message.usage.input_tokens
+              }
+            }
+          }
 
-    const scoringResult = parseClaudeResponse(textContent.text)
+          // 時間計測終了
+          const scoringTimeMs = Date.now() - startTime
 
-    // トークン使用量と時間を追加
-    const resultWithMeta: AiScoringResponse = {
-      ...scoringResult,
-      scoringTimeMs,
-      inputTokens: message.usage?.input_tokens,
-      outputTokens: message.usage?.output_tokens,
-    }
+          // 完了後にJSONをパースして最終結果を送信
+          const scoringResult = parseClaudeResponse(fullText)
+          const resultWithMeta: AiScoringResponse = {
+            ...scoringResult,
+            scoringTimeMs,
+            inputTokens,
+            outputTokens,
+            modelUsed: selectedModel,
+          }
 
-    return NextResponse.json(resultWithMeta)
+          controller.enqueue(encoder.encode(`data: ${JSON.stringify({ type: 'result', content: resultWithMeta })}\n\n`))
+          controller.enqueue(encoder.encode('data: [DONE]\n\n'))
+          controller.close()
+        } catch (error) {
+          console.error('Streaming error:', error)
+          controller.enqueue(encoder.encode(`data: ${JSON.stringify({ type: 'error', content: 'ストリーミング中にエラーが発生しました' })}\n\n`))
+          controller.close()
+        }
+      },
+    })
+
+    return new Response(readableStream, {
+      headers: {
+        'Content-Type': 'text/event-stream',
+        'Cache-Control': 'no-cache',
+        'Connection': 'keep-alive',
+      },
+    })
   } catch (error) {
     console.error('AI Scoring error:', error)
-    return NextResponse.json(
-      { error: 'AI採点中にエラーが発生しました' },
-      { status: 500 }
+    return new Response(
+      JSON.stringify({ error: 'AI採点中にエラーが発生しました' }),
+      { status: 500, headers: { 'Content-Type': 'application/json' } }
     )
   }
 }
@@ -179,9 +227,6 @@ function parseClaudeResponse(text: string): AiScoringResponse {
 
   try {
     const parsed = JSON.parse(jsonStr)
-
-    // デフォルト値を設定
-    const defaultAspect: AspectScore = { score: 0, maxScore: 0, feedback: '' }
 
     return {
       score: parsed.score ?? 0,

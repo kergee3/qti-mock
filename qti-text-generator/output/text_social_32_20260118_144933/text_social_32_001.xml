@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqti_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="text-8220263200000000-001" title="明治維新と欧米文化" adaptive="false" time-dependent="false">
+  <qti-response-declaration identifier="RESPONSE" base-type="string" cardinality="single"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float" external-scored="human">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-rubric-block view="scorer" use="ai-scoring">
+    <scoring-criteria>
+      <model-answer>欧米諸国が強い軍事力や進んだ技術をもって世界に進出していたため、日本も欧米に対等な国として認められるように、政治の仕組みや産業、軍事などを近代化する必要があったから。</model-answer>
+      <required-concepts>
+        <concept>欧米諸国の進出・圧力</concept>
+        <concept>対等な国としての地位確立</concept>
+        <concept>近代化の必要性</concept>
+      </required-concepts>
+      <scoring-matrix>
+        <criterion aspect="understanding" aspect-name="理解力" max-score="4">
+          <level score="4">欧米の進出、日本の立場、近代化の必要性の3点を正しく理解している</level>
+          <level score="3">上記3点のうち2点を理解している</level>
+          <level score="2">上記3点のうち1点を理解している</level>
+          <level score="1">明治維新と欧米文化の関係について部分的に触れている</level>
+          <level score="0">明治維新や欧米文化について理解が見られない</level>
+        </criterion>
+        <criterion aspect="expression" aspect-name="表現力" max-score="3">
+          <level score="3">理由と目的が明確に区別され、論理的に説明されている</level>
+          <level score="2">理由または目的のいずれかが明確に説明されている</level>
+          <level score="1">説明に不明確な部分があるが、意図は理解できる</level>
+          <level score="0">説明が断片的で論理性に欠ける</level>
+        </criterion>
+        <criterion aspect="accuracy" aspect-name="正確性" max-score="3">
+          <level score="3">歴史的事実や用語を正確に使用している</level>
+          <level score="2">概ね正確だが、一部用語の使い方に不正確さがある</level>
+          <level score="1">事実関係に部分的な誤りがある</level>
+          <level score="0">歴史的事実や用語の使用に重大な誤りがある</level>
+        </criterion>
+      </scoring-matrix>
+      <common-errors>
+        <error pattern="単に「欧米が進んでいたから」とだけ書いている" feedback="なぜ進んだ文化を取り入れる必要があったのか、日本が置かれた状況や目的も説明しましょう。"/>
+        <error pattern="「戦争に勝つため」など軍事面のみに焦点を当てている" feedback="軍事だけでなく、国全体を近代化する必要性について考えてみましょう。欧米諸国と対等な関係を築くという視点も大切です。"/>
+        <error pattern="「便利な生活をするため」など生活面のみを説明している" feedback="当時の日本が国として直面していた課題に目を向けましょう。世界の中での日本の立場を考えることが重要です。"/>
+        <error pattern="文字数が60文字未満である" feedback="60文字以上で説明する必要があります。当時の世界の様子と日本の状況の両方について、もう少し詳しく書きましょう。"/>
+      </common-errors>
+      <char-limits min="60" max="100"/>
+    </scoring-criteria>
+  </qti-rubric-block>
+  <qti-item-body>
+    <div class="question-text">
+      <p>明治時代になると、日本は欧米の文化や技術を積極的に取り入れながら近代化を進めました。なぜ明治政府は欧米の文化を取り入れる必要があったのでしょうか。当時の世界の様子と日本の状況をふまえて、60文字以上100文字以内で説明しなさい。</p>
+    </div>
+    <qti-extended-text-interaction response-identifier="RESPONSE" expected-length="100" min-strings="1" max-strings="1" expected-lines="5" format="plain" class="qti-counter-up">
+      <qti-prompt>
+        <p>以下の条件に従って回答してください：</p>
+        <ul>
+          <li>60文字以上100文字以内で回答すること</li>
+          <li>60文字未満の回答は採点対象外となります</li>
+        </ul>
+      </qti-prompt>
+    </qti-extended-text-interaction>
+  </qti-item-body>
+</qti-assessment-item>

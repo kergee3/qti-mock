@@ -1,10 +1,10 @@
 'use client'
 
 import { useRef, useEffect, useCallback, useState } from 'react'
-import { Box, Button, Tooltip, CircularProgress, Dialog, DialogTitle, DialogContent, DialogActions, Typography } from '@mui/material'
+import { Box, Button, Tooltip, Dialog, DialogTitle, DialogContent, DialogActions, Typography, LinearProgress } from '@mui/material'
 import { useSettings } from '@/contexts/SettingsContext'
 import type { ItemInfo, ItemResult, FontOption, QuestionStatus, QuestionBarPosition, WritingDirection } from '@/types/test'
-import type { AiTextSummary, AiScoringResult, AiScoringResponse, ScoringCriteria } from '@/types/ai-text'
+import type { AiTextSummary, AiScoringResult, AiScoringResponse, ScoringCriteria, AiModelType } from '@/types/ai-text'
 
 interface AiTextInProgressProps {
   items: ItemInfo[]
@@ -46,13 +46,14 @@ export function AiTextInProgress({
   onFinish,
 }: AiTextInProgressProps) {
   const iframeRef = useRef<HTMLIFrameElement>(null)
-  const { setHideNavigation, fontSize } = useSettings()
+  const { setHideNavigation, fontSize, aiModel } = useSettings()
 
   // 採点ダイアログの状態
   const [scoringDialogOpen, setScoringDialogOpen] = useState(false)
   const [isScoring, setIsScoring] = useState(false)
   const [currentScoringResult, setCurrentScoringResult] = useState<AiScoringResponse | null>(null)
   const [scoringError, setScoringError] = useState<string | null>(null)
+  const [streamingText, setStreamingText] = useState<string>('')
 
   // テスト中はナビゲーションを非表示にする
   useEffect(() => {
@@ -148,6 +149,7 @@ export function AiTextInProgress({
 
     setIsScoring(true)
     setScoringError(null)
+    setStreamingText('')
 
     try {
       // 採点基準を構築
@@ -160,7 +162,7 @@ export function AiTextInProgress({
         max_chars: summary.metadata.max_chars,
       }
 
-      // AI採点APIを呼び出し
+      // AI採点APIを呼び出し（ストリーミング）
       const apiResponse = await fetch('/api/ai-text', {
         method: 'POST',
         headers: {
@@ -170,6 +172,7 @@ export function AiTextInProgress({
           response,
           scoringCriteria,
           questionText: question.question_text,
+          model: aiModel as AiModelType,
         }),
       })
 
@@ -177,25 +180,61 @@ export function AiTextInProgress({
         throw new Error(`API error: ${apiResponse.status}`)
       }
 
-      const scoringResponse: AiScoringResponse = await apiResponse.json()
-
-      const result: AiScoringResult = {
-        itemId,
-        response,
-        scoringResponse,
-        scoredAt: new Date().toISOString(),
-        isScored: true,
+      // ストリーミングレスポンスを処理
+      const reader = apiResponse.body?.getReader()
+      if (!reader) {
+        throw new Error('No response body')
       }
 
-      setCurrentScoringResult(scoringResponse)
-      onScoringResultUpdate(result)
+      const decoder = new TextDecoder()
+      let accumulatedText = ''
+
+      while (true) {
+        const { done, value } = await reader.read()
+        if (done) break
+
+        const chunk = decoder.decode(value, { stream: true })
+        const lines = chunk.split('\n')
+
+        for (const line of lines) {
+          if (line.startsWith('data: ')) {
+            const data = line.slice(6)
+            if (data === '[DONE]') continue
+
+            try {
+              const parsed = JSON.parse(data)
+              if (parsed.type === 'text') {
+                accumulatedText += parsed.content
+                setStreamingText(accumulatedText)
+              } else if (parsed.type === 'result') {
+                const scoringResponse: AiScoringResponse = parsed.content
+
+                const result: AiScoringResult = {
+                  itemId,
+                  response,
+                  scoringResponse,
+                  scoredAt: new Date().toISOString(),
+                  isScored: true,
+                }
+
+                setCurrentScoringResult(scoringResponse)
+                onScoringResultUpdate(result)
+              } else if (parsed.type === 'error') {
+                setScoringError(parsed.content)
+              }
+            } catch {
+              // JSONパースエラーは無視
+            }
+          }
+        }
+      }
     } catch (error) {
       console.error('AI scoring error:', error)
       setScoringError('採点中にエラーが発生しました')
     } finally {
       setIsScoring(false)
     }
-  }, [summary, items, onScoringResultUpdate])
+  }, [summary, items, onScoringResultUpdate, aiModel])
 
   // postMessage リスナー
   useEffect(() => {
@@ -501,9 +540,30 @@ export function AiTextInProgress({
       </DialogTitle>
       <DialogContent sx={{ pt: 2, pb: 1 }}>
         {isScoring ? (
-          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', py: 4 }}>
-            <CircularProgress />
-            <Typography sx={{ mt: 2 }}>採点中...</Typography>
+          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', py: 3 }}>
+            <LinearProgress sx={{ width: '100%', mb: 2 }} />
+            <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+              {aiModel === 'claude-haiku-4.5' ? 'Haiku 4.5' : aiModel === 'claude-sonnet-4.5' ? 'Sonnet 4.5' : aiModel === 'claude-haiku-3.5' ? 'Haiku 3.5' : 'Sonnet 4'} で採点中...
+            </Typography>
+            {streamingText && (
+              <Box
+                sx={{
+                  mt: 2,
+                  p: 1.5,
+                  backgroundColor: '#f5f5f5',
+                  borderRadius: 1,
+                  maxHeight: 200,
+                  overflow: 'auto',
+                  width: '100%',
+                  fontFamily: 'monospace',
+                  fontSize: '0.75rem',
+                  whiteSpace: 'pre-wrap',
+                  wordBreak: 'break-all',
+                }}
+              >
+                {streamingText.length > 500 ? `...${streamingText.slice(-500)}` : streamingText}
+              </Box>
+            )}
           </Box>
         ) : scoringError ? (
           <Box sx={{ color: '#c62828', py: 2 }}>
@@ -564,6 +624,11 @@ export function AiTextInProgress({
               {currentScoringResult.scoringTimeMs !== undefined && (
                 <Typography variant="caption" color="text.secondary">
                   採点時間: {(currentScoringResult.scoringTimeMs / 1000).toFixed(2)}秒
+                  {currentScoringResult.modelUsed && ` (${
+                    currentScoringResult.modelUsed === 'claude-haiku-4.5' ? 'Haiku 4.5' :
+                    currentScoringResult.modelUsed === 'claude-sonnet-4.5' ? 'Sonnet 4.5' :
+                    currentScoringResult.modelUsed === 'claude-haiku-3.5' ? 'Haiku 3.5' : 'Sonnet 4'
+                  })`}
                 </Typography>
               )}
               {(currentScoringResult.inputTokens !== undefined || currentScoringResult.outputTokens !== undefined) && (

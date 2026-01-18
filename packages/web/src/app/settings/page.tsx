@@ -12,7 +12,7 @@ import {
   Radio,
   Slider,
 } from '@mui/material';
-import { useSettings, NavigationPosition, FontSize } from '@/contexts/SettingsContext';
+import { useSettings, NavigationPosition, FontSize, AiModel } from '@/contexts/SettingsContext';
 
 const fontSizeMarks = [
   { value: 80, label: '80%' },
@@ -25,7 +25,7 @@ const fontSizeMarks = [
 ];
 
 export default function SettingsPage() {
-  const { navigationPosition, setNavigationPosition, fontSize, setFontSize } = useSettings();
+  const { navigationPosition, setNavigationPosition, fontSize, setFontSize, aiModel, setAiModel } = useSettings();
 
   const handlePositionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNavigationPosition(event.target.value as NavigationPosition);
@@ -35,16 +35,86 @@ export default function SettingsPage() {
     setFontSize(newValue as FontSize);
   };
 
+  const handleAiModelChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setAiModel(event.target.value as AiModel);
+  };
+
   return (
     <Box sx={{ maxWidth: 600, mx: 'auto' }}>
       <Card sx={{ mt: 2 }}>
         <CardContent>
+          <FormControl component="fieldset">
+            <FormLabel component="legend">
+              <Typography variant="h6">AI採点モデル</Typography>
+            </FormLabel>
+            <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+              AI記述式採点で使用するモデルを選択してください。
+            </Typography>
+            <RadioGroup
+              value={aiModel}
+              onChange={handleAiModelChange}
+            >
+              <FormControlLabel
+                value="claude-haiku-4.5"
+                control={<Radio />}
+                label={
+                  <Box>
+                    <Typography variant="body1">Claude Haiku 4.5（推奨）</Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      最新・最速モデル。高いインテリジェンスと低コスト
+                    </Typography>
+                  </Box>
+                }
+              />
+              <FormControlLabel
+                value="claude-sonnet-4.5"
+                control={<Radio />}
+                label={
+                  <Box>
+                    <Typography variant="body1">Claude Sonnet 4.5</Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      最新・高品質モデル。複雑なタスクに最適
+                    </Typography>
+                  </Box>
+                }
+              />
+              <FormControlLabel
+                value="claude-haiku-3.5"
+                control={<Radio />}
+                label={
+                  <Box>
+                    <Typography variant="body1">Claude Haiku 3.5</Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      高速・低コスト。小学生の記述式採点に十分な品質
+                    </Typography>
+                  </Box>
+                }
+              />
+              <FormControlLabel
+                value="claude-sonnet-4"
+                control={<Radio />}
+                label={
+                  <Box>
+                    <Typography variant="body1">Claude Sonnet 4</Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      高品質。より詳細なフィードバックが必要な場合
+                    </Typography>
+                  </Box>
+                }
+              />
+            </RadioGroup>
+          </FormControl>
+        </CardContent>
+      </Card>
+
+      <Card sx={{ mt: 2 }}>
+        <CardContent>
           <FormControl component="fieldset" sx={{ width: '100%' }}>
             <FormLabel component="legend">
-              <Typography variant="h6">文字サイズ</Typography>
+              <Typography variant="h6">問題の文字サイズ</Typography>
             </FormLabel>
             <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-              問題文やルビの表示サイズを調整します。基本問題とPlaygroundに共通で適用されます。
+              問題文やルビの表示サイズを調整します。基本問題からPlaygroundまで全ての問題の実行時に共通で適用されます。
             </Typography>
             <Box sx={{ px: 2 }}>
               <Slider
