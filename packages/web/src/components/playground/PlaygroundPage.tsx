@@ -555,16 +555,16 @@ export function PlaygroundPage() {
             PLAY
           </Button>
           <Divider orientation="vertical" flexItem sx={{ mx: 0.5 }} />
-          <Button
-            variant="outlined"
+          <IconButton
             size="small"
             onClick={handleExpandToggle}
-            startIcon={isExpanded ? <UnfoldLessIcon /> : <UnfoldMoreIcon />}
+            title={isExpanded ? '表示を縮小' : '表示を拡張'}
             sx={{
+              width: 32,
               height: 32,
-              fontSize: '0.875rem',
               backgroundColor: '#fff',
-              borderColor: '#ccc',
+              border: '1px solid #ccc',
+              borderRadius: 1,
               color: '#666',
               '&:hover': {
                 backgroundColor: '#f5f5f5',
@@ -572,18 +572,18 @@ export function PlaygroundPage() {
               },
             }}
           >
-            {isExpanded ? '表示を縮小' : '表示を拡張'}
-          </Button>
-          <Button
-            variant="outlined"
+            {isExpanded ? <UnfoldLessIcon /> : <UnfoldMoreIcon />}
+          </IconButton>
+          <IconButton
             size="small"
             onClick={handleClear}
-            startIcon={<ClearIcon />}
+            title="クリア"
             sx={{
+              width: 32,
               height: 32,
-              fontSize: '0.875rem',
               backgroundColor: '#fff',
-              borderColor: '#ccc',
+              border: '1px solid #ccc',
+              borderRadius: 1,
               color: '#666',
               '&:hover': {
                 backgroundColor: '#f5f5f5',
@@ -591,19 +591,18 @@ export function PlaygroundPage() {
               },
             }}
           >
-            クリア
-          </Button>
-          <Button
-            variant="outlined"
+            <ClearIcon />
+          </IconButton>
+          <IconButton
             size="small"
             onClick={handleCopyToClipboard}
-            startIcon={<ContentCopyIcon />}
             title="クリップボードにコピー"
             sx={{
+              width: 32,
               height: 32,
-              fontSize: '0.875rem',
               backgroundColor: '#fff',
-              borderColor: '#ccc',
+              border: '1px solid #ccc',
+              borderRadius: 1,
               color: '#666',
               '&:hover': {
                 backgroundColor: '#f5f5f5',
@@ -611,8 +610,8 @@ export function PlaygroundPage() {
               },
             }}
           >
-            コピー
-          </Button>
+            <ContentCopyIcon />
+          </IconButton>
         </Box>
 
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
