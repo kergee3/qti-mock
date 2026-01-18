@@ -32,3 +32,6 @@ dist-ssr
 # QTI Generator output
 qti-choice-generator/output
 qti-text-generator/output
+
+# Environment files with secrets
+.env
