@@ -9,7 +9,7 @@ from pathlib import Path
 # 親ディレクトリをパスに追加
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
-from config.settings import TARGET_CODES, TEXT_QUESTION_CONFIG
+from config.settings import TARGET_CODES, TEXT_QUESTION_CONFIG, CHAR_LIMIT_CONFIG, get_difficulty, get_char_limits
 from src.fetcher.cos_fetcher import COSFetcher
 from src.generator.prompt_builder import PromptBuilder
 from src.generator.text_question_generator import TextQuestionGenerator
@@ -99,6 +99,7 @@ def generate_text_questions(
     failed_topics = []
     topic_index = 0
     questions_with_topics = []
+    existing_titles = []  # 生成済みタイトルを追跡（重複防止用）
 
     while len(questions_with_topics) < count:
         # トピックを選択
@@ -115,11 +116,12 @@ def generate_text_questions(
                 print(f"    [WARN] 利用可能なトピックがなくなりました")
                 break
 
-        # 難易度を計算（1問目が最も易しく、5問目が最も難しい）
+        # 難易度を計算（問題番号に応じて設定）
         current_question_num = len(questions_with_topics) + 1
-        difficulty = current_question_num
+        difficulty = get_difficulty(current_question_num, count)
+        char_limits = get_char_limits(current_question_num)
 
-        print(f"\n  問題 {current_question_num}/{count} を生成中... (トピック: {topic or '指定なし'}, 難易度: {difficulty})")
+        print(f"\n  問題 {current_question_num}/{count} を生成中... (トピック: {topic or '指定なし'}, 難易度: {difficulty}, 字数: {char_limits['min_chars']}-{char_limits['max_chars']}文字)")
 
         # プロンプトを構築
         system_prompt, user_prompt = PromptBuilder.build(
@@ -130,17 +132,22 @@ def generate_text_questions(
             question_number=current_question_num,
             difficulty=difficulty,
             focus_topic=topic,
+            existing_titles=existing_titles,
         )
 
         try:
             question = generator.generate(system_prompt, user_prompt)
+            title = question.get('title', '')
             questions_with_topics.append({
                 'question': question,
                 'topic': topic,
                 'topic_index': original_topic_index,
                 'generation_order': len(questions_with_topics),
             })
-            print(f"    タイトル: {question.get('title', 'N/A')}")
+            # 生成済みタイトルを追跡
+            if title:
+                existing_titles.append(title)
+            print(f"    タイトル: {title or 'N/A'}")
             print(f"    難易度: {question.get('difficulty', 'N/A')}")
         except Exception as e:
             print(f"    [ERROR] 生成失敗: {e}")
@@ -170,10 +177,12 @@ def generate_text_questions(
     print(f"\n[Step 4/6] QTI XMLに変換中...")
     xml_contents = []
     for i, question in enumerate(valid_questions):
-        identifier = f"text-{code}-{i+1:03d}"
-        xml = QTITextConverter.convert(question, identifier=identifier)
+        question_number = i + 1
+        identifier = f"text-{code}-{question_number:03d}"
+        xml = QTITextConverter.convert(question, identifier=identifier, question_number=question_number)
         xml_contents.append(xml)
-        print(f"  - {identifier}: {question.get('title', 'N/A')}")
+        char_limits = get_char_limits(question_number)
+        print(f"  - {identifier}: {question.get('title', 'N/A')} (字数: {char_limits['min_chars']}-{char_limits['max_chars']})")
 
     # 5. ファイル出力
     print(f"\n[Step 5/6] ファイルを出力中...")
@@ -196,8 +205,10 @@ def generate_text_questions(
             "grade": context['grade'],
             "description": context['description'],
             "question_type": "extended_text",
-            "max_chars": TEXT_QUESTION_CONFIG["max_chars"],
-            "min_chars": TEXT_QUESTION_CONFIG["min_chars"],
+            "char_limits": {
+                "short": CHAR_LIMIT_CONFIG["short"],  # 1-2問目用
+                "long": CHAR_LIMIT_CONFIG["long"],    # 3問目以降用
+            },
             "max_score": TEXT_QUESTION_CONFIG["max_score"],
         },
         model=generator.model,

@@ -43,9 +43,9 @@ export default function AboutPage() {
               概要
             </Typography>
             <Typography variant="body1" color="text.secondary">
-              QTI Mock は QTI 3.0 (Question and Test Interoperability) アセスメントプラットフォームのさまざまな試行的な実装を行ったWebアプリ及びサービスです。
-              Next.js アプリケーションに QTI Player を iframe で埋め込み、
-              QTI 準拠のアセスメントアイテムを表示・採点します。
+              本アプリは QTI 3.0 (Question and Test Interoperability) の技術基盤上に実装された試行的なWebアプリとサービスです。
+              <br />
+              最新のWeb技術と生成AIを活用し、QTI 準拠のアセスメントアイテムを表示・採点します。
             </Typography>
           </Box>
 
@@ -82,7 +82,7 @@ export default function AboutPage() {
                   <ListOutlined color="primary" />
                 </ListItemIcon>
                 <ListItemText
-                  primary="AI選択問題"
+                  primary="AI選択式"
                   secondary="生成AIが学習指導要領とその解説を元に作成した4択問題集。教科・学年・分野別に問題を選択して学習可能"
                 />
               </ListItem>
@@ -91,7 +91,7 @@ export default function AboutPage() {
                   <EditNoteOutlined color="primary" />
                 </ListItemIcon>
                 <ListItemText
-                  primary="AI記述問題"
+                  primary="AI記述式"
                   secondary="生成AIが作成した記述式問題をAIが採点。採点基準に基づいた詳細なフィードバックを提供"
                 />
               </ListItem>
@@ -172,6 +172,35 @@ export default function AboutPage() {
               {' '}を参照してください。
             </Typography>
             <Typography variant="body1" color="text.secondary" sx={{ mb: 2 }}>
+              QTI 3.0 は2022年にリリースされた最新バージョンで、以下の特徴があります：
+            </Typography>
+            <List dense sx={{ mb: 2, pl: 2 }}>
+              <ListItem sx={{ py: 0 }}>
+                <ListItemText
+                  primary="• HTML5ベースのコンテンツモデル - 従来のXHTML形式からHTML5へ移行し、リッチなマルチメディアコンテンツに対応"
+                  slotProps={{ primary: { variant: 'body2', color: 'text.secondary' } }}
+                />
+              </ListItem>
+              <ListItem sx={{ py: 0 }}>
+                <ListItemText
+                  primary="• アクセシビリティの強化 - WCAG 2.1準拠、スクリーンリーダー対応、PNP（Personal Needs and Preferences）のサポート"
+                  slotProps={{ primary: { variant: 'body2', color: 'text.secondary' } }}
+                />
+              </ListItem>
+              <ListItem sx={{ py: 0 }}>
+                <ListItemText
+                  primary="• ポータブルカスタムインタラクション（PCI）- カスタムインタラクションタイプの標準化された拡張機構"
+                  slotProps={{ primary: { variant: 'body2', color: 'text.secondary' } }}
+                />
+              </ListItem>
+              <ListItem sx={{ py: 0 }}>
+                <ListItemText
+                  primary="• 多様な問題形式 - 選択式、記述式、マッチング、並べ替え、図形選択など20種類以上のインタラクションタイプ"
+                  slotProps={{ primary: { variant: 'body2', color: 'text.secondary' } }}
+                />
+              </ListItem>
+            </List>
+            <Typography variant="body1" color="text.secondary" sx={{ mb: 2 }}>
               本アプリの QTI Player は、<Link href="https://www.amp-up.io/" target="_blank" rel="noopener noreferrer">Amp-up.io社</Link> で開発され 1EdTech によって認定された Vue 3 ベースの QTI 3.0 レンダリングライブラリ{' '}
               <Link
                 href="https://github.com/amp-up-io/qti3-item-player-vue3"
@@ -206,8 +235,12 @@ export default function AboutPage() {
               {' '}を情報源として活用して自動的に問題集の作成を行いました。
             </Typography>
             <Typography variant="body1" color="text.secondary" sx={{ mb: 2 }}>
-              学習指導要領LODは、文部科学省が公開している学習指導要領と教育要領の内容・コードおよび関連する情報をLinked Open Data (LOD) として公開しています。
-              本アプリでは、Linked Open Data (LOD)で整理された学習指導要領と解説の情報を効果的に活用して、生成AIを使って効率良く品質の高い問題集をプログラムを実行して作成します。
+              Linked Open Data (LOD)は、Web上で公開される構造化されたオープンデータをコンピュータが処理しやすい形式で相互にリンクさせたデータ空間やその公開手法の総称です。
+              LODは、RDF（Resource Description Framework）という標準的なデータモデルを使用してデータを表現し、URI（Uniform Resource Identifier）を用いてデータ間の関係性を示します。
+            </Typography>
+            <Typography variant="body1" color="text.secondary" sx={{ mb: 2 }}>
+              学習指導要領LODは、文部科学省が公開している学習指導要領と教育要領の内容・コードおよび関連する情報を LOD として公開しています。
+              本アプリでは、LOD として整理された学習指導要領と解説の情報を効果的に活用して、生成AIを使って効率良く品質の高い問題集を自動的に作成します。
             </Typography>
             <Typography variant="body1" color="text.secondary">
               2025-09-27版の学習指導要領LODのデータセットでは、小学校理科と社会科5・6年生分の学習指導要領解説の内容がLOD化されており、本アプリでは小学校6年生の理科と社会の学習指導要領解説を効率良く活用することができました。

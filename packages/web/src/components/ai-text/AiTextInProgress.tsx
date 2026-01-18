@@ -536,15 +536,15 @@ export function AiTextInProgress({
 
   // 採点結果ダイアログ
   const renderScoringDialog = () => (
-    <Dialog open={scoringDialogOpen} onClose={handleDialogClose} maxWidth="sm" fullWidth>
-      <DialogTitle sx={{ backgroundColor: '#1976d2', color: '#fff' }}>
+    <Dialog open={scoringDialogOpen} onClose={handleDialogClose} maxWidth="md" fullWidth>
+      <DialogTitle sx={{ backgroundColor: '#1976d2', color: '#fff', fontSize: '1.25rem' }}>
         AI採点結果
       </DialogTitle>
-      <DialogContent sx={{ pt: 2, pb: 1 }}>
+      <DialogContent sx={{ pt: 3, pb: 2 }}>
         {isScoring ? (
           <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', py: 3 }}>
             <LinearProgress sx={{ width: '100%', mb: 2 }} />
-            <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+            <Typography variant="body1" color="text.secondary" sx={{ mb: 1 }}>
               {aiModel === 'claude-haiku-4.5' ? 'Haiku 4.5' : aiModel === 'claude-sonnet-4.5' ? 'Sonnet 4.5' : aiModel === 'claude-haiku-3.5' ? 'Haiku 3.5' : 'Sonnet 4'} で採点中...
             </Typography>
             {streamingText && (
@@ -558,7 +558,7 @@ export function AiTextInProgress({
                   overflow: 'auto',
                   width: '100%',
                   fontFamily: 'monospace',
-                  fontSize: '0.75rem',
+                  fontSize: '0.85rem',
                   whiteSpace: 'pre-wrap',
                   wordBreak: 'break-all',
                 }}
@@ -568,38 +568,38 @@ export function AiTextInProgress({
             )}
           </Box>
         ) : scoringError ? (
-          <Box sx={{ color: '#c62828', py: 2 }}>
+          <Box sx={{ color: '#c62828', py: 2, fontSize: '1rem' }}>
             {scoringError}
           </Box>
         ) : currentScoringResult ? (
           <Box>
             {/* 総合スコア */}
-            <Box sx={{ textAlign: 'center', mb: 2 }}>
+            <Box sx={{ textAlign: 'center', mb: 3 }}>
               <Typography variant="h3" sx={{ fontWeight: 'bold', color: '#1976d2' }}>
                 {currentScoringResult.score} / {currentScoringResult.maxScore}
               </Typography>
-              <Typography variant="body2" color="text.secondary">点</Typography>
+              <Typography variant="body1" color="text.secondary">点</Typography>
             </Box>
 
             {/* 観点別スコア */}
-            <Box sx={{ mb: 2 }}>
-              <Typography variant="subtitle2" sx={{ fontWeight: 'bold', mb: 1 }}>観点別スコア</Typography>
-              <Box sx={{ display: 'flex', gap: 2, justifyContent: 'center' }}>
+            <Box sx={{ mb: 3 }}>
+              <Typography variant="subtitle1" sx={{ fontWeight: 'bold', mb: 1.5, fontSize: '1.1rem' }}>観点別スコア</Typography>
+              <Box sx={{ display: 'flex', gap: 3, justifyContent: 'center' }}>
                 {Object.entries(currentScoringResult.breakdown).map(([key, value]) => (
-                  <Box key={key} sx={{ textAlign: 'center', p: 1, backgroundColor: '#f5f5f5', borderRadius: 1, minWidth: 80 }}>
-                    <Typography variant="caption" color="text.secondary">
+                  <Box key={key} sx={{ textAlign: 'center', p: 1.5, backgroundColor: '#f5f5f5', borderRadius: 1, minWidth: 100 }}>
+                    <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.95rem' }}>
                       {key === 'understanding' ? '理解力' : key === 'expression' ? '表現力' : '正確性'}
                     </Typography>
-                    <Typography variant="h6">{value.score}/{value.maxScore}</Typography>
+                    <Typography variant="h5" sx={{ fontWeight: 'bold' }}>{value.score}/{value.maxScore}</Typography>
                   </Box>
                 ))}
               </Box>
             </Box>
 
             {/* 総合フィードバック */}
-            <Box sx={{ mb: 2 }}>
-              <Typography variant="subtitle2" sx={{ fontWeight: 'bold', mb: 0.5 }}>総合フィードバック</Typography>
-              <Typography variant="body2" sx={{ backgroundColor: '#e3f2fd', p: 1.5, borderRadius: 1 }}>
+            <Box sx={{ mb: 3 }}>
+              <Typography variant="subtitle1" sx={{ fontWeight: 'bold', mb: 1, fontSize: '1.1rem' }}>総合フィードバック</Typography>
+              <Typography variant="body1" sx={{ backgroundColor: '#e3f2fd', p: 2, borderRadius: 1, lineHeight: 1.7 }}>
                 {currentScoringResult.overallFeedback}
               </Typography>
             </Box>
@@ -607,10 +607,10 @@ export function AiTextInProgress({
             {/* 改善提案 */}
             {currentScoringResult.suggestions && currentScoringResult.suggestions.length > 0 && (
               <Box>
-                <Typography variant="subtitle2" sx={{ fontWeight: 'bold', mb: 0.5 }}>改善提案</Typography>
-                <Box component="ul" sx={{ m: 0, pl: 2 }}>
+                <Typography variant="subtitle1" sx={{ fontWeight: 'bold', mb: 1, fontSize: '1.1rem' }}>改善提案</Typography>
+                <Box component="ul" sx={{ m: 0, pl: 2.5 }}>
                   {currentScoringResult.suggestions.map((suggestion, i) => (
-                    <Box component="li" key={i} sx={{ fontSize: '0.875rem' }}>{suggestion}</Box>
+                    <Box component="li" key={i} sx={{ fontSize: '1rem', lineHeight: 1.7, mb: 0.5 }}>{suggestion}</Box>
                   ))}
                 </Box>
               </Box>

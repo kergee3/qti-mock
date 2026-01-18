@@ -129,7 +129,7 @@ export function AiTextResults({
   const selectedResult = selectedItem ? results.get(selectedItem.identifier) : null
 
   return (
-    <Box sx={{ maxWidth: 900, mx: 'auto', p: 2 }}>
+    <Box sx={{ maxWidth: 1200, mx: 'auto', p: 2 }}>
       {/* スコアサマリー */}
       <Box sx={{ textAlign: 'center', mb: 2 }}>
         {/* 総合点数 */}
@@ -228,41 +228,41 @@ export function AiTextResults({
                     <TableRow>
                       <TableCell colSpan={4} sx={{ p: 0, borderBottom: isExpanded ? '1px solid #ddd' : 'none' }}>
                         <Collapse in={isExpanded}>
-                          <Box sx={{ p: 2, backgroundColor: '#fafafa' }}>
+                          <Box sx={{ p: 2.5, backgroundColor: '#fafafa' }}>
                             {/* 観点別スコア */}
-                            <Box sx={{ display: 'flex', gap: 1, mb: 2, flexWrap: 'wrap' }}>
-                              <Box sx={{ flex: 1, minWidth: 120 }}>
-                                <Typography variant="caption" color="text.secondary">理解力</Typography>
-                                <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
+                            <Box sx={{ display: 'flex', gap: 3, mb: 2.5, flexWrap: 'wrap' }}>
+                              <Box sx={{ flex: 1, minWidth: 200 }}>
+                                <Typography variant="body1" color="text.secondary" sx={{ fontWeight: 'bold', mb: 0.5 }}>理解力</Typography>
+                                <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 0.5 }}>
                                   {sr.scoringResponse.breakdown.understanding.score}/{sr.scoringResponse.breakdown.understanding.maxScore}
                                 </Typography>
-                                <Typography variant="caption" color="text.secondary">
+                                <Typography variant="body1" color="text.secondary" sx={{ lineHeight: 1.7 }}>
                                   {sr.scoringResponse.breakdown.understanding.feedback}
                                 </Typography>
                               </Box>
-                              <Box sx={{ flex: 1, minWidth: 120 }}>
-                                <Typography variant="caption" color="text.secondary">表現力</Typography>
-                                <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
+                              <Box sx={{ flex: 1, minWidth: 200 }}>
+                                <Typography variant="body1" color="text.secondary" sx={{ fontWeight: 'bold', mb: 0.5 }}>表現力</Typography>
+                                <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 0.5 }}>
                                   {sr.scoringResponse.breakdown.expression.score}/{sr.scoringResponse.breakdown.expression.maxScore}
                                 </Typography>
-                                <Typography variant="caption" color="text.secondary">
+                                <Typography variant="body1" color="text.secondary" sx={{ lineHeight: 1.7 }}>
                                   {sr.scoringResponse.breakdown.expression.feedback}
                                 </Typography>
                               </Box>
-                              <Box sx={{ flex: 1, minWidth: 120 }}>
-                                <Typography variant="caption" color="text.secondary">正確性</Typography>
-                                <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
+                              <Box sx={{ flex: 1, minWidth: 200 }}>
+                                <Typography variant="body1" color="text.secondary" sx={{ fontWeight: 'bold', mb: 0.5 }}>正確性</Typography>
+                                <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 0.5 }}>
                                   {sr.scoringResponse.breakdown.accuracy.score}/{sr.scoringResponse.breakdown.accuracy.maxScore}
                                 </Typography>
-                                <Typography variant="caption" color="text.secondary">
+                                <Typography variant="body1" color="text.secondary" sx={{ lineHeight: 1.7 }}>
                                   {sr.scoringResponse.breakdown.accuracy.feedback}
                                 </Typography>
                               </Box>
                             </Box>
                             {/* 総合フィードバック */}
-                            <Box sx={{ mb: 1 }}>
-                              <Typography variant="subtitle2" sx={{ fontWeight: 'bold' }}>フィードバック</Typography>
-                              <Typography variant="body2">{sr.scoringResponse.overallFeedback}</Typography>
+                            <Box sx={{ mb: 1.5 }}>
+                              <Typography variant="subtitle1" sx={{ fontWeight: 'bold', mb: 0.5 }}>フィードバック</Typography>
+                              <Typography variant="body1" sx={{ lineHeight: 1.7 }}>{sr.scoringResponse.overallFeedback}</Typography>
                             </Box>
                             {/* 詳細ボタン */}
                             <Button
@@ -305,58 +305,58 @@ export function AiTextResults({
       </Box>
 
       {/* 詳細ダイアログ */}
-      <Dialog open={detailDialogOpen} onClose={() => setDetailDialogOpen(false)} maxWidth="md" fullWidth>
-        <DialogTitle sx={{ backgroundColor: '#1976d2', color: '#fff' }}>
+      <Dialog open={detailDialogOpen} onClose={() => setDetailDialogOpen(false)} maxWidth="lg" fullWidth>
+        <DialogTitle sx={{ backgroundColor: '#1976d2', color: '#fff', fontSize: '1.3rem' }}>
           {selectedItem?.title || '詳細'}
         </DialogTitle>
-        <DialogContent sx={{ pt: 2 }}>
+        <DialogContent sx={{ pt: 3, pb: 2 }}>
           {selectedItem && selectedScoringResult?.isScored && selectedScoringResult.scoringResponse && (
             <Box>
               {/* 問題文 */}
               {summary && selectedItemIndex !== null && (
-                <Box sx={{ mb: 2 }}>
-                  <Typography variant="subtitle2" sx={{ fontWeight: 'bold', mb: 0.5 }}>問題文</Typography>
-                  <Typography variant="body2" sx={{ backgroundColor: '#f5f5f5', p: 1.5, borderRadius: 1 }}>
+                <Box sx={{ mb: 3 }}>
+                  <Typography variant="subtitle1" sx={{ fontWeight: 'bold', mb: 1, fontSize: '1.1rem' }}>問題文</Typography>
+                  <Typography variant="body1" sx={{ backgroundColor: '#f5f5f5', p: 2, borderRadius: 1, lineHeight: 1.8 }}>
                     {summary.questions[selectedItemIndex]?.question_text}
                   </Typography>
                 </Box>
               )}
 
               {/* 回答内容 */}
-              <Box sx={{ mb: 2 }}>
-                <Typography variant="subtitle2" sx={{ fontWeight: 'bold', mb: 0.5 }}>あなたの回答</Typography>
-                <Typography variant="body2" sx={{ backgroundColor: '#e3f2fd', p: 1.5, borderRadius: 1 }}>
+              <Box sx={{ mb: 3 }}>
+                <Typography variant="subtitle1" sx={{ fontWeight: 'bold', mb: 1, fontSize: '1.1rem' }}>あなたの回答</Typography>
+                <Typography variant="body1" sx={{ backgroundColor: '#e3f2fd', p: 2, borderRadius: 1, lineHeight: 1.8 }}>
                   {selectedResult?.response || '回答なし'}
                 </Typography>
               </Box>
 
               {/* 模範解答 */}
               {summary && selectedItemIndex !== null && (
-                <Box sx={{ mb: 2 }}>
-                  <Typography variant="subtitle2" sx={{ fontWeight: 'bold', mb: 0.5 }}>模範解答</Typography>
-                  <Typography variant="body2" sx={{ backgroundColor: '#e8f5e9', p: 1.5, borderRadius: 1 }}>
+                <Box sx={{ mb: 3 }}>
+                  <Typography variant="subtitle1" sx={{ fontWeight: 'bold', mb: 1, fontSize: '1.1rem' }}>模範解答</Typography>
+                  <Typography variant="body1" sx={{ backgroundColor: '#e8f5e9', p: 2, borderRadius: 1, lineHeight: 1.8 }}>
                     {summary.questions[selectedItemIndex]?.model_answer}
                   </Typography>
                 </Box>
               )}
 
               {/* スコア */}
-              <Box sx={{ textAlign: 'center', mb: 2 }}>
+              <Box sx={{ textAlign: 'center', mb: 3 }}>
                 <Typography variant="h3" sx={{ fontWeight: 'bold', color: '#1976d2' }}>
                   {selectedScoringResult.scoringResponse.score} / {selectedScoringResult.scoringResponse.maxScore}
                 </Typography>
-                <Typography variant="body2" color="text.secondary">点</Typography>
+                <Typography variant="body1" color="text.secondary">点</Typography>
               </Box>
 
               {/* 観点別スコア */}
-              <Box sx={{ display: 'flex', gap: 2, justifyContent: 'center', mb: 2, flexWrap: 'wrap' }}>
+              <Box sx={{ display: 'flex', gap: 3, justifyContent: 'center', mb: 3, flexWrap: 'wrap' }}>
                 {Object.entries(selectedScoringResult.scoringResponse.breakdown).map(([key, value]) => (
-                  <Box key={key} sx={{ textAlign: 'center', p: 1.5, backgroundColor: '#f5f5f5', borderRadius: 1, minWidth: 100 }}>
-                    <Typography variant="caption" color="text.secondary">
+                  <Box key={key} sx={{ textAlign: 'center', p: 2, backgroundColor: '#f5f5f5', borderRadius: 1, minWidth: 200, flex: 1 }}>
+                    <Typography variant="body1" color="text.secondary" sx={{ fontWeight: 'bold', mb: 0.5 }}>
                       {key === 'understanding' ? '理解力' : key === 'expression' ? '表現力' : '正確性'}
                     </Typography>
-                    <Typography variant="h6">{value.score}/{value.maxScore}</Typography>
-                    <Typography variant="caption" sx={{ display: 'block', mt: 0.5 }}>
+                    <Typography variant="h5" sx={{ fontWeight: 'bold', mb: 1 }}>{value.score}/{value.maxScore}</Typography>
+                    <Typography variant="body1" sx={{ lineHeight: 1.7 }}>
                       {value.feedback}
                     </Typography>
                   </Box>
@@ -364,9 +364,9 @@ export function AiTextResults({
               </Box>
 
               {/* 総合フィードバック */}
-              <Box sx={{ mb: 2 }}>
-                <Typography variant="subtitle2" sx={{ fontWeight: 'bold', mb: 0.5 }}>総合フィードバック</Typography>
-                <Typography variant="body2" sx={{ backgroundColor: '#fff3e0', p: 1.5, borderRadius: 1 }}>
+              <Box sx={{ mb: 3 }}>
+                <Typography variant="subtitle1" sx={{ fontWeight: 'bold', mb: 1, fontSize: '1.1rem' }}>総合フィードバック</Typography>
+                <Typography variant="body1" sx={{ backgroundColor: '#fff3e0', p: 2, borderRadius: 1, lineHeight: 1.8 }}>
                   {selectedScoringResult.scoringResponse.overallFeedback}
                 </Typography>
               </Box>
@@ -374,10 +374,10 @@ export function AiTextResults({
               {/* 改善提案 */}
               {selectedScoringResult.scoringResponse.suggestions && selectedScoringResult.scoringResponse.suggestions.length > 0 && (
                 <Box>
-                  <Typography variant="subtitle2" sx={{ fontWeight: 'bold', mb: 0.5 }}>改善提案</Typography>
-                  <Box component="ul" sx={{ m: 0, pl: 2 }}>
+                  <Typography variant="subtitle1" sx={{ fontWeight: 'bold', mb: 1, fontSize: '1.1rem' }}>改善提案</Typography>
+                  <Box component="ul" sx={{ m: 0, pl: 3 }}>
                     {selectedScoringResult.scoringResponse.suggestions.map((suggestion, i) => (
-                      <Box component="li" key={i} sx={{ mb: 0.5 }}>{suggestion}</Box>
+                      <Box component="li" key={i} sx={{ mb: 0.75, fontSize: '1rem', lineHeight: 1.7 }}>{suggestion}</Box>
                     ))}
                   </Box>
                 </Box>
@@ -385,8 +385,8 @@ export function AiTextResults({
             </Box>
           )}
         </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setDetailDialogOpen(false)} color="primary">
+        <DialogActions sx={{ px: 3, py: 2 }}>
+          <Button onClick={() => setDetailDialogOpen(false)} color="primary" size="large">
             閉じる
           </Button>
         </DialogActions>

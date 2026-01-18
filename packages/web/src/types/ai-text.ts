@@ -10,6 +10,19 @@ export interface AiTextEntry {
   summaryUrl: string      // Summary JSONのURL
 }
 
+/** 文字数制限設定 */
+export interface CharLimitConfig {
+  min_chars: number
+  max_chars: number
+  model_answer_target: number
+}
+
+/** 文字数制限（短文/長文） */
+export interface CharLimits {
+  short: CharLimitConfig
+  long: CharLimitConfig
+}
+
 /** Summary JSONのメタデータ */
 export interface AiTextMetadata {
   cos_code: string        // 学習指導要領コード
@@ -17,8 +30,9 @@ export interface AiTextMetadata {
   grade: number           // 学年
   description: string     // 内容
   question_type: string   // 問題タイプ（extended_text）
-  max_chars: number       // 最大文字数
-  min_chars: number       // 最小文字数
+  max_chars?: number      // 最大文字数（旧形式）
+  min_chars?: number      // 最小文字数（旧形式）
+  char_limits?: CharLimits // 文字数制限（新形式）
   max_score: number       // 満点
 }
 
@@ -45,6 +59,8 @@ export interface AiTextQuestion {
   scoring_matrix: ScoringMatrix
   common_errors: CommonError[]
   thinking_skills?: ThinkingSkills
+  min_chars?: number  // 問題ごとの最小文字数
+  max_chars?: number  // 問題ごとの最大文字数
 }
 
 /** 採点観点の構造 */

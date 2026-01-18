@@ -55,6 +55,34 @@ const difficultyLabels: Record<number, string> = {
   5: '難しい',
 }
 
+/** 問題の文字数制限を取得する */
+function getCharLimits(
+  question: { min_chars?: number; max_chars?: number; difficulty?: number } | undefined,
+  summary: AiTextSummary | null
+): { min: number; max: number } | null {
+  // 1. 問題に直接設定されている場合
+  if (question?.min_chars !== undefined && question?.max_chars !== undefined) {
+    return { min: question.min_chars, max: question.max_chars }
+  }
+
+  // 2. メタデータのchar_limitsから取得（難易度に基づいて選択）
+  if (summary?.metadata.char_limits) {
+    const difficulty = question?.difficulty || 1
+    // 難易度1-2: short、難易度3-5: long
+    const config = difficulty <= 2
+      ? summary.metadata.char_limits.short
+      : summary.metadata.char_limits.long
+    return { min: config.min_chars, max: config.max_chars }
+  }
+
+  // 3. 旧形式のメタデータから取得
+  if (summary?.metadata.min_chars !== undefined && summary?.metadata.max_chars !== undefined) {
+    return { min: summary.metadata.min_chars, max: summary.metadata.max_chars }
+  }
+
+  return null
+}
+
 /**
  * AI記述式採点 初期画面コンポーネント
  * - 問題集選択リストボックス
@@ -155,7 +183,6 @@ export function AiTextInitialScreen({
             minWidth: 200,
           }}
         >
-          <option value="">選択してください</option>
           {entries.map((entry) => (
             <option key={entry.summaryUrl} value={entry.summaryUrl}>
               {entry.grade}{entry.subject}_{entry.field}
@@ -249,7 +276,6 @@ export function AiTextInitialScreen({
           <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: { xs: 0.5, sm: 1.5 }, mt: 0.5 }}>
             <Box><strong>問題数:</strong> {summary.total_questions}</Box>
             <Box><strong>生成AIモデル:</strong> {summary.model}</Box>
-            <Box><strong>回答文字数:</strong> {summary.metadata.min_chars}〜{summary.metadata.max_chars}文字</Box>
             <Box><strong>満点:</strong> {summary.metadata.max_score}点</Box>
           </Box>
         </Box>
@@ -267,13 +293,15 @@ export function AiTextInitialScreen({
               <TableRow sx={{ backgroundColor: '#000' }}>
                 <TableCell sx={{ color: '#fff', fontWeight: 'bold', width: { xs: 40, sm: 60 }, px: { xs: 1, sm: 2 }, py: { xs: 0.5, sm: 1 } }}>問</TableCell>
                 <TableCell sx={{ color: '#fff', fontWeight: 'bold', px: { xs: 1, sm: 2 }, py: { xs: 0.5, sm: 1 } }}>タイトル</TableCell>
-                <TableCell sx={{ color: '#fff', fontWeight: 'bold', width: { xs: 80, sm: 100 }, px: { xs: 1, sm: 2 }, py: { xs: 0.5, sm: 1 } }}>難易度</TableCell>
+                <TableCell sx={{ color: '#fff', fontWeight: 'bold', width: { xs: 60, sm: 80 }, px: { xs: 1, sm: 2 }, py: { xs: 0.5, sm: 1 } }}>文字数</TableCell>
+                <TableCell sx={{ color: '#fff', fontWeight: 'bold', width: { xs: 90, sm: 110 }, px: { xs: 1, sm: 2 }, py: { xs: 0.5, sm: 1 }, whiteSpace: 'nowrap' }}>難易度</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {items.map((item, index) => {
                 const question = summary.questions[index]
                 const difficulty = question?.difficulty || 1
+                const charLimits = getCharLimits(question, summary)
                 return (
                   <TableRow
                     key={item.id}
@@ -319,6 +347,9 @@ export function AiTextInitialScreen({
                       </Box>
                     </TableCell>
                     <TableCell sx={{ textAlign: 'center', px: { xs: 1, sm: 2 }, py: { xs: 0.5, sm: 1 }, fontSize: { xs: '0.8rem', sm: '0.9rem' } }}>
+                      {charLimits ? `${charLimits.min}-${charLimits.max}` : '-'}
+                    </TableCell>
+                    <TableCell sx={{ textAlign: 'center', px: { xs: 1, sm: 2 }, py: { xs: 0.5, sm: 1 }, fontSize: { xs: '0.8rem', sm: '0.9rem' }, whiteSpace: 'nowrap' }}>
                       {difficultyLabels[difficulty] || `レベル${difficulty}`}
                     </TableCell>
                   </TableRow>

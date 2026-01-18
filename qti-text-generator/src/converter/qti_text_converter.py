@@ -8,7 +8,7 @@ import os
 
 # 親ディレクトリをパスに追加
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
-from config.settings import TEXT_QUESTION_CONFIG
+from config.settings import get_char_limits, CHAR_LIMIT_CONFIG
 
 
 class QTITextConverter:
@@ -18,13 +18,14 @@ class QTITextConverter:
     XSI_NAMESPACE = "http://www.w3.org/2001/XMLSchema-instance"
 
     @classmethod
-    def convert(cls, question: dict, identifier: str = None) -> str:
+    def convert(cls, question: dict, identifier: str = None, question_number: int = None) -> str:
         """
         問題データをQTI 3.0 XML形式に変換
 
         Args:
             question: 問題データ
             identifier: アイテム識別子（省略時は question_id を使用）
+            question_number: 問題番号（1から始まる、字数制限の決定に使用）
 
         Returns:
             str: QTI 3.0 XML文字列
@@ -37,8 +38,14 @@ class QTITextConverter:
         scoring_matrix = question.get("scoring_matrix", {})
         common_errors = question.get("common_errors", [])
 
-        max_chars = TEXT_QUESTION_CONFIG["max_chars"]
-        min_chars = TEXT_QUESTION_CONFIG["min_chars"]
+        # 問題番号に応じた字数制限を取得
+        if question_number is not None:
+            char_limits = get_char_limits(question_number)
+        else:
+            # デフォルトは長い方（従来互換）
+            char_limits = CHAR_LIMIT_CONFIG["long"]
+        max_chars = char_limits["max_chars"]
+        min_chars = char_limits["min_chars"]
 
         # ルート要素
         root = ET.Element("qti-assessment-item")

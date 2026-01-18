@@ -17,12 +17,12 @@ const navigationItems: NavigationItem[] = [
     icon: <PlaylistPlayOutlinedIcon />,
   },
   {
-    label: 'AI選択問題',
+    label: 'AI選択式',
     path: '/ai-choice',
     icon: <ListOutlinedIcon />,
   },
   {
-    label: 'AI記述問題',
+    label: 'AI記述式',
     path: '/ai-text',
     icon: <EditNoteOutlinedIcon />,
   },

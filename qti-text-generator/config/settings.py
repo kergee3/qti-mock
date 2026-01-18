@@ -42,13 +42,57 @@ CODE_PREFIX_MAP = {
 
 # 記述式問題の設定
 TEXT_QUESTION_CONFIG = {
-    "max_chars": 140,  # 最大文字数
-    "min_chars": 70,   # 最小文字数（これ以下は採点しない）
-    "model_answer_min": 90,   # 模範解答の最小文字数
-    "model_answer_max": 120,  # 模範解答の最大文字数
     "default_count": 5,  # デフォルト生成問題数
     "max_score": 10,   # 満点（10点満点）
 }
+
+# 問題番号別の字数制限設定
+# 1-2問目: 短め（50-100文字）、3問目以降: 長め（70-140文字）
+CHAR_LIMIT_CONFIG = {
+    "short": {  # 1-2問目用
+        "min_chars": 50,
+        "max_chars": 100,
+        "model_answer_target": 90,  # 模範解答の目標文字数
+    },
+    "long": {  # 3問目以降用
+        "min_chars": 70,
+        "max_chars": 140,
+        "model_answer_target": 130,  # 模範解答の目標文字数
+    },
+}
+
+def get_char_limits(question_number: int) -> dict:
+    """
+    問題番号に応じた字数制限を取得
+
+    Args:
+        question_number: 問題番号（1から始まる）
+
+    Returns:
+        dict: min_chars, max_chars, model_answer_target を含む辞書
+    """
+    if question_number <= 2:
+        return CHAR_LIMIT_CONFIG["short"]
+    else:
+        return CHAR_LIMIT_CONFIG["long"]
+
+def get_difficulty(question_number: int, total_count: int = 5) -> int:
+    """
+    問題番号に応じた難易度を取得
+
+    Args:
+        question_number: 問題番号（1から始まる）
+        total_count: 総問題数
+
+    Returns:
+        int: 難易度（1-5）
+    """
+    # 1問目: 難易度1, 2問目: 難易度2, 3問目以降: 3から順に最大5まで
+    if question_number <= 2:
+        return question_number
+    else:
+        # 3問目から始まり、最大5まで
+        return min(question_number, 5)
 
 # 採点観点の設定
 SCORING_ASPECTS = {

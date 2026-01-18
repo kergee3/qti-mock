@@ -144,7 +144,6 @@ export function AiChoiceInitialScreen({
             minWidth: 200,
           }}
         >
-          <option value="">選択してください</option>
           {entries.map((entry) => (
             <option key={entry.summaryUrl} value={entry.summaryUrl}>
               {entry.grade}{entry.subject}_{entry.field}

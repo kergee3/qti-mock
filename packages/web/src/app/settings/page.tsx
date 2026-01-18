@@ -45,7 +45,7 @@ export default function SettingsPage() {
   };
 
   return (
-    <Box sx={{ maxWidth: 600, mx: 'auto' }}>
+    <Box sx={{ maxWidth: 800, mx: 'auto' }}>
       {/* 音声入力機能 */}
       <Card sx={{ mt: 2 }}>
         <CardContent>
@@ -103,7 +103,7 @@ export default function SettingsPage() {
                   <Box>
                     <Typography variant="body1">Claude Haiku 4.5（推奨）</Typography>
                     <Typography variant="body2" color="text.secondary">
-                      最新・最速モデル。高いインテリジェンスと低コスト
+                      最新・最速モデル。高いインテリジェンスと低コスト。小学生の記述式採点に十分な品質
                     </Typography>
                   </Box>
                 }
@@ -116,30 +116,6 @@ export default function SettingsPage() {
                     <Typography variant="body1">Claude Sonnet 4.5</Typography>
                     <Typography variant="body2" color="text.secondary">
                       最新・高品質モデル。複雑なタスクに最適
-                    </Typography>
-                  </Box>
-                }
-              />
-              <FormControlLabel
-                value="claude-haiku-3.5"
-                control={<Radio />}
-                label={
-                  <Box>
-                    <Typography variant="body1">Claude Haiku 3.5</Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      高速・低コスト。小学生の記述式採点に十分な品質
-                    </Typography>
-                  </Box>
-                }
-              />
-              <FormControlLabel
-                value="claude-sonnet-4"
-                control={<Radio />}
-                label={
-                  <Box>
-                    <Typography variant="body1">Claude Sonnet 4</Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      高品質。より詳細なフィードバックが必要な場合
                     </Typography>
                   </Box>
                 }

@@ -1,0 +1,563 @@
+{
+  "timestamp": "20260119_054637",
+  "model": "claude-sonnet-4-5-20250929",
+  "question_type": "extended_text",
+  "total_questions": 5,
+  "output_directory": "text_social_31_20260119_054637",
+  "files": [
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-text/text_social_31_20260119_054637/text_social_31_001-ixVGUVeMtHOMyweFyjZth7Z6wNJRBv.xml",
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-text/text_social_31_20260119_054637/text_social_31_002-kr5aRqF1r44ivVgHyKQRJDz2UyOtXm.xml",
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-text/text_social_31_20260119_054637/text_social_31_003-QdF6lB5a974RXgSKWpMCMV091QhlI4.xml",
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-text/text_social_31_20260119_054637/text_social_31_004-wqbhJ4H4u4eTK4lPPRgcl8tOu1evO6.xml",
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-text/text_social_31_20260119_054637/text_social_31_005-CFCwDCmpu0bNGBTdFyg1hd7zGZvbrd.xml"
+  ],
+  "questions": [
+    {
+      "question_id": "text-001",
+      "difficulty": 1,
+      "title": "租税の役割と国民生活",
+      "question_text": "国や地方公共団体が行う道路の整備や学校教育、医療などのサービスは、主にどのような収入によって支えられていますか。また、それは誰が負担しているものですか。租税という言葉を使って説明しなさい。",
+      "model_answer": "国や地方公共団体が行う道路の整備や学校教育、医療などのサービスは、主に租税（税金）によって支えられています。租税は国民が納めるもので、国民生活の安定と向上のために使われています。",
+      "required_concepts": [
+        "租税（税金）",
+        "国民が納める",
+        "公共サービスの財源"
+      ],
+      "scoring_matrix": {
+        "understanding": {
+          "aspect_name": "理解力",
+          "max_score": 4,
+          "levels": [
+            {
+              "score": 4,
+              "description": "租税が公共サービスの財源であること、国民が負担していることの両方を正しく理解している"
+            },
+            {
+              "score": 3,
+              "description": "租税が公共サービスの財源であることを理解しているが、国民負担の説明が不十分"
+            },
+            {
+              "score": 2,
+              "description": "租税について触れているが、公共サービスとの関係の説明が不十分"
+            },
+            {
+              "score": 1,
+              "description": "租税について触れているが、内容の理解が不十分"
+            },
+            {
+              "score": 0,
+              "description": "租税について理解していない、または全く触れていない"
+            }
+          ]
+        },
+        "expression": {
+          "aspect_name": "表現力",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "財源と負担者の関係を論理的に明確に説明できている"
+            },
+            {
+              "score": 2,
+              "description": "概ね論理的に説明できているが、やや不明確な部分がある"
+            },
+            {
+              "score": 1,
+              "description": "説明に論理性が欠け、分かりにくい"
+            },
+            {
+              "score": 0,
+              "description": "説明になっていない、または文章として成立していない"
+            }
+          ]
+        },
+        "accuracy": {
+          "aspect_name": "正確性",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "「租税」「国民」などの用語を正確に使用し、事実関係も正しい"
+            },
+            {
+              "score": 2,
+              "description": "用語使用は概ね正確だが、一部表現が不正確"
+            },
+            {
+              "score": 1,
+              "description": "用語の使用や事実関係に誤りがある"
+            },
+            {
+              "score": 0,
+              "description": "用語や事実関係が著しく不正確"
+            }
+          ]
+        }
+      },
+      "common_errors": [
+        {
+          "pattern": "「お金」「費用」などの一般的な言葉のみで、租税という用語を使っていない",
+          "feedback": "問題文の指示通り「租税」という言葉を使って説明しましょう。租税とは国民が国や地方公共団体に納める税金のことです。"
+        },
+        {
+          "pattern": "公共サービスの財源であることは説明しているが、誰が負担しているかが書かれていない",
+          "feedback": "租税は誰が負担（納めて）いるのかも説明に加えましょう。国民一人ひとりが納めているということが大切です。"
+        },
+        {
+          "pattern": "「国が集めたお金」など、国民が納めているという視点が欠けている",
+          "feedback": "租税は国が勝手に集めるものではなく、国民が納めるものです。国民と租税の関係を意識して説明しましょう。"
+        }
+      ],
+      "thinking_skills": {
+        "critical_thinking": 30,
+        "judgment": 30,
+        "expression": 40
+      }
+    },
+    {
+      "question_id": "text-002",
+      "difficulty": 2,
+      "title": "政治学習における問題追究",
+      "question_text": "社会科で政治の働きについて学習するとき、なぜ具体的な事例を調べることが大切なのでしょうか。抽象的な学習にならないようにする理由と、具体的な事例を調べることで得られる学びについて、80文字以上で説明しなさい。",
+      "model_answer": "具体的な事例を調べることで、政治が国民生活とどのように関わっているかを実感できるからです。用語や仕組みを覚えるだけでなく、政治が自分たちの生活を支えていることを理解し、政治への関心を高めることができます。",
+      "required_concepts": [
+        "政治と国民生活の関わり",
+        "具体的事例による理解",
+        "政治への関心"
+      ],
+      "scoring_matrix": {
+        "understanding": {
+          "aspect_name": "理解力",
+          "max_score": 4,
+          "levels": [
+            {
+              "score": 4,
+              "description": "具体的事例を調べる意義と抽象的学習の問題点の両方を正しく理解している"
+            },
+            {
+              "score": 3,
+              "description": "具体的事例を調べる意義または抽象的学習の問題点のいずれかを理解している"
+            },
+            {
+              "score": 2,
+              "description": "政治学習の方法について部分的に理解している"
+            },
+            {
+              "score": 1,
+              "description": "政治学習に関する理解が不十分"
+            },
+            {
+              "score": 0,
+              "description": "問題の趣旨を理解していない"
+            }
+          ]
+        },
+        "expression": {
+          "aspect_name": "表現力",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "理由と効果を論理的に説明できている"
+            },
+            {
+              "score": 2,
+              "description": "概ね筋道立てて説明できている"
+            },
+            {
+              "score": 1,
+              "description": "説明の筋道がやや不明確"
+            },
+            {
+              "score": 0,
+              "description": "説明が不適切または文字数不足"
+            }
+          ]
+        },
+        "accuracy": {
+          "aspect_name": "正確性",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "「国民生活」「具体的事例」などの用語を適切に使用している"
+            },
+            {
+              "score": 2,
+              "description": "用語使用は概ね適切"
+            },
+            {
+              "score": 1,
+              "description": "用語使用に一部不正確さがある"
+            },
+            {
+              "score": 0,
+              "description": "用語使用が不適切"
+            }
+          ]
+        }
+      },
+      "common_errors": [
+        {
+          "pattern": "具体例を挙げることが大切だから",
+          "feedback": "なぜ具体的な事例が大切なのか、その理由をより詳しく説明しましょう。政治と国民生活の関わりに着目して考えてみてください。"
+        },
+        {
+          "pattern": "難しい言葉を覚えなくてもよいから",
+          "feedback": "用語を覚えないことが目的ではありません。具体的な事例を通して何を学ぶことができるのかを考えてみましょう。"
+        },
+        {
+          "pattern": "わかりやすくなるから",
+          "feedback": "何がわかりやすくなるのか具体的に説明しましょう。政治が自分たちの生活にどう関わっているかという視点で考えてみてください。"
+        },
+        {
+          "pattern": "興味を持てるから",
+          "feedback": "なぜ興味を持てるのか、その理由を説明しましょう。政治と日常生活のつながりを意識して説明してみてください。"
+        }
+      ],
+      "thinking_skills": {
+        "critical_thinking": 45,
+        "judgment": 25,
+        "expression": 30
+      }
+    },
+    {
+      "question_id": "text-003",
+      "difficulty": 3,
+      "title": "知識・技能と政治理解の関係",
+      "question_text": "政治の学習では、国会や裁判所などの仕組みについての知識や、資料を調べてまとめる技能を身に付けることが大切です。なぜ、このような知識・技能を身に付けることが、政治を理解するために必要なのでしょうか。具体例を一つあげて、あなたの考えを説明しなさい。（70文字以上140文字以内）",
+      "model_answer": "政治の仕組みについての知識や調べる技能がなければ、政治が自分たちの生活とどう関わっているのか理解できないからです。例えば、税金の使い道を調べる技能があれば、国会で決められた予算が学校や道路などの整備に使われていることが分かり、政治が私たちの生活を支えていることを理解できます。",
+      "required_concepts": [
+        "知識・技能の必要性",
+        "政治と国民生活の関わり",
+        "具体的な事例"
+      ],
+      "scoring_matrix": {
+        "understanding": {
+          "aspect_name": "理解力",
+          "max_score": 4,
+          "levels": [
+            {
+              "score": 4,
+              "description": "知識・技能が政治理解に必要な理由を、政治と国民生活の関わりの観点から正しく理解している"
+            },
+            {
+              "score": 3,
+              "description": "知識・技能が政治理解に必要な理由を概ね理解している"
+            },
+            {
+              "score": 2,
+              "description": "知識・技能の必要性について部分的に理解している"
+            },
+            {
+              "score": 1,
+              "description": "知識・技能と政治理解の関係についての理解が不十分"
+            },
+            {
+              "score": 0,
+              "description": "知識・技能と政治理解の関係を理解していない"
+            }
+          ]
+        },
+        "expression": {
+          "aspect_name": "表現力",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "理由と具体例を論理的に結びつけて明確に表現している"
+            },
+            {
+              "score": 2,
+              "description": "理由と具体例を示しているが、やや説明が不足している"
+            },
+            {
+              "score": 1,
+              "description": "理由または具体例のいずれかが不明確"
+            },
+            {
+              "score": 0,
+              "description": "論理的な説明ができていない"
+            }
+          ]
+        },
+        "accuracy": {
+          "aspect_name": "正確性",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "政治の仕組みや働きに関する用語・事実を正確に使用している"
+            },
+            {
+              "score": 2,
+              "description": "概ね正確だが、一部用語の使い方が不適切"
+            },
+            {
+              "score": 1,
+              "description": "具体例が政治の学習内容と関連が薄い"
+            },
+            {
+              "score": 0,
+              "description": "用語や事実関係に誤りが多い"
+            }
+          ]
+        }
+      },
+      "common_errors": [
+        {
+          "pattern": "知識を覚えることだけを理由としている",
+          "feedback": "知識を覚えるだけでなく、それを使って政治と自分たちの生活の関わりを理解することが大切です。具体例を挙げて、どのように理解が深まるのか説明しましょう。"
+        },
+        {
+          "pattern": "具体例が示されていない",
+          "feedback": "問題文で「具体例を一つあげて」と求められています。国会、内閣、裁判所の働きや、税金の使い道など、学習した内容から具体例を挙げて説明しましょう。"
+        },
+        {
+          "pattern": "政治と国民生活の関わりに触れていない",
+          "feedback": "政治の学習は、政治が私たちの生活とどう関わっているかを理解するために大切です。知識や技能を身に付けることで、その関わりがどのように分かるようになるのか説明しましょう。"
+        }
+      ],
+      "thinking_skills": {
+        "critical_thinking": 40,
+        "judgment": 30,
+        "expression": 30
+      }
+    },
+    {
+      "question_id": "text-004",
+      "difficulty": 4,
+      "title": "政治学習と思考力育成の関連",
+      "question_text": "我が国の政治について学ぶとき、なぜ「思考力・判断力・表現力」を身に付けることが大切なのでしょうか。日本国憲法の基本的な考え方や国民主権との関わりをふまえて、具体的な例を挙げながら説明しなさい。（70文字以上140文字以内）",
+      "model_answer": "日本国憲法では主権は国民にあり、政治は国民の願いを実現するものだからです。例えば、選挙で代表者を選んだり、税金の使い道について意見を述べたりする際に、政策の内容や憲法の考え方を理解し、自分で判断して表現する力が必要です。これらの力を身に付けることで、国民として政治に適切に関わることができます。",
+      "required_concepts": [
+        "国民主権",
+        "思考力・判断力・表現力の必要性",
+        "政治への国民参加"
+      ],
+      "scoring_matrix": {
+        "understanding": {
+          "aspect_name": "理解力",
+          "max_score": 4,
+          "levels": [
+            {
+              "score": 4,
+              "description": "国民主権と思考力等の関連を正確に理解し、政治参加との結びつきを説明できている"
+            },
+            {
+              "score": 3,
+              "description": "国民主権と思考力等の関連を概ね理解し説明できている"
+            },
+            {
+              "score": 2,
+              "description": "国民主権または思考力等のいずれかについて部分的に理解している"
+            },
+            {
+              "score": 1,
+              "description": "政治と思考力の関連についての理解が不十分"
+            },
+            {
+              "score": 0,
+              "description": "問いに対する理解が見られない"
+            }
+          ]
+        },
+        "expression": {
+          "aspect_name": "表現力",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "具体例を含め論理的に説明できている"
+            },
+            {
+              "score": 2,
+              "description": "概ね論理的だが具体例がやや不明確"
+            },
+            {
+              "score": 1,
+              "description": "説明に論理性や具体性が欠ける"
+            },
+            {
+              "score": 0,
+              "description": "説明として成立していない"
+            }
+          ]
+        },
+        "accuracy": {
+          "aspect_name": "正確性",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "憲法や政治に関する用語を正確に使用している"
+            },
+            {
+              "score": 2,
+              "description": "用語は概ね正確だが一部不適切"
+            },
+            {
+              "score": 1,
+              "description": "用語の使用に誤りが目立つ"
+            },
+            {
+              "score": 0,
+              "description": "用語の使用が不正確"
+            }
+          ]
+        }
+      },
+      "common_errors": [
+        {
+          "pattern": "単に「考える力が必要だから」とだけ述べ、国民主権との関連に触れていない",
+          "feedback": "国民主権の考え方と思考力等の関連を説明しましょう。主権者として政治に関わるために、なぜこれらの力が必要なのかを考えてみてください。"
+        },
+        {
+          "pattern": "憲法や民主政治に触れず、一般的な学習の意義のみを述べている",
+          "feedback": "日本国憲法の基本的な考え方や国民主権をふまえて説明することが求められています。政治の学習に特有の理由を考えましょう。"
+        },
+        {
+          "pattern": "具体例がなく抽象的な説明にとどまっている",
+          "feedback": "選挙や税金、政策決定など、具体的な場面を挙げて説明すると、より説得力のある答えになります。国民として政治に関わる場面を思い浮かべてみましょう。"
+        },
+        {
+          "pattern": "知識を覚えることの重要性のみを述べ、思考力・判断力・表現力に言及していない",
+          "feedback": "知識も大切ですが、この問題では「思考力・判断力・表現力」がなぜ必要なのかを説明することが求められています。これらの力をどのように使うのかを考えましょう。"
+        }
+      ],
+      "thinking_skills": {
+        "critical_thinking": 40,
+        "judgment": 35,
+        "expression": 25
+      }
+    },
+    {
+      "question_id": "text-005",
+      "difficulty": 5,
+      "title": "問題追究活動の教育的意義",
+      "question_text": "政治の学習で、教科書を読むだけでなく、自分で問題を見つけて調べたり解決したりする活動を行うことには、どのような良い点がありますか。「知識」「思考力」「表現力」という3つの言葉を必ず使って、130文字程度で説明しなさい。",
+      "model_answer": "問題追究活動を通して、憲法や政治の働きについての知識を深く理解できます。また、日本国憲法の基本的な考え方に着目して調べることで思考力が育ち、調べたことを図表にまとめて説明する表現力も身に付きます。このように、知識・思考力・表現力を総合的に高めることができます。",
+      "required_concepts": [
+        "問題追究・解決活動の意義",
+        "知識・技能の習得",
+        "思考力・判断力・表現力の育成"
+      ],
+      "scoring_matrix": {
+        "understanding": {
+          "aspect_name": "理解力",
+          "max_score": 4,
+          "levels": [
+            {
+              "score": 4,
+              "description": "問題追究活動が知識・思考力・表現力の3つを育てることを明確に理解し、それぞれの関係性を説明できている"
+            },
+            {
+              "score": 3,
+              "description": "問題追究活動が知識・思考力・表現力を育てることは理解しているが、関係性の説明が不十分"
+            },
+            {
+              "score": 2,
+              "description": "問題追究活動の意義を部分的に理解しているが、3つの要素のうち1つ以上が欠けている"
+            },
+            {
+              "score": 1,
+              "description": "問題追究活動の意義について断片的な理解にとどまっている"
+            },
+            {
+              "score": 0,
+              "description": "問題追究活動の意義を理解していない"
+            }
+          ]
+        },
+        "expression": {
+          "aspect_name": "表現力",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "3つの言葉を効果的に使い、論理的で分かりやすく説明できている"
+            },
+            {
+              "score": 2,
+              "description": "3つの言葉を使って説明しているが、やや分かりにくい部分がある"
+            },
+            {
+              "score": 1,
+              "description": "3つの言葉を使っているが、論理的なつながりが不明確"
+            },
+            {
+              "score": 0,
+              "description": "指定された言葉を適切に使えていない、または表現が不適切"
+            }
+          ]
+        },
+        "accuracy": {
+          "aspect_name": "正確性",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "知識・思考力・表現力の内容が正確で、政治学習との関連も適切"
+            },
+            {
+              "score": 2,
+              "description": "概ね正確だが、一部に不正確な表現がある"
+            },
+            {
+              "score": 1,
+              "description": "用語の使い方や内容に複数の誤りがある"
+            },
+            {
+              "score": 0,
+              "description": "内容が不正確で誤った理解に基づいている"
+            }
+          ]
+        }
+      },
+      "common_errors": [
+        {
+          "pattern": "単に「詳しくなる」「よく分かる」など抽象的な表現のみで、知識・思考力・表現力の具体的な育ちを説明していない",
+          "feedback": "指定された3つの言葉を使って、それぞれがどのように育つのか具体的に説明しましょう。例えば、知識はどのように深まるのか、思考力はどのような場面で使われるのかを考えてみましょう。"
+        },
+        {
+          "pattern": "3つの言葉を並べただけで、問題追究活動との関係や教育的意義が説明されていない",
+          "feedback": "知識・思考力・表現力という言葉を使うだけでなく、問題を追究・解決する活動を通して「なぜ」「どのように」それらが育つのかを説明する必要があります。"
+        },
+        {
+          "pattern": "知識・思考力・表現力のうち1つか2つしか触れておらず、3つすべてを使っていない",
+          "feedback": "問題文で指定された「知識」「思考力」「表現力」の3つの言葉を必ず使って説明してください。問題追究活動はこれらすべてを育てる意義があります。"
+        },
+        {
+          "pattern": "教科書学習との比較がなく、問題追究活動の特徴や良さが明確でない",
+          "feedback": "教科書を読むだけの学習と比べて、自分で問題を見つけて調べる活動にはどのような良さがあるのかを考えてみましょう。主体的に学ぶことの意義に注目してください。"
+        }
+      ],
+      "thinking_skills": {
+        "critical_thinking": 45,
+        "judgment": 30,
+        "expression": 25
+      }
+    }
+  ],
+  "metadata": {
+    "cos_code": "8220263100000000",
+    "subject": "社会",
+    "grade": 6,
+    "description": "(1) 我が国の政治の働きについて，学習の問題を追究・解決する活動を通して，次の事項を身に付けることができるよう指導する。",
+    "question_type": "extended_text",
+    "char_limits": {
+      "short": {
+        "min_chars": 50,
+        "max_chars": 100,
+        "model_answer_target": 90
+      },
+      "long": {
+        "min_chars": 70,
+        "max_chars": 140,
+        "model_answer_target": 130
+      }
+    },
+    "max_score": 10
+  }
+}

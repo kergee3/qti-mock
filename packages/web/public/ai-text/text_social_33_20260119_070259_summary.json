@@ -1,0 +1,569 @@
+{
+  "timestamp": "20260119_070259",
+  "model": "claude-sonnet-4-5-20250929",
+  "question_type": "extended_text",
+  "total_questions": 5,
+  "output_directory": "text_social_33_20260119_070259",
+  "files": [
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-text/text_social_33_20260119_070259/text_social_33_001-B3OzPEg4Hzk1JjgX5tp3NqpBtZSriJ.xml",
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-text/text_social_33_20260119_070259/text_social_33_002-EBqLSeXNfiY28gsPrjFYfutrVN0sNW.xml",
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-text/text_social_33_20260119_070259/text_social_33_003-qDAdSQfFVwqwuZXikK41OmBVytqslC.xml",
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-text/text_social_33_20260119_070259/text_social_33_004-maPx2mJdYLYj5AF7WJgnScIomm5EpM.xml",
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-text/text_social_33_20260119_070259/text_social_33_005-Ma9lOhrKttQc4mNguNZt2zvok9zD1R.xml"
+  ],
+  "questions": [
+    {
+      "question_id": "text-001",
+      "difficulty": 1,
+      "title": "国旗と国歌を尊重する理由",
+      "question_text": "世界の国々には、それぞれの国旗と国歌があります。国際社会で生きていくために、私たちが自分の国の国旗と国歌だけでなく、外国の国旗と国歌も尊重することが大切なのはなぜですか。50文字以上100文字以内で説明しなさい。",
+      "model_answer": "国旗と国歌はどの国でもその国の象徴として大切にされているものだからです。外国の国旗と国歌を尊重することで、その国の文化や習慣を認め、お互いに理解し合い、平和な国際社会をつくることができるからです。",
+      "required_concepts": [
+        "国旗と国歌は国の象徴である",
+        "互いに尊重し合うことの重要性",
+        "国際社会での相互理解"
+      ],
+      "scoring_matrix": {
+        "understanding": {
+          "aspect_name": "理解力",
+          "max_score": 4,
+          "levels": [
+            {
+              "score": 4,
+              "description": "国旗と国歌が国の象徴であることと、互いに尊重し合う必要性の両方を正しく理解している"
+            },
+            {
+              "score": 3,
+              "description": "国旗と国歌の重要性または尊重の必要性のどちらかを理解している"
+            },
+            {
+              "score": 2,
+              "description": "国旗と国歌について触れているが、尊重の理由の理解が不十分"
+            },
+            {
+              "score": 1,
+              "description": "国旗と国歌について断片的にしか理解していない"
+            },
+            {
+              "score": 0,
+              "description": "国旗と国歌の意義を理解していない"
+            }
+          ]
+        },
+        "expression": {
+          "aspect_name": "表現力",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "理由を論理的に説明し、「だから」「そのため」などの接続詞を用いて明確に表現している"
+            },
+            {
+              "score": 2,
+              "description": "理由を説明しているが、やや説明不足な部分がある"
+            },
+            {
+              "score": 1,
+              "description": "理由の説明が不明確で、文章のつながりが弱い"
+            },
+            {
+              "score": 0,
+              "description": "理由を説明できておらず、文章として成立していない"
+            }
+          ]
+        },
+        "accuracy": {
+          "aspect_name": "正確性",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "「象徴」「尊重」「国際社会」などの用語を正確に使用している"
+            },
+            {
+              "score": 2,
+              "description": "用語の使用は概ね正確だが、一部不適切な表現がある"
+            },
+            {
+              "score": 1,
+              "description": "用語の使用に複数の誤りがある"
+            },
+            {
+              "score": 0,
+              "description": "用語の使用が不正確で内容に誤りが多い"
+            }
+          ]
+        }
+      },
+      "common_errors": [
+        {
+          "pattern": "「国旗と国歌はかっこいいから」など、感情的な理由のみを述べている",
+          "feedback": "国旗と国歌が「国の象徴」として大切にされていることに注目しましょう。なぜ互いに尊重することが国際社会で重要なのかを考えてみてください。"
+        },
+        {
+          "pattern": "「ルールだから」「決まりだから」とだけ書いている",
+          "feedback": "ルールがあることは事実ですが、なぜそのようなルールが必要なのか、その理由を考えて説明しましょう。国旗と国歌がその国にとってどのような意味をもつものか考えてみてください。"
+        },
+        {
+          "pattern": "自分の国の国旗と国歌を大切にすることだけを書いている",
+          "feedback": "よい視点ですが、問題は「外国の国旗と国歌も尊重する」理由を聞いています。他の国の国旗と国歌を尊重することが、国際社会でどのような意味をもつか考えてみましょう。"
+        },
+        {
+          "pattern": "「仲良くするため」とだけ書いて具体的な説明がない",
+          "feedback": "「仲良くする」という考えは大切ですが、もっと具体的に説明しましょう。国旗と国歌が何を表しているのか、それを尊重することがなぜ相互理解につながるのかを考えてみてください。"
+        }
+      ],
+      "thinking_skills": {
+        "critical_thinking": 40,
+        "judgment": 30,
+        "expression": 30
+      }
+    },
+    {
+      "question_id": "text-002",
+      "difficulty": 2,
+      "title": "日本の国際協力の目的",
+      "question_text": "日本は、発展途上国に対して技術者の派遣や研修生の受け入れなど、様々な国際協力を行っています。日本がこのような国際協力を行う目的について、過去の歴史的経験と国際社会における日本の立場の2つの視点から、90文字程度で説明しなさい。",
+      "model_answer": "日本は過去に戦争や原爆による災害を経験したため、平和な世界を実現する責任があります。そのため国際連合の一員として、教育や医療などの分野で技術や知識を提供し、世界の国々の発展を支援することで、国際社会の平和と発展に貢献しています。",
+      "required_concepts": [
+        "過去の戦争や原爆の経験",
+        "平和な世界の実現",
+        "国際連合の一員としての責任",
+        "技術協力・援助",
+        "国際社会への貢献"
+      ],
+      "scoring_matrix": {
+        "understanding": {
+          "aspect_name": "理解力",
+          "max_score": 4,
+          "levels": [
+            {
+              "score": 4,
+              "description": "歴史的経験と国際社会での立場の両方を正確に理解している"
+            },
+            {
+              "score": 3,
+              "description": "歴史的経験または国際社会での立場のいずれかを理解している"
+            },
+            {
+              "score": 2,
+              "description": "国際協力の目的を部分的に理解している"
+            },
+            {
+              "score": 1,
+              "description": "国際協力について表面的な理解にとどまる"
+            },
+            {
+              "score": 0,
+              "description": "国際協力の目的を理解していない"
+            }
+          ]
+        },
+        "expression": {
+          "aspect_name": "表現力",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "2つの視点を明確に区別して論理的に説明している"
+            },
+            {
+              "score": 2,
+              "description": "概ね論理的だが視点の区別がやや不明確"
+            },
+            {
+              "score": 1,
+              "description": "説明に論理性が不足している"
+            },
+            {
+              "score": 0,
+              "description": "説明が不明確で理解困難"
+            }
+          ]
+        },
+        "accuracy": {
+          "aspect_name": "正確性",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "用語を正確に使用し、事実関係に誤りがない"
+            },
+            {
+              "score": 2,
+              "description": "概ね正確だが一部不正確な表現がある"
+            },
+            {
+              "score": 1,
+              "description": "用語の使用や事実関係に複数の誤りがある"
+            },
+            {
+              "score": 0,
+              "description": "用語の使用や事実関係が不正確"
+            }
+          ]
+        }
+      },
+      "common_errors": [
+        {
+          "pattern": "単に「困っている国を助けるため」とだけ記述",
+          "feedback": "なぜ日本が国際協力を行うのか、日本の歴史的経験や国際社会における立場を踏まえて説明しましょう。"
+        },
+        {
+          "pattern": "経済的な利益や貿易の観点のみを記述",
+          "feedback": "国際協力の目的は経済的利益だけではありません。平和な世界の実現という視点から考えてみましょう。"
+        },
+        {
+          "pattern": "過去の戦争について触れているが、現在の国際社会での役割に言及していない",
+          "feedback": "歴史的経験と現在の国際社会における日本の立場の両方の視点から説明しましょう。"
+        },
+        {
+          "pattern": "具体的な協力内容の列挙のみで目的が不明確",
+          "feedback": "何をしているかだけでなく、なぜそれを行うのかという目的を明確に説明しましょう。"
+        }
+      ],
+      "thinking_skills": {
+        "critical_thinking": 40,
+        "judgment": 35,
+        "expression": 25
+      }
+    },
+    {
+      "question_id": "text-003",
+      "difficulty": 3,
+      "title": "国歌「君が代」の意義",
+      "question_text": "国歌「君が代」は、日本国憲法の下において、どのような願いをこめた歌として定められているのでしょうか。天皇の位置づけと、歌に込められた願いの２つの観点から、70文字以上140文字以内で説明しなさい。",
+      "model_answer": "国歌「君が代」は、日本国憲法の下において、日本国民の総意に基づき天皇を日本国及び日本国民統合の象徴とする我が国の末永い繁栄と平和を祈念した歌として定められています。これは、国民全体の幸せと平和な未来を願う歌であるという意味です。（115文字）",
+      "required_concepts": [
+        "日本国民の総意に基づく天皇の位置づけ",
+        "日本国及び日本国民統合の象徴",
+        "末永い繁栄と平和を祈念"
+      ],
+      "scoring_matrix": {
+        "understanding": {
+          "aspect_name": "理解力",
+          "max_score": 4,
+          "levels": [
+            {
+              "score": 4,
+              "description": "天皇の象徴としての位置づけと、繁栄と平和の祈念という２つの要素を正確に理解している"
+            },
+            {
+              "score": 3,
+              "description": "２つの要素のうち一方を正確に、もう一方を概ね理解している"
+            },
+            {
+              "score": 2,
+              "description": "２つの要素のうち一方のみを理解しているか、両方とも部分的な理解にとどまる"
+            },
+            {
+              "score": 1,
+              "description": "断片的な知識のみで、全体的な理解が不十分"
+            },
+            {
+              "score": 0,
+              "description": "国歌の意義について理解していない"
+            }
+          ]
+        },
+        "expression": {
+          "aspect_name": "表現力",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "２つの観点を論理的に関連付けて、明確に説明している"
+            },
+            {
+              "score": 2,
+              "description": "２つの観点について説明しているが、関連付けがやや不明確"
+            },
+            {
+              "score": 1,
+              "description": "説明が断片的で、論理的なつながりが不明確"
+            },
+            {
+              "score": 0,
+              "description": "説明が不適切で理解できない"
+            }
+          ]
+        },
+        "accuracy": {
+          "aspect_name": "正確性",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "「象徴」「繁栄」「平和」「祈念」などの重要用語を正確に使用している"
+            },
+            {
+              "score": 2,
+              "description": "重要用語の使用が概ね正確だが、一部不正確な表現がある"
+            },
+            {
+              "score": 1,
+              "description": "重要用語の使用に複数の誤りがある"
+            },
+            {
+              "score": 0,
+              "description": "用語の使用が不正確で、事実誤認が多い"
+            }
+          ]
+        }
+      },
+      "common_errors": [
+        {
+          "pattern": "天皇を讃える歌、天皇の統治を願う歌という説明",
+          "feedback": "日本国憲法の下では、天皇は「象徴」であり、統治者ではありません。国民全体の繁栄と平和を願う歌であることを理解しましょう。"
+        },
+        {
+          "pattern": "昔からの伝統を守る歌という抽象的な説明のみ",
+          "feedback": "具体的に「何を」願っている歌なのかを明確にしましょう。日本国の繁栄と平和を祈念していることが重要です。"
+        },
+        {
+          "pattern": "天皇の位置づけについての説明が欠落",
+          "feedback": "問題文で求められている「天皇の位置づけ」について、日本国憲法における象徴としての役割を説明する必要があります。"
+        },
+        {
+          "pattern": "字数が70文字未満",
+          "feedback": "回答は70文字以上140文字以内で書く必要があります。２つの観点それぞれについて、具体的に説明を加えましょう。"
+        }
+      ],
+      "thinking_skills": {
+        "critical_thinking": 35,
+        "judgment": 30,
+        "expression": 35
+      }
+    },
+    {
+      "question_id": "text-004",
+      "difficulty": 4,
+      "title": "日本が国際社会で果たす役割",
+      "question_text": "日本は、過去の戦争や原爆による経験を踏まえて、国際社会の平和と発展のために様々な活動を行っています。国際連合での活動と、発展途上国への援助・協力の両方について触れながら、日本が今後も国際社会で果たすべき役割とその理由を説明しなさい。（70文字以上140文字以内）",
+      "model_answer": "日本は、戦争や原爆の被害を経験した国として、国際連合の一員として平和維持活動に参加し、紛争の解決に努める役割があります。また、教育や医療、農業などの分野で技術者を派遣したり研修生を受け入れたりして、発展途上国の自立を支援する責任があります。これらの活動を通じて、世界平和の実現に貢献することが重要です。",
+      "required_concepts": [
+        "国際連合での平和への貢献",
+        "発展途上国への技術支援・協力",
+        "戦争経験を踏まえた役割"
+      ],
+      "scoring_matrix": {
+        "understanding": {
+          "aspect_name": "理解力",
+          "max_score": 4,
+          "levels": [
+            {
+              "score": 4,
+              "description": "国際連合と発展途上国支援の両方について具体的に理解し、日本の歴史的背景と結びつけて説明できている"
+            },
+            {
+              "score": 3,
+              "description": "国際連合と発展途上国支援の両方に触れているが、一方の説明がやや不十分"
+            },
+            {
+              "score": 2,
+              "description": "国際連合または発展途上国支援のいずれか一方のみに言及している"
+            },
+            {
+              "score": 1,
+              "description": "日本の国際協力について断片的な理解にとどまる"
+            },
+            {
+              "score": 0,
+              "description": "国際社会での日本の役割を理解していない"
+            }
+          ]
+        },
+        "expression": {
+          "aspect_name": "表現力",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "複数の役割を論理的に関連付け、理由とともに明確に表現している"
+            },
+            {
+              "score": 2,
+              "description": "複数の役割に触れているが、関連性や理由の説明がやや不明確"
+            },
+            {
+              "score": 1,
+              "description": "単に事実を列挙するにとどまり、論理的なつながりが弱い"
+            },
+            {
+              "score": 0,
+              "description": "文章として成立していない、または極めて不明確"
+            }
+          ]
+        },
+        "accuracy": {
+          "aspect_name": "正確性",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "「国際連合」「援助・協力」「平和」などの用語を正確に使用している"
+            },
+            {
+              "score": 2,
+              "description": "概ね正確だが、一部の用語使用に不正確さがある"
+            },
+            {
+              "score": 1,
+              "description": "重要な用語の使用に複数の誤りがある"
+            },
+            {
+              "score": 0,
+              "description": "用語の使用が全体的に不正確"
+            }
+          ]
+        }
+      },
+      "common_errors": [
+        {
+          "pattern": "経済的な貿易や輸出入のみに焦点を当てた回答",
+          "feedback": "経済面も重要ですが、問題は平和と発展のための役割を問うています。国際連合での活動や発展途上国への援助・協力について考えてみましょう。"
+        },
+        {
+          "pattern": "抽象的に「平和に貢献する」とだけ述べ、具体的な活動に触れていない回答",
+          "feedback": "どのような活動を通じて平和に貢献するのか、国際連合での役割や発展途上国への支援など、具体的な内容を含めて説明しましょう。"
+        },
+        {
+          "pattern": "日本の戦争経験や歴史的背景に全く触れていない回答",
+          "feedback": "日本が果たすべき役割を考える上で、過去の戦争や原爆の経験から学んだことは重要です。この歴史的背景と現在の役割を結びつけて考えてみましょう。"
+        },
+        {
+          "pattern": "国際連合または発展途上国支援のいずれか一方にのみ言及した回答",
+          "feedback": "問題文では「両方について触れながら」と指示されています。国際連合での活動と発展途上国への援助・協力の両面から日本の役割を説明しましょう。"
+        }
+      ],
+      "thinking_skills": {
+        "critical_thinking": 35,
+        "judgment": 35,
+        "expression": 30
+      }
+    },
+    {
+      "question_id": "text-005",
+      "difficulty": 5,
+      "title": "異文化理解と国際交流",
+      "question_text": "あなたの友達が「外国の文化や習慣は日本と違うから、理解するのは難しい」と言っています。あなたは、世界の人々と共に生きていくために、文化や習慣の違いをどのように受け止め、どのように行動すべきだと考えますか。国際交流の大切さにもふれながら、あなたの考えを70文字以上140文字以内で書きなさい。",
+      "model_answer": "文化や習慣の違いは、それぞれの国の歴史や環境から生まれた大切なものです。だから、違いを否定するのではなく、理解し尊重する態度が必要です。スポーツや文化交流を通じて相互理解を深めることで、異なる文化を認め合い、共に平和な国際社会をつくることができると考えます。",
+      "required_concepts": [
+        "文化や習慣の多様性の理解",
+        "異なる文化を尊重する態度",
+        "国際交流の役割"
+      ],
+      "scoring_matrix": {
+        "understanding": {
+          "aspect_name": "理解力",
+          "max_score": 4,
+          "levels": [
+            {
+              "score": 4,
+              "description": "文化の多様性、尊重、国際交流の3つの概念を正しく理解している"
+            },
+            {
+              "score": 3,
+              "description": "3つの概念のうち2つを正しく理解している"
+            },
+            {
+              "score": 2,
+              "description": "3つの概念のうち1つを正しく理解している"
+            },
+            {
+              "score": 1,
+              "description": "概念の理解が表面的で不十分"
+            },
+            {
+              "score": 0,
+              "description": "概念を理解していない"
+            }
+          ]
+        },
+        "expression": {
+          "aspect_name": "表現力",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "違いの受け止め方と行動が論理的に表現されている"
+            },
+            {
+              "score": 2,
+              "description": "違いの受け止め方または行動のいずれかが表現されている"
+            },
+            {
+              "score": 1,
+              "description": "表現が不明確で論理性に欠ける"
+            },
+            {
+              "score": 0,
+              "description": "問いに対応した表現になっていない"
+            }
+          ]
+        },
+        "accuracy": {
+          "aspect_name": "正確性",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "「尊重」「国際交流」などの用語を正確に使用している"
+            },
+            {
+              "score": 2,
+              "description": "用語使用に一部不正確さがある"
+            },
+            {
+              "score": 1,
+              "description": "用語使用が不正確で意味が曖昧"
+            },
+            {
+              "score": 0,
+              "description": "用語使用が不適切"
+            }
+          ]
+        }
+      },
+      "common_errors": [
+        {
+          "pattern": "文化の違いを単に「受け入れる」とだけ述べ、尊重の意味が不明確",
+          "feedback": "「受け入れる」とはどういうことか、具体的に考えてみましょう。違いを認めて大切にすることを表す言葉で表現してみましょう。"
+        },
+        {
+          "pattern": "国際交流について触れておらず、個人の心構えのみを述べている",
+          "feedback": "問題文にある「国際交流の大切さにもふれながら」という条件を見落としています。スポーツや文化交流の役割についても考えてみましょう。"
+        },
+        {
+          "pattern": "「仲良くする」「助け合う」など抽象的な表現のみで、文化理解の視点がない",
+          "feedback": "なぜ文化や習慣に違いがあるのか、その違いをどう捉えるべきかという視点から考えてみましょう。"
+        }
+      ],
+      "thinking_skills": {
+        "critical_thinking": 40,
+        "judgment": 35,
+        "expression": 25
+      }
+    }
+  ],
+  "metadata": {
+    "cos_code": "8220263300000000",
+    "subject": "社会",
+    "grade": 6,
+    "description": "(3) グローバル化する世界と日本の役割について，学習の問題を追究・解決する活動を通して，次の事項を身に付けることができるよう指導する。",
+    "question_type": "extended_text",
+    "char_limits": {
+      "short": {
+        "min_chars": 50,
+        "max_chars": 100,
+        "model_answer_target": 90
+      },
+      "long": {
+        "min_chars": 70,
+        "max_chars": 140,
+        "model_answer_target": 130
+      }
+    },
+    "max_score": 10
+  }
+}

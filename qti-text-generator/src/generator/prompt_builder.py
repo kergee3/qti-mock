@@ -5,7 +5,7 @@ import os
 
 # 親ディレクトリをパスに追加
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
-from config.settings import TEXT_QUESTION_CONFIG, SCORING_ASPECTS
+from config.settings import SCORING_ASPECTS, get_char_limits
 
 
 class PromptBuilder:
@@ -20,6 +20,7 @@ class PromptBuilder:
         question_number: int,
         difficulty: int,
         focus_topic: str = None,
+        existing_titles: list[str] = None,
     ) -> tuple[str, str]:
         """
         記述式問題生成用のプロンプトを構築
@@ -32,22 +33,24 @@ class PromptBuilder:
             question_number: 問題番号（1-5）
             difficulty: 難易度（1-5、1が易しく5が難しい）
             focus_topic: 問題のテーマとなるトピック（オプション）
+            existing_titles: 既に生成された問題のタイトルリスト（重複防止用）
 
         Returns:
             tuple[str, str]: (システムプロンプト, ユーザープロンプト)
         """
-        max_chars = TEXT_QUESTION_CONFIG["max_chars"]
-        min_chars = TEXT_QUESTION_CONFIG["min_chars"]
-        model_answer_min = TEXT_QUESTION_CONFIG["model_answer_min"]
-        model_answer_max = TEXT_QUESTION_CONFIG["model_answer_max"]
+        # 問題番号に応じた字数制限を取得
+        char_limits = get_char_limits(question_number)
+        max_chars = char_limits["max_chars"]
+        min_chars = char_limits["min_chars"]
+        model_answer_target = char_limits["model_answer_target"]
 
-        # 難易度に応じた説明
+        # 難易度に応じた説明（全体的に易しめに調整）
         difficulty_descriptions = {
-            1: "基礎的な概念の理解を確認する易しい問題。単純な説明で回答できる。",
-            2: "基礎概念を応用する問題。具体例を挙げて説明する必要がある。",
-            3: "複数の概念を関連付けて説明する中程度の難しさの問題。",
-            4: "批判的思考や多角的な視点を必要とするやや難しい問題。",
-            5: "複雑な状況判断や高度な論理的思考を必要とする最も難しい問題。",
+            1: "最も基礎的な問題。教科書に書かれている内容をそのまま答えられる易しい問題。単語や短いフレーズで回答できる。",
+            2: "基礎的な理解を確認する問題。教科書の内容を自分の言葉で簡単に説明できればよい。",
+            3: "基礎概念を応用する問題。具体例を1つ挙げて説明できればよい。",
+            4: "複数の概念を関連付けて説明する問題。2つ以上の要素を結びつけて考える。",
+            5: "やや発展的な問題。学んだ内容を別の場面に当てはめて考える。",
         }
         difficulty_desc = difficulty_descriptions.get(difficulty, difficulty_descriptions[3])
 
@@ -71,7 +74,7 @@ class PromptBuilder:
   "difficulty": {difficulty},
   "title": "問題のタイトル（20文字以内）",
   "question_text": "問題文（条件・制約を明示）",
-  "model_answer": "模範解答（{model_answer_min}〜{model_answer_max}文字）",
+  "model_answer": "模範解答（{model_answer_target}文字程度）",
   "required_concepts": ["必須概念1", "必須概念2", "必須概念3"],
   "scoring_matrix": {{
     "understanding": {{
@@ -122,10 +125,11 @@ class PromptBuilder:
 ## 重要な注意点
 1. 問題文は小学{grade}年生が理解できる平易な言葉で書いてください
 2. 回答に必要な情報は全て問題文に含めてください
-3. 模範解答は{model_answer_min}文字以上{model_answer_max}文字以内で作成してください
+3. 模範解答は{model_answer_target}文字程度で作成してください（{min_chars}文字以上{max_chars}文字以内）
 4. 必須概念は最低3つ含めてください
 5. 典型的誤答パターンは具体的なものを3つ以上挙げてください
-6. thinking_skills の合計は100になるようにしてください"""
+6. thinking_skills の合計は100になるようにしてください
+7. タイトルは他の問題と重複しないユニークなものにしてください"""
 
         # トピック指定がある場合の追加指示
         topic_instruction = ""
@@ -135,6 +139,16 @@ class PromptBuilder:
 この問題は「{focus_topic}」に関する内容を中心に作成してください。
 """
 
+        # 既存タイトルがある場合の重複防止指示
+        existing_titles_instruction = ""
+        if existing_titles and len(existing_titles) > 0:
+            titles_list = "、".join([f"「{t}」" for t in existing_titles])
+            existing_titles_instruction = f"""
+## 重複防止（重要）
+以下のタイトルは既に使用されています。これらと同じまたは類似のタイトルは絶対に使用しないでください：
+{titles_list}
+"""
+
         user_prompt = f"""以下の学習指導要領の内容に基づいて、記述式問題を1問作成してください。
 
 ## 問題番号
@@ -142,7 +156,7 @@ class PromptBuilder:
 
 ## 難易度
 {difficulty}（{difficulty_desc}）
-{topic_instruction}
+{topic_instruction}{existing_titles_instruction}
 ## 学習目標
 {description}
 
