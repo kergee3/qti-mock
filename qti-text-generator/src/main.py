@@ -4,6 +4,7 @@ import argparse
 import sys
 import os
 import shutil
+import time
 from pathlib import Path
 
 # 親ディレクトリをパスに追加
@@ -18,6 +19,7 @@ from src.converter.qti_text_converter import QTITextConverter
 from src.storage.file_exporter import FileExporter
 from src.storage.blob_uploader import BlobUploader
 from src.utils.api_stats import api_stats
+from src.utils.logger import TeeLogger
 
 
 def generate_text_questions(
@@ -41,6 +43,14 @@ def generate_text_questions(
     # API統計をリセット
     api_stats.reset()
 
+    # 時間計測用
+    step_times = {}
+    total_start_time = time.time()
+
+    # ログ記録を開始（一時ファイルに保存、後で出力フォルダにコピー）
+    logger = TeeLogger()
+    logger.start()
+
     print(f"\n{'='*60}")
     print(f"記述式問題生成バッチ")
     print(f"{'='*60}")
@@ -49,6 +59,7 @@ def generate_text_questions(
     print(f"{'='*60}\n")
 
     # 1. 学習指導要領LODからデータ取得
+    step1_start = time.time()
     print("[Step 1/6] 学習指導要領LODからデータを取得中...")
     fetcher = COSFetcher()
     context = fetcher.get_full_context_with_sections(code)
@@ -68,9 +79,13 @@ def generate_text_questions(
     sections = context.get('sections', [])
     if not sections and not context.get('parent_commentary'):
         print("[WARN] 解説テキストが見つかりませんでした")
+        logger.stop()
         return {"error": "No commentary found"}
 
+    step_times['Step 1: データ取得'] = time.time() - step1_start
+
     # 2. トピックを抽出
+    step2_start = time.time()
     print(f"\n[Step 2/6] 解説テキストから記述式問題用トピックを抽出中...")
     topic_extractor = TopicExtractor()
 
@@ -85,7 +100,10 @@ def generate_text_questions(
 
     print(f"  - 抽出トピック数: {len(topics)}")
 
+    step_times['Step 2: トピック抽出'] = time.time() - step2_start
+
     # 3. 問題を生成
+    step3_start = time.time()
     print(f"\n[Step 3/6] Claude APIで記述式問題を生成中...")
     generator = TextQuestionGenerator()
     api_stats.set_model(generator.model)  # モデル情報を設定
@@ -104,7 +122,8 @@ def generate_text_questions(
     failed_topics = []
     topic_index = 0
     questions_with_topics = []
-    existing_titles = []  # 生成済みタイトルを追跡（重複防止用）
+    # 生成済み問題を追跡（重複防止用：タイトルと問題文を保持）
+    existing_questions = []
 
     while len(questions_with_topics) < count:
         # トピックを選択
@@ -137,21 +156,24 @@ def generate_text_questions(
             question_number=current_question_num,
             difficulty=difficulty,
             focus_topic=topic,
-            existing_titles=existing_titles,
+            existing_questions=existing_questions,
         )
 
         try:
             question = generator.generate(system_prompt, user_prompt)
             title = question.get('title', '')
+            question_text = question.get('question_text', '')
             questions_with_topics.append({
                 'question': question,
                 'topic': topic,
                 'topic_index': original_topic_index,
                 'generation_order': len(questions_with_topics),
             })
-            # 生成済みタイトルを追跡
-            if title:
-                existing_titles.append(title)
+            # 生成済み問題を追跡（重複防止用：タイトルと問題文）
+            existing_questions.append({
+                'title': title,
+                'question_text': question_text,
+            })
             print(f"    タイトル: {title or 'N/A'}")
             print(f"    難易度: {question.get('difficulty', 'N/A')}")
         except Exception as e:
@@ -176,9 +198,13 @@ def generate_text_questions(
 
     if not valid_questions:
         print("\n[ERROR] 有効な問題が生成されませんでした")
+        logger.stop()
         return {"error": "No valid questions generated"}
 
+    step_times['Step 3: 問題生成'] = time.time() - step3_start
+
     # 4. QTI XMLに変換
+    step4_start = time.time()
     print(f"\n[Step 4/6] QTI XMLに変換中...")
     xml_contents = []
     for i, question in enumerate(valid_questions):
@@ -189,7 +215,10 @@ def generate_text_questions(
         char_limits = get_char_limits(question_number)
         print(f"  - {identifier}: {question.get('title', 'N/A')} (字数: {char_limits['min_chars']}-{char_limits['max_chars']})")
 
+    step_times['Step 4: XML変換'] = time.time() - step4_start
+
     # 5. ファイル出力
+    step5_start = time.time()
     print(f"\n[Step 5/6] ファイルを出力中...")
     exporter = FileExporter(output_dir)
 
@@ -219,6 +248,8 @@ def generate_text_questions(
         model=generator.model,
     )
 
+    step_times['Step 5: ファイル出力'] = time.time() - step5_start
+
     print(f"\n{'='*60}")
     print(f"生成完了！")
     print(f"{'='*60}")
@@ -228,6 +259,7 @@ def generate_text_questions(
 
     # 6. Vercel Blobにアップロード（オプション）
     if upload:
+        step6_start = time.time()
         print(f"[Step 6/6] Vercel Blobにアップロード中...")
         try:
             uploader = BlobUploader()
@@ -264,6 +296,21 @@ def generate_text_questions(
             print(f"[ERROR] アップロードに失敗しました: {e}")
             summary['upload_error'] = str(e)
 
+        step_times['Step 6: アップロード'] = time.time() - step6_start
+
+    # 合計時間を計算
+    total_time = time.time() - total_start_time
+
+    # 実行時間を表示
+    print(f"\n{'='*60}")
+    print(f"実行時間サマリー")
+    print(f"{'='*60}")
+    for step_name, step_time in step_times.items():
+        print(f"  {step_name}: {step_time:.2f}秒")
+    print(f"  {'─'*40}")
+    print(f"  合計: {total_time:.2f}秒 ({total_time/60:.1f}分)")
+    print(f"{'='*60}\n")
+
     # API使用統計を表示
     api_stats.print_summary()
 
@@ -287,6 +334,22 @@ def generate_text_questions(
             for step in api_stats.get_all_steps()
         }
     }
+
+    # 実行時間をサマリーに追加
+    summary['execution_time'] = {
+        'steps': {k: round(v, 2) for k, v in step_times.items()},
+        'total_seconds': round(total_time, 2),
+        'total_minutes': round(total_time / 60, 2),
+    }
+
+    # ロガーを停止し、ログファイルを出力フォルダにコピー
+    logger.stop()
+    batch_dir = exporter.output_dir / summary['output_directory']
+    log_file = batch_dir / "generation.log"
+    saved_path = logger.save_to(log_file)
+    if saved_path:
+        summary['log_file'] = str(log_file.name)
+        print(f"[INFO] ログファイル保存: {log_file}")
 
     return summary
 

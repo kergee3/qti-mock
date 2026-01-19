@@ -46,6 +46,7 @@ class PromptBuilder:
         commentary: str,
         question_number: int = 1,
         focus_topic: Optional[str] = None,
+        existing_questions: list[dict] = None,
     ) -> tuple[str, str]:
         """
         問題生成用のプロンプトを構築
@@ -57,6 +58,8 @@ class PromptBuilder:
             commentary: 解説テキスト
             question_number: 問題番号（同じ内容から複数問生成時に使用）
             focus_topic: フォーカスするトピック（オプション）
+            existing_questions: 既に生成された問題のリスト（重複防止用）
+                               各要素は {"title": str, "question": str, "correct_answer": str} の辞書
 
         Returns:
             tuple: (system_prompt, user_prompt)
@@ -65,6 +68,55 @@ class PromptBuilder:
         max_commentary_length = 3000
         if len(commentary) > max_commentary_length:
             commentary = commentary[:max_commentary_length] + "..."
+
+        # トピック指定の指示
+        topic_instruction = ""
+        if focus_topic:
+            topic_instruction = f"""- 【重要】今回は必ず「{focus_topic}」に関する問題を作成してください
+- 他のトピックではなく、指定されたトピックに焦点を当ててください"""
+        else:
+            topic_instruction = "- 前の問題と重複しない内容にしてください"
+
+        # 既存問題がある場合の重複防止指示
+        existing_questions_instruction = ""
+        if existing_questions and len(existing_questions) > 0:
+            # タイトル一覧
+            titles_list = "、".join([f"「{q.get('title', '')}」" for q in existing_questions if q.get('title')])
+
+            # 過去の問題と正解を詳細に表示
+            questions_list = "\n".join([
+                f"  {i+1}. タイトル: {q.get('title', '無題')}\n     問題文: {q.get('question', '')[:100]}\n     正解: {q.get('correct_answer', '')[:60]}"
+                for i, q in enumerate(existing_questions[-15:])  # 直近15問を表示
+            ])
+
+            # 使用済みトピック・テーマを抽出（タイトルから）
+            used_topics = []
+            for q in existing_questions:
+                title = q.get('title', '')
+                if title:
+                    used_topics.append(title)
+
+            existing_questions_instruction = f"""
+
+## 重複防止（最重要）
+以下のタイトル・問題・正解は既に使用されています。**同一または類似の内容は絶対に禁止**です：
+
+### 使用済みタイトル：
+{titles_list}
+
+### 既存問題の詳細（重複禁止）：
+{questions_list}
+
+### 禁止事項（厳守）：
+1. 上記と同じトピック・テーマで問題を作成しない
+2. 同じ正解を導く問題を作成しない
+3. 言い換えただけの類似問題を作成しない
+4. 「国旗と国歌」「租税の役割」など、既に出題されたテーマは別の角度でも使用禁止
+
+### 新しい問題の要件：
+- 上記の問題とは**完全に異なるテーマ・観点**から出題すること
+- 解説テキスト内の**未使用の情報**を活用すること
+- 上記の正解とは**異なる知識・概念**を問うこと"""
 
         user_prompt = f"""以下の学習指導要領に基づいて4択問題を1問作成してください。
 
@@ -80,8 +132,7 @@ class PromptBuilder:
 
 ## 追加指示
 - 問題番号: {question_number}問目
-{f'''- 【重要】今回は必ず「{focus_topic}」に関する問題を作成してください
-- 他のトピックではなく、指定されたトピックに焦点を当ててください''' if focus_topic else "- 前の問題と重複しない内容にしてください"}
+{topic_instruction}{existing_questions_instruction}
 
 上記の情報に基づいて、小学{grade}年生向けの4択問題をJSON形式で出力してください。"""
 

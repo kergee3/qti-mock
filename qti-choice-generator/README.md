@@ -66,13 +66,13 @@ BLOB_READ_WRITE_TOKEN=vercel_blob_rw_xxxxx
 python src/main.py
 
 # 分野を指定して生成
-python src/main.py --subject 社会_政治 --count 5
+python src/main.py --subject 社会_政治 --count 20
 
 # コードで直接指定
-python src/main.py --code 8220263100000000 --count 3
+python src/main.py --code 8220263100000000 --count 20
 
 # 生成後にVercel Blobにアップロード
-python src/main.py --subject 社会_政治 --count 5 --upload
+python src/main.py --subject 社会_政治 --count 20 --upload
 
 # 利用可能な分野一覧を表示
 python src/main.py --list-subjects

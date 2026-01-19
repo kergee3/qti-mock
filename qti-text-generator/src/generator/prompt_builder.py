@@ -20,7 +20,7 @@ class PromptBuilder:
         question_number: int,
         difficulty: int,
         focus_topic: str = None,
-        existing_titles: list[str] = None,
+        existing_questions: list[dict] = None,
     ) -> tuple[str, str]:
         """
         記述式問題生成用のプロンプトを構築
@@ -33,7 +33,8 @@ class PromptBuilder:
             question_number: 問題番号（1-5）
             difficulty: 難易度（1-5、1が易しく5が難しい）
             focus_topic: 問題のテーマとなるトピック（オプション）
-            existing_titles: 既に生成された問題のタイトルリスト（重複防止用）
+            existing_questions: 既に生成された問題のリスト（重複防止用）
+                               各要素は {"title": str, "question_text": str} の辞書
 
         Returns:
             tuple[str, str]: (システムプロンプト, ユーザープロンプト)
@@ -140,14 +141,30 @@ class PromptBuilder:
 この問題は「{focus_topic}」に関する内容を中心に作成してください。
 """
 
-        # 既存タイトルがある場合の重複防止指示
-        existing_titles_instruction = ""
-        if existing_titles and len(existing_titles) > 0:
-            titles_list = "、".join([f"「{t}」" for t in existing_titles])
-            existing_titles_instruction = f"""
+        # 既存問題がある場合の重複防止指示
+        existing_questions_instruction = ""
+        if existing_questions and len(existing_questions) > 0:
+            # タイトル一覧
+            titles_list = "、".join([f"「{q.get('title', '')}」" for q in existing_questions if q.get('title')])
+
+            # 過去の問題文一覧（簡潔に表示）
+            questions_list = "\n".join([
+                f"  - {q.get('title', '無題')}: {q.get('question_text', '')[:50]}..."
+                for q in existing_questions[-5:]  # 直近5問のみ表示（トークン節約）
+            ])
+
+            existing_questions_instruction = f"""
 ## 重複防止（重要）
-以下のタイトルは既に使用されています。これらと同じまたは類似のタイトルは絶対に使用しないでください：
+以下のタイトルと問題は既に使用されています。これらと同じまたは類似の内容は絶対に使用しないでください：
+
+### 使用済みタイトル：
 {titles_list}
+
+### 直近の問題文（参考）：
+{questions_list}
+
+【重要】タイトルだけでなく、問題文の内容も異なるものにしてください。
+同じ概念を問う場合でも、異なる角度・切り口・具体例で問題を作成してください。
 """
 
         user_prompt = f"""以下の学習指導要領の内容に基づいて、記述式問題を1問作成してください。
@@ -157,7 +174,7 @@ class PromptBuilder:
 
 ## 難易度
 {difficulty}（{difficulty_desc}）
-{topic_instruction}{existing_titles_instruction}
+{topic_instruction}{existing_questions_instruction}
 ## 学習目標
 {description}
 
