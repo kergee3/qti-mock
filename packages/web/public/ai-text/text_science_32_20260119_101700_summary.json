@@ -1,0 +1,574 @@
+{
+  "timestamp": "20260119_101700",
+  "model": "claude-sonnet-4-5-20250929",
+  "question_type": "extended_text",
+  "total_questions": 5,
+  "output_directory": "text_science_32_20260119_101700",
+  "files": [
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-text/text_science_32_20260119_101700/text_science_32_001-RSNwM4kSntgzMTgWLIBpseYvep3L9b.xml",
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-text/text_science_32_20260119_101700/text_science_32_002-c9WcKD0apNVaJj0aLnI7tN6Xl8GaiP.xml",
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-text/text_science_32_20260119_101700/text_science_32_003-sJMGxjDZP5Owi1fimUZHNjTe3MTIDZ.xml",
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-text/text_science_32_20260119_101700/text_science_32_004-66MUliJm1xkgAtOlC4wcZrLF3tZv3p.xml",
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-text/text_science_32_20260119_101700/text_science_32_005-MPqYL42lQSl1SoI9npy148yD2NqTD1.xml"
+  ],
+  "questions": [
+    {
+      "question_id": "text-001",
+      "difficulty": 1,
+      "title": "臓器の協力と生命維持",
+      "question_text": "人の体には、胃、小腸、心臓、肺などの複数の臓器があります。なぜ体には複数の臓器があるのでしょうか。また、それぞれの臓器はどのように協力して生命を維持しているのでしょうか。胃と小腸、心臓と肺の例を使って説明しなさい。",
+      "model_answer": "体には複数の臓器があるのは、呼吸、消化、血液の循環など、生命を維持するためのそれぞれ異なる働きを行うためです。胃と小腸は食べた物を消化・吸収し、心臓と肺は血液を全身に送り、酸素を取り入れて二酸化炭素を出すことで、互いに協力して生命を維持しています。",
+      "required_concepts": [
+        "臓器にはそれぞれ異なる働きがあること",
+        "複数の臓器が協力して生命を維持していること",
+        "消化・呼吸・循環などの具体的な働き"
+      ],
+      "scoring_matrix": {
+        "understanding": {
+          "aspect_name": "理解力",
+          "max_score": 4,
+          "levels": [
+            {
+              "score": 4,
+              "description": "臓器の多様性の理由と協力関係を正しく理解し、具体例を適切に説明している"
+            },
+            {
+              "score": 3,
+              "description": "臓器の役割分担は理解しているが、協力関係の説明がやや不十分"
+            },
+            {
+              "score": 2,
+              "description": "臓器の働きについて部分的に理解しているが、協力関係の説明が不足"
+            },
+            {
+              "score": 1,
+              "description": "臓器の名前は挙げられるが、働きや協力関係の理解が不十分"
+            },
+            {
+              "score": 0,
+              "description": "臓器の働きや協力関係について理解していない"
+            }
+          ]
+        },
+        "expression": {
+          "aspect_name": "表現力",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "理由と具体例を論理的に結びつけ、わかりやすく説明している"
+            },
+            {
+              "score": 2,
+              "description": "概ね論理的だが、理由と具体例のつながりがやや不明確"
+            },
+            {
+              "score": 1,
+              "description": "具体例は挙げているが、説明の流れが不明確"
+            },
+            {
+              "score": 0,
+              "description": "説明が断片的で論理性に欠ける"
+            }
+          ]
+        },
+        "accuracy": {
+          "aspect_name": "正確性",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "臓器の名称と働きを正確に記述している"
+            },
+            {
+              "score": 2,
+              "description": "臓器の働きは概ね正確だが、一部用語の使い方が不正確"
+            },
+            {
+              "score": 1,
+              "description": "臓器の働きの説明に複数の誤りがある"
+            },
+            {
+              "score": 0,
+              "description": "臓器の働きについて誤った説明をしている"
+            }
+          ]
+        }
+      },
+      "common_errors": [
+        {
+          "pattern": "臓器の名前だけを列挙し、働きや協力関係を説明していない",
+          "feedback": "それぞれの臓器がどのような働きをしているか、どのように協力しているかを具体的に説明しましょう。"
+        },
+        {
+          "pattern": "一つの臓器の働きだけを詳しく説明し、協力関係に触れていない",
+          "feedback": "複数の臓器がどのように協力して生命を維持しているかを説明することが重要です。"
+        },
+        {
+          "pattern": "臓器の働きを誤って説明している（例：胃で養分を吸収する）",
+          "feedback": "養分を吸収するのは主に小腸です。それぞれの臓器の正しい働きを確認しましょう。"
+        },
+        {
+          "pattern": "複数の臓器がある理由を説明せず、働きの説明だけになっている",
+          "feedback": "なぜ体には複数の臓器があるのか、その理由から説明を始めましょう。"
+        }
+      ],
+      "thinking_skills": {
+        "critical_thinking": 35,
+        "judgment": 30,
+        "expression": 35
+      }
+    },
+    {
+      "question_id": "text-002",
+      "difficulty": 2,
+      "title": "植物の光合成の役割",
+      "question_text": "植物は日光が当たると、葉でデンプンをつくります。植物にとって、葉でデンプンをつくることがなぜ大切なのか、「養分」と「生命を維持する」という言葉を使って説明しなさい。",
+      "model_answer": "植物は、日光を使って葉でデンプンという養分をつくることで、生命を維持するために必要なエネルギーを得ている。このデンプンは植物が成長したり、花を咲かせたりするために使われる大切な養分である。",
+      "required_concepts": [
+        "デンプンが養分であること",
+        "養分が生命維持に必要であること",
+        "光合成でつくられた養分の利用目的"
+      ],
+      "scoring_matrix": {
+        "understanding": {
+          "aspect_name": "理解力",
+          "max_score": 4,
+          "levels": [
+            {
+              "score": 4,
+              "description": "デンプンが養分であること、養分が生命維持に必要であること、養分の具体的な利用目的を全て正しく理解している"
+            },
+            {
+              "score": 3,
+              "description": "デンプンが養分であることと生命維持との関係を概ね理解している"
+            },
+            {
+              "score": 2,
+              "description": "デンプンが養分であることは理解しているが、生命維持との関係が不十分"
+            },
+            {
+              "score": 1,
+              "description": "デンプンについての理解が部分的で、生命維持との関係が不明確"
+            },
+            {
+              "score": 0,
+              "description": "デンプンと養分、生命維持の関係を理解していない"
+            }
+          ]
+        },
+        "expression": {
+          "aspect_name": "表現力",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "指定された言葉を適切に使い、論理的に説明できている"
+            },
+            {
+              "score": 2,
+              "description": "指定された言葉を使っているが、つながりがやや不明確"
+            },
+            {
+              "score": 1,
+              "description": "指定された言葉の使い方が不適切、または片方しか使っていない"
+            },
+            {
+              "score": 0,
+              "description": "指定された言葉を使わずに説明している、または説明になっていない"
+            }
+          ]
+        },
+        "accuracy": {
+          "aspect_name": "正確性",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "デンプン、養分、生命維持などの用語を正確に使用している"
+            },
+            {
+              "score": 2,
+              "description": "主要な用語は正確だが、一部表現に不正確さがある"
+            },
+            {
+              "score": 1,
+              "description": "用語の使い方に複数の誤りがある"
+            },
+            {
+              "score": 0,
+              "description": "用語の使い方が不正確で、科学的に誤った記述がある"
+            }
+          ]
+        }
+      },
+      "common_errors": [
+        {
+          "pattern": "酸素をつくるためと答えている",
+          "feedback": "光合成では酸素もできますが、問題はデンプンをつくることの意義を聞いています。デンプンは植物の養分であり、生命を維持するために使われることに着目しましょう。"
+        },
+        {
+          "pattern": "人間の食べ物になるためと答えている",
+          "feedback": "デンプンは確かに人間の食べ物にもなりますが、まず植物自身にとっての意義を考えましょう。植物が生きていくために、デンプンがどのように使われるかを説明してください。"
+        },
+        {
+          "pattern": "デンプンを貯めるためとだけ答えている",
+          "feedback": "デンプンを貯めることは正しいですが、なぜ貯める必要があるのでしょうか。デンプンという養分が、植物の生命を維持するためにどう役立つのかまで説明しましょう。"
+        },
+        {
+          "pattern": "光合成という言葉だけで説明している",
+          "feedback": "光合成でデンプンをつくることは正しいですが、つくったデンプンが植物にとってどのような意味を持つのか、「養分」と「生命を維持する」という言葉を使って具体的に説明しましょう。"
+        }
+      ],
+      "thinking_skills": {
+        "critical_thinking": 45,
+        "judgment": 25,
+        "expression": 30
+      }
+    },
+    {
+      "question_id": "text-003",
+      "difficulty": 3,
+      "title": "川の流れと土地の変化",
+      "question_text": "川の上流・中流・下流では、流れる水の速さや量がちがいます。このことが土地の形を変化させるしくみについて、「けずる」「運ぶ」「積もる」という3つの言葉を必ず使って説明してください。また、上流と下流のどちらか1つを例に挙げて、具体的にどのような変化が起こるかも書いてください。",
+      "model_answer": "川の水は、流れが速いところでは土地をけずり、けずった土や石を運びます。流れがゆるやかになると、運んできた土や石を積もらせます。例えば上流では、流れが速く坂が急なため、岩や土をけずる力が強く、V字谷のような深い谷ができます。一方、下流では流れがゆるやかなため、運ばれてきた土が積もり、広い平野ができます。",
+      "required_concepts": [
+        "侵食作用",
+        "運搬作用",
+        "堆積作用",
+        "流速と地形の関係",
+        "上流・下流の特徴"
+      ],
+      "scoring_matrix": {
+        "understanding": {
+          "aspect_name": "理解力",
+          "max_score": 4,
+          "levels": [
+            {
+              "score": 4,
+              "description": "3つの作用を正しく理解し、流速との関係を説明できている"
+            },
+            {
+              "score": 3,
+              "description": "3つの作用を理解し、概ね関係性を説明できている"
+            },
+            {
+              "score": 2,
+              "description": "2つの作用について理解している"
+            },
+            {
+              "score": 1,
+              "description": "1つの作用についてのみ理解している"
+            },
+            {
+              "score": 0,
+              "description": "作用について理解していない"
+            }
+          ]
+        },
+        "expression": {
+          "aspect_name": "表現力",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "指定語句を使い、具体例を挙げて論理的に説明している"
+            },
+            {
+              "score": 2,
+              "description": "指定語句を使い、概ね論理的に説明している"
+            },
+            {
+              "score": 1,
+              "description": "説明が不十分または具体例がない"
+            },
+            {
+              "score": 0,
+              "description": "指定語句が使われていない、または説明になっていない"
+            }
+          ]
+        },
+        "accuracy": {
+          "aspect_name": "正確性",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "用語の使い方と具体例が正確"
+            },
+            {
+              "score": 2,
+              "description": "用語の使い方は概ね正確だが、具体例に一部不正確さがある"
+            },
+            {
+              "score": 1,
+              "description": "用語の使い方または具体例に誤りがある"
+            },
+            {
+              "score": 0,
+              "description": "用語の使い方と具体例の両方に誤りがある"
+            }
+          ]
+        }
+      },
+      "common_errors": [
+        {
+          "pattern": "3つの言葉のうち1つまたは2つしか使っていない",
+          "feedback": "「けずる」「運ぶ」「積もる」の3つの言葉を全て使って、川の働きを説明しましょう。"
+        },
+        {
+          "pattern": "上流と下流の特徴が逆になっている",
+          "feedback": "上流は流れが速く土地をけずる力が強い、下流は流れがゆるやかで土が積もりやすいという特徴を確認しましょう。"
+        },
+        {
+          "pattern": "具体的な地形の例が書かれていない",
+          "feedback": "V字谷、平野、三角州など、実際にできる地形の例を挙げて説明しましょう。"
+        },
+        {
+          "pattern": "流れの速さと土地の変化の関係が説明されていない",
+          "feedback": "流れの速さが「けずる」「運ぶ」「積もる」のどの作用に関係するかを考えて説明しましょう。"
+        }
+      ],
+      "thinking_skills": {
+        "critical_thinking": 40,
+        "judgment": 35,
+        "expression": 25
+      }
+    },
+    {
+      "question_id": "text-004",
+      "difficulty": 4,
+      "title": "地層観察と視点の使い分け",
+      "question_text": "太郎さんは、がけにできた地層を観察しました。地層の観察では、「一つ一つの層を詳しく調べる」ことと、「地層全体を広く見る」ことの両方が必要だと先生から教わりました。なぜ地層の観察では、部分と全体の両方の視点が必要なのでしょうか。それぞれの視点で何が分かるのかを説明しながら、両方の視点が必要な理由を答えなさい。",
+      "model_answer": "一つ一つの層を詳しく調べることで、それぞれの層がどのような粒の大きさや種類の石でできているか、化石が含まれているかなどが分かります。また、地層全体を広く見ることで、層の重なり方や広がり方、傾きなどが分かります。部分の観察で各層ができた環境や時代を知り、全体の観察で土地の変化の歴史を読み取ることができるため、両方の視点が必要です。",
+      "required_concepts": [
+        "地層の部分的観察",
+        "地層の全体的観察",
+        "観察視点の使い分け",
+        "土地の変化の歴史"
+      ],
+      "scoring_matrix": {
+        "understanding": {
+          "aspect_name": "理解力",
+          "max_score": 4,
+          "levels": [
+            {
+              "score": 4,
+              "description": "部分と全体の両視点で分かることを正確に理解し、両方が必要な理由を関連付けて説明できている"
+            },
+            {
+              "score": 3,
+              "description": "部分と全体の両視点で分かることを概ね理解し、必要な理由に触れている"
+            },
+            {
+              "score": 2,
+              "description": "部分と全体のどちらか一方の視点については理解できている"
+            },
+            {
+              "score": 1,
+              "description": "地層観察について断片的な理解にとどまっている"
+            },
+            {
+              "score": 0,
+              "description": "地層観察の視点について理解していない"
+            }
+          ]
+        },
+        "expression": {
+          "aspect_name": "表現力",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "部分→全体→両方必要な理由という論理的な流れで明確に表現できている"
+            },
+            {
+              "score": 2,
+              "description": "概ね順序立てて説明できているが、やや分かりにくい部分がある"
+            },
+            {
+              "score": 1,
+              "description": "説明の順序が不明確で分かりにくい"
+            },
+            {
+              "score": 0,
+              "description": "論理的な説明になっていない"
+            }
+          ]
+        },
+        "accuracy": {
+          "aspect_name": "正確性",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "地層、層、粒、化石、重なり方などの用語を正確に使用している"
+            },
+            {
+              "score": 2,
+              "description": "基本的な用語は正確だが、一部不正確な表現がある"
+            },
+            {
+              "score": 1,
+              "description": "用語の使い方に複数の誤りがある"
+            },
+            {
+              "score": 0,
+              "description": "用語の使い方が不適切"
+            }
+          ]
+        }
+      },
+      "common_errors": [
+        {
+          "pattern": "部分の観察だけの説明に終始し、全体の視点に触れていない",
+          "feedback": "一つ一つの層を調べることも大切ですが、地層全体を広く見ることで何が分かるかも考えてみましょう。層の重なり方や広がり方から、どんなことが読み取れるでしょうか。"
+        },
+        {
+          "pattern": "全体の観察だけの説明に終始し、部分の視点に触れていない",
+          "feedback": "地層全体を見ることも大切ですが、一つ一つの層を詳しく調べることで何が分かるかも考えてみましょう。各層の粒の大きさや化石から、どんなことが分かるでしょうか。"
+        },
+        {
+          "pattern": "それぞれの視点で分かることを述べているが、両方が必要な理由が説明されていない",
+          "feedback": "部分と全体それぞれの視点で分かることは書けています。では、なぜ両方の視点で調べることが必要なのでしょうか。それぞれの視点で分かることを組み合わせると、何が明らかになるか考えてみましょう。"
+        },
+        {
+          "pattern": "観察方法の違いだけを述べ、それぞれで分かる内容に触れていない",
+          "feedback": "観察の仕方の違いだけでなく、部分を詳しく調べると何が分かり、全体を広く見ると何が分かるのか、具体的に説明しましょう。"
+        }
+      ],
+      "thinking_skills": {
+        "critical_thinking": 40,
+        "judgment": 35,
+        "expression": 25
+      }
+    },
+    {
+      "question_id": "text-005",
+      "difficulty": 5,
+      "title": "月の見え方と太陽の関係",
+      "question_text": "太郎さんは、夕方の西の空に半月（右側が光っている月）を見つけました。このとき、太陽はどの方角にあると考えられますか。また、なぜそのように考えたのか、月が光って見える理由と関連づけて説明しなさい。",
+      "model_answer": "太陽は西の空にあると考えられます。なぜなら、月は太陽の光を反射して光って見えるからです。半月の右側が光っているということは、月の右側から太陽の光が当たっていることを意味します。月が西の空にあり、その右側が光っているので、太陽は月よりも右側の西の空にあると判断できます。",
+      "required_concepts": [
+        "月は太陽の光を反射して光る",
+        "月の光っている側に太陽がある",
+        "太陽と月の位置関係"
+      ],
+      "scoring_matrix": {
+        "understanding": {
+          "aspect_name": "理解力",
+          "max_score": 4,
+          "levels": [
+            {
+              "score": 4,
+              "description": "月が太陽光の反射で光ることを理解し、太陽の方角を正しく推論できている"
+            },
+            {
+              "score": 3,
+              "description": "月と太陽の位置関係について概ね理解している"
+            },
+            {
+              "score": 2,
+              "description": "月が光る理由または太陽の方角のいずれか一方のみ理解している"
+            },
+            {
+              "score": 1,
+              "description": "月と太陽の関係についての理解が不十分"
+            },
+            {
+              "score": 0,
+              "description": "月と太陽の関係を理解していない"
+            }
+          ]
+        },
+        "expression": {
+          "aspect_name": "表現力",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "理由と根拠を論理的に関連づけて明確に説明できている"
+            },
+            {
+              "score": 2,
+              "description": "理由は述べているが、やや論理的つながりが弱い"
+            },
+            {
+              "score": 1,
+              "description": "断片的な説明にとどまり、論理性に欠ける"
+            },
+            {
+              "score": 0,
+              "description": "説明が不適切または理解不能"
+            }
+          ]
+        },
+        "accuracy": {
+          "aspect_name": "正確性",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "方角・月の光り方・太陽光の反射について正確に記述している"
+            },
+            {
+              "score": 2,
+              "description": "一部に不正確な表現があるが、概ね正確"
+            },
+            {
+              "score": 1,
+              "description": "重要な部分に誤りや不正確な表現がある"
+            },
+            {
+              "score": 0,
+              "description": "内容が不正確"
+            }
+          ]
+        }
+      },
+      "common_errors": [
+        {
+          "pattern": "太陽は東にあると答えている",
+          "feedback": "月の光っている側をよく観察しましょう。月は太陽の光を反射して光ります。右側が光っているということは、どちら側から光が当たっているでしょうか。"
+        },
+        {
+          "pattern": "月自身が光っていると考えている",
+          "feedback": "月は自分では光りません。太陽の光を反射して光って見えます。この点を踏まえて、太陽の位置を考えてみましょう。"
+        },
+        {
+          "pattern": "方角は答えているが理由の説明がない",
+          "feedback": "なぜその方角に太陽があると考えたのか、月が光って見える理由と関連づけて説明することが大切です。"
+        },
+        {
+          "pattern": "月の満ち欠けの周期について説明している",
+          "feedback": "この問題では、今見えている月と太陽の位置関係を考えます。月が光る仕組みを使って、太陽の方角を推論しましょう。"
+        }
+      ],
+      "thinking_skills": {
+        "critical_thinking": 40,
+        "judgment": 35,
+        "expression": 25
+      }
+    }
+  ],
+  "metadata": {
+    "cos_code": "8260263200000000",
+    "subject": "理科",
+    "grade": 6,
+    "description": "Ｂ　生命・地球",
+    "question_type": "extended_text",
+    "char_limits": {
+      "short": {
+        "min_chars": 50,
+        "max_chars": 100,
+        "model_answer_target": 90
+      },
+      "long": {
+        "min_chars": 70,
+        "max_chars": 140,
+        "model_answer_target": 130
+      }
+    },
+    "max_score": 10
+  }
+}

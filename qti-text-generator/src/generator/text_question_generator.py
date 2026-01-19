@@ -10,6 +10,7 @@ import os
 # 親ディレクトリをパスに追加
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
 from config.settings import ANTHROPIC_API_KEY, DEFAULT_MODEL
+from src.utils.api_stats import api_stats
 
 
 class TextQuestionGenerator:
@@ -52,6 +53,12 @@ class TextQuestionGenerator:
                 system=system_prompt,
                 messages=[{"role": "user", "content": user_prompt}],
             )
+
+            # 統計情報を記録
+            input_tokens = response.usage.input_tokens
+            output_tokens = response.usage.output_tokens
+            api_stats.add_call("問題生成", input_tokens, output_tokens)
+            print(f"[INFO] API使用量: 入力={input_tokens:,} tokens, 出力={output_tokens:,} tokens")
 
             # レスポンスからテキストを抽出
             content = response.content[0].text

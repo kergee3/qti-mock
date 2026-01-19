@@ -9,6 +9,15 @@ import ConstructionOutlinedIcon from '@mui/icons-material/ConstructionOutlined'
 import type { ItemInfo, FontOption } from '@/types/test'
 import type { AiTextEntry, AiTextSummary } from '@/types/ai-text'
 import { usePlatformDetection } from '@/hooks/usePlatformDetection'
+import { useSettings, type AiModel } from '@/contexts/SettingsContext'
+
+/** AIモデル名を実際のモデルIDに変換するマッピング */
+const AI_MODEL_ID_MAP: Record<AiModel, string> = {
+  'claude-sonnet-4.5': 'claude-sonnet-4-5-20250929',
+  'claude-haiku-4.5': 'claude-haiku-4-5-20251001',
+  'claude-sonnet-4': 'claude-sonnet-4-20250514',
+  'claude-haiku-3.5': 'claude-3-5-haiku-20241022',
+}
 
 interface AiTextInitialScreenProps {
   entries: AiTextEntry[]
@@ -102,6 +111,7 @@ export function AiTextInitialScreen({
   onStart,
 }: AiTextInitialScreenProps) {
   const { isWindows } = usePlatformDetection()
+  const { aiModel } = useSettings()
   const [copiedItemId, setCopiedItemId] = useState<string | null>(null)
   const [snackbarOpen, setSnackbarOpen] = useState(false)
 
@@ -275,8 +285,9 @@ export function AiTextInitialScreen({
           </Box>
           <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: { xs: 0.5, sm: 1.5 }, mt: 0.5 }}>
             <Box><strong>問題数:</strong> {summary.total_questions}</Box>
-            <Box><strong>生成AIモデル:</strong> {summary.model}</Box>
             <Box><strong>満点:</strong> {summary.metadata.max_score}点</Box>
+            <Box><strong>作問AI:</strong> {summary.model}</Box>
+            <Box><strong>採点AI:</strong> {AI_MODEL_ID_MAP[aiModel]}</Box>
           </Box>
         </Box>
       )}

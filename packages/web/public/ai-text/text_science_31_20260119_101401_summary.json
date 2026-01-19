@@ -1,0 +1,563 @@
+{
+  "timestamp": "20260119_101401",
+  "model": "claude-sonnet-4-5-20250929",
+  "question_type": "extended_text",
+  "total_questions": 5,
+  "output_directory": "text_science_31_20260119_101401",
+  "files": [
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-text/text_science_31_20260119_101401/text_science_31_001-zGd132omxthK1NzusbfgFWGDbjvuUI.xml",
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-text/text_science_31_20260119_101401/text_science_31_002-jQbEWL1NKgDzJHJubLpz2b5trgRz8r.xml",
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-text/text_science_31_20260119_101401/text_science_31_003-DA7jfnamzjRGjvYF1vTabh5kbBUAB1.xml",
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-text/text_science_31_20260119_101401/text_science_31_004-dbx5d6CYZOXMk3kB32nCacERIcyJh0.xml",
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-text/text_science_31_20260119_101401/text_science_31_005-OudFQz6yjWGWteTcmWJjFgXC2xPEtR.xml"
+  ],
+  "questions": [
+    {
+      "question_id": "text-001",
+      "difficulty": 1,
+      "title": "物が燃え続ける条件",
+      "question_text": "ろうそくをびんの中に入れてふたをすると、しばらくして火が消えてしまいます。一方、ふたをしないで燃やすと、ろうそくは燃え続けます。物が燃え続けるためには空気の入れ替わりが必要です。空気が入れ替わらないと物が燃え続けないのはなぜですか。「酸素」という言葉を使って説明しなさい。",
+      "model_answer": "物が燃えるときには空気中の酸素が使われます。空気が入れ替わらないと、酸素が使われてなくなってしまうので、物が燃え続けることができなくなるからです。",
+      "required_concepts": [
+        "酸素が燃焼に必要",
+        "酸素が使われる",
+        "空気の入れ替わり"
+      ],
+      "scoring_matrix": {
+        "understanding": {
+          "aspect_name": "理解力",
+          "max_score": 4,
+          "levels": [
+            {
+              "score": 4,
+              "description": "酸素が燃焼に使われることと、使われた酸素がなくなることの両方を正しく理解している"
+            },
+            {
+              "score": 3,
+              "description": "酸素が燃焼に使われることを理解しているが、なくなることの説明が不十分"
+            },
+            {
+              "score": 2,
+              "description": "酸素が関係することは理解しているが、因果関係が不明確"
+            },
+            {
+              "score": 1,
+              "description": "酸素について触れているが、燃焼との関係が不正確"
+            },
+            {
+              "score": 0,
+              "description": "酸素について触れていない、または全く理解していない"
+            }
+          ]
+        },
+        "expression": {
+          "aspect_name": "表現力",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "原因と結果を論理的に結びつけて明確に表現している"
+            },
+            {
+              "score": 2,
+              "description": "概ね論理的だが、一部の接続が不明確"
+            },
+            {
+              "score": 1,
+              "description": "断片的な説明で論理の流れが分かりにくい"
+            },
+            {
+              "score": 0,
+              "description": "論理的なつながりがない"
+            }
+          ]
+        },
+        "accuracy": {
+          "aspect_name": "正確性",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "「酸素」「使われる」などの用語を正確に使用している"
+            },
+            {
+              "score": 2,
+              "description": "用語は使用しているが、一部不正確な表現がある"
+            },
+            {
+              "score": 1,
+              "description": "用語の使い方が不適切"
+            },
+            {
+              "score": 0,
+              "description": "科学的に誤った内容を含む"
+            }
+          ]
+        }
+      },
+      "common_errors": [
+        {
+          "pattern": "空気がなくなるから",
+          "feedback": "空気全体ではなく、空気の中の「酸素」が使われることに注目しましょう。"
+        },
+        {
+          "pattern": "二酸化炭素が増えるから",
+          "feedback": "二酸化炭素が増えることも事実ですが、酸素が使われて減ることが燃え続けない直接の理由です。"
+        },
+        {
+          "pattern": "酸素がいるから",
+          "feedback": "なぜ酸素が必要なのか、酸素がどうなるのかまで説明しましょう。"
+        },
+        {
+          "pattern": "火が酸素を食べるから",
+          "feedback": "「食べる」ではなく、「使われる」という科学的な言葉を使いましょう。"
+        }
+      ],
+      "thinking_skills": {
+        "critical_thinking": 40,
+        "judgment": 30,
+        "expression": 30
+      }
+    },
+    {
+      "question_id": "text-002",
+      "difficulty": 2,
+      "title": "酸素の働きの重要性",
+      "question_text": "ろうそくが燃え続けるためには、酸素が必要です。酸素が物を燃やす働きを持つことは、私たちの生活にとってどのような意義があると考えられますか。具体的な例を挙げながら説明してください。",
+      "model_answer": "酸素が物を燃やす働きを持つことで、私たちは料理をしたり暖房を使ったりすることができます。また、自動車や工場を動かすときにも、燃料を燃やして動力を得ることができるため、現代の生活には欠かせない重要な働きです。",
+      "required_concepts": [
+        "酸素の燃焼を助ける働き",
+        "日常生活での燃焼の利用",
+        "燃焼による熱やエネルギーの発生"
+      ],
+      "scoring_matrix": {
+        "understanding": {
+          "aspect_name": "理解力",
+          "max_score": 4,
+          "levels": [
+            {
+              "score": 4,
+              "description": "酸素の働きと生活への意義を正確に理解し、因果関係を明確に示している"
+            },
+            {
+              "score": 3,
+              "description": "酸素の働きと生活への意義の関係を概ね理解している"
+            },
+            {
+              "score": 2,
+              "description": "酸素の働きまたは生活への意義のどちらかを部分的に理解している"
+            },
+            {
+              "score": 1,
+              "description": "酸素の働きについての理解が不十分"
+            },
+            {
+              "score": 0,
+              "description": "酸素の働きを理解していない"
+            }
+          ]
+        },
+        "expression": {
+          "aspect_name": "表現力",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "具体例を挙げて論理的に説明している"
+            },
+            {
+              "score": 2,
+              "description": "具体例または論理的説明のどちらかができている"
+            },
+            {
+              "score": 1,
+              "description": "説明が抽象的で分かりにくい"
+            },
+            {
+              "score": 0,
+              "description": "説明が不適切または理解不能"
+            }
+          ]
+        },
+        "accuracy": {
+          "aspect_name": "正確性",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "科学的に正確な用語と事実を用いている"
+            },
+            {
+              "score": 2,
+              "description": "概ね正確だが一部不正確な表現がある"
+            },
+            {
+              "score": 1,
+              "description": "重要な部分に不正確な表現がある"
+            },
+            {
+              "score": 0,
+              "description": "科学的に誤った内容を含む"
+            }
+          ]
+        }
+      },
+      "common_errors": [
+        {
+          "pattern": "酸素そのものが燃えると説明している",
+          "feedback": "酸素は燃える物質ではなく、物を燃やす働きをする気体です。酸素があることで他の物が燃えることができます。"
+        },
+        {
+          "pattern": "具体例を挙げずに抽象的な説明のみ",
+          "feedback": "料理、暖房、自動車など、身近な具体例を挙げながら説明すると、より分かりやすくなります。"
+        },
+        {
+          "pattern": "呼吸と燃焼を混同している",
+          "feedback": "呼吸も酸素を使いますが、ここでは「物を燃やす」という燃焼の働きに焦点を当てて説明しましょう。"
+        }
+      ],
+      "thinking_skills": {
+        "critical_thinking": 35,
+        "judgment": 30,
+        "expression": 35
+      }
+    },
+    {
+      "question_id": "text-003",
+      "difficulty": 3,
+      "title": "溶解と質量保存の関係",
+      "question_text": "食塩20gを水180gに溶かしたとき、全体の重さは200gのまま変わりません。一方、同じ20gの食塩を細かく砕いても、重さは20gのまま変わりません。これら2つの現象に共通する、物質の粒に関する考え方を使って、なぜ重さが変わらないのか説明してください。",
+      "model_answer": "食塩を水に溶かしても、細かく砕いても、食塩の粒そのものはなくなったり、新しく生まれたりしていないため、重さは変わりません。溶けた食塩は目に見えないほど小さな粒になって水の中に散らばっているだけで、粒の数や粒そのものの重さは変わっていないからです。物質の粒は保存されるという性質があります。",
+      "required_concepts": [
+        "粒子の保存性",
+        "溶解現象",
+        "質量保存の法則"
+      ],
+      "scoring_matrix": {
+        "understanding": {
+          "aspect_name": "理解力",
+          "max_score": 4,
+          "levels": [
+            {
+              "score": 4,
+              "description": "粒子の保存性と質量保存を正確に関連付けて理解している"
+            },
+            {
+              "score": 3,
+              "description": "粒子がなくならないことを理解している"
+            },
+            {
+              "score": 2,
+              "description": "重さが変わらないことは理解しているが粒子との関連が不十分"
+            },
+            {
+              "score": 1,
+              "description": "現象の理解が部分的"
+            },
+            {
+              "score": 0,
+              "description": "現象を理解していない"
+            }
+          ]
+        },
+        "expression": {
+          "aspect_name": "表現力",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "粒子の視点から論理的に説明できている"
+            },
+            {
+              "score": 2,
+              "description": "概ね論理的だが一部説明不足"
+            },
+            {
+              "score": 1,
+              "description": "説明に飛躍がある"
+            },
+            {
+              "score": 0,
+              "description": "論理的な説明になっていない"
+            }
+          ]
+        },
+        "accuracy": {
+          "aspect_name": "正確性",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "粒子、溶解などの用語を正確に使用している"
+            },
+            {
+              "score": 2,
+              "description": "用語使用は概ね正確"
+            },
+            {
+              "score": 1,
+              "description": "用語使用に一部不正確さがある"
+            },
+            {
+              "score": 0,
+              "description": "用語使用が不適切"
+            }
+          ]
+        }
+      },
+      "common_errors": [
+        {
+          "pattern": "食塩が水と混ざって別の物質になったから",
+          "feedback": "食塩は水に溶けても食塩のままです。粒が小さくなって散らばっているだけで、物質そのものは変化していません。"
+        },
+        {
+          "pattern": "食塩が見えなくなったから重さが減る",
+          "feedback": "目に見えなくなっても、食塩の粒はなくなっていません。細かい粒として水の中に存在しているため、重さは変わりません。"
+        },
+        {
+          "pattern": "水が食塩を吸収したから",
+          "feedback": "水が食塩を吸収するのではなく、食塩の粒が水の中に散らばっているだけです。粒の数は変わらないので、重さも変わりません。"
+        },
+        {
+          "pattern": "溶けたから軽くなる",
+          "feedback": "溶けることは、粒が細かく散らばることです。粒そのものがなくなるわけではないので、重さは変わりません。"
+        }
+      ],
+      "thinking_skills": {
+        "critical_thinking": 45,
+        "judgment": 25,
+        "expression": 30
+      }
+    },
+    {
+      "question_id": "text-004",
+      "difficulty": 4,
+      "title": "てこを利用した道具の工夫",
+      "question_text": "ペンチは、かたい針金を切るときに便利な道具です。ペンチを使うと、手で直接切ろうとするよりも小さな力で針金を切ることができます。ペンチがてこの規則性を利用していることに注目して、なぜ小さな力で針金を切ることができるのか、その仕組みと便利さについて説明しなさい。",
+      "model_answer": "ペンチは支点が刃の部分にあり、力点が持ち手の部分にあるため、支点から力点までの距離が長くなっています。てこの規則性により、支点から力点までの距離が長いほど小さな力で大きな力を出すことができます。そのため、手で直接切るよりも小さな力でかたい針金を切ることができ、力の弱い人でも安全に作業ができて便利です。",
+      "required_concepts": [
+        "てこの支点・力点・作用点",
+        "距離と力の関係",
+        "てこの規則性の日常生活への応用"
+      ],
+      "scoring_matrix": {
+        "understanding": {
+          "aspect_name": "理解力",
+          "max_score": 4,
+          "levels": [
+            {
+              "score": 4,
+              "description": "てこの3点と距離の関係を正しく理解し、規則性を正確に説明している"
+            },
+            {
+              "score": 3,
+              "description": "てこの規則性を概ね理解し、距離と力の関係に触れている"
+            },
+            {
+              "score": 2,
+              "description": "てこの仕組みについて部分的に理解している"
+            },
+            {
+              "score": 1,
+              "description": "てこの概念に触れているが理解が不十分"
+            },
+            {
+              "score": 0,
+              "description": "てこの仕組みを理解していない"
+            }
+          ]
+        },
+        "expression": {
+          "aspect_name": "表現力",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "仕組みと便利さを論理的に結びつけて明確に表現している"
+            },
+            {
+              "score": 2,
+              "description": "仕組みまたは便利さについて概ね論理的に表現している"
+            },
+            {
+              "score": 1,
+              "description": "説明がやや断片的で論理的つながりが弱い"
+            },
+            {
+              "score": 0,
+              "description": "説明が不明確で論理性に欠ける"
+            }
+          ]
+        },
+        "accuracy": {
+          "aspect_name": "正確性",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "支点・力点・作用点などの用語を正確に使用している"
+            },
+            {
+              "score": 2,
+              "description": "用語の使用は概ね正確だが一部不正確"
+            },
+            {
+              "score": 1,
+              "description": "用語の使用に複数の誤りがある"
+            },
+            {
+              "score": 0,
+              "description": "用語の使用が不正確"
+            }
+          ]
+        }
+      },
+      "common_errors": [
+        {
+          "pattern": "てこの3点（支点・力点・作用点）に触れず、単に「梃子の原理」とだけ書いている",
+          "feedback": "ペンチのどの部分が支点・力点・作用点にあたるのかを具体的に説明しましょう。それぞれの位置関係が重要です。"
+        },
+        {
+          "pattern": "距離と力の関係について説明がなく、「てこを使うと便利」という結果だけを書いている",
+          "feedback": "なぜ小さな力で大きな力が出せるのか、支点からの距離に注目して仕組みを説明しましょう。"
+        },
+        {
+          "pattern": "仕組みは説明しているが、便利さや実用的な利点について触れていない",
+          "feedback": "てこの規則性を利用することで、私たちの生活にどのような便利さがもたらされるのかも説明しましょう。"
+        },
+        {
+          "pattern": "支点と力点の位置を逆に説明している",
+          "feedback": "ペンチでは、刃の部分（針金を切る部分）が支点に近く、持ち手の部分が力点です。位置関係を確認しましょう。"
+        }
+      ],
+      "thinking_skills": {
+        "critical_thinking": 45,
+        "judgment": 30,
+        "expression": 25
+      }
+    },
+    {
+      "question_id": "text-005",
+      "difficulty": 5,
+      "title": "センサーで電気を節約",
+      "question_text": "太陽光で発電した電気を蓄電器にためて、人が近づいたときだけLEDライトが点灯する照明を作りました。この照明には、人感センサーとLEDライトが使われています。人感センサーを使うことで、電気を効率的に利用できる理由を、「無駄」「必要なとき」という言葉を使って説明しなさい。",
+      "model_answer": "人感センサーを使うことで、人がいないときはライトが消えるため、電気の無駄づかいを防ぐことができます。また、人が近づいたときだけライトが点灯するので、必要なときにだけ電気を使うことができ、蓄電器にためた限られた電気を長く使い続けることができるからです。",
+      "required_concepts": [
+        "電気の効率的利用",
+        "センサーによる制御",
+        "蓄電器の活用"
+      ],
+      "scoring_matrix": {
+        "understanding": {
+          "aspect_name": "理解力",
+          "max_score": 4,
+          "levels": [
+            {
+              "score": 4,
+              "description": "センサー制御による無駄の削減と必要時のみの使用の両方を正確に理解している"
+            },
+            {
+              "score": 3,
+              "description": "センサー制御の効果について概ね理解している"
+            },
+            {
+              "score": 2,
+              "description": "電気の節約について部分的に理解している"
+            },
+            {
+              "score": 1,
+              "description": "センサーの働きについて断片的な理解にとどまる"
+            },
+            {
+              "score": 0,
+              "description": "電気の効率的利用について理解していない"
+            }
+          ]
+        },
+        "expression": {
+          "aspect_name": "表現力",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "指定語句を適切に使い、論理的に説明できている"
+            },
+            {
+              "score": 2,
+              "description": "指定語句を使い、概ね論理的に説明できている"
+            },
+            {
+              "score": 1,
+              "description": "説明が不十分または指定語句の使用が不適切"
+            },
+            {
+              "score": 0,
+              "description": "説明が成立していない"
+            }
+          ]
+        },
+        "accuracy": {
+          "aspect_name": "正確性",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "センサー、電気利用、蓄電器について正確に記述している"
+            },
+            {
+              "score": 2,
+              "description": "主要な用語を概ね正確に使用している"
+            },
+            {
+              "score": 1,
+              "description": "一部の用語や概念が不正確"
+            },
+            {
+              "score": 0,
+              "description": "用語や概念の使用が不正確"
+            }
+          ]
+        }
+      },
+      "common_errors": [
+        {
+          "pattern": "センサーが電気を作ると誤解している回答",
+          "feedback": "センサーは電気を作るのではなく、人の動きを感知してライトの点灯・消灯を制御する装置です。電気を作るのは太陽光パネルです。"
+        },
+        {
+          "pattern": "単に「電気が節約できる」とだけ述べ、具体的な理由が不足している回答",
+          "feedback": "なぜ電気が節約できるのか、人がいないときとい るときでどう違うのかを具体的に説明しましょう。「無駄」と「必要なとき」という言葉を使って説明してください。"
+        },
+        {
+          "pattern": "LEDライトの省エネ性能のみに着目した回答",
+          "feedback": "この問題は人感センサーを使うことの利点を問うています。LEDの省エネ性能ではなく、センサーで点灯を制御することで電気を効率的に使える理由を説明しましょう。"
+        }
+      ],
+      "thinking_skills": {
+        "critical_thinking": 40,
+        "judgment": 30,
+        "expression": 30
+      }
+    }
+  ],
+  "metadata": {
+    "cos_code": "8260263100000000",
+    "subject": "理科",
+    "grade": 6,
+    "description": "Ａ　物質・エネルギー",
+    "question_type": "extended_text",
+    "char_limits": {
+      "short": {
+        "min_chars": 50,
+        "max_chars": 100,
+        "model_answer_target": 90
+      },
+      "long": {
+        "min_chars": 70,
+        "max_chars": 140,
+        "model_answer_target": 130
+      }
+    },
+    "max_score": 10
+  }
+}

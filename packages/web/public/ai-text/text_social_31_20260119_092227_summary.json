@@ -1,0 +1,563 @@
+{
+  "timestamp": "20260119_092227",
+  "model": "claude-sonnet-4-5-20250929",
+  "question_type": "extended_text",
+  "total_questions": 5,
+  "output_directory": "text_social_31_20260119_092227",
+  "files": [
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-text/text_social_31_20260119_092227/text_social_31_001-Vuqg7wD2rJrv4DDcJMdNf8PrnbAtk4.xml",
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-text/text_social_31_20260119_092227/text_social_31_002-0WPT4COsi1UQNqzP5wLweUsmdRD260.xml",
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-text/text_social_31_20260119_092227/text_social_31_003-iPhB6i16wExIUkZpsH1y3uSTuJmURb.xml",
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-text/text_social_31_20260119_092227/text_social_31_004-F5eX4gAtOGDZfEV7vh2wG4DxFOCaLt.xml",
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-text/text_social_31_20260119_092227/text_social_31_005-P3DVqJC9ollxUbqwc73YlOSqyc3Nut.xml"
+  ],
+  "questions": [
+    {
+      "question_id": "text-001",
+      "difficulty": 1,
+      "title": "政治が国民生活に果たす役割",
+      "question_text": "わたしたちの国の政治は、国民生活の安定と向上のために大切な働きをしています。政治が国民生活のためにどのような働きをしているか、具体的な例を1つあげて、50文字以上100文字以内で説明しなさい。",
+      "model_answer": "政治は、国民から集めた税金を使って、道路や学校などをつくったり、医療や福祉のサービスを提供したりして、わたしたちが安心して暮らせるようにする働きをしています。",
+      "required_concepts": [
+        "政治の働き",
+        "国民生活",
+        "税金の使い道",
+        "公共サービス"
+      ],
+      "scoring_matrix": {
+        "understanding": {
+          "aspect_name": "理解力",
+          "max_score": 4,
+          "levels": [
+            {
+              "score": 4,
+              "description": "政治が国民生活に果たす役割を正しく理解し、具体例を適切に示している"
+            },
+            {
+              "score": 3,
+              "description": "政治の働きを概ね理解し、具体例を挙げている"
+            },
+            {
+              "score": 2,
+              "description": "政治の働きについて部分的に理解している"
+            },
+            {
+              "score": 1,
+              "description": "政治の働きについての理解が不十分"
+            },
+            {
+              "score": 0,
+              "description": "政治の働きを理解していない"
+            }
+          ]
+        },
+        "expression": {
+          "aspect_name": "表現力",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "論理的で分かりやすく、具体例を使って明確に説明している"
+            },
+            {
+              "score": 2,
+              "description": "概ね分かりやすく説明しているが、やや不明確な部分がある"
+            },
+            {
+              "score": 1,
+              "description": "説明が不十分で分かりにくい"
+            },
+            {
+              "score": 0,
+              "description": "説明になっていない"
+            }
+          ]
+        },
+        "accuracy": {
+          "aspect_name": "正確性",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "用語や内容が正確で、事実関係に誤りがない"
+            },
+            {
+              "score": 2,
+              "description": "概ね正確だが、一部不正確な表現がある"
+            },
+            {
+              "score": 1,
+              "description": "用語や内容に誤りが複数ある"
+            },
+            {
+              "score": 0,
+              "description": "用語や内容が不正確"
+            }
+          ]
+        }
+      },
+      "common_errors": [
+        {
+          "pattern": "政治家が国会で話し合いをしている、という手続きのみを書いている",
+          "feedback": "政治の働きとは、話し合いだけでなく、実際に国民生活のためにどのようなことをしているかを考えてみましょう。"
+        },
+        {
+          "pattern": "税金を集めることだけを書いている",
+          "feedback": "税金を集めることも政治の働きですが、集めた税金を使って国民のためにどのようなことをしているかも考えてみましょう。"
+        },
+        {
+          "pattern": "抽象的な表現のみで具体例がない",
+          "feedback": "「国民のために働く」だけでなく、道路をつくる、学校をつくる、病院で使えるようにするなど、具体的にどのようなことをしているか書いてみましょう。"
+        }
+      ],
+      "thinking_skills": {
+        "critical_thinking": 30,
+        "judgment": 30,
+        "expression": 40
+      }
+    },
+    {
+      "question_id": "text-002",
+      "difficulty": 2,
+      "title": "政治を学ぶ意義と自分の成長",
+      "question_text": "政治の働きについて学習することで、あなたはどのような力が身に付き、それが将来どのように役立つと思いますか。学習内容を具体的に挙げながら、90文字程度で説明しなさい。",
+      "model_answer": "政治の働きを学ぶことで、選挙や税金など国民生活と政治の関わりを理解する力が身に付きます。これにより、将来、社会の課題について自分で考え、投票などを通して主権者として責任ある行動ができるようになると思います。",
+      "required_concepts": [
+        "政治と国民生活の関わり",
+        "主権者としての自覚",
+        "学習内容の具体例"
+      ],
+      "scoring_matrix": {
+        "understanding": {
+          "aspect_name": "理解力",
+          "max_score": 4,
+          "levels": [
+            {
+              "score": 4,
+              "description": "政治学習の意義と将来への影響を具体的に理解している"
+            },
+            {
+              "score": 3,
+              "description": "政治学習の意義を概ね理解している"
+            },
+            {
+              "score": 2,
+              "description": "政治学習について部分的に理解している"
+            },
+            {
+              "score": 1,
+              "description": "政治学習の意義の理解が不十分"
+            },
+            {
+              "score": 0,
+              "description": "政治学習の意義を理解していない"
+            }
+          ]
+        },
+        "expression": {
+          "aspect_name": "表現力",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "学習内容と将来を論理的に結び付けて表現できている"
+            },
+            {
+              "score": 2,
+              "description": "概ね筋道立てて表現できている"
+            },
+            {
+              "score": 1,
+              "description": "表現がやや断片的"
+            },
+            {
+              "score": 0,
+              "description": "論理的な表現ができていない"
+            }
+          ]
+        },
+        "accuracy": {
+          "aspect_name": "正確性",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "具体的な学習内容を正確に挙げている"
+            },
+            {
+              "score": 2,
+              "description": "学習内容を概ね正確に挙げている"
+            },
+            {
+              "score": 1,
+              "description": "学習内容の記述が一部不正確"
+            },
+            {
+              "score": 0,
+              "description": "学習内容の記述が不正確"
+            }
+          ]
+        }
+      },
+      "common_errors": [
+        {
+          "pattern": "「賢くなる」「知識が増える」など抽象的な表現のみで、具体的な学習内容に触れていない",
+          "feedback": "選挙、税金、憲法など、具体的にどのような内容を学ぶのかを書きましょう。"
+        },
+        {
+          "pattern": "身に付く力だけを書き、それが将来どう役立つかに触れていない",
+          "feedback": "学んだことが将来の自分にどのように役立つのか、主権者としての行動と結び付けて考えましょう。"
+        },
+        {
+          "pattern": "「政治家になれる」など職業選択の話に終始している",
+          "feedback": "全ての国民に必要な主権者としての力について考えましょう。投票や社会参加の視点が大切です。"
+        }
+      ],
+      "thinking_skills": {
+        "critical_thinking": 35,
+        "judgment": 35,
+        "expression": 30
+      }
+    },
+    {
+      "question_id": "text-003",
+      "difficulty": 3,
+      "title": "政治学習に問題追究が必要な理由",
+      "question_text": "政治について学習するとき、なぜ「問題を追究・解決する活動」が大切なのでしょうか。政治が抽象的になりやすいという特徴をふまえて、具体的な事例を1つあげながら、あなたの考えを70文字以上140文字以内で書きなさい。",
+      "model_answer": "政治の学習では、用語や仕組みを覚えるだけでは国民生活との関わりが理解しにくいため、問題を追究・解決する活動が大切です。例えば、税金の使い道について具体的に調べることで、政治が私たちの生活の安定と向上のために働いていることが実感でき、主権者としての意識を育てることができるからです。（134文字）",
+      "required_concepts": [
+        "政治学習における具体的事例の重要性",
+        "国民生活と政治の関わり",
+        "主権者としての意識や態度の育成"
+      ],
+      "scoring_matrix": {
+        "understanding": {
+          "aspect_name": "理解力",
+          "max_score": 4,
+          "levels": [
+            {
+              "score": 4,
+              "description": "政治が抽象的になりやすい特徴と、問題追究の必要性を正しく関連付けて理解している"
+            },
+            {
+              "score": 3,
+              "description": "問題追究が必要な理由を概ね理解している"
+            },
+            {
+              "score": 2,
+              "description": "問題追究の重要性について部分的に理解している"
+            },
+            {
+              "score": 1,
+              "description": "政治学習の方法について断片的な理解にとどまる"
+            },
+            {
+              "score": 0,
+              "description": "問題の趣旨を理解していない"
+            }
+          ]
+        },
+        "expression": {
+          "aspect_name": "表現力",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "理由と具体例を論理的に結びつけて明確に表現している"
+            },
+            {
+              "score": 2,
+              "description": "理由と具体例を示しているが、やや説明不足"
+            },
+            {
+              "score": 1,
+              "description": "理由または具体例のどちらかが不明確"
+            },
+            {
+              "score": 0,
+              "description": "論理的なつながりが見られない"
+            }
+          ]
+        },
+        "accuracy": {
+          "aspect_name": "正確性",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "適切な具体例を示し、用語も正確に使用している"
+            },
+            {
+              "score": 2,
+              "description": "具体例は示しているが、やや適切性に欠ける"
+            },
+            {
+              "score": 1,
+              "description": "具体例が抽象的または不適切"
+            },
+            {
+              "score": 0,
+              "description": "具体例が示されていない、または誤っている"
+            }
+          ]
+        }
+      },
+      "common_errors": [
+        {
+          "pattern": "「難しいから」「分かりやすくするため」など、抽象的な理由のみで具体例がない",
+          "feedback": "なぜ問題追究が必要なのか、政治学習の特徴をふまえて、具体的な事例（税金、選挙、社会保障など）を1つあげて説明しましょう。"
+        },
+        {
+          "pattern": "具体例は示しているが、問題追究の必要性との関連が不明確",
+          "feedback": "あげた具体例について調べることが、なぜ政治の理解につながるのかを説明しましょう。国民生活との関わりや主権者意識の育成という視点で考えてみましょう。"
+        },
+        {
+          "pattern": "「興味をもつため」「楽しく学ぶため」など、学習意欲の観点のみに焦点を当てている",
+          "feedback": "政治が抽象的になりやすいという特徴に注目しましょう。具体的な事例を調べることで、政治と国民生活の関わりがどのように理解できるか考えてみましょう。"
+        },
+        {
+          "pattern": "文字数が70文字未満",
+          "feedback": "70文字以上140文字以内で書きましょう。理由と具体例の両方を含めて説明してください。"
+        }
+      ],
+      "thinking_skills": {
+        "critical_thinking": 40,
+        "judgment": 35,
+        "expression": 25
+      }
+    },
+    {
+      "question_id": "text-004",
+      "difficulty": 4,
+      "title": "税金と政治の働きの関係",
+      "question_text": "私たちが納める税金は、国や地方公共団体によって様々な事業に使われています。税金が国民生活の向上のために使われる仕組みと、その使い道を決める政治の働きについて、国会や地方議会の役割にふれながら説明しなさい。（70文字以上140文字以内）",
+      "model_answer": "税金は、国民が納めた大切な財源として、福祉や教育、道路整備などの事業に使われます。その使い道は、国会や地方議会で国民の代表者である議員が話し合い、予算として決定します。このように、政治は限られた税金を公平に配分し、国民生活の安定と向上を図る重要な働きをしています。（130文字）",
+      "required_concepts": [
+        "租税の役割",
+        "国会や地方議会による予算の決定",
+        "国民主権と代表者",
+        "政治による国民生活の安定と向上"
+      ],
+      "scoring_matrix": {
+        "understanding": {
+          "aspect_name": "理解力",
+          "max_score": 4,
+          "levels": [
+            {
+              "score": 4,
+              "description": "税金の役割と政治の働きの関係を正確に理解し、国会・議会の役割まで説明できている"
+            },
+            {
+              "score": 3,
+              "description": "税金の役割と政治の働きの関係を概ね理解し説明できている"
+            },
+            {
+              "score": 2,
+              "description": "税金の使い道または政治の働きのいずれか一方のみ説明できている"
+            },
+            {
+              "score": 1,
+              "description": "税金と政治の関係についての理解が部分的である"
+            },
+            {
+              "score": 0,
+              "description": "税金と政治の関係を理解していない"
+            }
+          ]
+        },
+        "expression": {
+          "aspect_name": "表現力",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "税金の流れと政治の働きを論理的に結びつけて明確に表現している"
+            },
+            {
+              "score": 2,
+              "description": "概ね論理的に説明できているが、一部つながりが不明確"
+            },
+            {
+              "score": 1,
+              "description": "断片的な説明にとどまり、論理的なつながりが弱い"
+            },
+            {
+              "score": 0,
+              "description": "論理的な説明ができていない"
+            }
+          ]
+        },
+        "accuracy": {
+          "aspect_name": "正確性",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "「税金」「国会」「議会」「予算」などの用語を正確に使用している"
+            },
+            {
+              "score": 2,
+              "description": "主要な用語を概ね正確に使用しているが、一部不正確"
+            },
+            {
+              "score": 1,
+              "description": "用語の使用に複数の誤りがある"
+            },
+            {
+              "score": 0,
+              "description": "用語の使用が不適切で事実関係に誤りがある"
+            }
+          ]
+        }
+      },
+      "common_errors": [
+        {
+          "pattern": "税金の使い道の例示のみで、政治の働きに言及していない",
+          "feedback": "税金がどのように使われるかだけでなく、その使い道を誰がどのように決めているのか、政治の働きについても説明しましょう。"
+        },
+        {
+          "pattern": "国会や議会の役割に触れず、抽象的に「政治が決める」とだけ述べている",
+          "feedback": "具体的に国会や地方議会が予算を決定する役割を果たしていることを説明すると、より詳しい説明になります。"
+        },
+        {
+          "pattern": "税金の使い道と政治の働きを別々に述べ、両者の関係性が示されていない",
+          "feedback": "税金と政治の働きがどのように結びついているのか、その関係性を明確に説明しましょう。国民が納めた税金を、国民の代表者が話し合って使い道を決めるという流れを意識してください。"
+        }
+      ],
+      "thinking_skills": {
+        "critical_thinking": 35,
+        "judgment": 35,
+        "expression": 30
+      }
+    },
+    {
+      "question_id": "text-005",
+      "difficulty": 5,
+      "title": "政治課題解決に必要な思考と判断",
+      "question_text": "あなたの住む地域で、高齢者が安心して暮らせるまちづくりを進めることになりました。市役所の担当者は、限られた予算の中で「介護施設の増設」と「在宅介護の支援強化」のどちらを優先すべきか悩んでいます。あなたが担当者なら、どのような情報を集めて、どのような考え方で判断しますか。情報収集の方法と判断の理由を、政治の働きや民主主義の考え方と関連付けて説明しなさい。",
+      "model_answer": "まず、地域の高齢者人口や家族構成、住民アンケートなどの情報を集めます。次に、議会で住民の代表である議員の意見を聞き、専門家の助言も受けます。民主主義では多くの人の意見を反映することが大切なので、集めた情報をもとに住民説明会を開いて意見を聞きます。その上で、より多くの高齢者が望む方を優先し、予算内で両方を進める計画を立てて判断します。",
+      "required_concepts": [
+        "情報収集の方法",
+        "住民意見の反映",
+        "民主主義の原則",
+        "予算との関わり",
+        "議会や専門家の役割"
+      ],
+      "scoring_matrix": {
+        "understanding": {
+          "aspect_name": "理解力",
+          "max_score": 4,
+          "levels": [
+            {
+              "score": 4,
+              "description": "情報収集・判断過程・民主主義の考え方を全て正しく理解している"
+            },
+            {
+              "score": 3,
+              "description": "情報収集と判断過程は理解しているが、民主主義との関連がやや弱い"
+            },
+            {
+              "score": 2,
+              "description": "情報収集か判断過程のどちらか一方のみ理解している"
+            },
+            {
+              "score": 1,
+              "description": "断片的な理解にとどまっている"
+            },
+            {
+              "score": 0,
+              "description": "問題の趣旨を理解していない"
+            }
+          ]
+        },
+        "expression": {
+          "aspect_name": "表現力",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "情報収集→判断の流れが論理的で明確"
+            },
+            {
+              "score": 2,
+              "description": "概ね論理的だが、一部つながりが不明確"
+            },
+            {
+              "score": 1,
+              "description": "箇条書き的で論理性に欠ける"
+            },
+            {
+              "score": 0,
+              "description": "表現が著しく不適切"
+            }
+          ]
+        },
+        "accuracy": {
+          "aspect_name": "正確性",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "政治用語や民主主義の概念を正確に使用している"
+            },
+            {
+              "score": 2,
+              "description": "用語は概ね正確だが一部不正確"
+            },
+            {
+              "score": 1,
+              "description": "用語の使い方に誤りが目立つ"
+            },
+            {
+              "score": 0,
+              "description": "用語が不正確で内容も誤っている"
+            }
+          ]
+        }
+      },
+      "common_errors": [
+        {
+          "pattern": "情報収集の方法が具体的でなく、「調べる」「聞く」だけで終わっている",
+          "feedback": "どのような情報を、誰から、どのような方法で集めるのか具体的に書きましょう。例えば、統計資料、アンケート、議会での議論などが考えられます。"
+        },
+        {
+          "pattern": "判断の理由が「お金がかからないから」など、予算面だけに偏っている",
+          "feedback": "政治の判断では、予算だけでなく、住民の意見や民主主義の考え方も大切です。多くの人の意見を聞き、反映させる過程を説明しましょう。"
+        },
+        {
+          "pattern": "自分の意見だけで決める内容になっており、民主主義の視点がない",
+          "feedback": "民主主義では、住民の代表である議員や、住民自身の意見を聞くことが重要です。どのように意見を集め、反映させるかを説明しましょう。"
+        },
+        {
+          "pattern": "情報収集と判断が別々に書かれ、つながりが見えない",
+          "feedback": "集めた情報をどのように判断に活かすのか、その過程を論理的に説明しましょう。情報→検討→判断という流れを意識してください。"
+        }
+      ],
+      "thinking_skills": {
+        "critical_thinking": 35,
+        "judgment": 40,
+        "expression": 25
+      }
+    }
+  ],
+  "metadata": {
+    "cos_code": "8220263100000000",
+    "subject": "社会",
+    "grade": 6,
+    "description": "(1) 我が国の政治の働きについて，学習の問題を追究・解決する活動を通して，次の事項を身に付けることができるよう指導する。",
+    "question_type": "extended_text",
+    "char_limits": {
+      "short": {
+        "min_chars": 50,
+        "max_chars": 100,
+        "model_answer_target": 90
+      },
+      "long": {
+        "min_chars": 70,
+        "max_chars": 140,
+        "model_answer_target": 130
+      }
+    },
+    "max_score": 10
+  }
+}

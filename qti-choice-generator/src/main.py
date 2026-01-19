@@ -17,6 +17,7 @@ from src.generator.topic_extractor import TopicExtractor
 from src.converter.qti_converter import QTIConverter
 from src.storage.file_exporter import FileExporter
 from src.storage.blob_uploader import BlobUploader
+from src.utils.api_stats import api_stats
 
 
 def generate_questions(
@@ -37,6 +38,9 @@ def generate_questions(
     Returns:
         dict: 生成結果のサマリー
     """
+    # API統計をリセット
+    api_stats.reset()
+
     print(f"\n{'='*60}")
     print(f"QTI問題生成バッチ")
     print(f"{'='*60}")
@@ -86,6 +90,7 @@ def generate_questions(
     # 3. 問題を生成（各問題に異なるトピックを割り当て）
     print(f"\n[Step 3/5] Claude APIで問題を生成中...")
     generator = QuestionGenerator()
+    api_stats.set_model(generator.model)  # モデル情報を設定
     questions = []
 
     # 全セクションの解説を結合（問題生成時に使用）
@@ -245,6 +250,30 @@ def generate_questions(
         except Exception as e:
             print(f"[ERROR] アップロードに失敗しました: {e}")
             summary['upload_error'] = str(e)
+
+    # API使用統計を表示
+    api_stats.print_summary()
+
+    # 統計情報をサマリーに追加
+    summary['api_stats'] = {
+        'model': api_stats.model,
+        'total_api_calls': api_stats.total_api_calls,
+        'total_input_tokens': api_stats.total_input_tokens,
+        'total_output_tokens': api_stats.total_output_tokens,
+        'total_input_cost_usd': api_stats.total_input_cost,
+        'total_output_cost_usd': api_stats.total_output_cost,
+        'total_cost_usd': api_stats.total_cost,
+        'steps': {
+            step.name: {
+                'api_calls': step.api_calls,
+                'input_tokens': step.input_tokens,
+                'output_tokens': step.output_tokens,
+                'input_cost_usd': step.get_input_cost(api_stats.model),
+                'output_cost_usd': step.get_output_cost(api_stats.model),
+            }
+            for step in api_stats.get_all_steps()
+        }
+    }
 
     return summary
 

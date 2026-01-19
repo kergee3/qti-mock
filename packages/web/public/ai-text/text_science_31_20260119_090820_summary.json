@@ -1,0 +1,569 @@
+{
+  "timestamp": "20260119_090820",
+  "model": "claude-sonnet-4-5-20250929",
+  "question_type": "extended_text",
+  "total_questions": 5,
+  "output_directory": "text_science_31_20260119_090820",
+  "files": [
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-text/text_science_31_20260119_090820/text_science_31_001-vJWKAamOIRPgYfUQmAFWBg1Dpd3LKf.xml",
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-text/text_science_31_20260119_090820/text_science_31_002-lL0ea3qqDBrMTMXUrM7LMF19MNoOEl.xml",
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-text/text_science_31_20260119_090820/text_science_31_003-5vcE9EYpucK9jFGEGpo1R537Wooxqy.xml",
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-text/text_science_31_20260119_090820/text_science_31_004-wIKtZJSxq7HEzUfUMcrLA8jbJiU3o3.xml",
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-text/text_science_31_20260119_090820/text_science_31_005-fqOCM6S8xxbRkWqYvkRUyoa6ix4W6m.xml"
+  ],
+  "questions": [
+    {
+      "question_id": "text-001",
+      "difficulty": 1,
+      "title": "ものが燃え続けるための条件",
+      "question_text": "集気びんの中で木片を燃やしたところ、しばらくすると火が消えてしまいました。火が消えてしまった理由を、空気の入れ替わりという言葉を使って説明してください。（50文字以上100文字以内で答えること）",
+      "model_answer": "集気びんの中は密閉されていて空気の入れ替わりができないため、燃焼に必要な酸素が使われてなくなり、二酸化炭素が増えたため、火が消えてしまった。",
+      "required_concepts": [
+        "空気の入れ替わり",
+        "酸素が使われる",
+        "二酸化炭素ができる"
+      ],
+      "scoring_matrix": {
+        "understanding": {
+          "aspect_name": "理解力",
+          "max_score": 4,
+          "levels": [
+            {
+              "score": 4,
+              "description": "空気の入れ替わりと酸素・二酸化炭素の関係を完全に理解している"
+            },
+            {
+              "score": 3,
+              "description": "空気の入れ替わりと燃焼の関係を概ね理解している"
+            },
+            {
+              "score": 2,
+              "description": "空気の入れ替わりまたは酸素について部分的に理解している"
+            },
+            {
+              "score": 1,
+              "description": "燃焼に関する理解が不十分"
+            },
+            {
+              "score": 0,
+              "description": "燃焼の仕組みを理解していない"
+            }
+          ]
+        },
+        "expression": {
+          "aspect_name": "表現力",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "原因と結果を論理的に明確に表現している"
+            },
+            {
+              "score": 2,
+              "description": "概ね論理的に説明できている"
+            },
+            {
+              "score": 1,
+              "description": "説明にやや論理性が不足している"
+            },
+            {
+              "score": 0,
+              "description": "論理的な説明ができていない"
+            }
+          ]
+        },
+        "accuracy": {
+          "aspect_name": "正確性",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "空気の入れ替わり、酸素、二酸化炭素を正確に使用している"
+            },
+            {
+              "score": 2,
+              "description": "用語を概ね正確に使用している"
+            },
+            {
+              "score": 1,
+              "description": "用語の使用に一部不正確さがある"
+            },
+            {
+              "score": 0,
+              "description": "用語の使用が不正確"
+            }
+          ]
+        }
+      },
+      "common_errors": [
+        {
+          "pattern": "「酸素がなくなったから」とだけ答え、空気の入れ替わりに言及していない",
+          "feedback": "問題文の条件にある「空気の入れ替わり」という言葉を使って説明しましょう。なぜ酸素がなくなったのかを考えてみてください。"
+        },
+        {
+          "pattern": "「空気がなくなったから」と答え、酸素や二酸化炭素に言及していない",
+          "feedback": "空気の中の何という気体が使われたのか、何という気体ができたのかを具体的に書きましょう。"
+        },
+        {
+          "pattern": "「密閉されているから」とだけ答え、燃焼による空気の変化に言及していない",
+          "feedback": "密閉されていることで、空気の中の気体がどのように変化したのかを説明しましょう。ものが燃えるときに使われる気体とできる気体について考えてみてください。"
+        }
+      ],
+      "thinking_skills": {
+        "critical_thinking": 40,
+        "judgment": 30,
+        "expression": 30
+      }
+    },
+    {
+      "question_id": "text-002",
+      "difficulty": 2,
+      "title": "酸素の働きと燃焼",
+      "question_text": "ろうそくを集気びんの中で燃やすと、しばらくして火が消えました。このとき、集気びんの中の空気はどのように変化したと考えられますか。「酸素」と「二酸化炭素」という言葉を必ず使って、説明しなさい。",
+      "model_answer": "ろうそくが燃えるときに、空気中の酸素が使われて減少し、かわりに二酸化炭素ができて増えた。酸素が少なくなったため、ろうそくの火が消えた。",
+      "required_concepts": [
+        "酸素が燃焼に使われる",
+        "二酸化炭素が発生する",
+        "酸素の減少と火が消える関係"
+      ],
+      "scoring_matrix": {
+        "understanding": {
+          "aspect_name": "理解力",
+          "max_score": 4,
+          "levels": [
+            {
+              "score": 4,
+              "description": "酸素の減少と二酸化炭素の増加、火が消える理由を全て理解している"
+            },
+            {
+              "score": 3,
+              "description": "酸素の減少と二酸化炭素の増加を理解しているが、火が消える理由の説明が不十分"
+            },
+            {
+              "score": 2,
+              "description": "酸素または二酸化炭素のいずれか一方の変化のみ理解している"
+            },
+            {
+              "score": 1,
+              "description": "空気の変化について部分的な理解にとどまる"
+            },
+            {
+              "score": 0,
+              "description": "燃焼と空気の変化の関係を理解していない"
+            }
+          ]
+        },
+        "expression": {
+          "aspect_name": "表現力",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "因果関係を明確に示し、論理的に説明できている"
+            },
+            {
+              "score": 2,
+              "description": "概ね論理的だが、一部つながりが不明確"
+            },
+            {
+              "score": 1,
+              "description": "事実の羅列で因果関係が不明確"
+            },
+            {
+              "score": 0,
+              "description": "説明として成立していない"
+            }
+          ]
+        },
+        "accuracy": {
+          "aspect_name": "正確性",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "用語を正確に使用し、事実関係も正しい"
+            },
+            {
+              "score": 2,
+              "description": "用語は正しいが、一部事実関係に誤りがある"
+            },
+            {
+              "score": 1,
+              "description": "用語の使い方が一部不正確"
+            },
+            {
+              "score": 0,
+              "description": "用語の使い方や事実関係が不正確"
+            }
+          ]
+        }
+      },
+      "common_errors": [
+        {
+          "pattern": "酸素が増えたと記述",
+          "feedback": "燃焼では酸素は使われて減少します。物が燃えるときに酸素がどうなるか、もう一度考えてみましょう。"
+        },
+        {
+          "pattern": "二酸化炭素が減ったと記述",
+          "feedback": "物が燃えると二酸化炭素ができます。燃える前と後で二酸化炭素の量はどう変化するか考えてみましょう。"
+        },
+        {
+          "pattern": "空気がなくなったと記述",
+          "feedback": "空気がすべてなくなるわけではありません。空気の中の何という気体が変化したのか、具体的に考えてみましょう。"
+        },
+        {
+          "pattern": "酸素と二酸化炭素の両方の言葉を使っていない",
+          "feedback": "問題文で指定された「酸素」と「二酸化炭素」という言葉を両方使って説明してください。"
+        }
+      ],
+      "thinking_skills": {
+        "critical_thinking": 40,
+        "judgment": 35,
+        "expression": 25
+      }
+    },
+    {
+      "question_id": "text-003",
+      "difficulty": 3,
+      "title": "溶解時の質量保存",
+      "question_text": "食塩20gを水100gに溶かしました。溶かす前の食塩と水を合わせた重さと、溶かした後の食塩水の重さを比べると、どちらも120gで変わりませんでした。なぜ物が水に溶けても重さが変わらないのか、溶けた食塩がどのような状態になっているかを説明しながら、その理由を答えなさい。（70文字以上140文字以内で答えること）",
+      "model_answer": "食塩は水に溶けると、目に見えないほど小さな粒になって水全体に広がります。しかし、食塩の粒そのものがなくなったわけではなく、水の中に均一に散らばって存在しています。溶ける前と溶けた後で、食塩と水の粒の数は変わらないため、全体の重さも変わりません。（120文字）",
+      "required_concepts": [
+        "溶解現象（物が水に溶ける現象）",
+        "質量保存の法則",
+        "溶質の粒子状態"
+      ],
+      "scoring_matrix": {
+        "understanding": {
+          "aspect_name": "理解力",
+          "max_score": 4,
+          "levels": [
+            {
+              "score": 4,
+              "description": "溶解時に物質が粒子として存在し続けることと質量保存を正しく関連付けて理解している"
+            },
+            {
+              "score": 3,
+              "description": "溶けた物質が水中に存在し続けることを理解しているが、説明がやや不十分"
+            },
+            {
+              "score": 2,
+              "description": "物質がなくならないことは理解しているが、粒子の状態や質量保存との関連が不明確"
+            },
+            {
+              "score": 1,
+              "description": "重さが変わらないことは述べているが、その理由の理解が不十分"
+            },
+            {
+              "score": 0,
+              "description": "溶解現象と質量保存の関係を理解していない"
+            }
+          ]
+        },
+        "expression": {
+          "aspect_name": "表現力",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "溶けた状態の説明から質量保存の理由まで論理的に記述できている"
+            },
+            {
+              "score": 2,
+              "description": "概ね論理的だが、説明の順序や因果関係がやや不明確"
+            },
+            {
+              "score": 1,
+              "description": "断片的な説明で、論理の流れが分かりにくい"
+            },
+            {
+              "score": 0,
+              "description": "説明が支離滅裂で理解できない"
+            }
+          ]
+        },
+        "accuracy": {
+          "aspect_name": "正確性",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "「溶ける」「粒」「広がる」「存在する」などの用語を正確に使用している"
+            },
+            {
+              "score": 2,
+              "description": "基本的な用語は正しいが、一部不正確な表現がある"
+            },
+            {
+              "score": 1,
+              "description": "用語の使用に複数の誤りがある"
+            },
+            {
+              "score": 0,
+              "description": "科学的に不正確な記述が多い"
+            }
+          ]
+        }
+      },
+      "common_errors": [
+        {
+          "pattern": "食塩が水と混ざって一体化したから重さが変わらない",
+          "feedback": "良い着眼点ですが、「混ざる」だけでなく、食塩が目に見えない小さな粒になって水の中に広がっている状態を説明しましょう。食塩の粒そのものは存在し続けています。"
+        },
+        {
+          "pattern": "食塩が液体になったから重さは変わらない",
+          "feedback": "食塩は液体になったわけではありません。目に見えないほど小さな粒となって水全体に均一に散らばった状態です。固体の粒のまま水の中に存在しています。"
+        },
+        {
+          "pattern": "食塩の量が変わっていないから重さも変わらない",
+          "feedback": "その通りですが、もう一歩踏み込んで考えましょう。なぜ食塩の量が変わらないのか、溶けた食塩がどのような状態で存在しているのかを説明すると、より良い解答になります。"
+        },
+        {
+          "pattern": "食塩が消えたわけではないから",
+          "feedback": "正しい考え方です。さらに、溶けた食塩がどこにどのような状態で存在しているのかを具体的に説明しましょう。「目に見えない小さな粒」や「水全体に広がっている」といった表現を使うとよいでしょう。"
+        }
+      ],
+      "thinking_skills": {
+        "critical_thinking": 40,
+        "judgment": 30,
+        "expression": 30
+      }
+    },
+    {
+      "question_id": "text-004",
+      "difficulty": 4,
+      "title": "てこを利用した道具の仕組み",
+      "question_text": "ペンチや釘抜きなどのてこを利用した道具は、小さな力で大きな仕事ができます。これらの道具がなぜ小さな力で大きな仕事ができるのか、支点・力点・作用点の位置関係と、てこの規則性の両方を使って説明しなさい。",
+      "model_answer": "ペンチや釘抜きは、力点から支点までの距離が、作用点から支点までの距離よりも長くなるように作られています。てこの規則性では、支点からの距離が長いほど小さな力で物を動かせるため、手で加えた小さな力が支点を中心に大きな力に変わり、固いものを切ったり、釘を抜いたりすることができます。",
+      "required_concepts": [
+        "支点・力点・作用点の位置関係",
+        "てこの規則性（距離と力の関係）",
+        "力の大きさの変換の仕組み"
+      ],
+      "scoring_matrix": {
+        "understanding": {
+          "aspect_name": "理解力",
+          "max_score": 4,
+          "levels": [
+            {
+              "score": 4,
+              "description": "支点・力点・作用点の位置関係とてこの規則性の両方を正確に理解し関連付けている"
+            },
+            {
+              "score": 3,
+              "description": "てこの規則性と道具の仕組みを概ね理解している"
+            },
+            {
+              "score": 2,
+              "description": "てこの規則性または位置関係のいずれかを部分的に理解している"
+            },
+            {
+              "score": 1,
+              "description": "てこに関する基本的な用語は使えているが理解が不十分"
+            },
+            {
+              "score": 0,
+              "description": "てこの仕組みを理解していない"
+            }
+          ]
+        },
+        "expression": {
+          "aspect_name": "表現力",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "因果関係を明確に示し、論理的に説明している"
+            },
+            {
+              "score": 2,
+              "description": "概ね順序立てて説明できている"
+            },
+            {
+              "score": 1,
+              "description": "説明に論理的なつながりが不十分"
+            },
+            {
+              "score": 0,
+              "description": "説明が断片的で論理性がない"
+            }
+          ]
+        },
+        "accuracy": {
+          "aspect_name": "正確性",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "支点・力点・作用点などの用語を正確に使用している"
+            },
+            {
+              "score": 2,
+              "description": "主要な用語を概ね正確に使用している"
+            },
+            {
+              "score": 1,
+              "description": "用語の使い方に一部誤りがある"
+            },
+            {
+              "score": 0,
+              "description": "用語の使い方が不正確"
+            }
+          ]
+        }
+      },
+      "common_errors": [
+        {
+          "pattern": "支点・力点・作用点の位置関係のみを説明し、てこの規則性に触れていない",
+          "feedback": "位置関係だけでなく、「支点からの距離が長いほど小さな力で動かせる」というてこの規則性も説明しましょう。"
+        },
+        {
+          "pattern": "「てこの原理」という言葉だけで説明し、具体的な仕組みを述べていない",
+          "feedback": "具体的に、どの距離が長いとどうなるのかを、支点・力点・作用点という言葉を使って説明しましょう。"
+        },
+        {
+          "pattern": "力が大きくなることは説明できているが、なぜ大きくなるのかの理由が不明確",
+          "feedback": "力点から支点までの距離と作用点から支点までの距離の関係が、力の大きさにどう影響するかを説明しましょう。"
+        },
+        {
+          "pattern": "道具の構造の説明のみで、てこの規則性との関連が説明されていない",
+          "feedback": "道具の構造が、てこの規則性に基づいてどのように力を変換しているかを結びつけて説明しましょう。"
+        }
+      ],
+      "thinking_skills": {
+        "critical_thinking": 40,
+        "judgment": 30,
+        "expression": 30
+      }
+    },
+    {
+      "question_id": "text-005",
+      "difficulty": 5,
+      "title": "自然エネルギーの活用方法",
+      "question_text": "太陽光や風力などの自然エネルギーで作った電気を、家庭で効率的に使うための工夫を考えました。発光ダイオード（LED）を使った照明を作るとき、センサーを取り付けるとより効率的に電気を利用できます。どのようなセンサーをどこに取り付け、どのような仕組みで電気を効率的に使うことができるか、具体的に説明しなさい。（センサーの種類・取り付け場所・効率的になる理由の3つを含めて書くこと）",
+      "model_answer": "明るさセンサーを照明の近くに取り付けます。昼間など周りが明るいときはセンサーが感知してLEDが自動的に消え、暗くなったら自動的に点灯するようにします。このようにすることで、必要なときだけ電気を使うことができ、蓄電器に蓄えた限られた電気を無駄なく効率的に利用することができます。",
+      "required_concepts": [
+        "自然エネルギーの利用",
+        "蓄電器による電気の貯蔵",
+        "センサーによる制御",
+        "電気の効率的利用",
+        "発光ダイオードの特性"
+      ],
+      "scoring_matrix": {
+        "understanding": {
+          "aspect_name": "理解力",
+          "max_score": 4,
+          "levels": [
+            {
+              "score": 4,
+              "description": "センサーの種類・場所・効率化の理由の3要素を正確に理解し説明できている"
+            },
+            {
+              "score": 3,
+              "description": "3要素のうち2要素を適切に理解している"
+            },
+            {
+              "score": 2,
+              "description": "3要素のうち1要素のみ理解している"
+            },
+            {
+              "score": 1,
+              "description": "電気の効率利用の概念は理解しているが具体性に欠ける"
+            },
+            {
+              "score": 0,
+              "description": "電気の効率利用について理解していない"
+            }
+          ]
+        },
+        "expression": {
+          "aspect_name": "表現力",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "仕組みを順序立てて論理的に説明できている"
+            },
+            {
+              "score": 2,
+              "description": "仕組みを説明しているが順序や論理がやや不明確"
+            },
+            {
+              "score": 1,
+              "description": "断片的な説明で論理的つながりが弱い"
+            },
+            {
+              "score": 0,
+              "description": "説明として成立していない"
+            }
+          ]
+        },
+        "accuracy": {
+          "aspect_name": "正確性",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "センサーや制御の仕組みについて正確な用語を使用している"
+            },
+            {
+              "score": 2,
+              "description": "概ね正確だが一部用語の使い方が不適切"
+            },
+            {
+              "score": 1,
+              "description": "用語の使い方に複数の誤りがある"
+            },
+            {
+              "score": 0,
+              "description": "用語の使い方が不正確で内容が伝わらない"
+            }
+          ]
+        }
+      },
+      "common_errors": [
+        {
+          "pattern": "単に「センサーをつける」とだけ書き、種類や場所、仕組みの説明がない",
+          "feedback": "どのような種類のセンサーを、どこに取り付けるか具体的に書きましょう。また、そのセンサーがどのように働いて電気を効率的に使えるのか、仕組みを説明する必要があります。"
+        },
+        {
+          "pattern": "タイマーを使って時間で制御すると書いている",
+          "feedback": "タイマーでの制御も一つの方法ですが、問題文では「センサー」を使った制御について聞いています。センサーは周りの状況を感知して自動で制御できる点で、より効率的です。"
+        },
+        {
+          "pattern": "蓄電器や自然エネルギーについて触れずに、一般的な節電方法のみを書いている",
+          "feedback": "この問題では、自然エネルギーで作った電気を蓄電器に蓄えて使う場合の工夫を聞いています。限られた電気を効率的に使うという観点から考えましょう。"
+        },
+        {
+          "pattern": "人感センサーについては書いているが、効率的になる理由の説明が不十分",
+          "feedback": "センサーの種類と場所は書けていますが、なぜそれによって電気が効率的に使えるのか、理由まで説明しましょう。必要なときだけ点灯することと、蓄電器の電気を無駄なく使えることを関連付けて考えてみましょう。"
+        }
+      ],
+      "thinking_skills": {
+        "critical_thinking": 35,
+        "judgment": 35,
+        "expression": 30
+      }
+    }
+  ],
+  "metadata": {
+    "cos_code": "8260263100000000",
+    "subject": "理科",
+    "grade": 6,
+    "description": "Ａ　物質・エネルギー",
+    "question_type": "extended_text",
+    "char_limits": {
+      "short": {
+        "min_chars": 50,
+        "max_chars": 100,
+        "model_answer_target": 90
+      },
+      "long": {
+        "min_chars": 70,
+        "max_chars": 140,
+        "model_answer_target": 130
+      }
+    },
+    "max_score": 10
+  }
+}
