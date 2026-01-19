@@ -763,7 +763,7 @@ export function PlaygroundPage() {
               src={iframeSrc}
               style={{
                 width: '100%',
-                height: 'calc(100vh - 510px)',
+                height: 'calc(100vh - 430px)',
                 minHeight: '200px',
                 border: 'none',
                 display: 'block',
