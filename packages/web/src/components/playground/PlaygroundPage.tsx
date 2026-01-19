@@ -193,13 +193,18 @@ export function PlaygroundPage() {
   const [textFieldRows, setTextFieldRows] = useState<number>(3)
   const [isExpanded, setIsExpanded] = useState<boolean>(false)
 
-  // sessionStorageからフォント設定を復元
+  // URLパラメータの font を優先、なければsessionStorageからフォント設定を復元
   useEffect(() => {
-    const savedFont = sessionStorage.getItem('playground-font')
-    if (savedFont) {
-      setSelectedFont(savedFont as FontOption)
+    const fontParam = searchParams.get('font')
+    if (fontParam && Object.keys(fontLabels).includes(fontParam)) {
+      setSelectedFont(fontParam as FontOption)
+    } else {
+      const savedFont = sessionStorage.getItem('playground-font')
+      if (savedFont) {
+        setSelectedFont(savedFont as FontOption)
+      }
     }
-  }, [])
+  }, [searchParams, fontLabels])
 
   // フォント設定変更ハンドラ（sessionStorageに保存 + 自動PLAY）
   const handleFontChange = (font: FontOption) => {

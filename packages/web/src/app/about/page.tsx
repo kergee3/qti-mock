@@ -64,7 +64,7 @@ export default function AboutPage() {
                   primary="基本問題"
                   secondary={
                     <>
-                      事前定義されたテストセットを順番に実行し、結果をサマリー表示。一部のサンプルは{' '}
+                      事前定義された横書き用と縦書き用のテストセットを選択して実行し、結果をサマリー表示。一部のサンプルは{' '}
                       <Link
                         href="https://github.com/amp-up-io/qti3-item-player-controller"
                         target="_blank"
@@ -101,7 +101,7 @@ export default function AboutPage() {
                 </ListItemIcon>
                 <ListItemText
                   primary="Playground"
-                  secondary="QTI XML を直接入力またはドラッグ&ドロップで実行。URLパラメータ（set, startswith, url）で、基本問題、AI選択問題、AI記述問題のサンプルをロード及び編集可能"
+                  secondary="QTI XML の直接入力、ファイルをドラッグ&ドロップ、または、URLパラメータ指定で、基本問題、AI選択問題、AI記述問題の QTI XML の閲覧と編集が可能"
                 />
               </ListItem>
               <ListItem>
@@ -128,7 +128,7 @@ export default function AboutPage() {
                 </ListItemIcon>
                 <ListItemText
                   primary="フォント・文字サイズ選択"
-                  secondary="複数の日本語フォントと文字サイズから選択可能"
+                  secondary="問題文の表示に、おもな日本語Webフォントを選択可能。Windowsでは「UD デジタル 教科書体」も選択可能。文字サイズも選択可能"
                 />
               </ListItem>
               <ListItem>
@@ -137,7 +137,7 @@ export default function AboutPage() {
                 </ListItemIcon>
                 <ListItemText
                   primary="音声入力"
-                  secondary="Web Speech API を使用した音声入力機能（Chrome / Edge / Safari）"
+                  secondary="Web Speech API を使用した音声入力が可能（Chrome / Edge / Safari）。設定ページで有効化可能"
                 />
               </ListItem>
             </List>

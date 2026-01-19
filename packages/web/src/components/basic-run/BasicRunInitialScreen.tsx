@@ -94,9 +94,11 @@ export function BasicRunInitialScreen({
     const subDir = writingDirection === 'vertical' ? 'items-v' : 'items-h'
     // ファイル名の先頭部分（番号）を取得
     const startswith = item.fileName.split('-')[0]
-    const playgroundUrl = `/playground?set=${subDir}&startswith=${startswith}`
+    // 既定フォント（system）以外の場合のみfontパラメータを追加
+    const fontParam = selectedFont !== 'system' ? `&font=${selectedFont}` : ''
+    const playgroundUrl = `/playground?set=${subDir}&startswith=${startswith}${fontParam}`
     window.open(playgroundUrl, '_blank')
-  }, [writingDirection])
+  }, [writingDirection, selectedFont])
 
   return (
     <Box sx={{ maxWidth: 900, mx: 'auto', p: 2 }}>

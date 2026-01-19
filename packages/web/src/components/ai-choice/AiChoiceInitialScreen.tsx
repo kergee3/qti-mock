@@ -98,9 +98,11 @@ export function AiChoiceInitialScreen({
 
   // Playgroundで問題を開く
   const handleOpenInPlayground = useCallback((item: ItemInfo) => {
-    const playgroundUrl = `/playground?url=${encodeURIComponent(item.fileName)}`
+    // 既定フォント（system）以外の場合のみfontパラメータを追加
+    const fontParam = selectedFont !== 'system' ? `&font=${selectedFont}` : ''
+    const playgroundUrl = `/playground?url=${encodeURIComponent(item.fileName)}${fontParam}`
     window.open(playgroundUrl, '_blank')
-  }, [])
+  }, [selectedFont])
 
   return (
     <Box sx={{ maxWidth: 900, mx: 'auto', p: 2 }}>
