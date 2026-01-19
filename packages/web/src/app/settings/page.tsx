@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import {
   Box,
   Typography,
@@ -27,6 +28,13 @@ const fontSizeMarks = [
 
 export default function SettingsPage() {
   const { navigationPosition, setNavigationPosition, fontSize, setFontSize, aiModel, setAiModel, voiceInputEnabled, setVoiceInputEnabled } = useSettings();
+  const [isLocalhost, setIsLocalhost] = useState(false);
+
+  useEffect(() => {
+    // localhost でのみ Sonnet モデルを選択可能にする
+    const hostname = window.location.hostname;
+    setIsLocalhost(hostname === 'localhost' || hostname === '127.0.0.1');
+  }, []);
 
   const handlePositionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNavigationPosition(event.target.value as NavigationPosition);
@@ -111,10 +119,14 @@ export default function SettingsPage() {
               <FormControlLabel
                 value="claude-sonnet-4.5"
                 control={<Radio />}
+                disabled={!isLocalhost}
                 label={
                   <Box>
-                    <Typography variant="body1">Claude Sonnet 4.5</Typography>
-                    <Typography variant="body2" color="text.secondary">
+                    <Typography variant="body1" color={!isLocalhost ? 'text.disabled' : undefined}>
+                      Claude Sonnet 4.5
+                      {!isLocalhost && ' (localhost のみ)'}
+                    </Typography>
+                    <Typography variant="body2" color={!isLocalhost ? 'text.disabled' : 'text.secondary'}>
                       最新・高品質モデル。複雑なタスクに最適
                     </Typography>
                   </Box>
