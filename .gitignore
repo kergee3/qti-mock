@@ -7,7 +7,10 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Dependencies
 node_modules
+
+# Build outputs
 dist
 dist-ssr
 *.local
@@ -28,6 +31,29 @@ dist-ssr
 
 # Next.js
 .next
+out
+
+# Vercel
+.vercel
+
+# TypeScript
+*.tsbuildinfo
+
+# Testing
+coverage
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+.venv/
+ENV/
+env/
+*.egg-info/
+*.egg
 
 # QTI Generator output
 qti-choice-generator/output
@@ -35,3 +61,8 @@ qti-text-generator/output
 
 # Environment files with secrets
 .env
+.env.local
+.env.*.local
+
+# Claude Code
+.claude

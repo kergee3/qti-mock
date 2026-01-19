@@ -4,21 +4,24 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 
-# .envファイルを読み込み
-load_dotenv()
+# .envファイルを読み込み（ローカル優先、なければルート）
+BASE_DIR = Path(__file__).resolve().parent.parent
+ROOT_DIR = BASE_DIR.parent
+local_env = BASE_DIR / ".env"
+root_env = ROOT_DIR / ".env"
+
+if local_env.exists():
+    load_dotenv(local_env)
+elif root_env.exists():
+    load_dotenv(root_env)
 
 # パス設定
-BASE_DIR = Path(__file__).resolve().parent.parent
 OUTPUT_DIR = BASE_DIR / "output"
 PROMPTS_DIR = BASE_DIR / "prompts"
 
 # Claude API設定
 ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY", "")
-DEFAULT_MODEL = os.getenv("DEFAULT_MODEL", "claude-sonnet-4-20250514")
-
-# 品質設定
-QUALITY_THRESHOLD = int(os.getenv("QUALITY_THRESHOLD", "80"))
-BATCH_SIZE = int(os.getenv("BATCH_SIZE", "5"))
+DEFAULT_MODEL = os.getenv("DEFAULT_MODEL", "claude-sonnet-4-5-20250929")
 
 # 学習指導要領LOD URL
 COS_BASE_URL = "https://w3id.org/jp-cos"
