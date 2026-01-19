@@ -215,7 +215,7 @@ export default function AboutPage() {
               学習指導要領LOD
             </Typography>
             <Typography variant="body1" color="text.secondary" sx={{ mb: 2 }}>
-              AI作成問題では、
+              AI選択式とAI記述式で使用する問題は、
               <Link
                 href="https://jp-cos.github.io/"
                 target="_blank"
@@ -226,7 +226,14 @@ export default function AboutPage() {
               {' '}を情報源として活用して自動的に問題集の作成を行いました。
             </Typography>
             <Typography variant="body1" color="text.secondary" sx={{ mb: 2 }}>
-              Linked Open Data (LOD)は、Web上で公開される構造化されたオープンデータをコンピュータが処理しやすい形式で相互にリンクさせたデータ空間やその公開手法の総称です。
+              <Link
+                href="https://ja.wikipedia.org/wiki/Linked_Open_Data"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Wikipedia
+              </Link>
+              {' '}によると、Linked Open Data (LOD)は、Web上で公開される構造化されたオープンデータをコンピュータが処理しやすい形式で相互にリンクさせたデータ空間やその公開手法の総称です。
               LODは、RDF（Resource Description Framework）という標準的なデータモデルを使用してデータを表現し、URI（Uniform Resource Identifier）を用いてデータ間の関係性を示します。
             </Typography>
             <Typography variant="body1" color="text.secondary" sx={{ mb: 2 }}>
