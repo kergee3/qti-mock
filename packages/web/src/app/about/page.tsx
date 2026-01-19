@@ -233,7 +233,7 @@ export default function AboutPage() {
               >
                 Wikipedia
               </Link>
-              {' '}によると、Linked Open Data (LOD)は、Web上で公開される構造化されたオープンデータをコンピュータが処理しやすい形式で相互にリンクさせたデータ空間やその公開手法の総称です。
+              {' '}などによると、Linked Open Data (LOD)は、Web上で公開される構造化されたオープンデータをコンピュータが処理しやすい形式で相互にリンクさせたデータ空間やその公開手法の総称です。
               LODは、RDF（Resource Description Framework）という標準的なデータモデルを使用してデータを表現し、URI（Uniform Resource Identifier）を用いてデータ間の関係性を示します。
             </Typography>
             <Typography variant="body1" color="text.secondary" sx={{ mb: 2 }}>
