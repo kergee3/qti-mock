@@ -638,6 +638,11 @@ export function AiTextInProgress({
                   トークン: 入力 {currentScoringResult.inputTokens?.toLocaleString() ?? '-'} / 出力 {currentScoringResult.outputTokens?.toLocaleString() ?? '-'}
                 </Typography>
               )}
+              {(currentScoringResult.inputCost !== undefined || currentScoringResult.outputCost !== undefined) && (
+                <Typography variant="caption" color="text.secondary">
+                  コスト($): 入力 {currentScoringResult.inputCost?.toFixed(4) ?? '-'} / 出力 {currentScoringResult.outputCost?.toFixed(4) ?? '-'} / 合計 {currentScoringResult.totalCost?.toFixed(4) ?? '-'}
+                </Typography>
+              )}
             </>
           )}
         </Box>

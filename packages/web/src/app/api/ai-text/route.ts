@@ -14,6 +14,27 @@ const MODEL_MAP: Record<AiModelType, string> = {
   'claude-haiku-3.5': 'claude-3-5-haiku-20241022',
 }
 
+// 価格設定（USD per MTok = 100万トークン）
+// 参照: https://platform.claude.com/docs/ja/about-claude/models/overview
+const PRICING: Record<AiModelType, { inputPerMTok: number; outputPerMTok: number }> = {
+  'claude-sonnet-4.5': { inputPerMTok: 3, outputPerMTok: 15 },
+  'claude-haiku-4.5': { inputPerMTok: 1, outputPerMTok: 5 },
+  'claude-sonnet-4': { inputPerMTok: 3, outputPerMTok: 15 },
+  'claude-haiku-3.5': { inputPerMTok: 1, outputPerMTok: 5 },
+}
+
+/**
+ * トークン数からコストを計算（USD）
+ */
+function calculateCost(model: AiModelType, inputTokens: number, outputTokens: number): { inputCost: number; outputCost: number; totalCost: number } {
+  const pricing = PRICING[model]
+  // MTok = 1,000,000 トークン
+  const inputCost = (inputTokens / 1_000_000) * pricing.inputPerMTok
+  const outputCost = (outputTokens / 1_000_000) * pricing.outputPerMTok
+  const totalCost = inputCost + outputCost
+  return { inputCost, outputCost, totalCost }
+}
+
 /**
  * AI採点APIエンドポイント（ストリーミング対応）
  * POST /api/ai-text
@@ -93,6 +114,9 @@ export async function POST(request: Request) {
           // 時間計測終了
           const scoringTimeMs = Date.now() - startTime
 
+          // コスト計算
+          const { inputCost, outputCost, totalCost } = calculateCost(selectedModel, inputTokens, outputTokens)
+
           // 完了後にJSONをパースして最終結果を送信
           const scoringResult = parseClaudeResponse(fullText)
           const resultWithMeta: AiScoringResponse = {
@@ -101,6 +125,9 @@ export async function POST(request: Request) {
             inputTokens,
             outputTokens,
             modelUsed: selectedModel,
+            inputCost,
+            outputCost,
+            totalCost,
           }
 
           controller.enqueue(encoder.encode(`data: ${JSON.stringify({ type: 'result', content: resultWithMeta })}\n\n`))

@@ -141,6 +141,10 @@ export interface AiScoringResponse {
   inputTokens?: number       // 入力トークン数
   outputTokens?: number      // 出力トークン数
   modelUsed?: string         // 使用したモデル
+  // コスト情報（USD）
+  inputCost?: number         // 入力コスト（USD）
+  outputCost?: number        // 出力コスト（USD）
+  totalCost?: number         // 合計コスト（USD）
 }
 
 /** AI採点結果（保存用） */
