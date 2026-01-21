@@ -78,6 +78,18 @@ qti-mock/
 │       │   └── items-v/      # QTI XMLファイル（縦書き）
 │       └── package.json
 │
+├── qti-generator/            # AI問題生成ツール（Python）
+│   ├── .env                  # 環境変数（共通）
+│   ├── .env.example          # 環境変数テンプレート
+│   ├── ai-choice/            # 4択問題生成
+│   │   ├── src/main.py       # エントリーポイント
+│   │   ├── config/settings.py
+│   │   └── README.md
+│   └── ai-text/              # 記述式問題生成
+│       ├── src/main.py       # エントリーポイント
+│       ├── config/settings.py
+│       └── README.md
+│
 ├── package.json              # ルート (npm workspaces)
 ├── turbo.json               # Turborepo 設定
 ├── vercel.json              # Vercel設定（東京リージョン）
@@ -90,6 +102,7 @@ qti-mock/
 |-----------|------|------|
 | qti-player | Vue 3 + Vite 7 | QTI 3.0 アイテムのレンダリング・採点 |
 | web | Next.js 16 + React 19 + TypeScript | アプリケーション本体 |
+| qti-generator | Python 3.10+ | AI問題生成ツール（Claude API使用） |
 | - | Turborepo | モノレポ管理 |
 | - | Vercel | ホスティング（東京リージョン） |
 
@@ -186,6 +199,33 @@ QTI XML を直接入力またはドラッグ＆ドロップで自由にテスト
 - 環境変数による動的オリジン設定
 - 開発環境・本番環境の両対応
 
+## AI問題生成ツール (qti-generator)
+
+学習指導要領LOD（jp-cos.github.io）のデータを基に、Claude APIを使用してQTI 3.0形式の問題を自動生成するPythonツールです。
+
+### ai-choice（4択問題生成）
+```bash
+cd qti-generator/ai-choice
+python src/main.py --subject 社会_政治 --count 10
+```
+
+### ai-text（記述式問題生成）
+```bash
+cd qti-generator/ai-text
+python src/main.py --subject 社会_政治 --count 5
+```
+
+### 対応分野
+| 科目 | 分野 | コード |
+|------|------|--------|
+| 社会 | 政治 | 8220263100000000 |
+| 社会 | 歴史 | 8220263200000000 |
+| 社会 | 国際 | 8220263300000000 |
+| 理科 | 物質・エネルギー | 8260263100000000 |
+| 理科 | 生命・地球 | 8260263200000000 |
+
+詳細は各ディレクトリの README.md を参照してください。
+
 ## 開発状況
 
 ### 完了 (Phase 1-2)
@@ -255,6 +295,8 @@ MIT
 
 - [QTI 3.0 Specification](https://www.imsglobal.org/spec/qti/v3p0/impl)
 - [qti3-item-player-vue3](https://github.com/amp-up-io/qti3-item-player-vue3)
+- [学習指導要領LOD](https://jp-cos.github.io/) - AI問題生成のデータソース
+- [Claude API](https://docs.anthropic.com/) - AI問題生成に使用
 - [Turborepo Documentation](https://turbo.build/repo/docs)
 - [Next.js Documentation](https://nextjs.org/docs)
 - [Vercel Documentation](https://vercel.com/docs)
