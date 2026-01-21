@@ -34,6 +34,10 @@ npm -w @nexcbt/qti-player run <script>  # qti-player パッケージ
 
 # ビルド後のプレビュー（qti-player のみ）
 npm -w @nexcbt/qti-player run preview
+
+# AI問題生成（Python - npm workspace外）
+cd qti-generator/ai-choice && python src/main.py --subject 社会_政治 --count 10
+cd qti-generator/ai-text && python src/main.py --subject 社会_政治 --count 5
 ```
 
 ## アーキテクチャ
@@ -43,17 +47,26 @@ npm workspaces を使用した Turborepo モノレポ構成です。
 ### パッケージ構成
 
 **packages/qti-player** (Vue 3 + Vite 7)
+npm workspace: `@nexcbt/qti-player`
 - `qti3-item-player-vue3` ライブラリを使用した QTI 3.0 アイテムレンダラー
 - URL駆動方式: `?item=<xml-url>&callback=<api-url>&session=<id>` を受け取る
 - XML読み込み、アイテム表示、採点を処理
 - postMessage で親ウィンドウに結果を送信
 
 **packages/web** (Next.js 16 + React 19 + TypeScript)
+npm workspace: `@nexcbt/web`
 - メインアプリケーション（Material UI + Tailwind CSS 4）
 - `/home` - ホームページ（Basic Run / Playground への導線）
 - `/basic` - Basic Run（プリセット問題でのテスト実行）
 - `/playground` - Playground（QTI XML を自由に入力してテスト）
 - `public/items-h/`（横書き）、`public/items-v/`（縦書き）から QTI XML ファイルを配信
+
+**qti-generator** (Python 3.10+)
+npm workspace 外の独立した Python プロジェクト
+- 学習指導要領LOD（jp-cos.github.io）から Claude API で QTI 問題を自動生成
+- `qti-generator/ai-choice/` - 4択問題生成
+- `qti-generator/ai-text/` - 記述式問題生成
+- 共通の環境変数: `qti-generator/.env`
 
 ### データフロー
 
@@ -85,6 +98,9 @@ npm workspaces を使用した Turborepo モノレポ構成です。
 - `packages/web/src/components/playground/PlaygroundPage.tsx` - Playground（XML入力でテスト）
 - `packages/web/src/types/test.ts` - 型定義（ItemResult, ItemInfo等）
 - `packages/web/next.config.ts` - CORS ヘッダー設定
+- `qti-generator/ai-choice/src/main.py` - 4択問題生成エントリーポイント
+- `qti-generator/ai-text/src/main.py` - 記述式問題生成エントリーポイント
+- `qti-generator/.env` - AI生成ツール共通環境変数（ANTHROPIC_API_KEY等）
 
 ### 環境変数 (packages/web/.env.local)
 
@@ -92,6 +108,14 @@ npm workspaces を使用した Turborepo モノレポ構成です。
 NEXT_PUBLIC_APP_URL=http://localhost:3000
 NEXT_PUBLIC_PLAYER_URL=http://localhost:5173
 PLAYER_URL=http://localhost:5173
+```
+
+### 環境変数 (qti-generator/.env)
+
+```
+ANTHROPIC_API_KEY=sk-ant-api03-xxxxx
+DEFAULT_MODEL=claude-sonnet-4-5-20250929
+BLOB_READ_WRITE_TOKEN=vercel_blob_rw_xxxxx  # Vercel Blob アップロード用（オプション）
 ```
 
 ## QTI アイテム形式
