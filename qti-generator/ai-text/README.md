@@ -1,4 +1,4 @@
-# qti-text-generator
+# ai-text（記述式問題生成）
 
 記述式問題を自動生成するPythonバッチツールです。学習指導要領LODから解説テキストを取得し、Claude APIを使用して思考力・判断力・表現力を問う記述式問題を生成します。
 
@@ -14,9 +14,11 @@
 
 ```bash
 # 依存関係のインストール
+cd qti-generator/ai-text
 pip install -r requirements.txt
 
-# .envファイルの設定
+# .envファイルの設定（親ディレクトリの qti-generator/ にあります）
+cd qti-generator
 cp .env.example .env
 # ANTHROPIC_API_KEY と BLOB_READ_WRITE_TOKEN を設定
 ```
@@ -109,23 +111,27 @@ python src/main.py --subject 社会_政治 --count 5 --upload
 ## ディレクトリ構造
 
 ```
-qti-text-generator/
-├── src/
-│   ├── main.py                    # エントリーポイント
-│   ├── fetcher/
-│   │   └── cos_fetcher.py         # 学習指導要領LODデータ取得
-│   ├── generator/
-│   │   ├── prompt_builder.py      # プロンプト構築
-│   │   ├── text_question_generator.py  # 問題生成
-│   │   └── topic_extractor.py     # トピック抽出
-│   ├── converter/
-│   │   └── qti_text_converter.py  # QTI XML変換
-│   └── storage/
-│       ├── file_exporter.py       # ファイル出力
-│       └── blob_uploader.py       # Vercel Blobアップロード
-├── config/
-│   └── settings.py                # 設定
-├── output/                        # 生成結果
-├── requirements.txt
-└── README.md
+qti-generator/
+├── .env                          # 環境変数（共通）
+├── .env.example                  # 環境変数テンプレート
+├── ai-choice/                    # 4択問題生成
+└── ai-text/                      # 記述式問題生成
+    ├── src/
+    │   ├── main.py                    # エントリーポイント
+    │   ├── fetcher/
+    │   │   └── cos_fetcher.py         # 学習指導要領LODデータ取得
+    │   ├── generator/
+    │   │   ├── prompt_builder.py      # プロンプト構築
+    │   │   ├── text_question_generator.py  # 問題生成
+    │   │   └── topic_extractor.py     # トピック抽出
+    │   ├── converter/
+    │   │   └── qti_text_converter.py  # QTI XML変換
+    │   └── storage/
+    │       ├── file_exporter.py       # ファイル出力
+    │       └── blob_uploader.py       # Vercel Blobアップロード
+    ├── config/
+    │   └── settings.py                # 設定
+    ├── output/                        # 生成結果
+    ├── requirements.txt
+    └── README.md
 ```

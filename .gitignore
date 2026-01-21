@@ -56,13 +56,14 @@ env/
 *.egg
 
 # QTI Generator output
-qti-choice-generator/output
-qti-text-generator/output
+qti-generator/ai-choice/output
+qti-generator/ai-text/output
 
 # Environment files with secrets
 .env
 .env.local
 .env.*.local
+!qti-generator/.env.example
 
 # Claude Code
 .claude

@@ -202,7 +202,7 @@
 ### ディレクトリ構成案
 
 ```
-qti-choice-generator/
+qti-generator/ai-choice/
 ├── src/
 │   ├── fetcher/
 │   │   ├── cos_fetcher.py      # 学習指導要領LOD取得

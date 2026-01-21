@@ -1,6 +1,6 @@
 """学習指導要領LODからデータを取得するモジュール
 
-qti-choice-generator からの移植版（記述式問題生成用）
+ai-choice からの移植版（記述式問題生成用）
 """
 
 import requests
