@@ -1,6 +1,11 @@
 import Anthropic from '@anthropic-ai/sdk'
 import type { AiScoringRequest, AiScoringResponse, AiModelType } from '@/types/ai-text'
 
+// Vercel サーバーレス関数の最大実行時間（秒）
+// Hobby: 10秒, Pro: 60秒, Enterprise: 900秒
+// ストリーミング AI 採点には最低 60秒必要
+export const maxDuration = 60
+
 // Claude APIクライアント
 const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY || '',
@@ -43,6 +48,15 @@ export async function POST(request: Request) {
   try {
     const body: AiScoringRequest = await request.json()
     const { response, scoringCriteria, questionText, model } = body
+
+    // API キーのチェック
+    if (!process.env.ANTHROPIC_API_KEY) {
+      console.error('ANTHROPIC_API_KEY is not set')
+      return new Response(
+        JSON.stringify({ error: 'AI採点サービスが設定されていません（API key missing）' }),
+        { status: 503, headers: { 'Content-Type': 'application/json' } }
+      )
+    }
 
     // 入力バリデーション
     if (!response || !scoringCriteria || !questionText) {
@@ -135,7 +149,14 @@ export async function POST(request: Request) {
           controller.close()
         } catch (error) {
           console.error('Streaming error:', error)
-          controller.enqueue(encoder.encode(`data: ${JSON.stringify({ type: 'error', content: 'ストリーミング中にエラーが発生しました' })}\n\n`))
+          // エラー詳細をクライアントに送信（デバッグ用）
+          const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+          const errorName = error instanceof Error ? error.name : 'Error'
+          controller.enqueue(encoder.encode(`data: ${JSON.stringify({
+            type: 'error',
+            content: `ストリーミング中にエラーが発生しました: ${errorName}`,
+            detail: errorMessage
+          })}\n\n`))
           controller.close()
         }
       },

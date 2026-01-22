@@ -221,7 +221,11 @@ export function AiTextInProgress({
                 setCurrentScoringResult(scoringResponse)
                 onScoringResultUpdate(result)
               } else if (parsed.type === 'error') {
-                setScoringError(parsed.content)
+                // エラー詳細があれば含めて表示
+                const errorMsg = parsed.detail
+                  ? `${parsed.content}\n${parsed.detail}`
+                  : parsed.content
+                setScoringError(errorMsg)
               }
             } catch {
               // JSONパースエラーは無視
