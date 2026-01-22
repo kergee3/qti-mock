@@ -178,6 +178,12 @@ export function AiTextInProgress({
       })
 
       if (!apiResponse.ok) {
+        // APIからのエラーレスポンスを読み取る
+        const contentType = apiResponse.headers.get('content-type')
+        if (contentType?.includes('application/json')) {
+          const errorData = await apiResponse.json()
+          throw new Error(errorData.error || `API error: ${apiResponse.status}`)
+        }
         throw new Error(`API error: ${apiResponse.status}`)
       }
 
@@ -235,7 +241,8 @@ export function AiTextInProgress({
       }
     } catch (error) {
       console.error('AI scoring error:', error)
-      setScoringError('採点中にエラーが発生しました')
+      const errorMessage = error instanceof Error ? error.message : '採点中にエラーが発生しました'
+      setScoringError(errorMessage)
     } finally {
       setIsScoring(false)
     }
