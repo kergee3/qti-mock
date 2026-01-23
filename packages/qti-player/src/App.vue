@@ -1241,5 +1241,6 @@ html.vertical-writing #app {
 .font-klee-one,
 .font-klee-one * {
   font-family: "Klee One", cursive !important;
+  font-weight: 600 !important;
 }
 </style>
