@@ -40,6 +40,7 @@ export type FontOption =
   | 'biz-udpmincho'
   | 'source-han-sans'
   | 'kosugi-maru'
+  | 'klee-one'
   | 'ud-digikyo'
 
 /** 問題のステータス */

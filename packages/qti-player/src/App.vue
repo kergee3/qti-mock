@@ -192,6 +192,8 @@ const fontStyle = computed(() => {
       return '"Source Han Sans JP", sans-serif'
     case 'kosugi-maru':
       return '"Kosugi Maru", sans-serif'
+    case 'klee-one':
+      return '"Klee One", cursive'
     case 'ud-digikyo':
       return '"UD Digi Kyokasho N-R", "UD デジタル 教科書体 N", sans-serif'
     default:
@@ -405,7 +407,7 @@ onMounted(() => {
 
   // フォント設定
   const fontParam = params.get('font')
-  const validFonts = ['noto-sans-jp', 'noto-serif-jp', 'biz-udpgothic', 'biz-udpmincho', 'source-han-sans', 'kosugi-maru', 'ud-digikyo']
+  const validFonts = ['noto-sans-jp', 'noto-serif-jp', 'biz-udpgothic', 'biz-udpmincho', 'source-han-sans', 'kosugi-maru', 'klee-one', 'ud-digikyo']
   if (fontParam && validFonts.includes(fontParam)) {
     fontFamily.value = fontParam
     // Google Fontsを動的に読み込み（システムフォントは除く）
@@ -446,7 +448,8 @@ const loadGoogleFont = (fontKey) => {
     'biz-udpgothic': 'https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&display=swap',
     'biz-udpmincho': 'https://fonts.googleapis.com/css2?family=BIZ+UDPMincho&display=swap',
     'source-han-sans': 'https://fonts.googleapis.com/css2?family=Source+Han+Sans+JP:wght@400;500;700&display=swap',
-    'kosugi-maru': 'https://fonts.googleapis.com/css2?family=Kosugi+Maru&display=swap'
+    'kosugi-maru': 'https://fonts.googleapis.com/css2?family=Kosugi+Maru&display=swap',
+    'klee-one': 'https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&display=swap'
   }
 
   const linkId = `google-font-${fontKey}`
@@ -1232,5 +1235,11 @@ html.vertical-writing #app {
 .vertical-layout .qti-choice-description {
   display: inline-block !important;
   vertical-align: top !important;
+}
+
+/* フォントクラス - QTI Playerライブラリ内部にも強制適用 */
+.font-klee-one,
+.font-klee-one * {
+  font-family: "Klee One", cursive !important;
 }
 </style>

@@ -53,6 +53,7 @@ const baseFontLabels: Record<Exclude<FontOption, 'ud-digikyo'>, string> = {
   'biz-udpmincho': 'BIZ UDPMincho',
   'source-han-sans': '源ノ角ゴシック',
   'kosugi-maru': 'Kosugi Maru',
+  'klee-one': 'Klee One',
 }
 
 /** 難易度ラベル */
