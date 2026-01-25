@@ -6,6 +6,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import ExpandLessIcon from '@mui/icons-material/ExpandLess'
 import type { ItemInfo, ItemResult } from '@/types/test'
 import type { AiTextSummary, AiScoringResult } from '@/types/ai-text'
+import { renderRubyText } from '@/utils/ruby'
 
 interface AiTextResultsProps {
   items: ItemInfo[]
@@ -202,7 +203,7 @@ export function AiTextResults({
                     onClick={() => sr?.isScored && toggleExpand(item.identifier)}
                   >
                     <TableCell sx={{ textAlign: 'center', px: 1, py: 1 }}>{index + 1}</TableCell>
-                    <TableCell sx={{ px: 1, py: 1 }}>{item.title}</TableCell>
+                    <TableCell sx={{ px: 1, py: 1 }}>{renderRubyText(item.title)}</TableCell>
                     <TableCell
                       sx={{
                         color: display.color,

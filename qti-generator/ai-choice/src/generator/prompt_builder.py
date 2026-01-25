@@ -6,6 +6,22 @@ from typing import Optional
 class PromptBuilder:
     """問題生成用プロンプトを構築"""
 
+    # ルビ指示セクション
+    RUBY_INSTRUCTION = """
+## ルビ（ふりがな）の付け方
+問題文（question）と選択肢（options）と解説（explanation）の全ての漢字にルビを付けてください。
+形式: {漢字|よみがな}
+
+### ルール
+1. 全ての漢字にルビを付ける（ひらがな・カタカナ・数字・記号は不要）
+2. 読み方は文脈に応じた正しい読みを使用（例: 「今日」→「きょう」）
+3. 熟語は1つのルビでまとめる（例: {国会|こっかい}）
+4. 送り仮名は含めない（例: {考|かんが}える）
+
+### 例
+- {国民|こくみん}の{代表|だいひょう}を{選|えら}ぶ{選挙|せんきょ}について、{正|ただ}しいものを{選|えら}びなさい。
+"""
+
     SYSTEM_PROMPT = """あなたは小学校教育の専門家です。
 学習指導要領に基づいた高品質な4択問題を作成してください。
 
@@ -47,6 +63,7 @@ class PromptBuilder:
         question_number: int = 1,
         focus_topic: Optional[str] = None,
         existing_questions: list[dict] = None,
+        enable_ruby: bool = True,
     ) -> tuple[str, str]:
         """
         問題生成用のプロンプトを構築
@@ -60,10 +77,13 @@ class PromptBuilder:
             focus_topic: フォーカスするトピック（オプション）
             existing_questions: 既に生成された問題のリスト（重複防止用）
                                各要素は {"title": str, "question": str, "correct_answer": str} の辞書
+            enable_ruby: ルビを付けるかどうか
 
         Returns:
             tuple: (system_prompt, user_prompt)
         """
+        # ルビ指示を条件に応じて追加
+        ruby_instruction = cls.RUBY_INSTRUCTION if enable_ruby else ""
         # 解説テキストを適度な長さに制限（トークン節約）
         max_commentary_length = 3000
         if len(commentary) > max_commentary_length:
@@ -136,7 +156,10 @@ class PromptBuilder:
 
 上記の情報に基づいて、小学{grade}年生向けの4択問題をJSON形式で出力してください。"""
 
-        return cls.SYSTEM_PROMPT, user_prompt
+        # システムプロンプトにルビ指示を追加
+        system_prompt = cls.SYSTEM_PROMPT + ruby_instruction
+
+        return system_prompt, user_prompt
 
     @classmethod
     def build_batch_prompt(
@@ -146,6 +169,7 @@ class PromptBuilder:
         description: str,
         commentary: str,
         questions_config: list[dict],
+        enable_ruby: bool = True,
     ) -> tuple[str, str]:
         """
         複数問題を一括生成するためのプロンプトを構築
@@ -157,10 +181,14 @@ class PromptBuilder:
             commentary: 解説テキスト
             questions_config: 問題設定のリスト
                 各要素は {"number": int, "topic": str|None}
+            enable_ruby: ルビを付けるかどうか
 
         Returns:
             tuple[str, str]: (システムプロンプト, ユーザープロンプト)
         """
+        # ルビ指示を条件に応じて追加
+        ruby_instruction = cls.RUBY_INSTRUCTION if enable_ruby else ""
+
         count = len(questions_config)
 
         # 解説テキストを適度な長さに制限（トークン節約）
@@ -212,7 +240,8 @@ class PromptBuilder:
 }}
 ```
 
-※ correct_index は0から始まる正解の選択肢番号（0=選択肢1, 1=選択肢2, ...）"""
+※ correct_index は0から始まる正解の選択肢番号（0=選択肢1, 1=選択肢2, ...）
+{ruby_instruction}"""
 
         user_prompt = f"""以下の学習指導要領に基づいて4択問題を{count}問作成してください。
 

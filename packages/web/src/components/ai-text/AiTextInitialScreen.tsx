@@ -10,6 +10,7 @@ import type { ItemInfo, FontOption } from '@/types/test'
 import type { AiTextEntry, AiTextSummary } from '@/types/ai-text'
 import { usePlatformDetection } from '@/hooks/usePlatformDetection'
 import { useSettings, type AiModel } from '@/contexts/SettingsContext'
+import { renderRubyText } from '@/utils/ruby'
 
 /** AIモデル名を実際のモデルIDに変換するマッピング */
 const AI_MODEL_ID_MAP: Record<AiModel, string> = {
@@ -326,8 +327,8 @@ export function AiTextInitialScreen({
                   >
                     <TableCell sx={{ textAlign: 'center', px: { xs: 1, sm: 2 }, py: { xs: 0.5, sm: 1 } }}>{index + 1}</TableCell>
                     <TableCell sx={{ px: { xs: 1, sm: 2 }, py: { xs: 0.5, sm: 1 }, fontSize: { xs: '0.85rem', sm: '1rem' } }}>
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                        {item.title}
+                      <Box sx={{ display: 'flex', alignItems: 'baseline', gap: 0.5 }}>
+                        {renderRubyText(item.title)}
                         <Tooltip title="XMLをコピー">
                           <IconButton
                             size="small"

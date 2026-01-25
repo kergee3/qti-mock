@@ -2,6 +2,7 @@
 
 import { Box, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Tooltip } from '@mui/material'
 import type { ItemInfo, ItemResult } from '@/types/test'
+import { renderRubyText } from '@/utils/ruby'
 
 interface BasicRunResultsProps {
   items: ItemInfo[]
@@ -110,7 +111,7 @@ export function BasicRunResults({
                   }}
                 >
                   <TableCell sx={{ textAlign: 'center', px: { xs: 0.5, sm: 2 }, py: { xs: 0.5, sm: 1 } }}>{index + 1}</TableCell>
-                  <TableCell sx={{ px: { xs: 0.5, sm: 2 }, py: { xs: 0.5, sm: 1 }, fontSize: { xs: '0.8rem', sm: '1rem' } }}>{item.title}</TableCell>
+                  <TableCell sx={{ px: { xs: 0.5, sm: 2 }, py: { xs: 0.5, sm: 1 }, fontSize: { xs: '0.8rem', sm: '1rem' } }}>{renderRubyText(item.title)}</TableCell>
                   <TableCell sx={{ color: '#666', maxWidth: { xs: 80, sm: 225 }, px: { xs: 0.5, sm: 2 }, py: { xs: 0.5, sm: 1 }, display: { xs: 'none', sm: 'table-cell' } }}>
                     {result?.response ? (
                       <Tooltip title={result.response} arrow placement="top">

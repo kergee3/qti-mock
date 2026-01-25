@@ -9,6 +9,7 @@ import ConstructionOutlinedIcon from '@mui/icons-material/ConstructionOutlined'
 import type { ItemInfo, FontOption } from '@/types/test'
 import type { AiChoiceEntry, AiChoiceSummary } from '@/types/ai-choice'
 import { usePlatformDetection } from '@/hooks/usePlatformDetection'
+import { renderRubyText } from '@/utils/ruby'
 
 interface AiChoiceInitialScreenProps {
   entries: AiChoiceEntry[]
@@ -269,8 +270,8 @@ export function AiChoiceInitialScreen({
                 >
                   <TableCell sx={{ textAlign: 'center', px: { xs: 1, sm: 2 }, py: { xs: 0.5, sm: 1 } }}>{index + 1}</TableCell>
                   <TableCell sx={{ px: { xs: 1, sm: 2 }, py: { xs: 0.5, sm: 1 }, fontSize: { xs: '0.85rem', sm: '1rem' } }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                      {item.title}
+                    <Box sx={{ display: 'flex', alignItems: 'baseline', gap: 0.5 }}>
+                      {renderRubyText(item.title)}
                       <Tooltip title="XMLをコピー">
                         <IconButton
                           size="small"

@@ -26,6 +26,7 @@ def generate_questions(
     count: int = 3,
     output_dir: Path = None,
     upload: bool = False,
+    enable_ruby: bool = True,
 ) -> dict:
     """
     指定した学習指導要領コードから問題を生成
@@ -35,6 +36,7 @@ def generate_questions(
         count: 生成する問題数
         output_dir: 出力ディレクトリ
         upload: Vercel Blobにアップロードするか
+        enable_ruby: ルビ（ふりがな）を付けるかどうか（デフォルト: True）
 
     Returns:
         dict: 生成結果のサマリー
@@ -116,6 +118,7 @@ def generate_questions(
         description=context['description'] or "",
         commentary=combined_commentary,
         questions_config=questions_config,
+        enable_ruby=enable_ruby,
     )
 
     # 一括生成を実行
@@ -169,6 +172,7 @@ def generate_questions(
                 question_number=current_num,
                 focus_topic=config.get('topic'),
                 existing_questions=existing_questions,
+                enable_ruby=enable_ruby,
             )
 
             try:
@@ -205,7 +209,7 @@ def generate_questions(
     xml_contents = []
     for i, question in enumerate(valid_questions):
         identifier = f"{code}-{i+1:03d}"
-        xml = QTIConverter.convert(question, identifier=identifier)
+        xml = QTIConverter.convert(question, identifier=identifier, enable_ruby=enable_ruby)
         xml_contents.append(xml)
         print(f"  - {identifier}: {question.get('title', 'N/A')}")
 
@@ -380,6 +384,11 @@ def main():
         action="store_true",
         help="生成後にVercel Blobにアップロード",
     )
+    parser.add_argument(
+        "--no-ruby",
+        action="store_true",
+        help="ルビ（ふりがな）を付けない",
+    )
 
     args = parser.parse_args()
 
@@ -414,7 +423,7 @@ def main():
 
     # 問題生成を実行
     try:
-        generate_questions(code=code, count=args.count, output_dir=output_dir, upload=args.upload)
+        generate_questions(code=code, count=args.count, output_dir=output_dir, upload=args.upload, enable_ruby=not args.no_ruby)
     except Exception as e:
         print(f"\n[ERROR] 生成に失敗しました: {e}")
         import traceback

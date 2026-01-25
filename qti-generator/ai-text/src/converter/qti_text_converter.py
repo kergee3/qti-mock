@@ -1,10 +1,74 @@
 """記述式問題をQTI 3.0 XML形式に変換するモジュール"""
 
+import html
 import json
+import re
 from xml.etree import ElementTree as ET
 from xml.dom import minidom
 import sys
 import os
+
+
+def convert_inline_ruby_to_html(text: str) -> str:
+    """
+    インライン形式のルビ {漢字|よみ} を HTML5 ruby タグに変換
+
+    Args:
+        text: インライン形式のルビを含むテキスト
+
+    Returns:
+        HTML5 ruby タグを含むテキスト
+    """
+    # Pattern: {kanji|reading}
+    pattern = r'\{([^|{}]+)\|([^|{}]+)\}'
+
+    def replace_ruby(match):
+        kanji = html.escape(match.group(1))
+        reading = html.escape(match.group(2))
+        if not reading.strip():
+            return kanji  # 空の読みはスキップ
+        return f'<ruby>{kanji}<rt>{reading}</rt></ruby>'
+
+    # まずルビ以外の部分をエスケープしてからルビを変換
+    # ルビ部分を一時的にプレースホルダーに置換
+    placeholders = []
+
+    def save_ruby(match):
+        placeholders.append(match.group(0))
+        return f"__RUBY_PLACEHOLDER_{len(placeholders) - 1}__"
+
+    text_with_placeholders = re.sub(pattern, save_ruby, text)
+
+    # ルビ以外の部分をHTMLエスケープ
+    text_escaped = html.escape(text_with_placeholders)
+
+    # プレースホルダーをルビタグに戻す
+    for i, ruby_match in enumerate(placeholders):
+        match = re.match(pattern, ruby_match)
+        if match:
+            kanji = html.escape(match.group(1))
+            reading = html.escape(match.group(2))
+            if reading.strip():
+                ruby_html = f'<ruby>{kanji}<rt>{reading}</rt></ruby>'
+            else:
+                ruby_html = kanji
+            text_escaped = text_escaped.replace(f"__RUBY_PLACEHOLDER_{i}__", ruby_html)
+
+    return text_escaped
+
+
+def strip_inline_ruby(text: str) -> str:
+    """
+    インライン形式のルビを除去して漢字のみ残す
+
+    Args:
+        text: インライン形式のルビを含むテキスト
+
+    Returns:
+        ルビを除去したテキスト
+    """
+    pattern = r'\{([^|{}]+)\|[^|{}]+\}'
+    return re.sub(pattern, r'\1', text)
 
 # 親ディレクトリをパスに追加
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
@@ -18,7 +82,7 @@ class QTITextConverter:
     XSI_NAMESPACE = "http://www.w3.org/2001/XMLSchema-instance"
 
     @classmethod
-    def convert(cls, question: dict, identifier: str = None, question_number: int = None) -> str:
+    def convert(cls, question: dict, identifier: str = None, question_number: int = None, enable_ruby: bool = True) -> str:
         """
         問題データをQTI 3.0 XML形式に変換
 
@@ -26,17 +90,27 @@ class QTITextConverter:
             question: 問題データ
             identifier: アイテム識別子（省略時は question_id を使用）
             question_number: 問題番号（1から始まる、字数制限の決定に使用）
+            enable_ruby: ルビを有効にするかどうか
 
         Returns:
             str: QTI 3.0 XML文字列
         """
         identifier = identifier or question.get("question_id", "text-001")
         title = question.get("title", "記述式問題")
-        question_text = question.get("question_text", "")
-        model_answer = question.get("model_answer", "")
+        question_text_raw = question.get("question_text", "")
+        model_answer_raw = question.get("model_answer", "")
         required_concepts = question.get("required_concepts", [])
         scoring_matrix = question.get("scoring_matrix", {})
         common_errors = question.get("common_errors", [])
+
+        # ルビ変換処理
+        if enable_ruby:
+            question_text_html = convert_inline_ruby_to_html(question_text_raw)
+            model_answer_html = convert_inline_ruby_to_html(model_answer_raw)
+        else:
+            # ルビ無効時はインライン形式を除去してHTMLエスケープ
+            question_text_html = html.escape(strip_inline_ruby(question_text_raw))
+            model_answer_html = html.escape(strip_inline_ruby(model_answer_raw))
 
         # 問題番号に応じた字数制限を取得
         if question_number is not None:
@@ -81,9 +155,9 @@ class QTITextConverter:
         # 採点基準（カスタム要素）
         scoring_criteria = ET.SubElement(rubric_block, "scoring-criteria")
 
-        # 模範解答
+        # 模範解答（プレースホルダーを使用、後でHTMLに置換）
         model_answer_elem = ET.SubElement(scoring_criteria, "model-answer")
-        model_answer_elem.text = model_answer
+        model_answer_elem.text = "__MODEL_ANSWER_PLACEHOLDER__"
 
         # 必須概念
         required_concepts_elem = ET.SubElement(scoring_criteria, "required-concepts")
@@ -119,11 +193,11 @@ class QTITextConverter:
         # アイテムボディ
         item_body = ET.SubElement(root, "qti-item-body")
 
-        # 問題文
+        # 問題文（プレースホルダーを使用、後でHTMLに置換）
         question_div = ET.SubElement(item_body, "div")
         question_div.set("class", "question-text")
         question_p = ET.SubElement(question_div, "p")
-        question_p.text = question_text
+        question_p.text = "__QUESTION_TEXT_PLACEHOLDER__"
 
         # 回答入力欄（extendedTextInteraction）
         interaction = ET.SubElement(item_body, "qti-extended-text-interaction")
@@ -135,16 +209,6 @@ class QTITextConverter:
         interaction.set("format", "plain")
         interaction.set("class", "qti-counter-up")
 
-        # プロンプト
-        prompt = ET.SubElement(interaction, "qti-prompt")
-        prompt_p = ET.SubElement(prompt, "p")
-        prompt_p.text = "以下の条件に従って回答してください："
-        prompt_ul = ET.SubElement(prompt, "ul")
-        li1 = ET.SubElement(prompt_ul, "li")
-        li1.text = f"{min_chars}文字以上{max_chars}文字以内で回答すること"
-        li2 = ET.SubElement(prompt_ul, "li")
-        li2.text = f"{min_chars}文字未満の回答は採点対象外となります"
-
         # XML文字列に変換（整形）
         xml_str = ET.tostring(root, encoding="unicode")
         dom = minidom.parseString(xml_str)
@@ -154,7 +218,13 @@ class QTITextConverter:
         lines = pretty_xml.split("\n")
         lines[0] = '<?xml version="1.0" encoding="UTF-8"?>'
 
-        return "\n".join(lines)
+        result = "\n".join(lines)
+
+        # プレースホルダーをHTMLコンテンツに置換
+        result = result.replace("__QUESTION_TEXT_PLACEHOLDER__", question_text_html)
+        result = result.replace("__MODEL_ANSWER_PLACEHOLDER__", model_answer_html)
+
+        return result
 
     @classmethod
     def extract_scoring_criteria(cls, xml_content: str) -> dict:

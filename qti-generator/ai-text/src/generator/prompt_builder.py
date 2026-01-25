@@ -11,6 +11,23 @@ from config.settings import SCORING_ASPECTS, get_char_limits, get_difficulty
 class PromptBuilder:
     """記述式問題生成用のプロンプトを構築"""
 
+    # ルビ指示セクション
+    RUBY_INSTRUCTION = """
+## ルビ（ふりがな）の付け方
+問題文（question_text）と模範解答（model_answer）の全ての漢字にルビを付けてください。
+形式: {漢字|よみがな}
+
+### ルール
+1. 全ての漢字にルビを付ける（ひらがな・カタカナ・数字・記号は不要）
+2. 読み方は文脈に応じた正しい読みを使用（例: 「今日」→「きょう」）
+3. 熟語は1つのルビでまとめる（例: {国会|こっかい}）
+4. 送り仮名は含めない（例: {考|かんが}える）
+
+### 例
+- {三権分立|さんけんぶんりつ}は{大切|たいせつ}な{仕組|しく}みです。
+- {国民|こくみん}の{代表|だいひょう}を{選|えら}ぶ。
+"""
+
     @staticmethod
     def build(
         subject: str,
@@ -21,6 +38,7 @@ class PromptBuilder:
         difficulty: int,
         focus_topic: str = None,
         existing_questions: list[dict] = None,
+        enable_ruby: bool = True,
     ) -> tuple[str, str]:
         """
         記述式問題生成用のプロンプトを構築
@@ -39,6 +57,9 @@ class PromptBuilder:
         Returns:
             tuple[str, str]: (システムプロンプト, ユーザープロンプト)
         """
+        # ルビ指示を条件に応じて追加
+        ruby_instruction = PromptBuilder.RUBY_INSTRUCTION if enable_ruby else ""
+
         # 問題番号に応じた字数制限を取得
         char_limits = get_char_limits(question_number)
         max_chars = char_limits["max_chars"]
@@ -131,7 +152,8 @@ class PromptBuilder:
 5. 典型的誤答パターンは具体的なものを3つ以上挙げてください
 6. thinking_skills の合計は100になるようにしてください
 7. タイトルは他の問題と重複しないユニークなものにしてください
-8. 【重要】問題文（question_text）の中に文字数制限や回答条件を記述しないでください。文字数制限はシステムが自動で表示します"""
+8. 【重要】問題文（question_text）の中に文字数制限や回答条件を記述しないでください。文字数制限はシステムが自動で表示します
+{ruby_instruction}"""
 
         # トピック指定がある場合の追加指示
         topic_instruction = ""
@@ -197,6 +219,7 @@ class PromptBuilder:
         description: str,
         commentary: str,
         questions_config: list[dict],
+        enable_ruby: bool = True,
     ) -> tuple[str, str]:
         """
         複数の記述式問題を一括生成するためのプロンプトを構築
@@ -208,10 +231,14 @@ class PromptBuilder:
             commentary: 解説テキスト
             questions_config: 問題設定のリスト
                 各要素は {"number": int, "difficulty": int, "char_limits": dict, "topic": str|None}
+            enable_ruby: ルビを付けるかどうか
 
         Returns:
             tuple[str, str]: (システムプロンプト, ユーザープロンプト)
         """
+        # ルビ指示を条件に応じて追加
+        ruby_instruction = PromptBuilder.RUBY_INSTRUCTION if enable_ruby else ""
+
         count = len(questions_config)
 
         # 難易度に応じた説明
@@ -317,7 +344,8 @@ class PromptBuilder:
 6. thinking_skills の合計は100になるようにしてください
 7. 【重要】各問題のタイトルと内容は互いに重複しないようにしてください
 8. 【重要】各問題は異なる切り口・視点・具体例で作成してください
-9. 【重要】問題文（question_text）の中に文字数制限や回答条件を記述しないでください"""
+9. 【重要】問題文（question_text）の中に文字数制限や回答条件を記述しないでください
+{ruby_instruction}"""
 
         user_prompt = f"""以下の学習指導要領の内容に基づいて、記述式問題を{count}問作成してください。
 

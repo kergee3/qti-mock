@@ -2,8 +2,63 @@
 
 import html
 import random
+import re
 from typing import Optional
 import uuid
+
+
+def convert_inline_ruby_to_html(text: str) -> str:
+    """
+    インライン形式のルビ {漢字|よみ} を HTML5 ruby タグに変換
+
+    Args:
+        text: インライン形式のルビを含むテキスト
+
+    Returns:
+        HTML5 ruby タグを含むテキスト
+    """
+    # Pattern: {kanji|reading}
+    pattern = r'\{([^|{}]+)\|([^|{}]+)\}'
+
+    # まずルビ部分を一時的にプレースホルダーに置換
+    placeholders = []
+
+    def save_ruby(match):
+        placeholders.append(match.group(0))
+        return f"__RUBY_PLACEHOLDER_{len(placeholders) - 1}__"
+
+    text_with_placeholders = re.sub(pattern, save_ruby, text)
+
+    # ルビ以外の部分をHTMLエスケープ
+    text_escaped = html.escape(text_with_placeholders)
+
+    # プレースホルダーをルビタグに戻す
+    for i, ruby_match in enumerate(placeholders):
+        match = re.match(pattern, ruby_match)
+        if match:
+            kanji = html.escape(match.group(1))
+            reading = html.escape(match.group(2))
+            if reading.strip():
+                ruby_html = f'<ruby>{kanji}<rt>{reading}</rt></ruby>'
+            else:
+                ruby_html = kanji
+            text_escaped = text_escaped.replace(f"__RUBY_PLACEHOLDER_{i}__", ruby_html)
+
+    return text_escaped
+
+
+def strip_inline_ruby(text: str) -> str:
+    """
+    インライン形式のルビを除去して漢字のみ残す
+
+    Args:
+        text: インライン形式のルビを含むテキスト
+
+    Returns:
+        ルビを除去したテキスト
+    """
+    pattern = r'\{([^|{}]+)\|[^|{}]+\}'
+    return re.sub(pattern, r'\1', text)
 
 
 class QTIConverter:
@@ -18,6 +73,7 @@ class QTIConverter:
         question: dict,
         identifier: Optional[str] = None,
         include_feedback: bool = True,
+        enable_ruby: bool = True,
     ) -> str:
         """
         問題JSONをQTI 3.0 XMLに変換
@@ -31,6 +87,7 @@ class QTIConverter:
                 - explanation: 解説
             identifier: 問題ID（省略時は自動生成）
             include_feedback: フィードバック要素を含めるか
+            enable_ruby: ルビを有効にするかどうか
 
         Returns:
             str: QTI 3.0 XML文字列
@@ -58,28 +115,42 @@ class QTIConverter:
 
         correct_id = cls.CHOICE_IDS[correct_index]
 
-        # 選択肢XMLを生成（シャッフル後の選択肢を使用）
-        options_xml = cls._build_options_xml(shuffled_options)
+        # ルビ変換処理
+        if enable_ruby:
+            processed_options = [convert_inline_ruby_to_html(opt) for opt in shuffled_options]
+            question_text_html = convert_inline_ruby_to_html(question.get("question", ""))
+            explanation_html = convert_inline_ruby_to_html(question.get("explanation", ""))
+            correct_text_html = processed_options[correct_index] if processed_options else ""
+        else:
+            processed_options = [html.escape(strip_inline_ruby(opt)) for opt in shuffled_options]
+            question_text_html = html.escape(strip_inline_ruby(question.get("question", "")))
+            explanation_html = html.escape(strip_inline_ruby(question.get("explanation", "")))
+            correct_text_html = processed_options[correct_index] if processed_options else ""
+
+        # 選択肢XMLを生成（ルビ処理済みの選択肢を使用）
+        options_xml = cls._build_options_xml_processed(processed_options)
 
         # フィードバックを含める場合
         if include_feedback and question.get("explanation"):
             return cls._build_xml_with_feedback(
                 identifier=identifier,
                 title=question.get("title", "Generated Question"),
-                question_text=question.get("question", ""),
+                question_text=question_text_html,
                 options_xml=options_xml,
                 correct_id=correct_id,
                 correct_index=correct_index,
-                correct_text=shuffled_options[correct_index] if shuffled_options else "",
-                explanation=question.get("explanation", ""),
+                correct_text=correct_text_html,
+                explanation=explanation_html,
+                skip_escape=True,
             )
         else:
             return cls._build_xml_simple(
                 identifier=identifier,
                 title=question.get("title", "Generated Question"),
-                question_text=question.get("question", ""),
+                question_text=question_text_html,
                 options_xml=options_xml,
                 correct_id=correct_id,
+                skip_escape=True,
             )
 
     @classmethod
@@ -93,6 +164,16 @@ class QTIConverter:
         return options_xml.rstrip("\n")
 
     @classmethod
+    def _build_options_xml_processed(cls, processed_options: list) -> str:
+        """ルビ処理済み選択肢のXMLを生成"""
+        options_xml = ""
+        for i, option_text in enumerate(processed_options[:4]):  # 最大4つ
+            choice_id = cls.CHOICE_IDS[i]
+            # 既に処理済みなのでそのまま使用
+            options_xml += f'      <qti-simple-choice identifier="{choice_id}">{option_text}</qti-simple-choice>\n'
+        return options_xml.rstrip("\n")
+
+    @classmethod
     def _build_xml_simple(
         cls,
         identifier: str,
@@ -100,8 +181,11 @@ class QTIConverter:
         question_text: str,
         options_xml: str,
         correct_id: str,
+        skip_escape: bool = False,
     ) -> str:
         """シンプルなQTI XML（フィードバックなし）を生成"""
+        # skip_escape=Trueの場合、question_textは既にエスケープ/ルビ処理済み
+        question_text_final = question_text if skip_escape else html.escape(question_text)
         return f'''<?xml version="1.0" encoding="UTF-8"?>
 <qti-assessment-item
   xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0"
@@ -123,7 +207,7 @@ class QTIConverter:
   </qti-outcome-declaration>
 
   <qti-item-body>
-    <p>{html.escape(question_text)}</p>
+    <p>{question_text_final}</p>
     <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
 {options_xml}
     </qti-choice-interaction>
@@ -145,8 +229,13 @@ class QTIConverter:
         correct_index: int,
         correct_text: str,
         explanation: str,
+        skip_escape: bool = False,
     ) -> str:
         """フィードバック付きQTI XMLを生成"""
+        # skip_escape=Trueの場合、テキストは既にエスケープ/ルビ処理済み
+        question_text_final = question_text if skip_escape else html.escape(question_text)
+        correct_text_final = correct_text if skip_escape else html.escape(correct_text)
+        explanation_final = explanation if skip_escape else html.escape(explanation)
         return f'''<?xml version="1.0" encoding="UTF-8"?>
 <qti-assessment-item
   xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0"
@@ -177,7 +266,7 @@ class QTIConverter:
   <!-- 問題本文 -->
   <qti-item-body>
     <div class="question-stem">
-      <p>{html.escape(question_text)}</p>
+      <p>{question_text_final}</p>
     </div>
 
     <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
@@ -215,7 +304,7 @@ class QTIConverter:
   <qti-modal-feedback identifier="feedback_correct" outcome-identifier="FEEDBACK" show-hide="show">
     <qti-content-body>
       <p>正解です！</p>
-      <p>{html.escape(explanation)}</p>
+      <p>{explanation_final}</p>
     </qti-content-body>
   </qti-modal-feedback>
 
@@ -223,8 +312,8 @@ class QTIConverter:
   <qti-modal-feedback identifier="feedback_incorrect" outcome-identifier="FEEDBACK" show-hide="show">
     <qti-content-body>
       <p>残念、不正解です。</p>
-      <p>正解は「{html.escape(correct_text)}」です。</p>
-      <p>{html.escape(explanation)}</p>
+      <p>正解は「{correct_text_final}」です。</p>
+      <p>{explanation_final}</p>
     </qti-content-body>
   </qti-modal-feedback>
 

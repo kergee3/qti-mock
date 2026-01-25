@@ -26,6 +26,7 @@ def generate_text_questions(
     count: int = 5,
     output_dir: Path = None,
     upload: bool = False,
+    enable_ruby: bool = True,
 ) -> dict:
     """
     指定した学習指導要領コードから記述式問題を生成
@@ -35,6 +36,7 @@ def generate_text_questions(
         count: 生成する問題数（デフォルト: 5）
         output_dir: 出力ディレクトリ
         upload: Vercel Blobにアップロードするか
+        enable_ruby: ルビ（ふりがな）を付けるかどうか（デフォルト: True）
 
     Returns:
         dict: 生成結果のサマリー
@@ -122,6 +124,7 @@ def generate_text_questions(
         description=context['description'] or "",
         commentary=combined_commentary,
         questions_config=questions_config,
+        enable_ruby=enable_ruby,
     )
 
     # 一括生成を実行
@@ -172,6 +175,7 @@ def generate_text_questions(
                 difficulty=config['difficulty'],
                 focus_topic=config.get('topic'),
                 existing_questions=existing_questions,
+                enable_ruby=enable_ruby,
             )
 
             try:
@@ -204,7 +208,7 @@ def generate_text_questions(
     for i, question in enumerate(valid_questions):
         question_number = i + 1
         identifier = f"text-{code}-{question_number:03d}"
-        xml = QTITextConverter.convert(question, identifier=identifier, question_number=question_number)
+        xml = QTITextConverter.convert(question, identifier=identifier, question_number=question_number, enable_ruby=enable_ruby)
         xml_contents.append(xml)
         char_limits = get_char_limits(question_number)
         print(f"  - {identifier}: {question.get('title', 'N/A')} (字数: {char_limits['min_chars']}-{char_limits['max_chars']})")
@@ -385,6 +389,11 @@ def main():
         action="store_true",
         help="生成後にVercel Blobにアップロード",
     )
+    parser.add_argument(
+        "--no-ruby",
+        action="store_true",
+        help="ルビ（ふりがな）を付けない",
+    )
 
     args = parser.parse_args()
 
@@ -419,7 +428,7 @@ def main():
 
     # 問題生成を実行
     try:
-        generate_text_questions(code=code, count=args.count, output_dir=output_dir, upload=args.upload)
+        generate_text_questions(code=code, count=args.count, output_dir=output_dir, upload=args.upload, enable_ruby=not args.no_ruby)
     except Exception as e:
         print(f"\n[ERROR] 生成に失敗しました: {e}")
         import traceback

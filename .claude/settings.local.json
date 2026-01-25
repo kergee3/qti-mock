@@ -57,7 +57,8 @@
       "Bash(py:*)",
       "Bash(timeout /t 15)",
       "Bash(git check-ignore:*)",
-      "Bash(git rm:*)"
+      "Bash(git rm:*)",
+      "Bash(xargs cat:*)"
     ]
   }
 }
