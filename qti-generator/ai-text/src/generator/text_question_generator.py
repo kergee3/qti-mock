@@ -145,6 +145,160 @@ class TextQuestionGenerator:
         if len(question.get("common_errors", [])) < 2:
             print("[WARN] 典型的誤答パターンが2つ未満です")
 
+    def generate_batch(
+        self, system_prompt: str, user_prompt: str, expected_count: int
+    ) -> list[dict]:
+        """
+        複数の記述式問題を一括生成
+
+        Args:
+            system_prompt: システムプロンプト
+            user_prompt: ユーザープロンプト
+            expected_count: 期待する問題数
+
+        Returns:
+            list[dict]: 生成された問題データのリスト
+        """
+        print(f"[INFO] Generating {expected_count} text questions in batch with model: {self.model}")
+
+        try:
+            # max_tokens を問題数に応じて調整（1問あたり約1000トークン + バッファ）
+            max_tokens = min(expected_count * 2000, 32000)
+
+            response = self.client.messages.create(
+                model=self.model,
+                max_tokens=max_tokens,
+                system=system_prompt,
+                messages=[{"role": "user", "content": user_prompt}],
+            )
+
+            # 統計情報を記録
+            input_tokens = response.usage.input_tokens
+            output_tokens = response.usage.output_tokens
+            api_stats.add_call("問題生成（バッチ）", input_tokens, output_tokens)
+            print(f"[INFO] API使用量: 入力={input_tokens:,} tokens, 出力={output_tokens:,} tokens")
+
+            # レスポンスからテキストを抽出
+            content = response.content[0].text
+
+            # JSONをパース
+            questions = self._parse_batch_response(content)
+
+            # 各問題をバリデーション
+            valid_questions = self._validate_batch(questions, expected_count)
+
+            return valid_questions
+
+        except Exception as e:
+            print(f"[ERROR] Failed to generate batch questions: {e}")
+            raise
+
+    def _parse_batch_response(self, content: str) -> list[dict]:
+        """
+        バッチ生成のClaude応答からJSON配列を抽出
+
+        Args:
+            content: Claude応答テキスト
+
+        Returns:
+            list[dict]: パースされた問題リスト
+        """
+        # JSONブロックを抽出（```json ... ``` または直接JSON）
+        json_match = re.search(r"```json\s*([\s\S]*?)\s*```", content)
+        if json_match:
+            json_str = json_match.group(1)
+        else:
+            # JSONブロックがない場合は全体をJSONとして扱う
+            json_str = content.strip()
+            # 先頭の非JSON文字を除去
+            if not json_str.startswith("{"):
+                brace_pos = json_str.find("{")
+                if brace_pos != -1:
+                    json_str = json_str[brace_pos:]
+
+        try:
+            data = json.loads(json_str)
+
+            # {"questions": [...]} 形式の場合
+            if isinstance(data, dict) and "questions" in data:
+                return data["questions"]
+            # 直接配列の場合
+            elif isinstance(data, list):
+                return data
+            else:
+                print("[WARN] Unexpected JSON structure, attempting to extract questions")
+                return []
+
+        except json.JSONDecodeError as e:
+            print(f"[WARN] JSON parse error: {e}")
+            print(f"[DEBUG] Attempting partial extraction...")
+
+            # 部分的なJSON抽出を試みる
+            questions = self._extract_partial_questions(content)
+            if questions:
+                print(f"[INFO] Extracted {len(questions)} questions from partial JSON")
+                return questions
+
+            print(f"[DEBUG] Raw content:\n{content[:500]}...")
+            raise ValueError(f"Invalid JSON response: {e}")
+
+    def _extract_partial_questions(self, content: str) -> list[dict]:
+        """
+        部分的に有効なJSONから問題を抽出
+
+        Args:
+            content: Claude応答テキスト
+
+        Returns:
+            list[dict]: 抽出された問題リスト
+        """
+        questions = []
+
+        # question_id を含むJSONオブジェクトを探す
+        # より堅牢なパターンマッチング
+        pattern = r'\{\s*"question_id"\s*:\s*"[^"]+"\s*,[\s\S]*?"thinking_skills"\s*:\s*\{[^}]+\}\s*\}'
+
+        matches = re.findall(pattern, content)
+
+        for match in matches:
+            try:
+                q = json.loads(match)
+                questions.append(q)
+            except json.JSONDecodeError:
+                continue
+
+        return questions
+
+    def _validate_batch(self, questions: list[dict], expected_count: int) -> list[dict]:
+        """
+        バッチ生成された問題のバリデーション
+
+        Args:
+            questions: 問題リスト
+            expected_count: 期待する問題数
+
+        Returns:
+            list[dict]: バリデーションを通過した問題リスト
+        """
+        valid_questions = []
+        errors = []
+
+        for i, q in enumerate(questions):
+            try:
+                self._validate_question(q)
+                valid_questions.append(q)
+            except ValueError as e:
+                errors.append(f"問題{i+1}: {e}")
+                print(f"[WARN] 問題{i+1}のバリデーション失敗: {e}")
+
+        if len(valid_questions) < expected_count:
+            print(f"[WARN] 生成数不足: {len(valid_questions)}/{expected_count}")
+
+        if errors:
+            print(f"[WARN] バリデーションエラー: {len(errors)}件")
+
+        return valid_questions
+
 
 # テスト用
 if __name__ == "__main__":

@@ -14,7 +14,6 @@ from config.settings import TARGET_CODES
 from src.fetcher.cos_fetcher import COSFetcher
 from src.generator.prompt_builder import PromptBuilder
 from src.generator.question_generator import QuestionGenerator
-from src.generator.topic_extractor import TopicExtractor
 from src.converter.qti_converter import QTIConverter
 from src.storage.file_exporter import FileExporter
 from src.storage.blob_uploader import BlobUploader
@@ -60,7 +59,7 @@ def generate_questions(
 
     # 1. 学習指導要領LODからデータ取得（下位コード別にセクション分け）
     step1_start = time.time()
-    print("[Step 1/5] 学習指導要領LODからデータを取得中...")
+    print("[Step 1/4] 学習指導要領LODからデータを取得中...")
     fetcher = COSFetcher()
     context = fetcher.get_full_context_with_sections(code)
 
@@ -84,32 +83,11 @@ def generate_questions(
 
     step_times['Step 1: データ取得'] = time.time() - step1_start
 
-    # 2. トピックを抽出（セクション単位で均等に）
+    # 2. 問題を生成（一括生成）
     step2_start = time.time()
-    print(f"\n[Step 2/5] 解説テキストからトピックを抽出中...")
-    topic_extractor = TopicExtractor()
-
-    if sections:
-        # 下位コードがある場合はセクション単位でトピックを抽出
-        topics = topic_extractor.extract_from_sections(sections, max_topics=count)
-    else:
-        # 下位コードがない場合は親コードの解説から抽出
-        topics = topic_extractor.extract(context.get('parent_commentary', ''), max_topics=count)
-
-    if not topics:
-        print("[WARN] トピックが抽出できませんでした。デフォルトモードで生成します。")
-        topics = [None]  # トピック指定なしで生成
-
-    print(f"  - 抽出トピック数: {len(topics)}")
-
-    step_times['Step 2: トピック抽出'] = time.time() - step2_start
-
-    # 3. 問題を生成（各問題に異なるトピックを割り当て）
-    step3_start = time.time()
-    print(f"\n[Step 3/5] Claude APIで問題を生成中...")
+    print(f"\n[Step 2/4] Claude APIで問題を一括生成中...")
     generator = QuestionGenerator()
     api_stats.set_model(generator.model)  # モデル情報を設定
-    questions = []
 
     # 全セクションの解説を結合（問題生成時に使用）
     all_commentary_parts = []
@@ -120,97 +98,110 @@ def generate_questions(
             all_commentary_parts.append(section['commentary'])
     combined_commentary = "\n\n---\n\n".join(all_commentary_parts)
 
-    # 失敗したトピックを追跡
-    failed_topics = []
-    topic_index = 0
-    # トピックと問題のペアを保存（後でソート用）
-    questions_with_topics = []
-    # 生成済み問題を追跡（重複防止用：タイトルと問題文を保持）
-    existing_questions = []
+    # 問題条件リストを構築
+    questions_config = []
+    for i in range(count):
+        question_number = i + 1
+        questions_config.append({
+            "number": question_number,
+            "topic": None,
+        })
 
-    while len(questions_with_topics) < count:
-        # トピックを選択
-        if topic_index < len(topics):
-            topic = topics[topic_index] if topics[0] is not None else None
-            original_topic_index = topic_index
-        else:
-            # 通常のトピックを使い切ったら、失敗していないトピックから再利用
-            remaining_topics = [t for t in topics if t not in failed_topics]
-            if remaining_topics:
-                reuse_index = (topic_index - len(topics)) % len(remaining_topics)
-                topic = remaining_topics[reuse_index]
-                # 元のトピックリストでのインデックスを取得
-                original_topic_index = topics.index(topic)
-            else:
-                print(f"    [WARN] 利用可能なトピックがなくなりました")
-                break
+    print(f"  生成問題数: {count}問")
 
-        print(f"\n  問題 {len(questions_with_topics)+1}/{count} を生成中... (トピック: {topic or '指定なし'})")
+    # 一括生成用プロンプトを構築
+    system_prompt, user_prompt = PromptBuilder.build_batch_prompt(
+        subject=context['subject'],
+        grade=context['grade'],
+        description=context['description'] or "",
+        commentary=combined_commentary,
+        questions_config=questions_config,
+    )
 
-        # プロンプトを構築
-        system_prompt, user_prompt = PromptBuilder.build(
-            subject=context['subject'],
-            grade=context['grade'],
-            description=context['description'] or "",
-            commentary=combined_commentary,
-            question_number=len(questions_with_topics) + 1,
-            focus_topic=topic,
-            existing_questions=existing_questions,
-        )
+    # 一括生成を実行
+    print(f"\n  一括生成中...")
+    try:
+        valid_questions = generator.generate_batch(system_prompt, user_prompt, count)
+        print(f"\n  [INFO] 一括生成完了: {len(valid_questions)}/{count}問")
 
-        try:
-            question = generator.generate(system_prompt, user_prompt)
-            title = question.get('title', '')
-            question_text = question.get('question', '')
-            # 正解の選択肢テキストを取得
-            correct_index = question.get('correct_index', 0)
-            options = question.get('options', [])
+        # 各問題の情報を表示
+        for i, q in enumerate(valid_questions):
+            print(f"    問題{i+1}: {q.get('title', 'N/A')}")
+
+    except Exception as e:
+        print(f"\n  [ERROR] 一括生成に失敗: {e}")
+        valid_questions = []
+
+    # フォールバック: 不足分を個別生成で補完
+    if len(valid_questions) < count:
+        print(f"\n  [INFO] 不足分 {count - len(valid_questions)}問 を個別生成で補完中...")
+
+        # 既存問題を重複防止用にリスト化
+        existing_questions = []
+        for q in valid_questions:
+            correct_index = q.get('correct_index', 0)
+            options = q.get('options', [])
             correct_answer = options[correct_index] if 0 <= correct_index < len(options) else ''
-            # トピックのインデックスと一緒に保存
-            questions_with_topics.append({
-                'question': question,
-                'topic': topic,
-                'topic_index': original_topic_index,
-                'generation_order': len(questions_with_topics),
-            })
-            # 生成済み問題を追跡（重複防止用：タイトル、問題文、正解）
             existing_questions.append({
-                'title': title,
-                'question': question_text,
+                'title': q.get('title', ''),
+                'question': q.get('question', ''),
                 'correct_answer': correct_answer,
             })
-            print(f"    タイトル: {title or 'N/A'}")
-        except Exception as e:
-            print(f"    [ERROR] 生成失敗: {e}")
-            # 失敗したトピックを記録（同じトピックでリトライしない）
-            if topic is not None and topic not in failed_topics:
-                failed_topics.append(topic)
-                print(f"    [INFO] 別のトピックで再試行します...")
 
-        topic_index += 1
+        # 不足分を個別生成
+        fallback_attempts = 0
+        max_fallback_attempts = (count - len(valid_questions)) * 3
 
-        # 無限ループ防止
-        if topic_index > count * 3:
-            print(f"    [WARN] 最大試行回数に達しました")
-            break
+        while len(valid_questions) < count and fallback_attempts < max_fallback_attempts:
+            current_num = len(valid_questions) + 1
+            config = questions_config[current_num - 1] if current_num <= len(questions_config) else {
+                "number": current_num,
+                "topic": None,
+            }
 
-    # トピックの種類ごとに問題をソート（トピックインデックス順、同じトピック内は生成順）
-    questions_with_topics.sort(key=lambda x: (x['topic_index'], x['generation_order']))
-    valid_questions = [q['question'] for q in questions_with_topics]
+            print(f"\n    フォールバック: 問題{current_num}を個別生成中...")
 
-    if questions_with_topics:
-        print(f"\n  [INFO] 問題をトピック順に並び替えました")
+            system_prompt, user_prompt = PromptBuilder.build(
+                subject=context['subject'],
+                grade=context['grade'],
+                description=context['description'] or "",
+                commentary=combined_commentary,
+                question_number=current_num,
+                focus_topic=config.get('topic'),
+                existing_questions=existing_questions,
+            )
+
+            try:
+                question = generator.generate(system_prompt, user_prompt)
+                valid_questions.append(question)
+
+                correct_index = question.get('correct_index', 0)
+                options = question.get('options', [])
+                correct_answer = options[correct_index] if 0 <= correct_index < len(options) else ''
+                existing_questions.append({
+                    'title': question.get('title', ''),
+                    'question': question.get('question', ''),
+                    'correct_answer': correct_answer,
+                })
+                print(f"      成功: {question.get('title', 'N/A')}")
+            except Exception as e:
+                print(f"      失敗: {e}")
+
+            fallback_attempts += 1
+
+        if len(valid_questions) < count:
+            print(f"\n  [WARN] フォールバック後も不足: {len(valid_questions)}/{count}問")
 
     if not valid_questions:
         print("\n[ERROR] 有効な問題が生成されませんでした")
         logger.stop()
         return {"error": "No valid questions generated"}
 
-    step_times['Step 3: 問題生成'] = time.time() - step3_start
+    step_times['Step 2: 問題生成'] = time.time() - step2_start
 
-    # 4. QTI XMLに変換
-    step4_start = time.time()
-    print(f"\n[Step 4/5] QTI XMLに変換中...")
+    # 3. QTI XMLに変換
+    step3_start = time.time()
+    print(f"\n[Step 3/4] QTI XMLに変換中...")
     xml_contents = []
     for i, question in enumerate(valid_questions):
         identifier = f"{code}-{i+1:03d}"
@@ -218,11 +209,11 @@ def generate_questions(
         xml_contents.append(xml)
         print(f"  - {identifier}: {question.get('title', 'N/A')}")
 
-    step_times['Step 4: XML変換'] = time.time() - step4_start
+    step_times['Step 3: XML変換'] = time.time() - step3_start
 
-    # 5. ファイル出力
-    step5_start = time.time()
-    print(f"\n[Step 5/5] ファイルを出力中...")
+    # 4. ファイル出力
+    step4_start = time.time()
+    print(f"\n[Step 4/4] ファイルを出力中...")
     exporter = FileExporter(output_dir)
 
     # 科目名を取得してプレフィックスに使用
@@ -245,7 +236,7 @@ def generate_questions(
         model=generator.model,
     )
 
-    step_times['Step 5: ファイル出力'] = time.time() - step5_start
+    step_times['Step 4: ファイル出力'] = time.time() - step4_start
 
     print(f"{'='*60}")
     print(f"生成完了！")
@@ -254,10 +245,10 @@ def generate_questions(
     print(f"出力先: {summary['output_directory']}")
     print(f"{'='*60}\n")
 
-    # 6. Vercel Blobにアップロード（オプション）
+    # 5. Vercel Blobにアップロード（オプション）
     if upload:
-        step6_start = time.time()
-        print(f"[Step 6] Vercel Blobにアップロード中...")
+        step5_start = time.time()
+        print(f"[Step 5] Vercel Blobにアップロード中...")
         try:
             uploader = BlobUploader()
             batch_dir = exporter.output_dir / summary['output_directory']
@@ -276,8 +267,8 @@ def generate_questions(
 
             summary['upload_results'] = upload_results
 
-            # 7. summary.jsonをoutput/summaryフォルダにコピー
-            print(f"[Step 7] summary.jsonをsummaryフォルダにコピー中...")
+            # 6. summary.jsonをoutput/summaryフォルダにコピー
+            print(f"[Step 6] summary.jsonをsummaryフォルダにコピー中...")
             try:
                 summary_src = batch_dir / "summary.json"
                 summary_dest_dir = exporter.output_dir / "summary"
@@ -294,7 +285,7 @@ def generate_questions(
             print(f"[ERROR] アップロードに失敗しました: {e}")
             summary['upload_error'] = str(e)
 
-        step_times['Step 6: アップロード'] = time.time() - step6_start
+        step_times['Step 5: アップロード'] = time.time() - step5_start
 
     # 合計時間を計算
     total_time = time.time() - total_start_time

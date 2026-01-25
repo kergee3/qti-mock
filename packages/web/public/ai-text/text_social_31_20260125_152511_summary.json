@@ -1,0 +1,551 @@
+{
+  "timestamp": "20260125_152511",
+  "model": "claude-sonnet-4-5-20250929",
+  "question_type": "extended_text",
+  "total_questions": 5,
+  "output_directory": "text_social_31_20260125_152511",
+  "files": [
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-text/text_social_31_20260125_152511/text_social_31_001-4ca3dv9VxxeD01JDX73g99vXU610d6.xml",
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-text/text_social_31_20260125_152511/text_social_31_002-pAtvOI9S2NqwHUDP2kdJt8gKC08BXe.xml",
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-text/text_social_31_20260125_152511/text_social_31_003-Vs1ILeO0a3UCiHmvtFYjdlE51FS74D.xml",
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-text/text_social_31_20260125_152511/text_social_31_004-xjvA5UUQa9oKqFxCzvAjAk0WECsCfG.xml",
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-text/text_social_31_20260125_152511/text_social_31_005-zkANpacOMks2HU42bd0fks687EXmoA.xml"
+  ],
+  "questions": [
+    {
+      "question_id": "text-001",
+      "difficulty": 1,
+      "title": "政治の働きと国民生活",
+      "question_text": "国や地方公共団体が行う政治の働きは、私たちの生活にどのような影響を与えていますか。具体的な例を挙げながら説明しなさい。",
+      "model_answer": "国や地方公共団体の政治は、税金を使って学校や病院、道路などをつくり、私たちが安全で快適に暮らせるようにしている。また、災害が起きたときの支援や、高齢者や子どもへの福祉サービスなどを通して、国民生活の安定と向上を図っている。",
+      "required_concepts": [
+        "政治の働き",
+        "国民生活への影響",
+        "具体的な事例"
+      ],
+      "scoring_matrix": {
+        "understanding": {
+          "aspect_name": "理解力",
+          "max_score": 4,
+          "levels": [
+            {
+              "score": 4,
+              "description": "政治の働きが国民生活に与える影響を正確に理解し、適切な具体例を挙げている"
+            },
+            {
+              "score": 3,
+              "description": "政治の働きと国民生活の関係を概ね理解し、具体例を挙げている"
+            },
+            {
+              "score": 2,
+              "description": "政治の働きについて部分的に理解しているが、具体例が不十分"
+            },
+            {
+              "score": 1,
+              "description": "政治の働きについての理解が表面的で、具体例が適切でない"
+            },
+            {
+              "score": 0,
+              "description": "政治の働きについて理解していない"
+            }
+          ]
+        },
+        "expression": {
+          "aspect_name": "表現力",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "具体例を用いて論理的かつ明確に説明している"
+            },
+            {
+              "score": 2,
+              "description": "概ね分かりやすく説明しているが、やや説明不足"
+            },
+            {
+              "score": 1,
+              "description": "説明が断片的で分かりにくい"
+            },
+            {
+              "score": 0,
+              "description": "説明になっていない"
+            }
+          ]
+        },
+        "accuracy": {
+          "aspect_name": "正確性",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "用語や事実関係が正確で、適切な具体例を示している"
+            },
+            {
+              "score": 2,
+              "description": "概ね正確だが、一部不正確な記述がある"
+            },
+            {
+              "score": 1,
+              "description": "用語や事実関係に複数の誤りがある"
+            },
+            {
+              "score": 0,
+              "description": "用語や事実関係が不正確"
+            }
+          ]
+        }
+      },
+      "common_errors": [
+        {
+          "pattern": "政治の働きを抽象的にしか説明していない",
+          "feedback": "学校、道路、病院など、身近な具体例を挙げて説明しましょう"
+        },
+        {
+          "pattern": "国民生活への影響に触れていない",
+          "feedback": "政治の働きが私たちの生活をどのように良くしているか考えましょう"
+        },
+        {
+          "pattern": "税金の使い道について触れていない",
+          "feedback": "政治は税金を使って様々なサービスを提供していることを理解しましょう"
+        }
+      ],
+      "thinking_skills": {
+        "critical_thinking": 30,
+        "judgment": 30,
+        "expression": 40
+      }
+    },
+    {
+      "question_id": "text-002",
+      "difficulty": 2,
+      "title": "政治と思考力の関係",
+      "question_text": "国民が政治について考えたり判断したりする力が必要なのはなぜですか。選挙や税金との関わりに触れながら説明しなさい。",
+      "model_answer": "国民主権の考え方に基づく日本では、選挙で代表者を選ぶのは国民である。また、税金の使い道を決めるのも、国民が選んだ代表者である。そのため、国民一人一人が政治について考え、正しく判断する力が必要となる。",
+      "required_concepts": [
+        "国民主権",
+        "選挙と国民の関係",
+        "思考力・判断力の必要性"
+      ],
+      "scoring_matrix": {
+        "understanding": {
+          "aspect_name": "理解力",
+          "max_score": 4,
+          "levels": [
+            {
+              "score": 4,
+              "description": "国民主権の考え方と思考力・判断力の必要性を正確に関連付けて理解している"
+            },
+            {
+              "score": 3,
+              "description": "国民主権と思考力の関係を概ね理解している"
+            },
+            {
+              "score": 2,
+              "description": "選挙や税金について触れているが、思考力との関連が不明確"
+            },
+            {
+              "score": 1,
+              "description": "政治と国民の関係についての理解が不十分"
+            },
+            {
+              "score": 0,
+              "description": "問いに対する理解が見られない"
+            }
+          ]
+        },
+        "expression": {
+          "aspect_name": "表現力",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "選挙や税金との関わりを明確に示しながら論理的に説明している"
+            },
+            {
+              "score": 2,
+              "description": "概ね論理的だが、選挙や税金との関わりの説明が不十分"
+            },
+            {
+              "score": 1,
+              "description": "説明が断片的で論理の流れが不明確"
+            },
+            {
+              "score": 0,
+              "description": "論理的な説明になっていない"
+            }
+          ]
+        },
+        "accuracy": {
+          "aspect_name": "正確性",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "国民主権、選挙、税金などの用語を正確に使用している"
+            },
+            {
+              "score": 2,
+              "description": "概ね正確だが、一部用語の使い方が不適切"
+            },
+            {
+              "score": 1,
+              "description": "重要な用語に誤りがある"
+            },
+            {
+              "score": 0,
+              "description": "用語の使い方が不正確"
+            }
+          ]
+        }
+      },
+      "common_errors": [
+        {
+          "pattern": "選挙の意味だけを説明している",
+          "feedback": "なぜ国民に思考力や判断力が必要なのか、その理由を考えましょう"
+        },
+        {
+          "pattern": "国民主権の考え方に触れていない",
+          "feedback": "日本は国民主権の国であることを踏まえて説明しましょう"
+        },
+        {
+          "pattern": "税金との関わりを説明していない",
+          "feedback": "税金の使い道を決めるのは誰か考えてみましょう"
+        }
+      ],
+      "thinking_skills": {
+        "critical_thinking": 40,
+        "judgment": 40,
+        "expression": 20
+      }
+    },
+    {
+      "question_id": "text-003",
+      "difficulty": 3,
+      "title": "日本国憲法の役割",
+      "question_text": "日本国憲法が私たちの生活の中で果たしている役割について、基本的人権の尊重、国民主権、平和主義のうち一つを選び、具体例を挙げて説明しなさい。",
+      "model_answer": "基本的人権の尊重について説明する。日本国憲法では、すべての国民に生まれながらにして人権があると定められている。例えば、どの子どもも平等に教育を受ける権利が保障されており、国や地方公共団体はそのために学校を設置し、教育制度を整えている。これにより、私たちは安心して学ぶことができる。",
+      "required_concepts": [
+        "日本国憲法の三原則",
+        "具体的な事例",
+        "国民生活との関連"
+      ],
+      "scoring_matrix": {
+        "understanding": {
+          "aspect_name": "理解力",
+          "max_score": 4,
+          "levels": [
+            {
+              "score": 4,
+              "description": "選択した原則の意味と役割を正確に理解し、適切な具体例で説明している"
+            },
+            {
+              "score": 3,
+              "description": "選択した原則の意味を概ね理解し、具体例を挙げている"
+            },
+            {
+              "score": 2,
+              "description": "原則についての理解はあるが、具体例が不十分または不適切"
+            },
+            {
+              "score": 1,
+              "description": "原則についての理解が表面的で、具体例との関連が不明確"
+            },
+            {
+              "score": 0,
+              "description": "原則について理解していない"
+            }
+          ]
+        },
+        "expression": {
+          "aspect_name": "表現力",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "原則の意味と具体例を関連付けて明確に説明している"
+            },
+            {
+              "score": 2,
+              "description": "説明は分かるが、原則と具体例の関連がやや不明確"
+            },
+            {
+              "score": 1,
+              "description": "説明が断片的で分かりにくい"
+            },
+            {
+              "score": 0,
+              "description": "論理的な説明になっていない"
+            }
+          ]
+        },
+        "accuracy": {
+          "aspect_name": "正確性",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "憲法の原則と具体例が正確で適切"
+            },
+            {
+              "score": 2,
+              "description": "概ね正確だが、一部に不正確な記述がある"
+            },
+            {
+              "score": 1,
+              "description": "原則の理解や具体例に誤りがある"
+            },
+            {
+              "score": 0,
+              "description": "内容が不正確"
+            }
+          ]
+        }
+      },
+      "common_errors": [
+        {
+          "pattern": "三原則の説明だけで具体例がない",
+          "feedback": "選んだ原則が実際の生活でどう役立っているか、具体例を挙げましょう"
+        },
+        {
+          "pattern": "具体例が憲法の原則と関連していない",
+          "feedback": "選んだ原則に合った具体例を考えましょう"
+        },
+        {
+          "pattern": "抽象的な説明に終始している",
+          "feedback": "教育、選挙、平和活動など、身近な例を挙げて説明しましょう"
+        }
+      ],
+      "thinking_skills": {
+        "critical_thinking": 35,
+        "judgment": 30,
+        "expression": 35
+      }
+    },
+    {
+      "question_id": "text-004",
+      "difficulty": 4,
+      "title": "三権分立の意義",
+      "question_text": "国会、内閣、裁判所の三権が互いに関わり合う仕組み（三権分立）は、なぜ必要なのですか。国民の権利を守るという視点と、権力の集中を防ぐという視点の両方から説明しなさい。",
+      "model_answer": "三権分立は、一つの機関に権力が集中することを防ぐために必要である。国会が法律を作り、内閣が実行し、裁判所が法律に基づいて裁判を行うことで、互いに監視し合う。これにより、権力の乱用が防がれ、国民の権利や自由が守られる。また、それぞれが独立して役割を果たすことで、公正で民主的な政治が実現される。",
+      "required_concepts": [
+        "三権分立の仕組み",
+        "権力の集中を防ぐ意義",
+        "国民の権利の保障"
+      ],
+      "scoring_matrix": {
+        "understanding": {
+          "aspect_name": "理解力",
+          "max_score": 4,
+          "levels": [
+            {
+              "score": 4,
+              "description": "三権分立の仕組みと二つの視点からその必要性を正確に理解している"
+            },
+            {
+              "score": 3,
+              "description": "三権分立の必要性を概ね理解し、両方の視点に触れている"
+            },
+            {
+              "score": 2,
+              "description": "三権分立について理解しているが、一つの視点からしか説明していない"
+            },
+            {
+              "score": 1,
+              "description": "三権分立についての理解が表面的"
+            },
+            {
+              "score": 0,
+              "description": "三権分立について理解していない"
+            }
+          ]
+        },
+        "expression": {
+          "aspect_name": "表現力",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "二つの視点を明確に区別し、論理的に説明している"
+            },
+            {
+              "score": 2,
+              "description": "両方の視点に触れているが、説明がやや不明確"
+            },
+            {
+              "score": 1,
+              "description": "説明が断片的で論理の流れが不明確"
+            },
+            {
+              "score": 0,
+              "description": "論理的な説明になっていない"
+            }
+          ]
+        },
+        "accuracy": {
+          "aspect_name": "正確性",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "三権の役割と関係性を正確に記述している"
+            },
+            {
+              "score": 2,
+              "description": "概ね正確だが、一部に不正確な記述がある"
+            },
+            {
+              "score": 1,
+              "description": "三権の役割や関係に誤りがある"
+            },
+            {
+              "score": 0,
+              "description": "内容が不正確"
+            }
+          ]
+        }
+      },
+      "common_errors": [
+        {
+          "pattern": "三権の名前を挙げただけで必要性を説明していない",
+          "feedback": "なぜ三つに分かれていることが大切なのか考えましょう"
+        },
+        {
+          "pattern": "一つの視点からしか説明していない",
+          "feedback": "権力の集中を防ぐことと、国民の権利を守ることの両方の視点から説明しましょう"
+        },
+        {
+          "pattern": "三権の役割を誤って理解している",
+          "feedback": "国会は立法、内閣は行政、裁判所は司法を担当することを確認しましょう"
+        }
+      ],
+      "thinking_skills": {
+        "critical_thinking": 40,
+        "judgment": 35,
+        "expression": 25
+      }
+    },
+    {
+      "question_id": "text-005",
+      "difficulty": 5,
+      "title": "政治への参加と責任",
+      "question_text": "大人になったあなたが、よりよい社会をつくるために政治にどのように関わっていくべきか考えを述べなさい。選挙権の行使、納税の義務、政治に関心を持つことのうち、少なくとも二つに触れて説明しなさい。",
+      "model_answer": "よりよい社会をつくるためには、まず選挙権を必ず行使し、自分たちの代表者を責任をもって選ぶ必要がある。候補者の政策をよく調べ、社会の課題を解決できる人を選ぶことが大切である。また、納税の義務を果たすことで、福祉や教育などの公共サービスを支える。さらに、日頃から政治や社会の問題に関心を持ち、情報を集めて考えることで、適切な判断ができるようになる。",
+      "required_concepts": [
+        "政治参加の方法",
+        "国民の権利と義務",
+        "主体的な関わり方"
+      ],
+      "scoring_matrix": {
+        "understanding": {
+          "aspect_name": "理解力",
+          "max_score": 4,
+          "levels": [
+            {
+              "score": 4,
+              "description": "政治参加の複数の方法を理解し、それぞれの意義を関連付けて説明している"
+            },
+            {
+              "score": 3,
+              "description": "政治参加の方法を概ね理解し、二つ以上に触れている"
+            },
+            {
+              "score": 2,
+              "description": "政治参加について部分的に理解しているが、一つの方法しか説明していない"
+            },
+            {
+              "score": 1,
+              "description": "政治参加についての理解が表面的"
+            },
+            {
+              "score": 0,
+              "description": "政治参加について理解していない"
+            }
+          ]
+        },
+        "expression": {
+          "aspect_name": "表現力",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "複数の参加方法を関連付けて、自分の考えを明確に表現している"
+            },
+            {
+              "score": 2,
+              "description": "自分の考えを述べているが、やや説明不足"
+            },
+            {
+              "score": 1,
+              "description": "断片的な記述で考えが明確でない"
+            },
+            {
+              "score": 0,
+              "description": "自分の考えを表現していない"
+            }
+          ]
+        },
+        "accuracy": {
+          "aspect_name": "正確性",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "選挙、納税、政治への関心について正確に記述している"
+            },
+            {
+              "score": 2,
+              "description": "概ね正確だが、一部に不正確な記述がある"
+            },
+            {
+              "score": 1,
+              "description": "権利や義務の理解に誤りがある"
+            },
+            {
+              "score": 0,
+              "description": "内容が不正確"
+            }
+          ]
+        }
+      },
+      "common_errors": [
+        {
+          "pattern": "一つの方法しか挙げていない",
+          "feedback": "問題文の指示に従い、少なくとも二つの関わり方について説明しましょう"
+        },
+        {
+          "pattern": "抽象的な理想だけを述べている",
+          "feedback": "選挙、納税、関心を持つことなど、具体的な行動に結びつけて考えましょう"
+        },
+        {
+          "pattern": "よりよい社会との関連が不明確",
+          "feedback": "それぞれの関わり方が、どのようによりよい社会づくりにつながるか説明しましょう"
+        }
+      ],
+      "thinking_skills": {
+        "critical_thinking": 30,
+        "judgment": 35,
+        "expression": 35
+      }
+    }
+  ],
+  "metadata": {
+    "cos_code": "8220263100000000",
+    "subject": "社会",
+    "grade": 6,
+    "description": "(1) 我が国の政治の働きについて，学習の問題を追究・解決する活動を通して，次の事項を身に付けることができるよう指導する。",
+    "question_type": "extended_text",
+    "char_limits": {
+      "short": {
+        "min_chars": 50,
+        "max_chars": 100,
+        "model_answer_target": 90
+      },
+      "long": {
+        "min_chars": 70,
+        "max_chars": 140,
+        "model_answer_target": 130
+      }
+    },
+    "max_score": 10
+  }
+}

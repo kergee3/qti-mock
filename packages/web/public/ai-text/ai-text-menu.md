@@ -9,3 +9,4 @@
 | 小6 | 社会 | 国際 | text_social_33_20260119_095949_summary.json |
 | 小6 | 理科 | 物質・エネルギー | text_science_31_20260119_101401_summary.json |
 | 小6 | 理科 | 生命・地球 | text_science_32_20260119_101700_summary.json |
+| (Beta)小6 | 社会 | 政治 | text_social_31_20260125_152511_summary.json |

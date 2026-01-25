@@ -1,0 +1,276 @@
+{
+  "timestamp": "20260125_154020",
+  "model": "claude-sonnet-4-5-20250929",
+  "total_questions": 20,
+  "output_directory": "choice_social_31_20260125_154020",
+  "files": [
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-choice/choice_social_31_20260125_154020/choice_social_31_001-vP4KhOM6JDlzJrVmWoOEBqQ5BqOgt0.xml",
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-choice/choice_social_31_20260125_154020/choice_social_31_002-qPEcwo8wxIczA9DkjPcl4GgzmofSd1.xml",
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-choice/choice_social_31_20260125_154020/choice_social_31_003-9GsZU6OpdCciTkE5covDPHa7IY76on.xml",
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-choice/choice_social_31_20260125_154020/choice_social_31_004-vxb1KQXFOOaIpOfFmZIZou6R9kOoXq.xml",
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-choice/choice_social_31_20260125_154020/choice_social_31_005-Y1oXqH8T3uX2lGzmxJC41h2IsKoknM.xml",
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-choice/choice_social_31_20260125_154020/choice_social_31_006-WvYC4QXqVg6PLpJugLEEsp9AVgCpjQ.xml",
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-choice/choice_social_31_20260125_154020/choice_social_31_007-4kDB5TbFq5eKbWy0dLM3ZCXNhEUGwn.xml",
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-choice/choice_social_31_20260125_154020/choice_social_31_008-P1aDuNawTvZqBkph9j5qq4Z8plc3LN.xml",
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-choice/choice_social_31_20260125_154020/choice_social_31_009-rYt3wK3IXkDrTOPwlFaMN7EAKuVTlm.xml",
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-choice/choice_social_31_20260125_154020/choice_social_31_010-lKqMv6ULnmjnumDqhfG6lyS5lgVb5p.xml",
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-choice/choice_social_31_20260125_154020/choice_social_31_011-kuULAXxxXz05b228Zdlrn7U5BGH9eh.xml",
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-choice/choice_social_31_20260125_154020/choice_social_31_012-7fDHHzwUiLf5E1W2kY6V1uphxBnzMu.xml",
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-choice/choice_social_31_20260125_154020/choice_social_31_013-NA1f18Mh2GOjoCBo9GwnhsfOrlQ2tq.xml",
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-choice/choice_social_31_20260125_154020/choice_social_31_014-prxM3FPO1vHWBMovRUpyITAWwbMSm3.xml",
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-choice/choice_social_31_20260125_154020/choice_social_31_015-3efFZ6tkVUVb32pBpquGLJf8Bnzyll.xml",
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-choice/choice_social_31_20260125_154020/choice_social_31_016-iyQt2mhRHz32QB1nLTIFl3xKkTDeO7.xml",
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-choice/choice_social_31_20260125_154020/choice_social_31_017-4n1sPrZcMSfbST7qnIImDFZmUDZ768.xml",
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-choice/choice_social_31_20260125_154020/choice_social_31_018-Nxc8gO0gzjl6LrFavGi5zRtgdmkSxg.xml",
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-choice/choice_social_31_20260125_154020/choice_social_31_019-xaz1ygXX5CAryG8IeR7PHdlgJnswr9.xml",
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-choice/choice_social_31_20260125_154020/choice_social_31_020-PThKhbbAy0oC80blpAABuEr9Kw0e9z.xml"
+  ],
+  "questions": [
+    {
+      "title": "日本国憲法の三原則",
+      "question": "日本国憲法の基本的な考え方として正しいものはどれですか。",
+      "options": [
+        "基本的人権の尊重、国民主権、平和主義",
+        "基本的人権の尊重、天皇主権、平和主義",
+        "国民主権、議会制民主主義、経済発展",
+        "平和主義、国際協調、伝統文化の尊重"
+      ],
+      "correct_index": 0,
+      "explanation": "日本国憲法は、基本的人権の尊重、国民主権、平和主義の三つを基本的な考え方としています。これらは国民生活の基本を定める重要な原則です。"
+    },
+    {
+      "title": "選挙の役割",
+      "question": "選挙の意味として最も適切なものはどれですか。",
+      "options": [
+        "国民の代表者を選出する大切な仕組み",
+        "政治家になりたい人が集まる場所",
+        "国の予算を決めるための投票",
+        "法律を作るために必要な手続き"
+      ],
+      "correct_index": 0,
+      "explanation": "選挙は国民の代表者を選出する大切な仕組みです。国民は選挙権を行使することで、自分たちの代表者を選び、政治に参加します。"
+    },
+    {
+      "title": "国会の役割",
+      "question": "国会について正しい説明はどれですか。",
+      "options": [
+        "国権の最高機関であり、国の唯一の立法機関",
+        "法律に基づいて実際の政治を行う機関",
+        "法律に基づいて裁判を行う機関",
+        "国民の税金を集める機関"
+      ],
+      "correct_index": 0,
+      "explanation": "国会は国権の最高機関であり、国の唯一の立法機関として法律の制定や予算の議決、条約の承認などを行っています。"
+    },
+    {
+      "title": "内閣の仕事",
+      "question": "内閣が行う仕事として正しいものはどれですか。",
+      "options": [
+        "法律や予算に基づいて実際の政治を行う",
+        "法律を作り、予算を議決する",
+        "法律に基づいて裁判を行う",
+        "選挙で国民の代表者を決める"
+      ],
+      "correct_index": 0,
+      "explanation": "内閣は国の行政権をもち、法律や予算に基づいて実際の政治を行っています。これを行政と呼びます。"
+    },
+    {
+      "title": "裁判所の役割",
+      "question": "裁判所が持っている権限として正しいものはどれですか。",
+      "options": [
+        "司法権をもち、法律に基づいて裁判を行う",
+        "行政権をもち、実際の政治を行う",
+        "立法権をもち、法律を制定する",
+        "選挙権をもち、国民の代表を選ぶ"
+      ],
+      "correct_index": 0,
+      "explanation": "裁判所は司法権をもち、法律に基づいて裁判を行っています。国会、内閣、裁判所の三権が互いに関連しながら政治を行っています。"
+    },
+    {
+      "title": "裁判員制度",
+      "question": "裁判員制度について正しい説明はどれですか。",
+      "options": [
+        "国民が裁判に参加する制度",
+        "裁判官だけで裁判を行う制度",
+        "法律を作るために国民が集まる制度",
+        "選挙で裁判官を選ぶ制度"
+      ],
+      "correct_index": 0,
+      "explanation": "裁判員制度は国民が裁判に参加する制度です。法律に基づいて行われる裁判と国民との関わりを深める大切な仕組みです。"
+    },
+    {
+      "title": "租税の使い道",
+      "question": "国や県、市に納められた税金の使い道として正しいものはどれですか。",
+      "options": [
+        "対策や事業などの費用として使われる",
+        "すべて国会議員の給料になる",
+        "外国への援助だけに使われる",
+        "将来のために貯金される"
+      ],
+      "correct_index": 0,
+      "explanation": "租税(税金)は、国や県、市によって行われている対策や事業などの費用として使われています。国民生活の向上と安定のために重要な役割を果たしています。"
+    },
+    {
+      "title": "天皇の国事行為",
+      "question": "天皇が行う国事行為として正しいものはどれですか。",
+      "options": [
+        "国会の召集、栄典の授与、外国の大使の接受",
+        "法律の制定、予算の議決、条約の承認",
+        "実際の政治、行政の実施、政策の決定",
+        "裁判の実施、判決の決定、法令の解釈"
+      ],
+      "correct_index": 0,
+      "explanation": "天皇は日本国の象徴として、国会の召集、栄典の授与、外国の大使等の接受などの国事行為を行います。これらを通して象徴としての役割を果たしています。"
+    },
+    {
+      "title": "基本的人権",
+      "question": "日本国憲法における基本的人権について正しい説明はどれですか。",
+      "options": [
+        "侵すことのできない永久の権利として保障されている",
+        "政府が必要に応じて制限できる権利",
+        "選挙で選ばれた人だけが持つ権利",
+        "18歳以上の大人だけが持つ権利"
+      ],
+      "correct_index": 0,
+      "explanation": "日本国憲法では、基本的人権は侵すことのできない永久の権利として保障されています。すべての国民が生まれながらにして持つ大切な権利です。"
+    },
+    {
+      "title": "国民主権の意味",
+      "question": "国民主権について正しい説明はどれですか。",
+      "options": [
+        "主権は国民にあり、国民が政治の主人公",
+        "主権は天皇にあり、天皇が政治を決める",
+        "主権は内閣にあり、内閣が政治を行う",
+        "主権は裁判所にあり、裁判所が政治を決める"
+      ],
+      "correct_index": 0,
+      "explanation": "日本国憲法では主権は国民にあると定められています。国民が政治の主人公であり、選挙などを通じて政治に参加します。"
+    },
+    {
+      "title": "平和主義の原則",
+      "question": "日本国憲法の平和主義について正しい説明はどれですか。",
+      "options": [
+        "国際紛争を解決する手段として戦争を放棄している",
+        "他国と協力して戦争に参加することを定めている",
+        "自国の利益のためなら戦争ができると定めている",
+        "国際紛争は武力で解決すると定めている"
+      ],
+      "correct_index": 0,
+      "explanation": "日本国憲法では、国際紛争を解決する手段として戦争を放棄しています。これは平和主義の原則として、日本国憲法の基本的な考え方の一つです。"
+    },
+    {
+      "title": "社会保障の取組",
+      "question": "国や地方公共団体が行う社会保障の取組として正しいものはどれですか。",
+      "options": [
+        "高齢者や障害者の生活支援、医療の充実、子育て支援",
+        "企業への資金援助、工場の建設、道路の整備",
+        "外国との貿易、輸出入の管理、為替の調整",
+        "学校の成績管理、入試の実施、教科書の販売"
+      ],
+      "correct_index": 0,
+      "explanation": "社会保障の取組には、高齢者や障害者の生活支援や介護、医療の充実、子育て支援などが含まれます。国民生活の安定と向上を図る大切な政治の働きです。"
+    },
+    {
+      "title": "国会議員の役割",
+      "question": "選挙で選ばれた国会議員の役割として正しいものはどれですか。",
+      "options": [
+        "国民の代表者として国民生活の安定と向上に努める",
+        "自分の利益だけを考えて政治を行う",
+        "選挙に協力してくれた人だけを助ける",
+        "企業の利益を優先して法律を作る"
+      ],
+      "correct_index": 0,
+      "explanation": "国民の代表者として選出された国会議員は、国民生活の安定と向上に努めなければなりません。国民全体のために働くことが求められます。"
+    },
+    {
+      "title": "予算の議決",
+      "question": "国の予算について正しい説明はどれですか。",
+      "options": [
+        "国会で議決され、内閣が執行する",
+        "内閣が自由に決めて使うことができる",
+        "裁判所が決定して実施する",
+        "天皇が決定して国民に知らせる"
+      ],
+      "correct_index": 0,
+      "explanation": "国の予算は国会で議決され、内閣が法律や予算に基づいて執行します。これは三権分立の仕組みの一つです。"
+    },
+    {
+      "title": "地方公共団体",
+      "question": "地方公共団体(市役所や県庁)が政策を決める際に大切にしていることはどれですか。",
+      "options": [
+        "地域の実態や住民の意見を取り入れる",
+        "国の指示だけに従って決める",
+        "他の都道府県と同じことをする",
+        "企業の要望だけを聞いて決める"
+      ],
+      "correct_index": 0,
+      "explanation": "市役所や県庁は、地域の実態や住民の意見を取り入れながら政策を決定し、国と協力して計画的に実行しています。"
+    },
+    {
+      "title": "国民の祝日",
+      "question": "国民の祝日について正しい説明はどれですか。",
+      "options": [
+        "法律に定められ、よりよき社会を築くために設けられている",
+        "企業が自由に決めることができる休日",
+        "学校だけが休みになる特別な日",
+        "外国から伝わった休日の制度"
+      ],
+      "correct_index": 0,
+      "explanation": "国民の祝日は法律に定められており、よりよき社会、より豊かな生活を築き上げるために設けられています。国会と国民との関わりを示す具体例です。"
+    },
+    {
+      "title": "参政権",
+      "question": "国民の参政権として正しいものはどれですか。",
+      "options": [
+        "選挙で投票する権利や立候補する権利",
+        "税金を納めなくてもよい権利",
+        "法律を守らなくてもよい権利",
+        "裁判を受けなくてもよい権利"
+      ],
+      "correct_index": 0,
+      "explanation": "参政権は国民の権利の一つで、選挙で投票する権利や立候補する権利などが含まれます。国民が政治に参加するための大切な権利です。"
+    },
+    {
+      "title": "納税の義務",
+      "question": "国民の納税の義務について正しい説明はどれですか。",
+      "options": [
+        "国民生活の向上と安定のため税金を納める義務",
+        "好きな時に好きな金額を納める義務",
+        "収入が多い人だけが納める義務",
+        "企業だけが納める義務"
+      ],
+      "correct_index": 0,
+      "explanation": "納税は国民の義務の一つです。税金は国や地方公共団体による対策や事業に使われ、国民生活の向上と安定のために重要な役割を果たしています。"
+    },
+    {
+      "title": "三権分立の意味",
+      "question": "国会、内閣、裁判所の三権が分かれている理由として最も適切なものはどれですか。",
+      "options": [
+        "権力が一つに集中しないようにするため",
+        "それぞれの建物を別々の場所に建てるため",
+        "仕事を分担して楽をするため",
+        "外国と同じ仕組みにするため"
+      ],
+      "correct_index": 0,
+      "explanation": "三権分立は、国会、内閣、裁判所がそれぞれの役割を果たし、互いに関連しながら政治を行う仕組みです。権力が一つに集中しないようにして、民主政治を実現します。"
+    },
+    {
+      "title": "政治への参加",
+      "question": "国民が政治に関わる方法として正しいものはどれですか。",
+      "options": [
+        "選挙で投票したり、税金を納めたりする",
+        "政治には一切関わらないようにする",
+        "政治家の言うことだけを聞く",
+        "自分の意見は言わずに黙っている"
+      ],
+      "correct_index": 0,
+      "explanation": "国民は選挙で代表者を選んだり、税金を納めたりすることで政治に関わっています。また、意見を表明することも大切な政治への参加です。"
+    }
+  ],
+  "metadata": {
+    "cos_code": "8220263100000000",
+    "subject": "社会",
+    "grade": 6,
+    "description": "(1) 我が国の政治の働きについて，学習の問題を追究・解決する活動を通して，次の事項を身に付けることができるよう指導する。"
+  }
+}
