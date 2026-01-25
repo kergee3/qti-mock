@@ -1,0 +1,552 @@
+{
+  "timestamp": "20260125_211719",
+  "model": "claude-sonnet-4-5-20250929",
+  "question_type": "extended_text",
+  "total_questions": 5,
+  "output_directory": "text_social_31_20260125_211719",
+  "files": [
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-text/text_social_31_20260125_211719/text_social_31_001-HIsxzstHjapm7KuUGy9E20unL6EB0t.xml",
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-text/text_social_31_20260125_211719/text_social_31_002-gDkDglCGwIf16vdM0x8KKyICZ4xMxa.xml",
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-text/text_social_31_20260125_211719/text_social_31_003-dtbtREdh5jTGY1TcFhZ25nUTULzADP.xml",
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-text/text_social_31_20260125_211719/text_social_31_004-Uy6AyaEsoo2HQvjdFhps4Vv2oSJzIv.xml",
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-text/text_social_31_20260125_211719/text_social_31_005-04oFXmWRh6mZ4Z3z6lJzQphQJlMuwJ.xml"
+  ],
+  "questions": [
+    {
+      "question_id": "text-001",
+      "difficulty": 1,
+      "title": "{日本国憲法|にほんこくけんぽう}の{三|みっ}つの{基本原則|きほんげんそく}",
+      "question_text": "{日本国憲法|にほんこくけんぽう}には、{国|くに}の{基本|きほん}となる{三|みっ}つの{大切|たいせつ}な{原則|げんそく}があります。その{三|みっ}つの{原則|げんそく}を{答|こた}えてください。",
+      "model_answer": "{日本国憲法|にほんこくけんぽう}の{三|みっ}つの{基本原則|きほんげんそく}は、{国民主権|こくみんしゅけん}、{基本的人権|きほんてきじんけん}の{尊重|そんちょう}、{平和主義|へいわしゅぎ}です。{国民主権|こくみんしゅけん}は{国|くに}の{主権|しゅけん}が{国民|こくみん}にあること、{基本的人権|きほんてきじんけん}の{尊重|そんちょう}は{国民|こくみん}の{権利|けんり}を{守|まも}ること、{平和主義|へいわしゅぎ}は{戦争|せんそう}をしないことを{意味|いみ}します。",
+      "required_concepts": [
+        "国民主権",
+        "基本的人権の尊重",
+        "平和主義"
+      ],
+      "scoring_matrix": {
+        "understanding": {
+          "aspect_name": "理解力",
+          "max_score": 4,
+          "levels": [
+            {
+              "score": 4,
+              "description": "三つの原則すべてを正確に理解している"
+            },
+            {
+              "score": 3,
+              "description": "三つの原則のうち二つを正確に理解している"
+            },
+            {
+              "score": 2,
+              "description": "三つの原則のうち一つを正確に理解している"
+            },
+            {
+              "score": 1,
+              "description": "三つの原則について部分的な理解がある"
+            },
+            {
+              "score": 0,
+              "description": "三つの原則を理解していない"
+            }
+          ]
+        },
+        "expression": {
+          "aspect_name": "表現力",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "三つの原則を明確に列挙している"
+            },
+            {
+              "score": 2,
+              "description": "原則の表現が概ね適切である"
+            },
+            {
+              "score": 1,
+              "description": "原則の表現がやや不明確である"
+            },
+            {
+              "score": 0,
+              "description": "原則を適切に表現できていない"
+            }
+          ]
+        },
+        "accuracy": {
+          "aspect_name": "正確性",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "憲法用語を正確に使用している"
+            },
+            {
+              "score": 2,
+              "description": "用語が概ね正確である"
+            },
+            {
+              "score": 1,
+              "description": "用語に一部誤りがある"
+            },
+            {
+              "score": 0,
+              "description": "用語が不正確である"
+            }
+          ]
+        }
+      },
+      "common_errors": [
+        {
+          "pattern": "民主主義を原則の一つとして挙げる",
+          "feedback": "民主主義ではなく、国民主権が正しい原則です。国民主権とは、国の政治を決める権利が国民にあることを意味します。"
+        },
+        {
+          "pattern": "自由・平等を原則として挙げる",
+          "feedback": "自由や平等は基本的人権の内容の一部です。三つの原則は、国民主権、基本的人権の尊重、平和主義です。"
+        },
+        {
+          "pattern": "二つしか答えていない",
+          "feedback": "日本国憲法には三つの基本原則があります。もう一つの原則も考えてみましょう。"
+        }
+      ],
+      "thinking_skills": {
+        "critical_thinking": 30,
+        "judgment": 40,
+        "expression": 30
+      }
+    },
+    {
+      "question_id": "text-002",
+      "difficulty": 2,
+      "title": "{選挙|せんきょ}の{意味|いみ}と{重要性|じゅうようせい}",
+      "question_text": "{選挙|せんきょ}は{国民|こくみん}にとってなぜ{大切|たいせつ}なのでしょうか。{国民主権|こくみんしゅけん}という{言葉|ことば}を{使|つか}って{説明|せつめい}してください。",
+      "model_answer": "{選挙|せんきょ}は、{国民主権|こくみんしゅけん}の{考|かんが}え{方|かた}に{基|もと}づいて、{国民|こくみん}が{自分|じぶん}たちの{代表者|だいひょうしゃ}を{選|えら}ぶ{仕組|しく}みです。{選|えら}ばれた{代表者|だいひょうしゃ}は{国会議員|こっかいぎいん}として、{国民|こくみん}の{願|ねが}いを{実現|じつげん}するために{働|はたら}きます。そのため、{選挙|せんきょ}は{国民|こくみん}が{政治|せいじ}に{参加|さんか}する{大切|たいせつ}な{機会|きかい}です。",
+      "required_concepts": [
+        "国民主権",
+        "代表者の選出",
+        "政治参加"
+      ],
+      "scoring_matrix": {
+        "understanding": {
+          "aspect_name": "理解力",
+          "max_score": 4,
+          "levels": [
+            {
+              "score": 4,
+              "description": "選挙と国民主権の関係を完全に理解している"
+            },
+            {
+              "score": 3,
+              "description": "選挙の意味を概ね理解している"
+            },
+            {
+              "score": 2,
+              "description": "選挙について部分的に理解している"
+            },
+            {
+              "score": 1,
+              "description": "選挙の理解が不十分である"
+            },
+            {
+              "score": 0,
+              "description": "選挙について理解していない"
+            }
+          ]
+        },
+        "expression": {
+          "aspect_name": "表現力",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "国民主権と選挙の関係を論理的に説明している"
+            },
+            {
+              "score": 2,
+              "description": "選挙の重要性を概ね説明できている"
+            },
+            {
+              "score": 1,
+              "description": "説明がやや不明確である"
+            },
+            {
+              "score": 0,
+              "description": "説明が不適切である"
+            }
+          ]
+        },
+        "accuracy": {
+          "aspect_name": "正確性",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "国民主権などの用語を正確に使用している"
+            },
+            {
+              "score": 2,
+              "description": "用語の使用が概ね正確である"
+            },
+            {
+              "score": 1,
+              "description": "用語の使用に一部誤りがある"
+            },
+            {
+              "score": 0,
+              "description": "用語の使用が不正確である"
+            }
+          ]
+        }
+      },
+      "common_errors": [
+        {
+          "pattern": "単に「代表者を選ぶため」とだけ答える",
+          "feedback": "なぜ代表者を選ぶことが大切なのか、国民主権という言葉を使って説明してみましょう。"
+        },
+        {
+          "pattern": "国民主権の意味を説明するだけで選挙との関係に触れない",
+          "feedback": "国民主権と選挙がどのように関係しているのかを説明することが大切です。"
+        },
+        {
+          "pattern": "投票することが義務だから、と答える",
+          "feedback": "選挙は権利です。なぜその権利が大切なのかを、国民主権の考え方から説明してみましょう。"
+        }
+      ],
+      "thinking_skills": {
+        "critical_thinking": 35,
+        "judgment": 35,
+        "expression": 30
+      }
+    },
+    {
+      "question_id": "text-003",
+      "difficulty": 3,
+      "title": "{三権分立|さんけんぶんりつ}の{仕組|しく}み",
+      "question_text": "{国会|こっかい}、{内閣|ないかく}、{裁判所|さいばんしょ}の{三|みっ}つの{機関|きかん}は、それぞれどのような{役割|やくわり}をもっていますか。{具体例|ぐたいれい}を{一|ひと}つ{挙|あ}げながら{説明|せつめい}してください。",
+      "model_answer": "{国会|こっかい}は{法律|ほうりつ}を{作|つく}る{役割|やくわり}があり、{例|たと}えば{消費税|しょうひぜい}の{税率|ぜいりつ}を{決|き}める{法律|ほうりつ}を{制定|せいてい}します。{内閣|ないかく}は{法律|ほうりつ}に{基|もと}づいて{実際|じっさい}の{政治|せいじ}を{行|おこな}う{役割|やくわり}があり、{例|たと}えば{予算|よさん}を{使|つか}って{道路|どうろ}を{整備|せいび}します。{裁判所|さいばんしょ}は{法律|ほうりつ}に{基|もと}づいて{裁判|さいばん}を{行|おこな}う{役割|やくわり}があり、{例|たと}えば{争|あらそ}いごとを{解決|かいけつ}します。",
+      "required_concepts": [
+        "立法権",
+        "行政権",
+        "司法権"
+      ],
+      "scoring_matrix": {
+        "understanding": {
+          "aspect_name": "理解力",
+          "max_score": 4,
+          "levels": [
+            {
+              "score": 4,
+              "description": "三権の役割と具体例を完全に理解している"
+            },
+            {
+              "score": 3,
+              "description": "三権の役割を概ね理解している"
+            },
+            {
+              "score": 2,
+              "description": "一部の機関の役割を理解している"
+            },
+            {
+              "score": 1,
+              "description": "三権の理解が不十分である"
+            },
+            {
+              "score": 0,
+              "description": "三権について理解していない"
+            }
+          ]
+        },
+        "expression": {
+          "aspect_name": "表現力",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "具体例を用いて論理的に説明している"
+            },
+            {
+              "score": 2,
+              "description": "概ね適切に説明できている"
+            },
+            {
+              "score": 1,
+              "description": "説明がやや不明確である"
+            },
+            {
+              "score": 0,
+              "description": "説明が不適切である"
+            }
+          ]
+        },
+        "accuracy": {
+          "aspect_name": "正確性",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "三権の役割と具体例が正確である"
+            },
+            {
+              "score": 2,
+              "description": "概ね正確である"
+            },
+            {
+              "score": 1,
+              "description": "一部不正確である"
+            },
+            {
+              "score": 0,
+              "description": "不正確である"
+            }
+          ]
+        }
+      },
+      "common_errors": [
+        {
+          "pattern": "三つの機関の名前だけを列挙する",
+          "feedback": "それぞれの機関がどのような役割を果たしているのか、具体例を挙げて説明しましょう。"
+        },
+        {
+          "pattern": "具体例がない説明",
+          "feedback": "問題文で求められているように、具体例を一つ挙げながら説明することが大切です。"
+        },
+        {
+          "pattern": "国会と内閣の役割を混同する",
+          "feedback": "国会は法律を作る機関、内閣は法律に基づいて実際の政治を行う機関です。それぞれの役割を正しく理解しましょう。"
+        }
+      ],
+      "thinking_skills": {
+        "critical_thinking": 35,
+        "judgment": 30,
+        "expression": 35
+      }
+    },
+    {
+      "question_id": "text-004",
+      "difficulty": 4,
+      "title": "{税金|ぜいきん}と{社会保障|しゃかいほしょう}の{関係|かんけい}",
+      "question_text": "{国|くに}や{地方公共団体|ちほうこうきょうだんたい}が{行|おこな}う{社会保障|しゃかいほしょう}の{取組|とりくみ}と、{私|わたし}たちが{納|おさ}める{税金|ぜいきん}は、どのような{関係|かんけい}がありますか。{高齢者|こうれいしゃ}や{子育|こそだ}て{支援|しえん}などの{具体例|ぐたいれい}を{二|ふた}つ{挙|あ}げて{説明|せつめい}してください。",
+      "model_answer": "{税金|ぜいきん}は、{国|くに}や{地方公共団体|ちほうこうきょうだんたい}が{行|おこな}う{社会保障|しゃかいほしょう}の{費用|ひよう}として{使|つか}われています。{例|たと}えば、{高齢者|こうれいしゃ}の{介護|かいご}サービスや{医療費|いりょうひ}の{補助|ほじょ}、{保育所|ほいくしょ}の{運営|うんえい}や{子育|こそだ}て{世帯|せたい}への{支援金|しえんきん}などに{税金|ぜいきん}が{使|つか}われ、{国民|こくみん}の{生活|せいかつ}の{安定|あんてい}と{向上|こうじょう}を{支|ささ}えています。",
+      "required_concepts": [
+        "租税の役割",
+        "社会保障",
+        "国民生活の安定"
+      ],
+      "scoring_matrix": {
+        "understanding": {
+          "aspect_name": "理解力",
+          "max_score": 4,
+          "levels": [
+            {
+              "score": 4,
+              "description": "税金と社会保障の関係を完全に理解し、二つの具体例を挙げている"
+            },
+            {
+              "score": 3,
+              "description": "税金と社会保障の関係を概ね理解し、具体例を挙げている"
+            },
+            {
+              "score": 2,
+              "description": "税金と社会保障の関係を部分的に理解している"
+            },
+            {
+              "score": 1,
+              "description": "理解が不十分である"
+            },
+            {
+              "score": 0,
+              "description": "理解していない"
+            }
+          ]
+        },
+        "expression": {
+          "aspect_name": "表現力",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "二つの具体例を用いて論理的に説明している"
+            },
+            {
+              "score": 2,
+              "description": "具体例を用いて概ね説明できている"
+            },
+            {
+              "score": 1,
+              "description": "説明がやや不明確である"
+            },
+            {
+              "score": 0,
+              "description": "説明が不適切である"
+            }
+          ]
+        },
+        "accuracy": {
+          "aspect_name": "正確性",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "社会保障の具体例が正確である"
+            },
+            {
+              "score": 2,
+              "description": "概ね正確である"
+            },
+            {
+              "score": 1,
+              "description": "一部不正確である"
+            },
+            {
+              "score": 0,
+              "description": "不正確である"
+            }
+          ]
+        }
+      },
+      "common_errors": [
+        {
+          "pattern": "税金の使い道を列挙するだけで関係性に触れない",
+          "feedback": "税金がどのように社会保障に使われ、どのような役割を果たしているのかを説明しましょう。"
+        },
+        {
+          "pattern": "具体例が一つしかない",
+          "feedback": "問題文で求められているように、二つの具体例を挙げて説明しましょう。"
+        },
+        {
+          "pattern": "道路や学校などインフラを例に挙げる",
+          "feedback": "問題文では社会保障の取組について聞いています。高齢者支援や子育て支援などの具体例を考えましょう。"
+        }
+      ],
+      "thinking_skills": {
+        "critical_thinking": 30,
+        "judgment": 35,
+        "expression": 35
+      }
+    },
+    {
+      "question_id": "text-005",
+      "difficulty": 5,
+      "title": "{裁判員制度|さいばんいんせいど}と{国民|こくみん}の{参加|さんか}",
+      "question_text": "{裁判員制度|さいばんいんせいど}では、{一般|いっぱん}の{国民|こくみん}が{裁判|さいばん}に{参加|さんか}します。この{制度|せいど}が{作|つく}られた{理由|りゆう}を、{国民主権|こくみんしゅけん}や{民主主義|みんしゅしゅぎ}という{考|かんが}え{方|かた}と{関連|かんれん}づけて{説明|せつめい}してください。",
+      "model_answer": "{裁判員制度|さいばんいんせいど}は、{国民主権|こくみんしゅけん}や{民主主義|みんしゅしゅぎ}の{考|かんが}え{方|かた}に{基|もと}づいて{作|つく}られました。{裁判|さいばん}は{国民|こくみん}の{権利|けんり}や{自由|じゆう}に{関|かか}わる{重要|じゅうよう}なことを{決|き}める{場|ば}です。そのため、{裁判官|さいばんかん}だけでなく{一般|いっぱん}の{国民|こくみん}も{参加|さんか}することで、{国民|こくみん}の{感覚|かんかく}や{意見|いけん}を{裁判|さいばん}に{反映|はんえい}させ、より{公正|こうせい}で{民主的|みんしゅてき}な{司法|しほう}を{実現|じつげん}するためです。",
+      "required_concepts": [
+        "裁判員制度",
+        "国民主権",
+        "民主主義",
+        "司法への国民参加"
+      ],
+      "scoring_matrix": {
+        "understanding": {
+          "aspect_name": "理解力",
+          "max_score": 4,
+          "levels": [
+            {
+              "score": 4,
+              "description": "裁判員制度と民主主義の関係を完全に理解している"
+            },
+            {
+              "score": 3,
+              "description": "裁判員制度の意義を概ね理解している"
+            },
+            {
+              "score": 2,
+              "description": "裁判員制度について部分的に理解している"
+            },
+            {
+              "score": 1,
+              "description": "理解が不十分である"
+            },
+            {
+              "score": 0,
+              "description": "理解していない"
+            }
+          ]
+        },
+        "expression": {
+          "aspect_name": "表現力",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "国民主権・民主主義と関連づけて論理的に説明している"
+            },
+            {
+              "score": 2,
+              "description": "概ね論理的に説明できている"
+            },
+            {
+              "score": 1,
+              "description": "説明がやや不明確である"
+            },
+            {
+              "score": 0,
+              "description": "説明が不適切である"
+            }
+          ]
+        },
+        "accuracy": {
+          "aspect_name": "正確性",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "制度の目的と用語が正確である"
+            },
+            {
+              "score": 2,
+              "description": "概ね正確である"
+            },
+            {
+              "score": 1,
+              "description": "一部不正確である"
+            },
+            {
+              "score": 0,
+              "description": "不正確である"
+            }
+          ]
+        }
+      },
+      "common_errors": [
+        {
+          "pattern": "単に「国民が参加するため」とだけ答える",
+          "feedback": "なぜ国民が参加することが大切なのか、国民主権や民主主義という言葉を使って説明しましょう。"
+        },
+        {
+          "pattern": "裁判員制度の仕組みだけを説明する",
+          "feedback": "問題文では制度が作られた理由を聞いています。なぜこの制度が必要なのかを、民主主義の考え方から説明しましょう。"
+        },
+        {
+          "pattern": "裁判官の負担を減らすため、と答える",
+          "feedback": "裁判員制度の主な目的は、国民の視点を裁判に反映させることです。民主主義との関係を考えてみましょう。"
+        }
+      ],
+      "thinking_skills": {
+        "critical_thinking": 40,
+        "judgment": 35,
+        "expression": 25
+      }
+    }
+  ],
+  "metadata": {
+    "cos_code": "8220263100000000",
+    "subject": "社会",
+    "grade": 6,
+    "description": "(1) 我が国の政治の働きについて，学習の問題を追究・解決する活動を通して，次の事項を身に付けることができるよう指導する。",
+    "question_type": "extended_text",
+    "char_limits": {
+      "short": {
+        "min_chars": 50,
+        "max_chars": 100,
+        "model_answer_target": 90
+      },
+      "long": {
+        "min_chars": 70,
+        "max_chars": 140,
+        "model_answer_target": 130
+      }
+    },
+    "max_score": 10
+  }
+}

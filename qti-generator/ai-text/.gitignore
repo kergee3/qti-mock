@@ -49,6 +49,9 @@ htmlcov/
 output/*.xml
 output/*.json
 
+# LODキャッシュ
+lod-cache/
+
 # ログ
 *.log
 logs/

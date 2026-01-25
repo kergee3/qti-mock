@@ -2,6 +2,7 @@
 
 import json
 import re
+from datetime import datetime
 from typing import Optional
 from anthropic import Anthropic
 import sys
@@ -32,6 +33,37 @@ class TextQuestionGenerator:
             )
 
         self.client = Anthropic(api_key=self.api_key)
+        self.api_call_logs = []  # API呼び出しログ蓄積用
+
+    def _log_api_call(
+        self,
+        call_type: str,
+        system_prompt: str,
+        user_prompt: str,
+        response_content: str,
+        input_tokens: int,
+        output_tokens: int,
+    ):
+        """API呼び出しをログに記録"""
+        self.api_call_logs.append({
+            "call_number": len(self.api_call_logs) + 1,
+            "call_type": call_type,
+            "timestamp": datetime.now().isoformat(),
+            "model": self.model,
+            "request": {
+                "system_prompt": system_prompt,
+                "user_prompt": user_prompt,
+            },
+            "response": {
+                "content": response_content,
+                "input_tokens": input_tokens,
+                "output_tokens": output_tokens,
+            }
+        })
+
+    def get_api_call_logs(self) -> list[dict]:
+        """蓄積されたAPI呼び出しログを取得"""
+        return self.api_call_logs
 
     def generate(self, system_prompt: str, user_prompt: str) -> dict:
         """
@@ -62,6 +94,16 @@ class TextQuestionGenerator:
 
             # レスポンスからテキストを抽出
             content = response.content[0].text
+
+            # API呼び出しをログに記録
+            self._log_api_call(
+                call_type="fallback",
+                system_prompt=system_prompt,
+                user_prompt=user_prompt,
+                response_content=content,
+                input_tokens=input_tokens,
+                output_tokens=output_tokens,
+            )
 
             # JSONをパース
             question = self._parse_json_response(content)
@@ -180,6 +222,16 @@ class TextQuestionGenerator:
 
             # レスポンスからテキストを抽出
             content = response.content[0].text
+
+            # API呼び出しをログに記録
+            self._log_api_call(
+                call_type="batch",
+                system_prompt=system_prompt,
+                user_prompt=user_prompt,
+                response_content=content,
+                input_tokens=input_tokens,
+                output_tokens=output_tokens,
+            )
 
             # JSONをパース
             questions = self._parse_batch_response(content)

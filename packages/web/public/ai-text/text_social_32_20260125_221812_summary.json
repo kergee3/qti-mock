@@ -1,0 +1,551 @@
+{
+  "timestamp": "20260125_221812",
+  "model": "claude-sonnet-4-5-20250929",
+  "question_type": "extended_text",
+  "total_questions": 5,
+  "output_directory": "text_social_32_20260125_221812",
+  "files": [
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-text/text_social_32_20260125_221812/text_social_32_001-7juFr8kwTk8sJcOBi7zKZdj5UmBmX3.xml",
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-text/text_social_32_20260125_221812/text_social_32_002-wc8PkvtydvIBOGGCYd62ouefRLyqhg.xml",
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-text/text_social_32_20260125_221812/text_social_32_003-fwbv6jjm2xV3qFyPRLSkcug1bGEnyX.xml",
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-text/text_social_32_20260125_221812/text_social_32_004-PON4EhsT8L480gQLcsga5BwjaZb8YY.xml",
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-text/text_social_32_20260125_221812/text_social_32_005-KJ7wWIIdM9M3yVqEpsNSu6uvjVHyHK.xml"
+  ],
+  "questions": [
+    {
+      "question_id": "text-001",
+      "difficulty": 1,
+      "title": "{日本|にほん}の{歴史|れきし}を{学|まな}ぶ{意味|いみ}",
+      "question_text": "{私|わたし}たちが{日本|にほん}の{歴史|れきし}を{学|まな}ぶことには、どのような{意味|いみ}があるでしょうか。{先人|せんじん}たちの{働|はたら}きや{文化遺産|ぶんかいさん}と{関連|かんれん}づけて、50{字|じ}から100{字|じ}で{説明|せつめい}しなさい。",
+      "model_answer": "{歴史|れきし}を{学|まな}ぶことで、{今|いま}の{私|わたし}たちの{生活|せいかつ}が{先人|せんじん}たちの{努力|どりょく}や{工夫|くふう}によって{築|きず}かれてきたことを{理解|りかい}できます。また、{昔|むかし}の{人々|ひとびと}が{残|のこ}した{文化遺産|ぶんかいさん}を{大切|たいせつ}にし、これからの{社会|しゃかい}をつくる{担|にな}い{手|て}としての{自覚|じかく}をもつことができます。",
+      "required_concepts": [
+        "先人の働き",
+        "文化遺産の継承",
+        "歴史学習の意義"
+      ],
+      "scoring_matrix": {
+        "understanding": {
+          "aspect_name": "理解力",
+          "max_score": 4,
+          "levels": [
+            {
+              "score": 4,
+              "description": "歴史学習の意義を先人の働きと現在の生活との関連から完全に理解している"
+            },
+            {
+              "score": 3,
+              "description": "歴史学習の意義を概ね理解している"
+            },
+            {
+              "score": 2,
+              "description": "歴史学習の一部の意義を理解している"
+            },
+            {
+              "score": 1,
+              "description": "歴史学習の意義の理解が不十分"
+            },
+            {
+              "score": 0,
+              "description": "歴史学習の意義を理解していない"
+            }
+          ]
+        },
+        "expression": {
+          "aspect_name": "表現力",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "過去と現在のつながりを論理的に表現している"
+            },
+            {
+              "score": 2,
+              "description": "概ね論理的に表現している"
+            },
+            {
+              "score": 1,
+              "description": "表現がやや不明確"
+            },
+            {
+              "score": 0,
+              "description": "表現が不適切"
+            }
+          ]
+        },
+        "accuracy": {
+          "aspect_name": "正確性",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "「先人」「文化遺産」などの用語を正確に使用している"
+            },
+            {
+              "score": 2,
+              "description": "用語使用が概ね正確"
+            },
+            {
+              "score": 1,
+              "description": "用語使用が一部不正確"
+            },
+            {
+              "score": 0,
+              "description": "用語使用が不正確"
+            }
+          ]
+        }
+      },
+      "common_errors": [
+        {
+          "pattern": "単に「昔のことを知るため」とだけ書いている",
+          "feedback": "歴史を学ぶことが、現在の私たちの生活や未来にどのようにつながるのかを考えてみましょう。"
+        },
+        {
+          "pattern": "先人の働きについて触れていない",
+          "feedback": "今の生活は、昔の人々がどのような努力や工夫をしてきたかと深く関わっています。そのことを含めて説明しましょう。"
+        },
+        {
+          "pattern": "自分たちとの関わりが書かれていない",
+          "feedback": "歴史を学ぶことが、これからの社会を築く私たちにとってどのような意味があるかを考えてみましょう。"
+        }
+      ],
+      "thinking_skills": {
+        "critical_thinking": 30,
+        "judgment": 40,
+        "expression": 30
+      }
+    },
+    {
+      "question_id": "text-002",
+      "difficulty": 2,
+      "title": "{天皇|てんのう}を{中心|ちゅうしん}とした{政治|せいじ}の{確立|かくりつ}",
+      "question_text": "{聖徳太子|しょうとくたいし}や{聖武天皇|しょうむてんのう}の{時代|じだい}に、{天皇|てんのう}を{中心|ちゅうしん}とした{政治|せいじ}が{確立|かくりつ}されていきました。この{時代|じだい}に{行|おこな}われた{国|くに}づくりの{特徴|とくちょう}を、50{字|じ}から100{字|じ}で{説明|せつめい}しなさい。",
+      "model_answer": "{聖徳太子|しょうとくたいし}は{中国|ちゅうごく}の{進|すす}んだ{制度|せいど}や{文化|ぶんか}を{取|と}り{入|い}れ、{法隆寺|ほうりゅうじ}などを{建|た}てました。{聖武天皇|しょうむてんのう}は{仏教|ぶっきょう}の{力|ちから}で{国|くに}を{守|まも}ろうと{考|かんが}え、{東大寺|とうだいじ}の{大仏|だいぶつ}を{造|つく}りました。このように{天皇|てんのう}を{中心|ちゅうしん}に、{仏教|ぶっきょう}や{大陸|たいりく}の{文化|ぶんか}を{取|と}り{入|い}れた{国|くに}づくりが{進|すす}められました。",
+      "required_concepts": [
+        "大陸文化の摂取",
+        "仏教の影響",
+        "天皇中心の政治"
+      ],
+      "scoring_matrix": {
+        "understanding": {
+          "aspect_name": "理解力",
+          "max_score": 4,
+          "levels": [
+            {
+              "score": 4,
+              "description": "天皇中心の政治確立の過程を完全に理解している"
+            },
+            {
+              "score": 3,
+              "description": "天皇中心の政治確立を概ね理解している"
+            },
+            {
+              "score": 2,
+              "description": "天皇中心の政治について部分的に理解している"
+            },
+            {
+              "score": 1,
+              "description": "理解が不十分"
+            },
+            {
+              "score": 0,
+              "description": "理解していない"
+            }
+          ]
+        },
+        "expression": {
+          "aspect_name": "表現力",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "大陸文化の摂取と国づくりの関連を論理的に表現している"
+            },
+            {
+              "score": 2,
+              "description": "概ね論理的に表現している"
+            },
+            {
+              "score": 1,
+              "description": "表現がやや不明確"
+            },
+            {
+              "score": 0,
+              "description": "表現が不適切"
+            }
+          ]
+        },
+        "accuracy": {
+          "aspect_name": "正確性",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "人物名、寺院名、歴史的事実が正確"
+            },
+            {
+              "score": 2,
+              "description": "概ね正確"
+            },
+            {
+              "score": 1,
+              "description": "一部不正確"
+            },
+            {
+              "score": 0,
+              "description": "不正確"
+            }
+          ]
+        }
+      },
+      "common_errors": [
+        {
+          "pattern": "大陸文化の摂取について触れていない",
+          "feedback": "聖徳太子が中国（隋）から進んだ制度や文化を取り入れたことも重要なポイントです。"
+        },
+        {
+          "pattern": "具体的な建造物に触れていない",
+          "feedback": "法隆寺や東大寺の大仏など、具体的な文化遺産を挙げると説明がより分かりやすくなります。"
+        },
+        {
+          "pattern": "仏教の役割について説明していない",
+          "feedback": "この時代、仏教が国づくりにどのような役割を果たしたかを考えてみましょう。"
+        }
+      ],
+      "thinking_skills": {
+        "critical_thinking": 35,
+        "judgment": 35,
+        "expression": 30
+      }
+    },
+    {
+      "question_id": "text-003",
+      "difficulty": 3,
+      "title": "{武士|ぶし}による{政治|せいじ}の{始|はじ}まり",
+      "question_text": "{鎌倉時代|かまくらじだい}に{武士|ぶし}による{政治|せいじ}が{始|はじ}まりました。{源頼朝|みなもとのよりとも}が{開|ひら}いた{鎌倉幕府|かまくらばくふ}の{政治|せいじ}の{仕組|しく}みについて、{具体例|ぐたいれい}を1つ{挙|あ}げながら、70{字|じ}から140{字|じ}で{説明|せつめい}しなさい。",
+      "model_answer": "{源頼朝|みなもとのよりとも}は{鎌倉|かまくら}に{幕府|ばくふ}を{開|ひら}き、{武士|ぶし}による{政治|せいじ}を{始|はじ}めました。たとえば、{全国|ぜんこく}に{守護|しゅご}や{地頭|じとう}を{置|お}き、{武士|ぶし}たちに{土地|とち}を{治|おさ}めさせました。{武士|ぶし}たちは{頼朝|よりとも}に{忠誠|ちゅうせい}を{誓|ちか}い、{戦|たたか}いのときには{協力|きょうりょく}する{仕組|しく}みをつくりました。こうして{朝廷|ちょうてい}から{認|みと}められた{武士|ぶし}の{政治|せいじ}が{確立|かくりつ}していきました。",
+      "required_concepts": [
+        "鎌倉幕府の成立",
+        "守護・地頭の設置",
+        "御恩と奉公の関係"
+      ],
+      "scoring_matrix": {
+        "understanding": {
+          "aspect_name": "理解力",
+          "max_score": 4,
+          "levels": [
+            {
+              "score": 4,
+              "description": "武士による政治の仕組みを具体例とともに完全に理解している"
+            },
+            {
+              "score": 3,
+              "description": "武士による政治の仕組みを概ね理解している"
+            },
+            {
+              "score": 2,
+              "description": "武士による政治について部分的に理解している"
+            },
+            {
+              "score": 1,
+              "description": "理解が不十分"
+            },
+            {
+              "score": 0,
+              "description": "理解していない"
+            }
+          ]
+        },
+        "expression": {
+          "aspect_name": "表現力",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "具体例を挙げて仕組みを論理的に説明している"
+            },
+            {
+              "score": 2,
+              "description": "概ね論理的に説明している"
+            },
+            {
+              "score": 1,
+              "description": "説明がやや不明確"
+            },
+            {
+              "score": 0,
+              "description": "説明が不適切"
+            }
+          ]
+        },
+        "accuracy": {
+          "aspect_name": "正確性",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "人物名、制度名が正確で事実関係も正しい"
+            },
+            {
+              "score": 2,
+              "description": "概ね正確"
+            },
+            {
+              "score": 1,
+              "description": "一部不正確"
+            },
+            {
+              "score": 0,
+              "description": "不正確"
+            }
+          ]
+        }
+      },
+      "common_errors": [
+        {
+          "pattern": "具体例が示されていない",
+          "feedback": "守護・地頭の設置など、具体的な制度を1つ挙げて説明しましょう。"
+        },
+        {
+          "pattern": "朝廷との関係に触れていない",
+          "feedback": "武士の政治は朝廷から認められて確立したことも重要なポイントです。"
+        },
+        {
+          "pattern": "武士と頼朝の関係が説明されていない",
+          "feedback": "武士たちが頼朝にどのように仕え、どのような関係を築いたかを考えてみましょう。"
+        }
+      ],
+      "thinking_skills": {
+        "critical_thinking": 40,
+        "judgment": 30,
+        "expression": 30
+      }
+    },
+    {
+      "question_id": "text-004",
+      "difficulty": 4,
+      "title": "{平安時代|へいあんじだい}と{室町時代|むろまちじだい}の{文化|ぶんか}の{違|ちが}い",
+      "question_text": "{平安時代|へいあんじだい}の{貴族|きぞく}の{文化|ぶんか}と、{室町時代|むろまちじだい}の{文化|ぶんか}には、どのような{違|ちが}いがありますか。それぞれの{時代|じだい}の{代表的|だいひょうてき}な{文化遺産|ぶんかいさん}を1つずつ{挙|あ}げて、2つの{文化|ぶんか}の{特徴|とくちょう}を{比較|ひかく}しながら、70{字|じ}から140{字|じ}で{説明|せつめい}しなさい。",
+      "model_answer": "{平安時代|へいあんじだい}には、{貴族|きぞく}の{優雅|ゆうが}な{生活|せいかつ}の{中|なか}から、『{源氏物語|げんじものがたり}』のような{日本風|にほんふう}の{文化|ぶんか}が{生|う}まれました。一方、{室町時代|むろまちじだい}には、{雪舟|せっしゅう}の{水墨画|すいぼくが}や{金閣|きんかく}・{銀閣|ぎんかく}など、{禅|ぜん}の{心|こころ}を{表|あらわ}した{簡素|かんそ}で{落|お}ち{着|つ}いた{文化|ぶんか}が{発展|はってん}しました。{平安時代|へいあんじだい}は{華|はな}やかさ、{室町時代|むろまちじだい}は{静|しず}けさが{特徴|とくちょう}です。",
+      "required_concepts": [
+        "平安時代の貴族文化",
+        "室町文化の特色",
+        "文化の比較"
+      ],
+      "scoring_matrix": {
+        "understanding": {
+          "aspect_name": "理解力",
+          "max_score": 4,
+          "levels": [
+            {
+              "score": 4,
+              "description": "2つの時代の文化的特徴を正確に理解し比較できている"
+            },
+            {
+              "score": 3,
+              "description": "2つの時代の文化的特徴を概ね理解している"
+            },
+            {
+              "score": 2,
+              "description": "一方の時代の文化的特徴のみ理解している"
+            },
+            {
+              "score": 1,
+              "description": "理解が不十分"
+            },
+            {
+              "score": 0,
+              "description": "理解していない"
+            }
+          ]
+        },
+        "expression": {
+          "aspect_name": "表現力",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "2つの文化を対比的に論理的に表現している"
+            },
+            {
+              "score": 2,
+              "description": "概ね論理的に表現している"
+            },
+            {
+              "score": 1,
+              "description": "比較の視点が不明確"
+            },
+            {
+              "score": 0,
+              "description": "表現が不適切"
+            }
+          ]
+        },
+        "accuracy": {
+          "aspect_name": "正確性",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "文化遺産名、時代区分、特徴が正確"
+            },
+            {
+              "score": 2,
+              "description": "概ね正確"
+            },
+            {
+              "score": 1,
+              "description": "一部不正確"
+            },
+            {
+              "score": 0,
+              "description": "不正確"
+            }
+          ]
+        }
+      },
+      "common_errors": [
+        {
+          "pattern": "具体的な文化遺産が挙げられていない",
+          "feedback": "それぞれの時代を代表する文化遺産を1つずつ具体的に挙げましょう。源氏物語、金閣、水墨画などが考えられます。"
+        },
+        {
+          "pattern": "2つの文化の違いが明確に説明されていない",
+          "feedback": "平安時代の華やかさと室町時代の簡素さなど、対比して説明すると分かりやすくなります。"
+        },
+        {
+          "pattern": "文化の背景に触れていない",
+          "feedback": "貴族の生活や禅の影響など、その文化が生まれた背景も考えてみましょう。"
+        }
+      ],
+      "thinking_skills": {
+        "critical_thinking": 35,
+        "judgment": 40,
+        "expression": 25
+      }
+    },
+    {
+      "question_id": "text-005",
+      "difficulty": 5,
+      "title": "{戦国時代|せんごくじだい}の{統一|とういつ}と{世界|せかい}とのつながり",
+      "question_text": "{織田信長|おだのぶなが}や{豊臣秀吉|とよとみひでよし}が{活躍|かつやく}した{時代|じだい}には、ヨーロッパとの{交流|こうりゅう}も{始|はじ}まりました。この{時代|じだい}に{日本|にほん}に{伝|つた}わったものが、{天下統一|てんかとういつ}や{人々|ひとびと}の{生活|せいかつ}にどのような{影響|えいきょう}を{与|あた}えたかを{考|かんが}えて、70{字|じ}から140{字|じ}で{書|か}きなさい。",
+      "model_answer": "ポルトガル{人|じん}によって{鉄砲|てっぽう}が{伝|つた}えられ、{織田信長|おだのぶなが}はこれを{戦|たたか}いに{活用|かつよう}して{勢力|せいりょく}を{拡大|かくだい}し、{天下統一|てんかとういつ}を{進|すす}めました。また、ザビエルが{伝|つた}えたキリスト{教|きょう}は{各地|かくち}に{広|ひろ}がり、{人々|ひとびと}の{信仰|しんこう}や{生活|せいかつ}に{大|おお}きな{影響|えいきょう}を{与|あた}えました。このように、ヨーロッパとの{交流|こうりゅう}は{日本|にほん}の{歴史|れきし}を{大|おお}きく{変|か}える{きっかけ|きっかけ}となりました。",
+      "required_concepts": [
+        "鉄砲の伝来と活用",
+        "キリスト教の伝来",
+        "世界との交流の影響"
+      ],
+      "scoring_matrix": {
+        "understanding": {
+          "aspect_name": "理解力",
+          "max_score": 4,
+          "levels": [
+            {
+              "score": 4,
+              "description": "外来文化が天下統一と社会に与えた影響を完全に理解している"
+            },
+            {
+              "score": 3,
+              "description": "外来文化の影響を概ね理解している"
+            },
+            {
+              "score": 2,
+              "description": "外来文化の一部の影響のみ理解している"
+            },
+            {
+              "score": 1,
+              "description": "理解が不十分"
+            },
+            {
+              "score": 0,
+              "description": "理解していない"
+            }
+          ]
+        },
+        "expression": {
+          "aspect_name": "表現力",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "因果関係を明確に論理的に表現している"
+            },
+            {
+              "score": 2,
+              "description": "概ね論理的に表現している"
+            },
+            {
+              "score": 1,
+              "description": "因果関係がやや不明確"
+            },
+            {
+              "score": 0,
+              "description": "表現が不適切"
+            }
+          ]
+        },
+        "accuracy": {
+          "aspect_name": "正確性",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "伝来物、人物名、歴史的影響が正確"
+            },
+            {
+              "score": 2,
+              "description": "概ね正確"
+            },
+            {
+              "score": 1,
+              "description": "一部不正確"
+            },
+            {
+              "score": 0,
+              "description": "不正確"
+            }
+          ]
+        }
+      },
+      "common_errors": [
+        {
+          "pattern": "伝来物と天下統一の関連が説明されていない",
+          "feedback": "鉄砲が織田信長の戦いにどのように役立ったかを考えてみましょう。"
+        },
+        {
+          "pattern": "人々の生活への影響に触れていない",
+          "feedback": "キリスト教の伝来が、当時の人々の信仰や生活にどのような変化をもたらしたかも考えてみましょう。"
+        },
+        {
+          "pattern": "世界との交流という視点が欠けている",
+          "feedback": "この時代は日本が初めて本格的にヨーロッパと交流した重要な時期です。その歴史的意義を考えてみましょう。"
+        }
+      ],
+      "thinking_skills": {
+        "critical_thinking": 40,
+        "judgment": 35,
+        "expression": 25
+      }
+    }
+  ],
+  "metadata": {
+    "cos_code": "8220263200000000",
+    "subject": "社会",
+    "grade": 6,
+    "description": "(2) 我が国の歴史上の主な事象について，学習の問題を追究・解決する活動を通して，次の事項を身に付けることができるよう指導する。",
+    "question_type": "extended_text",
+    "char_limits": {
+      "short": {
+        "min_chars": 50,
+        "max_chars": 100,
+        "model_answer_target": 90
+      },
+      "long": {
+        "min_chars": 70,
+        "max_chars": 140,
+        "model_answer_target": 130
+      }
+    },
+    "max_score": 10
+  }
+}

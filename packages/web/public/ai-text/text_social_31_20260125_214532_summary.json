@@ -1,0 +1,551 @@
+{
+  "timestamp": "20260125_214532",
+  "model": "claude-sonnet-4-5-20250929",
+  "question_type": "extended_text",
+  "total_questions": 5,
+  "output_directory": "text_social_31_20260125_214532",
+  "files": [
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-text/text_social_31_20260125_214532/text_social_31_001-VdOuGamNCO2HTIRhRV0T2IlDFYP8rn.xml",
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-text/text_social_31_20260125_214532/text_social_31_002-6qZ1XnqGDue1WQIDy49WYOsdzGTIGj.xml",
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-text/text_social_31_20260125_214532/text_social_31_003-cdTVh4ECCGRwc04bU1EL0x3jwH2zQC.xml",
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-text/text_social_31_20260125_214532/text_social_31_004-Dy1PbASifrjDhMH3ciuXcPOThDV2UE.xml",
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-text/text_social_31_20260125_214532/text_social_31_005-fGN92yMEzamF9FZ5Iv8ro6Ebs17cha.xml"
+  ],
+  "questions": [
+    {
+      "question_id": "text-001",
+      "difficulty": 1,
+      "title": "日本国憲法の三つの原則",
+      "question_text": "{日本国憲法|にほんこくけんぽう}には、{国民生活|こくみんせいかつ}の{基本|きほん}となる{三|みっ}つの{大切|たいせつ}な{原則|げんそく}が{定|さだ}められています。その{三|みっ}つの{原則|げんそく}とは{何|なに}か、それぞれの{名前|なまえ}を{書|か}きなさい。50字から100字で書きなさい。",
+      "model_answer": "{日本国憲法|にほんこくけんぽう}の{三大原則|さんだいげんそく}は、{国民主権|こくみんしゅけん}、{基本的人権|きほんてきじんけん}の{尊重|そんちょう}、{平和主義|へいわしゅぎ}です。これらは{日本|にほん}の{民主政治|みんしゅせいじ}の{基礎|きそ}となっています。",
+      "required_concepts": [
+        "国民主権",
+        "基本的人権の尊重",
+        "平和主義"
+      ],
+      "scoring_matrix": {
+        "understanding": {
+          "aspect_name": "理解力",
+          "max_score": 4,
+          "levels": [
+            {
+              "score": 4,
+              "description": "三大原則すべてを正確に理解している"
+            },
+            {
+              "score": 3,
+              "description": "三大原則のうち2つを正確に理解している"
+            },
+            {
+              "score": 2,
+              "description": "三大原則のうち1つを正確に理解している"
+            },
+            {
+              "score": 1,
+              "description": "三大原則について部分的な理解がある"
+            },
+            {
+              "score": 0,
+              "description": "三大原則を理解していない"
+            }
+          ]
+        },
+        "expression": {
+          "aspect_name": "表現力",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "三つの原則を明確に列挙できている"
+            },
+            {
+              "score": 2,
+              "description": "三つの原則を概ね明確に示している"
+            },
+            {
+              "score": 1,
+              "description": "表現がやや不明確"
+            },
+            {
+              "score": 0,
+              "description": "表現が不適切"
+            }
+          ]
+        },
+        "accuracy": {
+          "aspect_name": "正確性",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "用語を正確に使用している"
+            },
+            {
+              "score": 2,
+              "description": "用語は概ね正確"
+            },
+            {
+              "score": 1,
+              "description": "用語に一部誤りがある"
+            },
+            {
+              "score": 0,
+              "description": "用語が不正確"
+            }
+          ]
+        }
+      },
+      "common_errors": [
+        {
+          "pattern": "「民主主義」と書いている",
+          "feedback": "正しくは「国民主権」です。国民が政治の主人公であるという原則を指します。"
+        },
+        {
+          "pattern": "「人権尊重」のみで「基本的」が抜けている",
+          "feedback": "正確には「基本的人権の尊重」です。人間が生まれながらにもつ権利を大切にする原則です。"
+        },
+        {
+          "pattern": "二つしか書けていない",
+          "feedback": "日本国憲法には三つの大切な原則があります。国民主権、基本的人権の尊重、平和主義をすべて書きましょう。"
+        }
+      ],
+      "thinking_skills": {
+        "critical_thinking": 30,
+        "judgment": 40,
+        "expression": 30
+      }
+    },
+    {
+      "question_id": "text-002",
+      "difficulty": 2,
+      "title": "国会の役割と国民との関係",
+      "question_text": "{国会|こっかい}は{国民|こくみん}の{代表者|だいひょうしゃ}である{国会議員|こっかいぎいん}によって{構成|こうせい}されています。{国会|こっかい}が{国民生活|こくみんせいかつ}のために{果|は}たしている{主|おも}な{役割|やくわり}を、「{法律|ほうりつ}」という{言葉|ことば}を{使|つか}って50字から100字で説明しなさい。",
+      "model_answer": "{国会|こっかい}は、{国|くに}の{唯一|ゆいいつ}の{立法機関|りっぽうきかん}として、{国民生活|こくみんせいかつ}に{必要|ひつよう}な{法律|ほうりつ}を{制定|せいてい}したり、{予算|よさん}を{議決|ぎけつ}したりする{役割|やくわり}を{果|は}たしています。",
+      "required_concepts": [
+        "立法機関",
+        "法律の制定",
+        "国民の代表"
+      ],
+      "scoring_matrix": {
+        "understanding": {
+          "aspect_name": "理解力",
+          "max_score": 4,
+          "levels": [
+            {
+              "score": 4,
+              "description": "国会の立法機関としての役割を完全に理解している"
+            },
+            {
+              "score": 3,
+              "description": "国会の主な役割を概ね理解している"
+            },
+            {
+              "score": 2,
+              "description": "国会の役割を部分的に理解している"
+            },
+            {
+              "score": 1,
+              "description": "国会についての理解が不十分"
+            },
+            {
+              "score": 0,
+              "description": "国会の役割を理解していない"
+            }
+          ]
+        },
+        "expression": {
+          "aspect_name": "表現力",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "「法律」という言葉を使い論理的に説明できている"
+            },
+            {
+              "score": 2,
+              "description": "概ね論理的に説明できている"
+            },
+            {
+              "score": 1,
+              "description": "説明がやや不明確"
+            },
+            {
+              "score": 0,
+              "description": "説明が不適切"
+            }
+          ]
+        },
+        "accuracy": {
+          "aspect_name": "正確性",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "「立法機関」「法律の制定」等の用語を正確に使用"
+            },
+            {
+              "score": 2,
+              "description": "用語は概ね正確"
+            },
+            {
+              "score": 1,
+              "description": "用語に一部誤りがある"
+            },
+            {
+              "score": 0,
+              "description": "用語が不正確"
+            }
+          ]
+        }
+      },
+      "common_errors": [
+        {
+          "pattern": "「法律を作る」のみで具体性がない",
+          "feedback": "「法律を制定する」または「法律を定める」という表現を使い、国会が唯一の立法機関であることも含めると良いでしょう。"
+        },
+        {
+          "pattern": "「法律」という言葉を使っていない",
+          "feedback": "問題文の指示に従い、必ず「法律」という言葉を使って説明しましょう。"
+        },
+        {
+          "pattern": "内閣や裁判所の役割を書いている",
+          "feedback": "国会の役割について説明しましょう。法律を制定することが国会の主な役割です。"
+        }
+      ],
+      "thinking_skills": {
+        "critical_thinking": 35,
+        "judgment": 35,
+        "expression": 30
+      }
+    },
+    {
+      "question_id": "text-003",
+      "difficulty": 3,
+      "title": "三権分立の仕組み",
+      "question_text": "{日本|にほん}の{政治|せいじ}では、{国会|こっかい}、{内閣|ないかく}、{裁判所|さいばんしょ}の{三|みっ}つの{機関|きかん}が、それぞれ{独立|どくりつ}して{役割|やくわり}を{果|は}たしています。この{仕組|しく}みを{何|なん}というか{書|か}き、この{仕組|しく}みが{大切|たいせつ}にされている{理由|りゆう}を{具体例|ぐたいれい}を1つ{挙|あ}げて70字から140字で説明しなさい。",
+      "model_answer": "この{仕組|しく}みを{三権分立|さんけんぶんりつ}といいます。{三|みっ}つの{機関|きかん}が{互|たが}いに{協力|きょうりょく}し、{監視|かんし}し{合|あ}うことで、{権力|けんりょく}の{使|つか}い{方|かた}が{正|ただ}しいかどうかを{確認|かくにん}できます。{例|たと}えば、{内閣|ないかく}が{作|つく}った{法律案|ほうりつあん}を{国会|こっかい}が{審議|しんぎ}して{決|き}めることで、{一|ひと}つの{機関|きかん}に{権力|けんりょく}が{集中|しゅうちゅう}することを{防|ふせ}いでいます。",
+      "required_concepts": [
+        "三権分立",
+        "権力の分散",
+        "相互の抑制と均衡"
+      ],
+      "scoring_matrix": {
+        "understanding": {
+          "aspect_name": "理解力",
+          "max_score": 4,
+          "levels": [
+            {
+              "score": 4,
+              "description": "三権分立の意義と仕組みを完全に理解している"
+            },
+            {
+              "score": 3,
+              "description": "三権分立の仕組みを概ね理解している"
+            },
+            {
+              "score": 2,
+              "description": "三権分立について部分的に理解している"
+            },
+            {
+              "score": 1,
+              "description": "三権分立の理解が不十分"
+            },
+            {
+              "score": 0,
+              "description": "三権分立を理解していない"
+            }
+          ]
+        },
+        "expression": {
+          "aspect_name": "表現力",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "具体例を挙げて論理的に説明できている"
+            },
+            {
+              "score": 2,
+              "description": "概ね論理的に説明できている"
+            },
+            {
+              "score": 1,
+              "description": "説明がやや不明確"
+            },
+            {
+              "score": 0,
+              "description": "説明が不適切"
+            }
+          ]
+        },
+        "accuracy": {
+          "aspect_name": "正確性",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "用語と具体例が正確"
+            },
+            {
+              "score": 2,
+              "description": "用語と具体例は概ね正確"
+            },
+            {
+              "score": 1,
+              "description": "用語や具体例に一部誤りがある"
+            },
+            {
+              "score": 0,
+              "description": "用語や具体例が不正確"
+            }
+          ]
+        }
+      },
+      "common_errors": [
+        {
+          "pattern": "名称のみで理由を説明していない",
+          "feedback": "三権分立が大切にされている理由を、具体例を挙げて説明しましょう。"
+        },
+        {
+          "pattern": "具体例がない、または抽象的",
+          "feedback": "国会・内閣・裁判所の関係について、具体的な例を1つ挙げて説明しましょう。"
+        },
+        {
+          "pattern": "「三権分立」の漢字や読み方が間違っている",
+          "feedback": "正しくは「三権分立（さんけんぶんりつ）」です。三つの権力が分かれていることを意味します。"
+        }
+      ],
+      "thinking_skills": {
+        "critical_thinking": 40,
+        "judgment": 30,
+        "expression": 30
+      }
+    },
+    {
+      "question_id": "text-004",
+      "difficulty": 4,
+      "title": "選挙権と政治への参加",
+      "question_text": "{選挙|せんきょ}は{国民|こくみん}が{政治|せいじ}に{参加|さんか}する{大切|たいせつ}な{機会|きかい}です。{選挙|せんきょ}で{選|えら}ばれた{代表者|だいひょうしゃ}が{国民|こくみん}のために{果|は}たすべき{責任|せきにん}と、{選挙権|せんきょけん}を{持|も}つ{国民|こくみん}が{大切|たいせつ}にすべきことを、それぞれ{関連付|かんれんづ}けて70字から140字で説明しなさい。",
+      "model_answer": "{選|えら}ばれた{代表者|だいひょうしゃ}は、{国民生活|こくみんせいかつ}の{安定|あんてい}と{向上|こうじょう}のために{働|はたら}く{責任|せきにん}があります。そのため、{国民|こくみん}は{選挙権|せんきょけん}を{行使|こうし}し、{政治|せいじ}について{関心|かんしん}を{持|も}ち、よく{考|かんが}えて{投票|とうひょう}することが{大切|たいせつ}です。{国民|こくみん}と{代表者|だいひょうしゃ}が{協力|きょうりょく}することで、よりよい{社会|しゃかい}を{作|つく}ることができます。",
+      "required_concepts": [
+        "国民主権",
+        "代表者の責任",
+        "選挙権の行使"
+      ],
+      "scoring_matrix": {
+        "understanding": {
+          "aspect_name": "理解力",
+          "max_score": 4,
+          "levels": [
+            {
+              "score": 4,
+              "description": "代表者の責任と国民の役割の両方を完全に理解している"
+            },
+            {
+              "score": 3,
+              "description": "代表者の責任と国民の役割を概ね理解している"
+            },
+            {
+              "score": 2,
+              "description": "どちらか一方のみ理解している"
+            },
+            {
+              "score": 1,
+              "description": "部分的な理解にとどまる"
+            },
+            {
+              "score": 0,
+              "description": "理解していない"
+            }
+          ]
+        },
+        "expression": {
+          "aspect_name": "表現力",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "2つの観点を関連付けて論理的に説明できている"
+            },
+            {
+              "score": 2,
+              "description": "2つの観点について概ね説明できている"
+            },
+            {
+              "score": 1,
+              "description": "関連付けが不十分"
+            },
+            {
+              "score": 0,
+              "description": "説明が不適切"
+            }
+          ]
+        },
+        "accuracy": {
+          "aspect_name": "正確性",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "用語を正確に使い、内容も正確"
+            },
+            {
+              "score": 2,
+              "description": "用語と内容は概ね正確"
+            },
+            {
+              "score": 1,
+              "description": "一部に誤りがある"
+            },
+            {
+              "score": 0,
+              "description": "内容が不正確"
+            }
+          ]
+        }
+      },
+      "common_errors": [
+        {
+          "pattern": "代表者の責任のみ、または国民の役割のみ書いている",
+          "feedback": "問題文の指示に従い、代表者の責任と国民が大切にすべきことの両方を関連付けて説明しましょう。"
+        },
+        {
+          "pattern": "「関連付けて」の指示を無視して別々に書いている",
+          "feedback": "代表者と国民の関係がどのようにつながっているかを意識して説明しましょう。"
+        },
+        {
+          "pattern": "抽象的な表現のみで具体性がない",
+          "feedback": "「国民生活の安定と向上」「選挙権の行使」など、具体的な言葉を使って説明しましょう。"
+        }
+      ],
+      "thinking_skills": {
+        "critical_thinking": 35,
+        "judgment": 35,
+        "expression": 30
+      }
+    },
+    {
+      "question_id": "text-005",
+      "difficulty": 5,
+      "title": "租税の役割と財政の民主性",
+      "question_text": "{国|くに}や{地方公共団体|ちほうこうきょうだんたい}は、{税金|ぜいきん}を{使|つか}って{様々|さまざま}な{政策|せいさく}を{行|おこな}っています。{限|かぎ}られた{税金|ぜいきん}をどのように{使|つか}うかを{決|き}める{責任|せきにん}は{誰|だれ}にあるのか、また、そのことが{民主政治|みんしゅせいじ}とどのように{関|かか}わっているのかを70字から140字で説明しなさい。",
+      "model_answer": "{限|かぎ}られた{税金|ぜいきん}の{使|つか}い{道|みち}を{決|き}める{責任|せきにん}は、{最終的|さいしゅうてき}には{国民|こくみん}にあります。{国民|こくみん}が{選挙|せんきょ}で{選|えら}んだ{代表者|だいひょうしゃ}が{国会|こっかい}や{地方議会|ちほうぎかい}で{予算|よさん}を{決定|けってい}するため、{国民|こくみん}の{意見|いけん}が{政治|せいじ}に{反映|はんえい}されます。これが{国民主権|こくみんしゅけん}に{基|もと}づく{民主政治|みんしゅせいじ}の{仕組|しく}みです。",
+      "required_concepts": [
+        "租税の役割",
+        "国民主権",
+        "議会制民主主義"
+      ],
+      "scoring_matrix": {
+        "understanding": {
+          "aspect_name": "理解力",
+          "max_score": 4,
+          "levels": [
+            {
+              "score": 4,
+              "description": "租税と民主政治の関係を完全に理解している"
+            },
+            {
+              "score": 3,
+              "description": "租税と民主政治の関係を概ね理解している"
+            },
+            {
+              "score": 2,
+              "description": "租税または民主政治のいずれかを部分的に理解している"
+            },
+            {
+              "score": 1,
+              "description": "理解が不十分"
+            },
+            {
+              "score": 0,
+              "description": "理解していない"
+            }
+          ]
+        },
+        "expression": {
+          "aspect_name": "表現力",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "責任の所在と民主政治の関係を論理的に説明できている"
+            },
+            {
+              "score": 2,
+              "description": "概ね論理的に説明できている"
+            },
+            {
+              "score": 1,
+              "description": "説明がやや不明確"
+            },
+            {
+              "score": 0,
+              "description": "説明が不適切"
+            }
+          ]
+        },
+        "accuracy": {
+          "aspect_name": "正確性",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "用語と内容が正確"
+            },
+            {
+              "score": 2,
+              "description": "用語と内容は概ね正確"
+            },
+            {
+              "score": 1,
+              "description": "一部に誤りがある"
+            },
+            {
+              "score": 0,
+              "description": "内容が不正確"
+            }
+          ]
+        }
+      },
+      "common_errors": [
+        {
+          "pattern": "「国会議員」「市長」など特定の人物のみを挙げている",
+          "feedback": "最終的な責任は国民にあります。国民が選挙で選んだ代表者が予算を決定する仕組みを説明しましょう。"
+        },
+        {
+          "pattern": "責任の所在のみで民主政治との関わりを説明していない",
+          "feedback": "問題文の指示に従い、民主政治とどう関わっているかまで説明しましょう。"
+        },
+        {
+          "pattern": "税金の使い道の具体例のみを書いている",
+          "feedback": "誰が決定する責任を持っているのか、それが民主政治とどう関わるのかという観点で説明しましょう。"
+        }
+      ],
+      "thinking_skills": {
+        "critical_thinking": 40,
+        "judgment": 35,
+        "expression": 25
+      }
+    }
+  ],
+  "metadata": {
+    "cos_code": "8220263100000000",
+    "subject": "社会",
+    "grade": 6,
+    "description": "(1) 我が国の政治の働きについて，学習の問題を追究・解決する活動を通して，次の事項を身に付けることができるよう指導する。",
+    "question_type": "extended_text",
+    "char_limits": {
+      "short": {
+        "min_chars": 50,
+        "max_chars": 100,
+        "model_answer_target": 90
+      },
+      "long": {
+        "min_chars": 70,
+        "max_chars": 140,
+        "model_answer_target": 130
+      }
+    },
+    "max_score": 10
+  }
+}

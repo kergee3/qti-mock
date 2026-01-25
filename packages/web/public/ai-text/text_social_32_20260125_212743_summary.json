@@ -1,0 +1,551 @@
+{
+  "timestamp": "20260125_212743",
+  "model": "claude-sonnet-4-5-20250929",
+  "question_type": "extended_text",
+  "total_questions": 5,
+  "output_directory": "text_social_32_20260125_212743",
+  "files": [
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-text/text_social_32_20260125_212743/text_social_32_001-7xr85VZJLTVVnSthfjO1vKPbVyvSEg.xml",
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-text/text_social_32_20260125_212743/text_social_32_002-MbW3K2u1UKPLfqNPtY0CjiFh9Oef20.xml",
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-text/text_social_32_20260125_212743/text_social_32_003-SUfsnOwrRKfHOPfC4PbSJfESD4ZDPG.xml",
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-text/text_social_32_20260125_212743/text_social_32_004-JtjlGXgLEhF7HiC8InCEbqPyPWfz0t.xml",
+    "https://tckuafka85ded2kl.public.blob.vercel-storage.com/ai-text/text_social_32_20260125_212743/text_social_32_005-93w1wruBKRdbUvSNw8b7ki6JBKjdsO.xml"
+  ],
+  "questions": [
+    {
+      "question_id": "text-001",
+      "difficulty": 1,
+      "title": "{歴史学習|れきしがくしゅう}の{基本|きほん}",
+      "question_text": "{歴史|れきし}を{学|まな}ぶとき、{人物|じんぶつ}の{働|はたら}きや{文化遺産|ぶんかいさん}を{調|しら}べることが{大切|たいせつ}なのはなぜですか。あなたの{考|かんが}えを{説明|せつめい}してください。",
+      "model_answer": "{人物|じんぶつ}の{働|はたら}きを{学|まな}ぶことで、その{時代|じだい}に{人々|ひとびと}がどのような{努力|どりょく}や{工夫|くふう}をしたかが{分|わ}かるからです。また、{文化遺産|ぶんかいさん}を{調|しら}べることで、{昔|むかし}の{人々|ひとびと}の{生活|せいかつ}や{考|かんが}え{方|かた}を{知|し}ることができ、{今|いま}の{自分|じぶん}たちの{生活|せいかつ}とのつながりを{理解|りかい}できるからです。",
+      "required_concepts": [
+        "人物の働きの重要性",
+        "文化遺産から分かること",
+        "歴史学習の意義"
+      ],
+      "scoring_matrix": {
+        "understanding": {
+          "aspect_name": "理解力",
+          "max_score": 4,
+          "levels": [
+            {
+              "score": 4,
+              "description": "人物の働きと文化遺産の両方の意義を正しく理解している"
+            },
+            {
+              "score": 3,
+              "description": "人物の働きまたは文化遺産のどちらか一方の意義を理解している"
+            },
+            {
+              "score": 2,
+              "description": "歴史学習の意義について部分的に理解している"
+            },
+            {
+              "score": 1,
+              "description": "歴史学習について断片的な理解にとどまる"
+            },
+            {
+              "score": 0,
+              "description": "歴史学習の意義を理解していない"
+            }
+          ]
+        },
+        "expression": {
+          "aspect_name": "表現力",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "理由を論理的に説明できている"
+            },
+            {
+              "score": 2,
+              "description": "概ね筋道立てて説明できている"
+            },
+            {
+              "score": 1,
+              "description": "説明が不十分で分かりにくい"
+            },
+            {
+              "score": 0,
+              "description": "説明になっていない"
+            }
+          ]
+        },
+        "accuracy": {
+          "aspect_name": "正確性",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "用語を正確に使用している"
+            },
+            {
+              "score": 2,
+              "description": "概ね正確な用語を使用している"
+            },
+            {
+              "score": 1,
+              "description": "用語の使い方が一部不正確"
+            },
+            {
+              "score": 0,
+              "description": "用語の使い方が不適切"
+            }
+          ]
+        }
+      },
+      "common_errors": [
+        {
+          "pattern": "単に「昔のことが分かるから」とだけ答える",
+          "feedback": "もっと具体的に、何が分かるのか、それがなぜ大切なのかを考えてみましょう。"
+        },
+        {
+          "pattern": "人物のことだけに触れ、文化遺産について触れていない",
+          "feedback": "文化遺産からも、当時の人々の生活や考え方を知ることができます。両方の視点から考えてみましょう。"
+        },
+        {
+          "pattern": "今の生活とのつながりに触れていない",
+          "feedback": "歴史を学ぶことは、今の私たちの生活を理解することにもつながります。過去と現在のつながりを意識してみましょう。"
+        }
+      ],
+      "thinking_skills": {
+        "critical_thinking": 30,
+        "judgment": 40,
+        "expression": 30
+      }
+    },
+    {
+      "question_id": "text-002",
+      "difficulty": 2,
+      "title": "{大和朝廷|やまとちょうてい}の{統一|とういつ}",
+      "question_text": "{古墳時代|こふんじだい}に{大和朝廷|やまとちょうてい}が{各地|かくち}を{統一|とういつ}していった{様子|ようす}について、{古墳|こふん}が{残|のこ}されていることと{関連付|かんれんづ}けて{説明|せつめい}してください。",
+      "model_answer": "{大和朝廷|やまとちょうてい}は、{各地|かくち}の{有力|ゆうりょく}な{豪族|ごうぞく}を{中心|ちゅうしん}に{統一|とういつ}を{進|すす}めました。{全国|ぜんこく}に{大|おお}きな{古墳|こふん}が{造|つく}られていることから、{強|つよ}い{力|ちから}をもった{支配者|しはいしゃ}が{各地|かくち}に{現|あらわ}れ、{大和地方|やまとちほう}を{中心|ちゅうしん}とした{地域|ちいき}の{統一|とういつ}が{進|すす}んだことが{分|わ}かります。{古墳|こふん}の{大|おお}きさや{広|ひろ}がりは、{支配者|しはいしゃ}の{力|ちから}の{強|つよ}さを{表|あらわ}しています。",
+      "required_concepts": [
+        "大和朝廷による統一",
+        "古墳と支配者の関係",
+        "古墳の広がりの意味"
+      ],
+      "scoring_matrix": {
+        "understanding": {
+          "aspect_name": "理解力",
+          "max_score": 4,
+          "levels": [
+            {
+              "score": 4,
+              "description": "大和朝廷の統一と古墳の関係を正しく理解している"
+            },
+            {
+              "score": 3,
+              "description": "統一の様子または古墳の意味を概ね理解している"
+            },
+            {
+              "score": 2,
+              "description": "古墳時代について部分的に理解している"
+            },
+            {
+              "score": 1,
+              "description": "古墳時代について断片的な知識しかない"
+            },
+            {
+              "score": 0,
+              "description": "古墳時代について理解していない"
+            }
+          ]
+        },
+        "expression": {
+          "aspect_name": "表現力",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "統一の様子と古墳を論理的に関連付けて説明している"
+            },
+            {
+              "score": 2,
+              "description": "概ね関連付けて説明できている"
+            },
+            {
+              "score": 1,
+              "description": "関連付けが不十分"
+            },
+            {
+              "score": 0,
+              "description": "関連付けができていない"
+            }
+          ]
+        },
+        "accuracy": {
+          "aspect_name": "正確性",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "「大和朝廷」「豪族」などの用語を正確に使用している"
+            },
+            {
+              "score": 2,
+              "description": "歴史用語を概ね正確に使用している"
+            },
+            {
+              "score": 1,
+              "description": "用語の使い方が一部不正確"
+            },
+            {
+              "score": 0,
+              "description": "用語の使い方が不適切"
+            }
+          ]
+        }
+      },
+      "common_errors": [
+        {
+          "pattern": "古墳があることだけを述べ、統一との関係を説明していない",
+          "feedback": "古墳が各地に造られたことが、統一の様子をどのように示しているか考えてみましょう。"
+        },
+        {
+          "pattern": "古墳の大きさが何を意味するか触れていない",
+          "feedback": "古墳の大きさや規模は、当時の支配者の力の強さを表しています。"
+        },
+        {
+          "pattern": "大和朝廷ではなく、単に「王様」などと表現している",
+          "feedback": "正しい歴史用語を使って説明しましょう。「大和朝廷」という言葉を使いましょう。"
+        }
+      ],
+      "thinking_skills": {
+        "critical_thinking": 40,
+        "judgment": 35,
+        "expression": 25
+      }
+    },
+    {
+      "question_id": "text-003",
+      "difficulty": 3,
+      "title": "{天皇中心|てんのうちゅうしん}の{政治|せいじ}",
+      "question_text": "{聖武天皇|しょうむてんのう}が{東大寺|とうだいじ}の{大仏造営|だいぶつぞうえい}を{命|めい}じたことから、どのような{政治|せいじ}の{仕組|しく}みができあがっていたと{考|かんが}えられますか。{具体的|ぐたいてき}な{理由|りゆう}を{挙|あ}げて{説明|せつめい}してください。",
+      "model_answer": "{天皇|てんのう}を{中心|ちゅうしん}とする{強|つよ}い{政治|せいじ}の{仕組|しく}みができていたと{考|かんが}えられます。{理由|りゆう}は、{大仏造営|だいぶつぞうえい}という{大|おお}きな{事業|じぎょう}を{実現|じつげん}するには、{全国|ぜんこく}から{多|おお}くの{人|ひと}や{物資|ぶっし}を{集|あつ}める{必要|ひつよう}があるからです。このような{国家的|こっかてき}な{事業|じぎょう}ができたということは、{天皇|てんのう}の{命令|めいれい}が{都|みやこ}だけでなく{全国|ぜんこく}に{及|およ}び、{人々|ひとびと}を{動|うご}かす{力|ちから}があったことを{示|しめ}しています。",
+      "required_concepts": [
+        "天皇中心の政治体制",
+        "大仏造営という国家事業",
+        "全国的な支配力"
+      ],
+      "scoring_matrix": {
+        "understanding": {
+          "aspect_name": "理解力",
+          "max_score": 4,
+          "levels": [
+            {
+              "score": 4,
+              "description": "天皇中心の政治体制と大仏造営の関係を深く理解している"
+            },
+            {
+              "score": 3,
+              "description": "政治体制の特徴を概ね理解している"
+            },
+            {
+              "score": 2,
+              "description": "大仏造営の意味を部分的に理解している"
+            },
+            {
+              "score": 1,
+              "description": "断片的な理解にとどまる"
+            },
+            {
+              "score": 0,
+              "description": "政治体制について理解していない"
+            }
+          ]
+        },
+        "expression": {
+          "aspect_name": "表現力",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "具体的な理由を挙げて論理的に説明している"
+            },
+            {
+              "score": 2,
+              "description": "理由を挙げて説明しているが、やや不十分"
+            },
+            {
+              "score": 1,
+              "description": "理由の説明が不明確"
+            },
+            {
+              "score": 0,
+              "description": "理由を挙げていない"
+            }
+          ]
+        },
+        "accuracy": {
+          "aspect_name": "正確性",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "歴史的事実を正確に記述している"
+            },
+            {
+              "score": 2,
+              "description": "概ね正確に記述している"
+            },
+            {
+              "score": 1,
+              "description": "一部事実関係に誤りがある"
+            },
+            {
+              "score": 0,
+              "description": "事実関係が不正確"
+            }
+          ]
+        }
+      },
+      "common_errors": [
+        {
+          "pattern": "単に「天皇の力が強かったから」とだけ答える",
+          "feedback": "なぜ天皇の力が強かったと言えるのか、大仏造営という事業の特徴から具体的に考えてみましょう。"
+        },
+        {
+          "pattern": "大仏造営に必要な人や物資について触れていない",
+          "feedback": "全国から多くの人や物資を集められたことが、どのような政治の仕組みを示しているか考えましょう。"
+        },
+        {
+          "pattern": "都だけでなく全国に及ぶ支配について触れていない",
+          "feedback": "天皇の命令が全国に及んだことが重要です。政治の仕組みの広がりについて考えてみましょう。"
+        }
+      ],
+      "thinking_skills": {
+        "critical_thinking": 45,
+        "judgment": 30,
+        "expression": 25
+      }
+    },
+    {
+      "question_id": "text-004",
+      "difficulty": 4,
+      "title": "{武士|ぶし}の{台頭|たいとう}",
+      "question_text": "{平安時代|へいあんじだい}の{貴族|きぞく}の{政治|せいじ}から{鎌倉時代|かまくらじだい}の{武士|ぶし}の{政治|せいじ}へと{変|か}わったことで、{世|よ}の{中|なか}はどのように{変化|へんか}したと{考|かんが}えられますか。{貴族|きぞく}の{文化|ぶんか}と{武士|ぶし}の{政治|せいじ}の{特徴|とくちょう}を{比|くら}べて{説明|せつめい}してください。",
+      "model_answer": "{貴族|きぞく}の{時代|じだい}は、{京都|きょうと}を{中心|ちゅうしん}に{優雅|ゆうが}な{文化|ぶんか}が{栄|さか}え、{政治|せいじ}も{貴族|きぞく}が{朝廷|ちょうてい}で{行|おこな}っていました。しかし、{武士|ぶし}の{時代|じだい}になると、{源頼朝|みなもとのよりとも}が{鎌倉|かまくら}に{幕府|ばくふ}を{開|ひら}き、{武士|ぶし}が{実際|じっさい}に{戦|たたか}う{力|ちから}をもとに{政治|せいじ}を{行|おこな}うようになりました。{全国|ぜんこく}に{守護|しゅご}や{地頭|じとう}が{置|お}かれ、{武士|ぶし}による{新|あたら}しい{政治|せいじ}の{仕組|しく}みができ、{世|よ}の{中|なか}の{中心|ちゅうしん}が{京都|きょうと}から{鎌倉|かまくら}へと{移|うつ}りました。",
+      "required_concepts": [
+        "貴族の政治と文化の特徴",
+        "武士の政治の特徴",
+        "政治の中心の移動"
+      ],
+      "scoring_matrix": {
+        "understanding": {
+          "aspect_name": "理解力",
+          "max_score": 4,
+          "levels": [
+            {
+              "score": 4,
+              "description": "貴族と武士の政治の違いを深く理解している"
+            },
+            {
+              "score": 3,
+              "description": "両時代の特徴を概ね理解している"
+            },
+            {
+              "score": 2,
+              "description": "どちらか一方の時代について理解している"
+            },
+            {
+              "score": 1,
+              "description": "断片的な理解にとどまる"
+            },
+            {
+              "score": 0,
+              "description": "時代の変化を理解していない"
+            }
+          ]
+        },
+        "expression": {
+          "aspect_name": "表現力",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "2つの時代を明確に比較して説明している"
+            },
+            {
+              "score": 2,
+              "description": "比較しているが、やや不明確"
+            },
+            {
+              "score": 1,
+              "description": "比較が不十分"
+            },
+            {
+              "score": 0,
+              "description": "比較できていない"
+            }
+          ]
+        },
+        "accuracy": {
+          "aspect_name": "正確性",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "歴史用語や事実を正確に使用している"
+            },
+            {
+              "score": 2,
+              "description": "概ね正確に記述している"
+            },
+            {
+              "score": 1,
+              "description": "一部用語や事実に誤りがある"
+            },
+            {
+              "score": 0,
+              "description": "用語や事実が不正確"
+            }
+          ]
+        }
+      },
+      "common_errors": [
+        {
+          "pattern": "貴族の文化についてのみ述べ、武士の政治との比較ができていない",
+          "feedback": "2つの時代の違いを比べることが大切です。それぞれの特徴を対比させて考えましょう。"
+        },
+        {
+          "pattern": "守護・地頭などの具体的な仕組みに触れていない",
+          "feedback": "武士の政治には新しい仕組みが作られました。具体的な制度について触れると、より説得力のある説明になります。"
+        },
+        {
+          "pattern": "政治の中心地の移動について触れていない",
+          "feedback": "京都から鎌倉へと政治の中心が移ったことも、大きな変化の一つです。"
+        }
+      ],
+      "thinking_skills": {
+        "critical_thinking": 35,
+        "judgment": 40,
+        "expression": 25
+      }
+    },
+    {
+      "question_id": "text-005",
+      "difficulty": 5,
+      "title": "{歴史|れきし}を{学|まな}ぶ{意味|いみ}",
+      "question_text": "{日本|にほん}の{歴史|れきし}を{学|まな}ぶことは、これからの{社会|しゃかい}を{生|い}きていく{私|わたし}たちにとって、どのような{意味|いみ}があると{思|おも}いますか。{歴史上|れきしじょう}の{出来事|できごと}や{人物|じんぶつ}の{例|れい}を{挙|あ}げながら、あなたの{考|かんが}えを{述|の}べてください。",
+      "model_answer": "{歴史|れきし}を{学|まな}ぶことで、{先人|せんじん}たちの{努力|どりょく}や{工夫|くふう}を{知|し}り、これからの{社会|しゃかい}をよりよくしていくヒントを{得|え}ることができます。{例|たと}えば、{聖徳太子|しょうとくたいし}は{法隆寺|ほうりゅうじ}を{建|た}て、{大陸|たいりく}から{新|あたら}しい{文化|ぶんか}を{取|と}り{入|い}れて{国|くに}づくりを{進|すす}めました。このように、{昔|むかし}の{人々|ひとびと}が{課題|かだい}を{解決|かいけつ}するために{努力|どりょく}したことを{学|まな}ぶことで、{今|いま}の{私|わたし}たちも{困難|こんなん}に{立|た}ち{向|む}かう{勇気|ゆうき}や{知恵|ちえ}を{得|え}られると{思|おも}います。",
+      "required_concepts": [
+        "歴史学習の現代的意義",
+        "先人の努力や工夫",
+        "具体例を挙げた説明"
+      ],
+      "scoring_matrix": {
+        "understanding": {
+          "aspect_name": "理解力",
+          "max_score": 4,
+          "levels": [
+            {
+              "score": 4,
+              "description": "歴史を学ぶ意義を深く理解し、現代との関連を捉えている"
+            },
+            {
+              "score": 3,
+              "description": "歴史学習の意義を概ね理解している"
+            },
+            {
+              "score": 2,
+              "description": "歴史学習について部分的に理解している"
+            },
+            {
+              "score": 1,
+              "description": "断片的な理解にとどまる"
+            },
+            {
+              "score": 0,
+              "description": "歴史学習の意義を理解していない"
+            }
+          ]
+        },
+        "expression": {
+          "aspect_name": "表現力",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "具体例を挙げて自分の考えを論理的に表現している"
+            },
+            {
+              "score": 2,
+              "description": "具体例を挙げているが、説明がやや不十分"
+            },
+            {
+              "score": 1,
+              "description": "具体例が不適切、または説明が不明確"
+            },
+            {
+              "score": 0,
+              "description": "自分の考えを表現できていない"
+            }
+          ]
+        },
+        "accuracy": {
+          "aspect_name": "正確性",
+          "max_score": 3,
+          "levels": [
+            {
+              "score": 3,
+              "description": "歴史的事実を正確に用いて説明している"
+            },
+            {
+              "score": 2,
+              "description": "概ね正確な事実を用いている"
+            },
+            {
+              "score": 1,
+              "description": "一部事実関係に誤りがある"
+            },
+            {
+              "score": 0,
+              "description": "事実関係が不正確"
+            }
+          ]
+        }
+      },
+      "common_errors": [
+        {
+          "pattern": "単に「昔のことが分かるから」など、抽象的な答えにとどまる",
+          "feedback": "具体的な歴史上の出来事や人物を例に挙げて、それが今の私たちにどう役立つか考えてみましょう。"
+        },
+        {
+          "pattern": "歴史上の例を挙げているが、現代との関連が不明確",
+          "feedback": "歴史上の出来事から何を学べるか、それが今の私たちにどう役立つかを明確にしましょう。"
+        },
+        {
+          "pattern": "自分の考えではなく、教科書の内容をそのまま書いている",
+          "feedback": "学んだことを基に、自分自身の言葉で考えを述べることが大切です。"
+        }
+      ],
+      "thinking_skills": {
+        "critical_thinking": 30,
+        "judgment": 35,
+        "expression": 35
+      }
+    }
+  ],
+  "metadata": {
+    "cos_code": "8220263200000000",
+    "subject": "社会",
+    "grade": 6,
+    "description": "(2) 我が国の歴史上の主な事象について，学習の問題を追究・解決する活動を通して，次の事項を身に付けることができるよう指導する。",
+    "question_type": "extended_text",
+    "char_limits": {
+      "short": {
+        "min_chars": 50,
+        "max_chars": 100,
+        "model_answer_target": 90
+      },
+      "long": {
+        "min_chars": 70,
+        "max_chars": 140,
+        "model_answer_target": 130
+      }
+    },
+    "max_score": 10
+  }
+}

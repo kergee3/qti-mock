@@ -139,7 +139,9 @@ class QTITextConverter:
             str: QTI 3.0 XML文字列
         """
         identifier = identifier or question.get("question_id", "text-001")
-        title = question.get("title", "記述式問題")
+        title_raw = question.get("title", "記述式問題")
+        # XMLのtitle属性にはHTMLタグを入れられないため、インライン形式のルビを除去
+        title = strip_inline_ruby(title_raw)
         question_text_raw = question.get("question_text", "")
         model_answer_raw = question.get("model_answer", "")
         required_concepts = question.get("required_concepts", [])

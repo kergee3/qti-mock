@@ -1,6 +1,7 @@
 """QTI問題生成バッチ - メインスクリプト"""
 
 import argparse
+import json
 import sys
 import os
 import shutil
@@ -27,6 +28,7 @@ def generate_questions(
     output_dir: Path = None,
     upload: bool = False,
     enable_ruby: bool = True,
+    use_cache: bool = True,
 ) -> dict:
     """
     指定した学習指導要領コードから問題を生成
@@ -37,6 +39,7 @@ def generate_questions(
         output_dir: 出力ディレクトリ
         upload: Vercel Blobにアップロードするか
         enable_ruby: ルビ（ふりがな）を付けるかどうか（デフォルト: True）
+        use_cache: LODキャッシュを使用するかどうか（デフォルト: True）
 
     Returns:
         dict: 生成結果のサマリー
@@ -63,7 +66,7 @@ def generate_questions(
     step1_start = time.time()
     print("[Step 1/4] 学習指導要領LODからデータを取得中...")
     fetcher = COSFetcher()
-    context = fetcher.get_full_context_with_sections(code)
+    context = fetcher.get_full_context_with_sections(code, use_cache=use_cache)
 
     print(f"  - 教科: {context['subject']}")
     print(f"  - 学年: {context['grade']}年")
@@ -242,6 +245,18 @@ def generate_questions(
 
     step_times['Step 4: ファイル出力'] = time.time() - step4_start
 
+    # API呼び出しログを保存
+    batch_dir = exporter.output_dir / summary['output_directory']
+    api_logs = generator.get_api_call_logs()
+    if api_logs:
+        print(f"\n  API呼び出しログを保存中...")
+        for log in api_logs:
+            log_filename = f"api_call_{log['call_number']:03d}_{log['call_type']}.json"
+            log_path = batch_dir / log_filename
+            with open(log_path, 'w', encoding='utf-8') as f:
+                json.dump(log, f, ensure_ascii=False, indent=2)
+            print(f"    - {log_filename}")
+
     print(f"{'='*60}")
     print(f"生成完了！")
     print(f"{'='*60}")
@@ -389,6 +404,11 @@ def main():
         action="store_true",
         help="ルビ（ふりがな）を付けない",
     )
+    parser.add_argument(
+        "--no-cache",
+        action="store_true",
+        help="LODキャッシュを使用せず、常に新しくデータを取得",
+    )
 
     args = parser.parse_args()
 
@@ -423,7 +443,7 @@ def main():
 
     # 問題生成を実行
     try:
-        generate_questions(code=code, count=args.count, output_dir=output_dir, upload=args.upload, enable_ruby=not args.no_ruby)
+        generate_questions(code=code, count=args.count, output_dir=output_dir, upload=args.upload, enable_ruby=not args.no_ruby, use_cache=not args.no_cache)
     except Exception as e:
         print(f"\n[ERROR] 生成に失敗しました: {e}")
         import traceback

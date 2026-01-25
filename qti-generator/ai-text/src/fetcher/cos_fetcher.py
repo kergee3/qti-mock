@@ -3,8 +3,11 @@
 ai-choice からの移植版（記述式問題生成用）
 """
 
+import json
 import requests
 from bs4 import BeautifulSoup
+from datetime import datetime
+from pathlib import Path
 from rdflib import Graph, Namespace, URIRef
 from typing import Optional
 import sys
@@ -18,11 +21,46 @@ from config.settings import COS_BASE_URL, COS_HTML_BASE_URL, COS_COMMENTARY_URL
 class COSFetcher:
     """学習指導要領LOD（jp-cos.github.io）からデータを取得"""
 
+    # キャッシュディレクトリ（ai-text/lod-cache/）
+    CACHE_DIR = Path(__file__).parent.parent.parent / "lod-cache"
+
     def __init__(self):
         self.graph = Graph()
         self.jp_cos = Namespace("https://w3id.org/jp-cos/")
         self.schema = Namespace("http://schema.org/")
         self.dcterms = Namespace("http://purl.org/dc/terms/")
+        # キャッシュディレクトリを作成
+        self.CACHE_DIR.mkdir(parents=True, exist_ok=True)
+
+    def _get_cache_path(self, code: str) -> Path:
+        """キャッシュファイルのパスを取得"""
+        return self.CACHE_DIR / f"{code}.json"
+
+    def _load_cache(self, code: str) -> dict | None:
+        """キャッシュを読み込む"""
+        cache_path = self._get_cache_path(code)
+        if cache_path.exists():
+            try:
+                with open(cache_path, "r", encoding="utf-8") as f:
+                    return json.load(f)
+            except (json.JSONDecodeError, IOError) as e:
+                print(f"[WARN] キャッシュ読み込みエラー: {e}")
+                return None
+        return None
+
+    def _save_cache(self, code: str, data: dict) -> None:
+        """キャッシュを保存"""
+        cache_path = self._get_cache_path(code)
+        data_with_timestamp = {
+            "cached_at": datetime.now().isoformat(),
+            **data
+        }
+        try:
+            with open(cache_path, "w", encoding="utf-8") as f:
+                json.dump(data_with_timestamp, f, ensure_ascii=False, indent=2)
+            print(f"[INFO] キャッシュに保存しました: {cache_path.name}")
+        except IOError as e:
+            print(f"[WARN] キャッシュ保存エラー: {e}")
 
     def fetch(self, code: str) -> dict:
         """
@@ -196,17 +234,27 @@ class COSFetcher:
             "commentary_count": len(commentaries),
         }
 
-    def get_full_context_with_sections(self, code: str) -> dict:
+    def get_full_context_with_sections(self, code: str, use_cache: bool = True) -> dict:
         """
         学習指導要領コード + 下位コード（hasPart）から問題生成に必要な情報を取得
         下位コード別に解説テキストをセクション分けして返す
 
         Args:
             code: 学習指導要領コード
+            use_cache: キャッシュを使用するかどうか（デフォルト: True）
 
         Returns:
             dict: 学習目標、セクション別の解説テキストを含む完全なコンテキスト
         """
+        # キャッシュを確認
+        if use_cache:
+            cached = self._load_cache(code)
+            if cached:
+                # cached_at を除いて返す
+                cached.pop("cached_at", None)
+                print(f"[INFO] キャッシュからデータを読み込みました: {code}")
+                return cached
+
         data = self.fetch(code)
 
         # 親コードの解説テキストを取得
@@ -258,7 +306,7 @@ class COSFetcher:
         parent_commentary_texts = [c["text"] for c in parent_commentaries]
         parent_combined = "\n\n---\n\n".join(parent_commentary_texts)
 
-        return {
+        result = {
             "code": data["code"],
             "grade": data["grade"],
             "subject": data["subject"],
@@ -268,6 +316,11 @@ class COSFetcher:
             "commentary_count": total_commentaries,
             "child_codes_count": len(child_codes),
         }
+
+        # キャッシュに保存
+        self._save_cache(code, result)
+
+        return result
 
 
 # テスト用

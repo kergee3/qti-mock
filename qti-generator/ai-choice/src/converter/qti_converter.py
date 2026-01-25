@@ -158,6 +158,9 @@ class QTIConverter:
 
         correct_id = cls.CHOICE_IDS[correct_index]
 
+        # XMLのtitle属性にはHTMLタグを入れられないため、インライン形式のルビを除去
+        title = strip_inline_ruby(question.get("title", "Generated Question"))
+
         # ルビ変換処理
         if enable_ruby:
             processed_options = [convert_inline_ruby_to_html(opt) for opt in shuffled_options]
@@ -177,7 +180,7 @@ class QTIConverter:
         if include_feedback and question.get("explanation"):
             return cls._build_xml_with_feedback(
                 identifier=identifier,
-                title=question.get("title", "Generated Question"),
+                title=title,
                 question_text=question_text_html,
                 options_xml=options_xml,
                 correct_id=correct_id,
@@ -189,7 +192,7 @@ class QTIConverter:
         else:
             return cls._build_xml_simple(
                 identifier=identifier,
-                title=question.get("title", "Generated Question"),
+                title=title,
                 question_text=question_text_html,
                 options_xml=options_xml,
                 correct_id=correct_id,
