@@ -7,6 +7,43 @@ from typing import Optional
 import uuid
 
 
+def clean_incomplete_ruby(text: str) -> str:
+    """
+    不完全なルビ形式を除去
+
+    Args:
+        text: テキスト
+
+    Returns:
+        不完全なルビを除去したテキスト
+    """
+    # 不完全なパターンを除去:
+    # {text (閉じカッコがない、または|がない)
+    # text} (開きカッコがない)
+
+    # 完全なルビパターンを一時的に保護
+    complete_pattern = r'\{([^|{}]+)\|([^|{}]+)\}'
+    placeholders = []
+
+    def save_complete(match):
+        placeholders.append(match.group(0))
+        return f"__COMPLETE_RUBY_{len(placeholders) - 1}__"
+
+    text = re.sub(complete_pattern, save_complete, text)
+
+    # 不完全なパターンを除去
+    # {text だけ (|がない不完全な開始)
+    text = re.sub(r'\{([^|{}]*?)(?=[^|{}]*(?:\{|$))', r'\1', text)
+    # 残った孤立した { や } を除去
+    text = re.sub(r'[\{\}]', '', text)
+
+    # 完全なルビパターンを復元
+    for i, ruby in enumerate(placeholders):
+        text = text.replace(f"__COMPLETE_RUBY_{i}__", ruby)
+
+    return text
+
+
 def convert_inline_ruby_to_html(text: str) -> str:
     """
     インライン形式のルビ {漢字|よみ} を HTML5 ruby タグに変換
@@ -17,6 +54,9 @@ def convert_inline_ruby_to_html(text: str) -> str:
     Returns:
         HTML5 ruby タグを含むテキスト
     """
+    # まず不完全なルビパターンを除去
+    text = clean_incomplete_ruby(text)
+
     # Pattern: {kanji|reading}
     pattern = r'\{([^|{}]+)\|([^|{}]+)\}'
 
@@ -57,6 +97,9 @@ def strip_inline_ruby(text: str) -> str:
     Returns:
         ルビを除去したテキスト
     """
+    # まず不完全なパターンを除去
+    text = clean_incomplete_ruby(text)
+    # 完全なパターンから漢字のみ抽出
     pattern = r'\{([^|{}]+)\|[^|{}]+\}'
     return re.sub(pattern, r'\1', text)
 
