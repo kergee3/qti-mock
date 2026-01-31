@@ -3,7 +3,7 @@
 import { useRef, useEffect, useCallback, useState } from 'react'
 import { Box, Button, Tooltip, Dialog, DialogTitle, DialogContent, DialogActions, Typography, LinearProgress } from '@mui/material'
 import { useSettings } from '@/contexts/SettingsContext'
-import { fetchAndStripRuby } from '@/utils/ruby'
+import { fetchAndStripRuby, renderRubyText } from '@/utils/ruby'
 import type { ItemInfo, ItemResult, FontOption, QuestionStatus, QuestionBarPosition, WritingDirection } from '@/types/test'
 import type { AiTextSummary, AiScoringResult, AiScoringResponse, ScoringCriteria, AiModelType } from '@/types/ai-text'
 
@@ -430,7 +430,7 @@ export function AiTextInProgress({
         px: useVerticalButton ? 0.5 : 1,
       }}
     >
-      次へ
+      {rubyEnabled ? renderRubyText('{次|つぎ}へ') : '次へ'}
     </Button>
   )
 
@@ -447,7 +447,7 @@ export function AiTextInProgress({
         px: useVerticalButton ? 0.5 : 1,
       }}
     >
-      終了
+      {rubyEnabled ? renderRubyText('{終了|しゅうりょう}') : '終了'}
     </Button>
   )
 
