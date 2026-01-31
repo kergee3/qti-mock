@@ -59,3 +59,47 @@ export function stripRuby(text: string): string {
   if (!text) return '';
   return text.replace(/\{([^|{}]+)\|[^|{}]+\}/g, '$1');
 }
+
+/**
+ * HTML/XML形式のrubyタグを除去する
+ * <ruby>漢字<rt>よみ</rt></ruby> → 漢字
+ */
+export function stripRubyFromXml(xml: string): string {
+  let result = xml.replace(/<rt[^>]*>[\s\S]*?<\/rt>/gi, '');
+  result = result.replace(/<rp[^>]*>[\s\S]*?<\/rp>/gi, '');
+  result = result.replace(/<\/?ruby[^>]*>/gi, '');
+  result = result.replace(/<\/?rb[^>]*>/gi, '');
+  return result;
+}
+
+/**
+ * XMLをfetchしてrubyを除去し、相対パスを解決してData URLを生成する
+ * QTI PlayerがData URLをネイティブサポートしているため、Player側の変更不要
+ *
+ * @param xmlUrl 元のXML URL
+ * @returns ruby除去済みXMLのData URL
+ */
+export async function fetchAndStripRuby(xmlUrl: string): Promise<string> {
+  const response = await fetch(xmlUrl);
+  if (!response.ok) throw new Error(`Failed to fetch: ${response.status}`);
+  let xml = await response.text();
+
+  // 相対パスを元URLベースで絶対URLに解決（Player側のresolveRelativePathsと同等）
+  // Data URLではPlayer側の相対パス解決がスキップされるため、事前に解決する
+  const baseDir = xmlUrl.substring(0, xmlUrl.lastIndexOf('/') + 1);
+  xml = xml.replace(/data="([^"]+)"/g, (match, path) => {
+    if (path.startsWith('http://') || path.startsWith('https://')) return match;
+    if (path.startsWith('/')) {
+      const origin = new URL(xmlUrl).origin;
+      return `data="${origin}${path}"`;
+    }
+    return `data="${baseDir}${path}"`;
+  });
+
+  // ruby除去
+  xml = stripRubyFromXml(xml);
+
+  // Data URL化（base64エンコード）
+  const base64 = btoa(unescape(encodeURIComponent(xml)));
+  return `data:application/xml;base64,${base64}`;
+}

@@ -3,6 +3,7 @@
 import { useRef, useEffect, useCallback, useState } from 'react'
 import { Box, Button, Tooltip } from '@mui/material'
 import { useSettings } from '@/contexts/SettingsContext'
+import { fetchAndStripRuby } from '@/utils/ruby'
 import type { ItemInfo, ItemResult, FontOption, QuestionStatus, QuestionBarPosition, WritingDirection } from '@/types/test'
 
 interface BasicRunInProgressProps {
@@ -40,7 +41,7 @@ export function BasicRunInProgress({
   onFinish,
 }: BasicRunInProgressProps) {
   const iframeRef = useRef<HTMLIFrameElement>(null)
-  const { setHideNavigation, fontSize, voiceInputEnabled } = useSettings()
+  const { setHideNavigation, fontSize, voiceInputEnabled, rubyEnabled } = useSettings()
 
   // テスト中はナビゲーションを非表示にする
   useEffect(() => {
@@ -69,13 +70,28 @@ export function BasicRunInProgress({
     return `${appUrl}/${itemsSubDir}/${item.fileName}`
   }
 
-  const itemUrl = currentItem ? getItemUrl(currentItem) : ''
   const callbackUrl = `${appUrl}/api/results`
+
+  // ルビ表示が無効の場合、クライアントサイドでXMLをfetchしてrubyを除去しData URL化
+  const [processedItemUrl, setProcessedItemUrl] = useState<string>('')
+
+  useEffect(() => {
+    if (!currentItem) {
+      setProcessedItemUrl('')
+      return
+    }
+    const rawUrl = getItemUrl(currentItem)
+    if (rubyEnabled) {
+      setProcessedItemUrl(rawUrl)
+    } else {
+      fetchAndStripRuby(rawUrl).then(setProcessedItemUrl)
+    }
+  }, [currentItem, rubyEnabled]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // iframe の src URL
   const voiceParam = voiceInputEnabled ? 'true' : 'false'
-  const iframeSrc = currentItem
-    ? `${playerUrl}?item=${encodeURIComponent(itemUrl)}&callback=${encodeURIComponent(callbackUrl)}&session=${sessionId}&font=${font}&fontSize=${fontSize}&voice=${voiceParam}`
+  const iframeSrc = processedItemUrl
+    ? `${playerUrl}?item=${encodeURIComponent(processedItemUrl)}&callback=${encodeURIComponent(callbackUrl)}&session=${sessionId}&font=${font}&fontSize=${fontSize}&voice=${voiceParam}`
     : ''
 
   // 問題のステータスを取得
@@ -143,13 +159,14 @@ export function BasicRunInProgress({
   }, [items, onItemLoaded, onItemScored])
 
   // 問題をクリックしたときの処理
-  const handleQuestionClick = (index: number) => {
+  const handleQuestionClick = async (index: number) => {
     if (index === currentIndex) return
 
     // iframe に CHANGE_ITEM メッセージを送信
     const newItem = items[index]
     if (newItem && iframeRef.current?.contentWindow) {
-      const newItemUrl = getItemUrl(newItem)
+      const rawUrl = getItemUrl(newItem)
+      const newItemUrl = rubyEnabled ? rawUrl : await fetchAndStripRuby(rawUrl)
       iframeRef.current.contentWindow.postMessage({
         type: 'CHANGE_ITEM',
         itemUrl: newItemUrl,

@@ -17,6 +17,8 @@ interface SettingsContextType {
   setAiModel: (model: AiModel) => void;
   voiceInputEnabled: boolean;
   setVoiceInputEnabled: (enabled: boolean) => void;
+  rubyEnabled: boolean;
+  setRubyEnabled: (enabled: boolean) => void;
 }
 
 const SettingsContext = createContext<SettingsContextType | undefined>(undefined);
@@ -30,6 +32,7 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
   const [fontSize, setFontSizeState] = useState<FontSize>(100);
   const [aiModel, setAiModelState] = useState<AiModel>('claude-haiku-4.5');
   const [voiceInputEnabled, setVoiceInputEnabledState] = useState<boolean>(false); // 初期値: 無効
+  const [rubyEnabled, setRubyEnabledState] = useState<boolean>(true); // 初期値: あり
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
@@ -60,6 +63,12 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
       setVoiceInputEnabledState(savedVoiceInput === 'true');
     }
 
+    // ルビ表示設定を読み込む
+    const savedRubyEnabled = localStorage.getItem('rubyEnabled');
+    if (savedRubyEnabled !== null) {
+      setRubyEnabledState(savedRubyEnabled !== 'false');
+    }
+
     setIsLoaded(true);
   }, []);
 
@@ -83,12 +92,17 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
     localStorage.setItem('voiceInputEnabled', String(enabled));
   };
 
+  const setRubyEnabled = (enabled: boolean) => {
+    setRubyEnabledState(enabled);
+    localStorage.setItem('rubyEnabled', String(enabled));
+  };
+
   if (!isLoaded) {
     return null; // ローディング中は何も表示しない
   }
 
   return (
-    <SettingsContext.Provider value={{ navigationPosition, setNavigationPosition, hideNavigation, setHideNavigation, fontSize, setFontSize, aiModel, setAiModel, voiceInputEnabled, setVoiceInputEnabled }}>
+    <SettingsContext.Provider value={{ navigationPosition, setNavigationPosition, hideNavigation, setHideNavigation, fontSize, setFontSize, aiModel, setAiModel, voiceInputEnabled, setVoiceInputEnabled, rubyEnabled, setRubyEnabled }}>
       {children}
     </SettingsContext.Provider>
   );

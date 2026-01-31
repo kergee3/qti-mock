@@ -27,7 +27,7 @@ const fontSizeMarks = [
 ];
 
 export default function SettingsPage() {
-  const { navigationPosition, setNavigationPosition, fontSize, setFontSize, aiModel, setAiModel, voiceInputEnabled, setVoiceInputEnabled } = useSettings();
+  const { navigationPosition, setNavigationPosition, fontSize, setFontSize, aiModel, setAiModel, voiceInputEnabled, setVoiceInputEnabled, rubyEnabled, setRubyEnabled } = useSettings();
   const [isLocalhost, setIsLocalhost] = useState(false);
 
   useEffect(() => {
@@ -50,6 +50,10 @@ export default function SettingsPage() {
 
   const handleVoiceInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setVoiceInputEnabled(event.target.value === 'enabled');
+  };
+
+  const handleRubyChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setRubyEnabled(event.target.value === 'ari');
   };
 
   return (
@@ -85,6 +89,28 @@ export default function SettingsPage() {
                 control={<Radio />}
                 label="無効"
               />
+            </RadioGroup>
+          </FormControl>
+        </CardContent>
+      </Card>
+
+      {/* ルビ表示 */}
+      <Card sx={{ mt: 2 }}>
+        <CardContent>
+          <FormControl component="fieldset">
+            <FormLabel component="legend">
+              <Typography variant="h6">ルビ表示</Typography>
+            </FormLabel>
+            <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+              ルビ表示なしでは、元の問題にルビが含まれている場合には、ルビを削除して表示します。
+            </Typography>
+            <RadioGroup
+              row
+              value={rubyEnabled ? 'ari' : 'nashi'}
+              onChange={handleRubyChange}
+            >
+              <FormControlLabel value="ari" control={<Radio />} label="あり" />
+              <FormControlLabel value="nashi" control={<Radio />} label="なし" />
             </RadioGroup>
           </FormControl>
         </CardContent>
