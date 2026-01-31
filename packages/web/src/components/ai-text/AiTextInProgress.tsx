@@ -424,6 +424,7 @@ export function AiTextInProgress({
       disabled={isLastQuestion}
       sx={{
         minWidth: useVerticalButton ? 32 : 50,
+        fontSize: '1rem',
         fontWeight: 'bold',
         writingMode: useVerticalButton ? 'vertical-rl' : 'horizontal-tb',
         py: useVerticalButton ? 1 : 0.5,
@@ -441,6 +442,7 @@ export function AiTextInProgress({
       onClick={onFinish}
       sx={{
         minWidth: useVerticalButton ? 32 : 50,
+        fontSize: '1rem',
         fontWeight: 'bold',
         writingMode: useVerticalButton ? 'vertical-rl' : 'horizontal-tb',
         py: useVerticalButton ? 1 : 0.5,
