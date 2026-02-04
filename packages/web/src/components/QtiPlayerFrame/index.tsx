@@ -6,10 +6,11 @@ interface QtiPlayerFrameProps {
   itemUrl: string
   sessionId: string
   fontFamily?: 'system' | 'noto-sans-jp' | 'noto-serif-jp' | 'biz-udpgothic' | 'biz-udpmincho' | 'source-han-sans' | 'kosugi-maru'
+  rubyEnabled?: boolean
   onComplete?: () => void
 }
 
-export function QtiPlayerFrame({ itemUrl, sessionId, fontFamily = 'system', onComplete }: QtiPlayerFrameProps) {
+export function QtiPlayerFrame({ itemUrl, sessionId, fontFamily = 'system', rubyEnabled = true, onComplete }: QtiPlayerFrameProps) {
   const iframeRef = useRef<HTMLIFrameElement>(null)
   const [isLoading, setIsLoading] = useState(true)
 
@@ -22,6 +23,7 @@ export function QtiPlayerFrame({ itemUrl, sessionId, fontFamily = 'system', onCo
   playerUrl.searchParams.set('callback', `${appUrl}/api/results`)
   playerUrl.searchParams.set('session', sessionId)
   playerUrl.searchParams.set('font', fontFamily)
+  playerUrl.searchParams.set('ruby', String(rubyEnabled))
 
   return (
     <div className="player-frame" style={{ position: 'relative' }}>

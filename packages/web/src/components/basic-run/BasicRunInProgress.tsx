@@ -91,7 +91,7 @@ export function BasicRunInProgress({
   // iframe の src URL
   const voiceParam = voiceInputEnabled ? 'true' : 'false'
   const iframeSrc = processedItemUrl
-    ? `${playerUrl}?item=${encodeURIComponent(processedItemUrl)}&callback=${encodeURIComponent(callbackUrl)}&session=${sessionId}&font=${font}&fontSize=${fontSize}&voice=${voiceParam}`
+    ? `${playerUrl}?item=${encodeURIComponent(processedItemUrl)}&callback=${encodeURIComponent(callbackUrl)}&session=${sessionId}&font=${font}&fontSize=${fontSize}&voice=${voiceParam}&ruby=${rubyEnabled}`
     : ''
 
   // 問題のステータスを取得

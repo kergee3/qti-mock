@@ -158,7 +158,7 @@ export function PlaygroundPage() {
   const { isWindows } = usePlatformDetection()
 
   // Settings から fontSize を取得
-  const { fontSize, voiceInputEnabled } = useSettings()
+  const { fontSize, voiceInputEnabled, rubyEnabled } = useSettings()
 
   // Windows環境ではUDデジタル教科書体を追加
   const fontLabels: Partial<Record<FontOption, string>> = isWindows
@@ -346,7 +346,7 @@ export function PlaygroundPage() {
     const dataUrl = generateDataUrl(trimmedXml)
     const timestamp = Date.now()
     const voiceParam = voiceInputEnabled ? 'true' : 'false'
-    const url = `${playerUrl}?item=${encodeURIComponent(dataUrl)}&font=${selectedFont}&fontSize=${fontSize}&voice=${voiceParam}&t=${timestamp}`
+    const url = `${playerUrl}?item=${encodeURIComponent(dataUrl)}&font=${selectedFont}&fontSize=${fontSize}&voice=${voiceParam}&ruby=${rubyEnabled}&t=${timestamp}`
     setIframeSrc(url)
 
     // プレイ開始
@@ -485,7 +485,7 @@ export function PlaygroundPage() {
       setResult(null)
       const dataUrl = generateDataUrl(trimmedXml)
       const timestamp = Date.now()
-      const url = `${playerUrl}?item=${encodeURIComponent(dataUrl)}&font=${selectedFont}&fontSize=${fontSize}&t=${timestamp}`
+      const url = `${playerUrl}?item=${encodeURIComponent(dataUrl)}&font=${selectedFont}&fontSize=${fontSize}&ruby=${rubyEnabled}&t=${timestamp}`
       setIframeSrc(url)
       setIsPlaying(true)
     }

@@ -102,7 +102,7 @@ export default function SettingsPage() {
               <Typography variant="h6">ルビ表示</Typography>
             </FormLabel>
             <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-              ルビ表示なしでは、元の問題にルビが含まれている場合には、ルビを削除して表示します。
+              問題バーや回答時のボタンなどでのルビ表示を設定します。問題の中身に関しては、ルビ表示なしでは元の問題にルビが含まれていても、ルビは表示されません。
             </Typography>
             <RadioGroup
               row

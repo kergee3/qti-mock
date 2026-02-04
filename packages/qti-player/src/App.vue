@@ -28,18 +28,38 @@
           <!-- 回答ボタン -->
           <div v-if="isItemLoaded && !isScored" class="controls-vertical">
             <button @click="submitResponse" :disabled="isSubmitting">
-              {{ isSubmitting ? '送信中' : '回答' }}
+              <template v-if="isSubmitting">
+                <ruby v-if="rubyEnabled">送信中<rt>そうしんちゅう</rt></ruby>
+                <template v-else>送信中</template>
+              </template>
+              <template v-else>
+                <ruby v-if="rubyEnabled">回答<rt>かいとう</rt></ruby>
+                <template v-else>回答</template>
+              </template>
             </button>
           </div>
 
           <!-- 結果表示（フィードバックがない場合のみ表示） -->
           <div v-if="isScored && !currentFeedback" class="result-vertical">
-            <span class="result-label">回答済</span>
-            <span v-if="score >= 1" class="correct">正解</span>
-            <span v-else-if="noScoringLogic" class="external-scored">未採点</span>
-            <span v-else-if="isExternalScored" class="external-scored">未採点</span>
+            <span class="result-label">
+              <ruby v-if="rubyEnabled">回答済<rt>かいとうずみ</rt></ruby>
+              <template v-else>回答済</template>
+            </span>
+            <span v-if="score >= 1" class="correct">
+              <ruby v-if="rubyEnabled">正解<rt>せいかい</rt></ruby>
+              <template v-else>正解</template>
+            </span>
+            <span v-else-if="noScoringLogic" class="external-scored">
+              <ruby v-if="rubyEnabled">未採点<rt>みさいてん</rt></ruby>
+              <template v-else>未採点</template>
+            </span>
+            <span v-else-if="isExternalScored" class="external-scored">
+              <ruby v-if="rubyEnabled">未採点<rt>みさいてん</rt></ruby>
+              <template v-else>未採点</template>
+            </span>
             <span v-else class="incorrect">
-              不正解
+              <ruby v-if="rubyEnabled">不正解<rt>ふせいかい</rt></ruby>
+              <template v-else>不正解</template>
             </span>
           </div>
           <!-- フィードバック表示（縦書き） -->
@@ -69,18 +89,42 @@
           <!-- 回答ボタン -->
           <div v-if="isItemLoaded && !isScored" class="controls">
             <button @click="submitResponse" :disabled="isSubmitting">
-              {{ isSubmitting ? '送信中...' : '回答' }}
+              <template v-if="isSubmitting">
+                <ruby v-if="rubyEnabled">送信中<rt>そうしんちゅう</rt></ruby>
+                <template v-else>送信中...</template>
+              </template>
+              <template v-else>
+                <ruby v-if="rubyEnabled">回答<rt>かいとう</rt></ruby>
+                <template v-else>回答</template>
+              </template>
             </button>
           </div>
 
           <!-- 結果表示 -->
           <div v-if="isScored && !currentFeedback" class="result">
-            <span class="result-label">回答済：</span>
-            <span v-if="score >= 1" class="correct">正解</span>
-            <span v-else-if="noScoringLogic" class="external-scored">未採点（採点ロジックなし）</span>
-            <span v-else-if="isExternalScored" class="external-scored">未採点</span>
+            <span class="result-label">
+              <ruby v-if="rubyEnabled">回答済<rt>かいとうずみ</rt></ruby>
+              <template v-else>回答済</template>：
+            </span>
+            <span v-if="score >= 1" class="correct">
+              <ruby v-if="rubyEnabled">正解<rt>せいかい</rt></ruby>
+              <template v-else>正解</template>
+            </span>
+            <span v-else-if="noScoringLogic" class="external-scored">
+              <template v-if="rubyEnabled"><ruby>未採点<rt>みさいてん</rt></ruby>（<ruby>採点<rt>さいてん</rt></ruby>ロジックなし）</template>
+              <template v-else>未採点（採点ロジックなし）</template>
+            </span>
+            <span v-else-if="isExternalScored" class="external-scored">
+              <ruby v-if="rubyEnabled">未採点<rt>みさいてん</rt></ruby>
+              <template v-else>未採点</template>
+            </span>
             <span v-else class="incorrect">
-              不正解<template v-if="correctAnswer">。正解は「{{ correctAnswer }}」です。</template>
+              <ruby v-if="rubyEnabled">不正解<rt>ふせいかい</rt></ruby>
+              <template v-else>不正解</template>
+              <template v-if="correctAnswer">
+                <template v-if="rubyEnabled">。<ruby>正解<rt>せいかい</rt></ruby>は「{{ correctAnswer }}」です。</template>
+                <template v-else>。正解は「{{ correctAnswer }}」です。</template>
+              </template>
             </span>
           </div>
           <!-- フィードバック表示（横書き） -->
@@ -119,6 +163,9 @@ const noScoringLogic = ref(false)
 
 // 音声入力の有効/無効
 const voiceInputEnabled = ref(true)
+
+// ルビ表示の有効/無効
+const rubyEnabled = ref(true)
 
 // テキスト入力系インタラクション（extended-text または text-entry）があるかどうか
 const hasTextInputInteraction = computed(() => {
@@ -430,6 +477,12 @@ onMounted(() => {
   const voiceParam = params.get('voice')
   if (voiceParam === 'false') {
     voiceInputEnabled.value = false
+  }
+
+  // ルビ表示設定
+  const rubyParam = params.get('ruby')
+  if (rubyParam === 'false') {
+    rubyEnabled.value = false
   }
 
   loadItem()
