@@ -7,6 +7,7 @@ import ExpandLessIcon from '@mui/icons-material/ExpandLess'
 import type { ItemInfo, ItemResult } from '@/types/test'
 import type { AiTextSummary, AiScoringResult } from '@/types/ai-text'
 import { renderRubyText } from '@/utils/ruby'
+import { useSettings } from '@/contexts/SettingsContext'
 
 interface AiTextResultsProps {
   items: ItemInfo[]
@@ -29,6 +30,8 @@ export function AiTextResults({
   summary,
   onRestart,
 }: AiTextResultsProps) {
+  const { rubyEnabled } = useSettings()
+
   // 詳細ダイアログの状態
   const [detailDialogOpen, setDetailDialogOpen] = useState(false)
   const [selectedItemIndex, setSelectedItemIndex] = useState<number | null>(null)
@@ -301,7 +304,7 @@ export function AiTextResults({
             },
           }}
         >
-          もう一度
+          {rubyEnabled ? renderRubyText('もう{一度|いちど}') : 'もう一度'}
         </Button>
       </Box>
 

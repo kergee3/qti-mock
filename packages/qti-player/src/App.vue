@@ -63,7 +63,7 @@
             </span>
           </div>
           <!-- フィードバック表示（縦書き） -->
-          <div v-if="isScored && currentFeedback" class="feedback-vertical" v-html="currentFeedback"></div>
+          <div v-if="isScored && currentFeedback" class="feedback-vertical" v-html="processedFeedback"></div>
         </div>
 
         <!-- プレイヤー（常に1つだけ） -->
@@ -128,7 +128,7 @@
             </span>
           </div>
           <!-- フィードバック表示（横書き） -->
-          <div v-if="isScored && currentFeedback" class="feedback" v-html="currentFeedback"></div>
+          <div v-if="isScored && currentFeedback" class="feedback" v-html="processedFeedback"></div>
         </template>
       </div>
 
@@ -177,6 +177,20 @@ const hasTextInputInteraction = computed(() => {
 // モーダルフィードバック
 const modalFeedbacks = ref({}) // { identifier: { content: HTMLコンテンツ, outcomeIdentifier: 'FEEDBACK' } }
 const currentFeedback = ref(null) // 表示するフィードバックのHTMLコンテンツ
+
+// フィードバックHTML内の「正解」「不正解」にルビを追加（rubyEnabled時のみ）
+const processedFeedback = computed(() => {
+  if (!currentFeedback.value) return null
+  if (!rubyEnabled.value) return currentFeedback.value
+
+  let html = currentFeedback.value
+  // 「不正解」を先に置換（「正解」が部分一致しないよう）
+  // 既にrubyタグ内にあるテキストは置換しない（負の後読みで<rt>直後を除外）
+  html = html.replace(/(?<!<ruby>)不正解(?!<\/ruby>|<rt>)/g, '<ruby>不正解<rt>ふせいかい</rt></ruby>')
+  html = html.replace(/(?<!<ruby>|不)正解(?!<\/ruby>|<rt>)/g, '<ruby>正解<rt>せいかい</rt></ruby>')
+  html = html.replace(/(?<!<ruby>)残念(?!<\/ruby>|<rt>)/g, '<ruby>残念<rt>ざんねん</rt></ruby>')
+  return html
+})
 
 // フォント設定
 const fontFamily = ref('system')

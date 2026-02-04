@@ -3,6 +3,7 @@
 import { Box, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Tooltip } from '@mui/material'
 import type { ItemInfo, ItemResult } from '@/types/test'
 import { renderRubyText } from '@/utils/ruby'
+import { useSettings } from '@/contexts/SettingsContext'
 
 interface BasicRunResultsProps {
   items: ItemInfo[]
@@ -21,6 +22,8 @@ export function BasicRunResults({
   results,
   onRestart,
 }: BasicRunResultsProps) {
+  const { rubyEnabled } = useSettings()
+
   // 集計（resultsのキーはXMLのidentifier属性）
   const allResults = items.map(item => results.get(item.identifier))
 
@@ -168,7 +171,7 @@ export function BasicRunResults({
             },
           }}
         >
-          もう一度
+          {rubyEnabled ? renderRubyText('もう{一度|いちど}') : 'もう一度'}
         </Button>
       </Box>
     </Box>
