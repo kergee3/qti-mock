@@ -29,7 +29,7 @@ const VALID_AI_MODELS: AiModel[] = ['claude-sonnet-4.5', 'claude-haiku-4.5', 'cl
 export function SettingsProvider({ children }: { children: ReactNode }) {
   const [navigationPosition, setNavigationPositionState] = useState<NavigationPosition>('auto');
   const [hideNavigation, setHideNavigation] = useState(false);
-  const [fontSize, setFontSizeState] = useState<FontSize>(100);
+  const [fontSize, setFontSizeState] = useState<FontSize>(110);
   const [aiModel, setAiModelState] = useState<AiModel>('claude-haiku-4.5');
   const [voiceInputEnabled, setVoiceInputEnabledState] = useState<boolean>(false); // 初期値: 無効
   const [rubyEnabled, setRubyEnabledState] = useState<boolean>(true); // 初期値: あり
