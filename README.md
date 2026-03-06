@@ -124,8 +124,8 @@ qti-mock/
 
 ```bash
 # リポジトリをクローン
-git clone https://github.com/kergee3/qti3-demo.git
-cd qti3-demo
+git clone https://github.com/kergee3/qti-mock.git
+cd qti-mock
 
 # 依存関係をインストール
 npm install
