@@ -257,19 +257,19 @@ export default function AboutPage() {
             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
               <Chip label="Next.js 16.1" color="primary" />
               <Chip label="React 19.2" color="primary" />
-              <Chip label="TypeScript 5" color="primary" />
+              <Chip label="TypeScript 5.9" color="primary" />
               <Chip label="Material-UI v7.3" color="primary" />
-              <Chip label="Tailwind CSS 4" color="primary" />
-              <Chip label="Turborepo 2" color="primary" />
+              <Chip label="Tailwind CSS 4.1" color="primary" />
+              <Chip label="Turborepo 2.7" color="primary" />
             </Box>
             <Typography variant="subtitle2" color="text.secondary" sx={{ mt: 2, mb: 1 }}>
               QTI Player
             </Typography>
             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
               <Chip label="Vue 3.5" color="secondary" />
-              <Chip label="Vite 7.2" color="secondary" />
+              <Chip label="Vite 7.3" color="secondary" />
               <Chip
-                label="qti3-item-player-vue3"
+                label="qti3-item-player-vue3 0.2"
                 color="secondary"
                 component="a"
                 href="https://github.com/amp-up-io/qti3-item-player-vue3"
