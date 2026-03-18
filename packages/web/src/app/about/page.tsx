@@ -45,7 +45,7 @@ export default function AboutPage() {
             <Typography variant="body1" color="text.secondary">
               本アプリは QTI 3.0 (Question and Test Interoperability) の技術基盤上に実装された試行的なWebアプリとサービスです。
               <br />
-              最新のWeb技術と生成AIを活用し、QTI 準拠のアセスメントアイテムを表示・採点します。
+              2026年1月の時点で最新のWeb技術と生成AIを活用し、QTI 準拠のアセスメントアイテムを表示・採点します。
             </Typography>
           </Box>
 
@@ -278,7 +278,7 @@ export default function AboutPage() {
               />
             </Box>
             <Typography variant="subtitle2" color="text.secondary" sx={{ mt: 2, mb: 1 }}>
-              生成AI（問題作成・採点）
+              問題作成・採点（生成AI）
             </Typography>
             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
               <Chip label="Claude API" color="success" />
@@ -287,6 +287,21 @@ export default function AboutPage() {
               <Chip label="BeautifulSoup" color="success" />
               <Chip label="lxml" color="success" />
             </Box>
+          </Box>
+
+          <Box sx={{ my: 2 }}>
+            <Typography variant="body1" color="text.secondary">
+              本アプリのソースコードは以下で公開されています。
+            </Typography>
+            <Typography variant="body1">
+              <Link
+                href="https://github.com/kergee3/qti-mock"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                https://github.com/kergee3/qti-mock
+              </Link>
+            </Typography>
           </Box>
 
           <AppFooter />

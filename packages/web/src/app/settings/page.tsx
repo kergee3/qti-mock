@@ -23,7 +23,13 @@ const fontSizeMarks = [
   { value: 110, label: '110%' },
   { value: 120, label: '120%' },
   { value: 130, label: '130%' },
+  { value: 140, label: '140%' },
   { value: 150, label: '150%' },
+  { value: 160, label: '160%' },
+  { value: 170, label: '170%' },
+  { value: 180, label: '180%' },
+  { value: 190, label: '190%' },
+  { value: 200, label: '200%' },
 ];
 
 export default function SettingsPage() {
@@ -180,7 +186,7 @@ export default function SettingsPage() {
                 step={null}
                 marks={fontSizeMarks}
                 min={80}
-                max={150}
+                max={200}
                 valueLabelDisplay="auto"
                 valueLabelFormat={(value) => `${value}%`}
               />

@@ -3,7 +3,7 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
 export type NavigationPosition = 'auto' | 'top' | 'left' | 'bottom';
-export type FontSize = 80 | 90 | 100 | 110 | 120 | 130 | 150;
+export type FontSize = 80 | 90 | 100 | 110 | 120 | 130 | 140 | 150 | 160 | 170 | 180 | 190 | 200;
 export type AiModel = 'claude-sonnet-4.5' | 'claude-haiku-4.5' | 'claude-sonnet-4' | 'claude-haiku-3.5';
 
 interface SettingsContextType {
@@ -23,13 +23,13 @@ interface SettingsContextType {
 
 const SettingsContext = createContext<SettingsContextType | undefined>(undefined);
 
-const VALID_FONT_SIZES: FontSize[] = [80, 90, 100, 110, 120, 130, 150];
+const VALID_FONT_SIZES: FontSize[] = [80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200];
 const VALID_AI_MODELS: AiModel[] = ['claude-sonnet-4.5', 'claude-haiku-4.5', 'claude-sonnet-4', 'claude-haiku-3.5'];
 
 export function SettingsProvider({ children }: { children: ReactNode }) {
   const [navigationPosition, setNavigationPositionState] = useState<NavigationPosition>('auto');
   const [hideNavigation, setHideNavigation] = useState(false);
-  const [fontSize, setFontSizeState] = useState<FontSize>(110);
+  const [fontSize, setFontSizeState] = useState<FontSize>(100);
   const [aiModel, setAiModelState] = useState<AiModel>('claude-haiku-4.5');
   const [voiceInputEnabled, setVoiceInputEnabledState] = useState<boolean>(false); // 初期値: 無効
   const [rubyEnabled, setRubyEnabledState] = useState<boolean>(true); // 初期値: あり

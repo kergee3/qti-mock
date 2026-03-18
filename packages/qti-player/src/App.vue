@@ -481,7 +481,7 @@ onMounted(() => {
   const fontSizeParam = params.get('fontSize')
   if (fontSizeParam) {
     const parsedSize = parseInt(fontSizeParam, 10)
-    const validSizes = [80, 90, 100, 110, 120, 130, 150]
+    const validSizes = [80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200]
     if (validSizes.includes(parsedSize)) {
       fontSize.value = parsedSize
     }
