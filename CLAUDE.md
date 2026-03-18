@@ -113,9 +113,9 @@ PLAYER_URL=http://localhost:5173
 ### 環境変数 (qti-generator/.env)
 
 ```
-ANTHROPIC_API_KEY=sk-ant-api03-xxxxx
+ANTHROPIC_API_KEY=your-anthropic-api-key-here
 DEFAULT_MODEL=claude-sonnet-4-5-20250929
-BLOB_READ_WRITE_TOKEN=vercel_blob_rw_xxxxx  # Vercel Blob アップロード用（オプション）
+BLOB_READ_WRITE_TOKEN=your-vercel-blob-token-here  # Vercel Blob アップロード用（オプション）
 ```
 
 ## QTI アイテム形式

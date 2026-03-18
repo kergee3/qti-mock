@@ -52,10 +52,10 @@ cp .env.example .env
 
 ```
 # 必須
-ANTHROPIC_API_KEY=sk-ant-api03-xxxxx
+ANTHROPIC_API_KEY=your-anthropic-api-key-here
 
 # Vercel Blobアップロードを使用する場合
-BLOB_READ_WRITE_TOKEN=vercel_blob_rw_xxxxx
+BLOB_READ_WRITE_TOKEN=your-vercel-blob-token-here
 ```
 
 ## 使い方
@@ -139,7 +139,7 @@ output/
 `.env` に `BLOB_READ_WRITE_TOKEN` を設定:
 
 ```
-BLOB_READ_WRITE_TOKEN=vercel_blob_rw_xxxxx
+BLOB_READ_WRITE_TOKEN=your-vercel-blob-token-here
 ```
 
 トークンは [Vercel Dashboard](https://vercel.com/dashboard) → Storage → Blob → Tokens から取得できます。
